@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="jHCVMUI.Views.PrimaryData.SummaryTable"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource SummaryTitleLabel}">Number of Runners</Label>
+    <Label Grid.Row="0" Grid.Column="1" Content="{Binding TotalRunners}" Style="{StaticResource SummaryContentLabel}"/>
+    <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource SummaryTitleLabel}">Number of Boys</Label>
+    <Label Grid.Row="1" Grid.Column="1" Content="{Binding MaleRunners}" Style="{StaticResource SummaryContentLabel}"/>
+    <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource SummaryTitleLabel}">Number of Girls</Label>
+    <Label Grid.Row="2" Grid.Column="1" Content="{Binding FemaleRunners}" Style="{StaticResource SummaryContentLabel}"/>
+    <Label Grid.Row="3" Grid.Column="0" Style="{StaticResource SummaryTitleLabel}">Number of PBs</Label>
+    <Label Grid.Row="3" Grid.Column="1" Content="{Binding PBs}" Style="{StaticResource SummaryContentLabel}"/>
+    <Label Grid.Row="4" Grid.Column="0" Style="{StaticResource SummaryTitleLabel}">Number of SBs</Label>
+    <Label Grid.Row="4" Grid.Column="1" Content="{Binding SBs}" Style="{StaticResource SummaryContentLabel}"/>
+    <Label Grid.Row="5" Grid.Column="0" Style="{StaticResource SummaryTitleLabel}">Number of First Timers</Label>
+    <Label Grid.Row="5" Grid.Column="1" Content="{Binding FirstTimers}" Style="{StaticResource SummaryContentLabel}"/>
+    <Label Grid.Row="6" Grid.Column="0" Style="{StaticResource SummaryTitleLabel}">Fastest Boy</Label>
+    <Label Grid.Row="6" Grid.Column="1" Content="{Binding FastestBoy}" Style="{StaticResource SummaryContentLabel}"/>
+    <Label Grid.Row="7" Grid.Column="1" Content="{Binding FastestBoyTime}" Style="{StaticResource SummaryContentLabel}"/>
+    <Label Grid.Row="8" Grid.Column="0" Style="{StaticResource SummaryTitleLabel}">Fastest Girl</Label>
+    <Label Grid.Row="8" Grid.Column="1" Content="{Binding FastestGirl}" Style="{StaticResource SummaryContentLabel}"/>
+    <Label Grid.Row="9" Grid.Column="1" Content="{Binding FastestGirlTime}" Style="{StaticResource SummaryContentLabel}"/>
+  </Grid>
+</UserControl>

@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F338A2A2-30E2-48ED-A717-4A394B912CE0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HandicapModel</RootNamespace>
+    <AssemblyName>HandicapModel</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.5\lib\net46\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.4.1.0, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Admin\IO\AthleteData.cs" />
+    <Compile Include="Admin\IO\ClubData.cs" />
+    <Compile Include="Admin\IO\EventData.cs" />
+    <Compile Include="Admin\IO\GeneralIO.cs" />
+    <Compile Include="Admin\IO\RawResults\Import610PFactory.cs" />
+    <Compile Include="Admin\IO\RawResults\ImportManualTimesFactory.cs" />
+    <Compile Include="Admin\IO\RawResults\ImportOpn200TimesFactory.cs" />
+    <Compile Include="Admin\IO\ResultsCSV\ClubPointsHarmonyTableWriter.cs" />
+    <Compile Include="Admin\IO\ResultsPaths.Designer.cs">
+      <DependentUpon>ResultsPaths.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Admin\IO\IOPaths.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IOPaths.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\IO\ResultsCSV\ClubPointsTableWriter.cs" />
+    <Compile Include="Admin\IO\ResultsCSV\EventSummaryWriter.cs" />
+    <Compile Include="Admin\IO\ResultsCSV\HandicapWriter.cs" />
+    <Compile Include="Admin\IO\ResultsCSV\NextRunnerWriter.cs" />
+    <Compile Include="Admin\IO\ResultsCSV\PointsTableWriter.cs" />
+    <Compile Include="Admin\IO\ResultsCSV\ResultsWriter.cs" />
+    <Compile Include="Admin\IO\RootPath.cs" />
+    <Compile Include="Admin\IO\SummaryData.cs" />
+    <Compile Include="Admin\IO\TXT\CommonIO.cs" />
+    <Compile Include="Admin\IO\TXT\RootIO.cs" />
+    <Compile Include="Admin\IO\TXT\EventIO.cs" />
+    <Compile Include="Admin\IO\TXT\RawEventIO.cs" />
+    <Compile Include="Admin\IO\TXT\SeasonIO.cs" />
+    <Compile Include="Admin\IO\XML\AthleteDataReader.cs" />
+    <Compile Include="Admin\IO\XML\AthleteSeasonDataReader.cs" />
+    <Compile Include="Admin\IO\XML\ClubDataReader.cs" />
+    <Compile Include="Admin\IO\XML\ClubSeasonDataReader.cs" />
+    <Compile Include="Admin\IO\XML\EventDataReader.cs" />
+    <Compile Include="Admin\IO\XML\ResultsTableReader.cs" />
+    <Compile Include="Admin\IO\XML\SummaryDataReader.cs" />
+    <Compile Include="Admin\Manage\BLMngr.cs" />
+    <Compile Include="Admin\Manage\Event\CalculateResultsMngr.cs" />
+    <Compile Include="Admin\Manage\Event\DeleteResultsMngr.cs" />
+    <Compile Include="Admin\Manage\Event\EventResultsMngr.cs" />
+    <Compile Include="Admin\Manage\IBLMngr.cs" />
+    <Compile Include="Admin\Manage\IResultsConfigMngr.cs" />
+    <Compile Include="Admin\Manage\SeriesConfigMngr.cs" />
+    <Compile Include="Admin\Manage\NormalisationConfigMngr.cs" />
+    <Compile Include="Admin\Manage\ResultsConfigMngr.cs" />
+    <Compile Include="Admin\Types\ClubPoints.cs" />
+    <Compile Include="AthletesModel\AthleteDetails.cs" />
+    <Compile Include="AthletesModel\Athletes.cs" />
+    <Compile Include="ClubsModel\Clubs.cs" />
+    <Compile Include="Common\Appearances.cs" />
+    <Compile Include="Common\AthleteHarmonyPoints.cs" />
+    <Compile Include="Common\CommonHarmonyPoints.cs" />
+    <Compile Include="Common\CommonPoints.cs" />
+    <Compile Include="Common\AthleteTime.cs" />
+    <Compile Include="Interfaces\Common\IAthleteHarmonyPoints.cs" />
+    <Compile Include="Interfaces\Common\IAthleteTime.cs" />
+    <Compile Include="Interfaces\Common\ICommonHarmonyPoints.cs" />
+    <Compile Include="Interfaces\Common\ICommonPoints.cs" />
+    <Compile Include="Interfaces\Common\ISummary.cs" />
+    <Compile Include="Interfaces\IModel.cs" />
+    <Compile Include="Interfaces\SeasonModel\IAthleteSeasonDetails.cs" />
+    <Compile Include="Interfaces\SeasonModel\IAthleteSeasonHarmonyPoints.cs" />
+    <Compile Include="Interfaces\SeasonModel\IAthleteSeasonPoints.cs" />
+    <Compile Include="Interfaces\SeasonModel\IClubCompetition.cs" />
+    <Compile Include="Interfaces\SeasonModel\IClubSeasonDetails.cs" />
+    <Compile Include="Interfaces\SeasonModel\IHarmonyCompetition.cs" />
+    <Compile Include="Interfaces\SeasonModel\IHarmonyEvent.cs" />
+    <Compile Include="Model.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Common\Summary.cs" />
+    <Compile Include="SeasonModel\AthleteSeasonDetails.cs" />
+    <Compile Include="SeasonModel\AthleteSeasonHarmonyPoints.cs" />
+    <Compile Include="SeasonModel\AthleteSeasonPoints.cs" />
+    <Compile Include="SeasonModel\ClubCompetition.cs" />
+    <Compile Include="SeasonModel\ClubSeasonDetails.cs" />
+    <Compile Include="SeasonModel\EventModel\EventHC.cs" />
+    <Compile Include="SeasonModel\EventModel\EventResults.cs" />
+    <Compile Include="Interfaces\SeasonModel\EventModel\IHandicapEvent.cs" />
+    <Compile Include="Interfaces\SeasonModel\EventModel\IEventResults.cs" />
+    <Compile Include="Interfaces\SeasonModel\EventModel\IRaw.cs" />
+    <Compile Include="Interfaces\SeasonModel\EventModel\IResultsTableEntry.cs" />
+    <Compile Include="SeasonModel\EventModel\Raw.cs" />
+    <Compile Include="SeasonModel\EventModel\ResultsTableEntry.cs" />
+    <Compile Include="SeasonModel\HarmonyEvent.cs" />
+    <Compile Include="SeasonModel\Helpers\PointsControl.cs" />
+    <Compile Include="Interfaces\SeasonModel\ISeason.cs" />
+    <Compile Include="SeasonModel\Season.cs" />
+    <Compile Include="SeasonModel\HarmonyCompetition.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Admin\IO\ResultsPaths.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResultsPaths.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\IO\IOPaths.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>IOPaths.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonHandicapLib\CommonHandicapLib.csproj">
+      <Project>{26d91b2d-51d8-4810-87ca-ca9338b463d9}</Project>
+      <Name>CommonHandicapLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{4f8df153-679e-423d-b823-eb9204b36944}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

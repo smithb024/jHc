@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--Athlete's data XML-->
+<SummaryDetails>
+  <TotalRunner>0</TotalRunner>
+  <MaleRunners>0</MaleRunners>
+  <FemaleRunners>0</FemaleRunners>
+  <YBs>0</YBs>
+  <PBs>0</PBs>
+  <FirstTimers>0</FirstTimers>
+  <FastestRunners>
+    <FastestBoys />
+    <FastestGirls />
+  </FastestRunners>
+</SummaryDetails>

@@ -1,0 +1,46 @@
+﻿<ResourceDictionary x:Class="jHCVMUI.Views.WPFResources.Colours.BrushDictionary"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:jHCVMUI.Views.WPFResources.Colours"
+             mc:Ignorable="d" >
+    <!--Header Colours-->
+    <SolidColorBrush x:Key="HeaderBackground" Color="Navy"/>
+    <SolidColorBrush x:Key="HeaderControlBorder" Color="Honeydew"/>
+    <SolidColorBrush x:Key="HeaderControlForeground" Color="LightCyan"/>
+    <Color x:Key="HeaderEventSelected">Red</Color>
+
+    <SolidColorBrush x:Key="HeaderButtonBackground" Color="SlateBlue"/>
+    <SolidColorBrush x:Key="HeaderPrimaryButtonBackground" Color="DarkSlateBlue"/>
+    <Color x:Key="HeaderButtonHoverBackground">Blue</Color>
+    <Color x:Key="HeaderPrimaryButtonHoverBackground">Gold</Color>
+    <Color x:Key="HeaderButtonDisabledBackground">LightSteelBlue</Color>
+
+    <SolidColorBrush x:Key="HeaderEntryBackground" Color="RoyalBlue"/>
+    <SolidColorBrush x:Key="HeaderEntrySelectedItem" Color="SlateBlue"/>
+
+    <!--Body Colours-->
+    <SolidColorBrush x:Key="BodyBackground" Color="White"/>
+    <SolidColorBrush x:Key="BodyBackground2" Color="LawnGreen"/>
+    <SolidColorBrush x:Key="ControlBorder" Color="DarkBlue"/>
+    <Color x:Key="EventSelected">Red</Color>
+
+    <SolidColorBrush x:Key="DisableEntryBoxBackground" Color="LightSteelBlue"/>
+    <SolidColorBrush x:Key="DisableEntryBoxForeground" Color="WhiteSmoke"/>
+
+    <SolidColorBrush x:Key="ButtonBackground" Color="AliceBlue"/>
+    <SolidColorBrush x:Key="ControlForeground" Color="Navy"/>
+    <Color x:Key="ButtonHoverBackground">LightSkyBlue</Color>
+
+    <SolidColorBrush x:Key="BodyEntryBackground" Color="White"/>
+    <SolidColorBrush x:Key="BodyEntrySelectedItem" Color="Silver"/>
+
+    <SolidColorBrush x:Key="BodyDisabledForeground" Color="PowderBlue"/>
+    <Color x:Key="EventDisabled">PowderBlue</Color>
+
+    <SolidColorBrush x:Key="SummaryTitleColour" Color="Black" />
+
+    <Color x:Key="RowBackgroundColour">White</Color>
+    <Color x:Key="RowFadeColour">LightGray</Color>
+</ResourceDictionary>

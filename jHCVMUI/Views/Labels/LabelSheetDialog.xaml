@@ -1,0 +1,27 @@
+﻿<Window x:Class="jHCVMUI.Views.Labels.LabelSheetDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:view="clr-namespace:jHCVMUI.Views.Labels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        mc:Ignorable="d" 
+        d:DesignHeight="1122" d:DesignWidth="792"
+        Height="300"
+        Width="400">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+      <Grid x:Name="LabelSheetGrid" Background="WhiteSmoke" Width="{Binding A4Width}" Height="{Binding A4Height}">
+        <ItemsControl ItemsSource="{Binding AthleteDetails}" Padding="{Binding LabelMargin}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel FlowDirection="LeftToRight"/>
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <view:VestLabel DataContext="{Binding}"/>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </Grid>
+    </ScrollViewer>
+</Window>

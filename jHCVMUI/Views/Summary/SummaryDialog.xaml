@@ -1,0 +1,109 @@
+﻿<Window x:Class="jHCVMUI.Views.Summary.SummaryDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Summary" Height="402" Width="600">
+
+  <Grid>
+    <Grid HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Stretch">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Label Grid.Column="0"
+             Grid.Row="0"
+             Name="TotalRunnersLabel"
+             Style="{StaticResource SummaryTitleLabel}">Number of Runners</Label>
+      <Label Grid.Column="0" 
+             Grid.Row="1" 
+             Name="MaleRunnersLabel" 
+             Style="{StaticResource SummaryTitleLabel}">Number of Male Runners</Label>
+      <Label Grid.Column="0" 
+             Grid.Row="2" 
+             Name="FemaleRunnersLabel" 
+             Style="{StaticResource SummaryTitleLabel}">Number of Female Runners</Label>
+      <Label Grid.Column="0" 
+             Grid.Row="3" 
+             Name="PBsLabel" 
+             Style="{StaticResource SummaryTitleLabel}">Number of PBs</Label>
+      <Label Grid.Column="0" 
+             Grid.Row="4" 
+             Name="FirstTimersLabel" 
+             Style="{StaticResource SummaryTitleLabel}">Number of First Timers</Label>
+      <Label Grid.Column="0" 
+             Grid.Row="5" 
+             Name="FastestBoyLabel" 
+             Style="{StaticResource SummaryTitleLabel}">Fastest Boy</Label>
+      <Label Grid.Column="0" 
+             Grid.Row="6" 
+             Name="FastestGirlLabel" 
+             Style="{StaticResource SummaryTitleLabel}">Fastest Girl</Label>
+      <Label Grid.Column="1" 
+             Grid.Row="0" 
+             Name="TotalRunnersValue" 
+             Style="{StaticResource SummaryContentLabel}"
+             Content="{Binding TotalRunners}"></Label>
+      <Label Grid.Column="1" 
+             Grid.Row="1" 
+             Name="MaleRunnersValue" 
+             Style="{StaticResource SummaryContentLabel}"
+             Content="{Binding MaleRunners}"></Label>
+      <Label Grid.Column="1" 
+             Grid.Row="2" 
+             Name="FemaleRunnersValue" 
+             Style="{StaticResource SummaryContentLabel}"
+             Content="{Binding FemaleRunners}"></Label>
+      <Label Grid.Column="1" 
+             Grid.Row="3" 
+             Name="PBsValue" 
+             Style="{StaticResource SummaryContentLabel}"
+             Content="{Binding PBs}"></Label>
+      <Label Grid.Column="1" 
+             Grid.Row="4" 
+             Name="FirstTimersValue" 
+             Style="{StaticResource SummaryContentLabel}"
+             Content="{Binding FirstTimers}"></Label>
+
+      <Grid Grid.Column="1"
+            Grid.Row="5">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0" 
+             Name="FastestBoyValue" 
+             Style="{StaticResource SummaryContentLabel}"
+             Content="{Binding FastestBoy}"></Label>
+        <Label Grid.Column="1" 
+             Name="FastestBoyTimeValue" 
+             Style="{StaticResource SummaryContentLabel}"
+             Content="{Binding FastestBoyTime}"></Label>
+      </Grid>
+
+      <Grid Grid.Column="1"
+            Grid.Row="6">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0" 
+             Name="FastestGirlValue"
+             Style="{StaticResource SummaryContentLabel}"
+             Content="{Binding FastestGirl}"></Label>
+        <Label Grid.Column="1" 
+             Name="FastestGirlTimeValue"
+             Style="{StaticResource SummaryContentLabel}"
+             Content="{Binding FastestGirlTime}"></Label>
+      </Grid>
+    </Grid>
+
+  </Grid>
+</Window>

@@ -1,0 +1,258 @@
+﻿<Window x:Class="jHCVMUI.Views.Windows.AthleteSummaryDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converter="clr-namespace:jHCVMUI.Views.Converters.Configuration"
+        xmlns:components="clr-namespace:jHCVMUI.Views.Components"
+        Title="AthleteSummary" Height="500" Width="800">
+
+  <Window.Resources>
+    <converter:BoolToItalicConverter x:Key="fontConverter"></converter:BoolToItalicConverter>
+    <converter:BoolToColourConverter x:Key="boolToColourConverter"></converter:BoolToColourConverter>
+  </Window.Resources>
+
+  <Grid Grid.Row="0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="3"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Grid Grid.Row="0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="40"/>
+        <ColumnDefinition Width="2*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="60"/>
+        <ColumnDefinition Width="80"/>
+        <ColumnDefinition Width="45"/>
+        <ColumnDefinition Width="45"/>
+        <ColumnDefinition Width="60"/>
+        <ColumnDefinition Width="25"/>
+      </Grid.ColumnDefinitions>
+      <Label Grid.Column="0" Content="Key" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+      <Label Grid.Column="1" Content="Name" HorizontalAlignment="Center"/>
+      <Label Grid.Column="2" Content="Club" HorizontalAlignment="Center"/>
+      <Label Grid.Column="3" Content="Sex" HorizontalAlignment="Center"/>
+      <Label Grid.Column="4" Content="Rounded" HorizontalAlignment="Center"/>
+      <Label Grid.Column="5" Content="PB" HorizontalAlignment="Center"/>
+      <Label Grid.Column="6" Content="Runs" HorizontalAlignment="Center"/>
+      <Label Grid.Column="7" Content="Last" HorizontalAlignment="Center"/>
+    </Grid>
+
+    <ScrollViewer Grid.Row="1"
+                  Name="AthleteScroll">
+      <ListBox ItemsSource="{Binding Path=AthleteCollection}"
+               Name="AthleteCollectionList"
+               SelectedIndex="{Binding AthleteCollectionIndex}"
+               HorizontalContentAlignment="Stretch">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <Border Style="{StaticResource ItemBorder}">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="40"/>
+                  <ColumnDefinition Width="2*"/>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="60"/>
+                  <ColumnDefinition Width="80"/>
+                  <ColumnDefinition Width="45"/>
+                  <ColumnDefinition Width="45"/>
+                  <ColumnDefinition Width="60"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="25"/>
+                </Grid.RowDefinitions>
+                <TextBlock Margin="10,0,0,0" Grid.Column="0" HorizontalAlignment="Center"
+                           Text="{Binding Key}"
+                           FontStyle="{Binding Active, Converter={StaticResource fontConverter}}"
+                           Foreground="{Binding Active, Converter={StaticResource boolToColourConverter}}"/>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Center"
+                           Text="{Binding Name}"
+                           FontStyle="{Binding Active, Converter={StaticResource fontConverter}}"
+                           Foreground="{Binding Active, Converter={StaticResource boolToColourConverter}}"/>
+                <TextBlock Grid.Column="2" HorizontalAlignment="Center"
+                           Text="{Binding Club}"
+                           FontStyle="{Binding Active, Converter={StaticResource fontConverter}}"
+                           Foreground="{Binding Active, Converter={StaticResource boolToColourConverter}}"/>
+                <TextBlock Grid.Column="3" HorizontalAlignment="Center"
+                           Text="{Binding Sex}"
+                           FontStyle="{Binding Active, Converter={StaticResource fontConverter}}"
+                           Foreground="{Binding Active, Converter={StaticResource boolToColourConverter}}"/>
+                <TextBlock Grid.Column="4" HorizontalAlignment="Center"
+                           Text="{Binding RoundedHandicap}"
+                           FontStyle="{Binding Active, Converter={StaticResource fontConverter}}"
+                           Foreground="{Binding Active, Converter={StaticResource boolToColourConverter}}"/>
+                <TextBlock Grid.Column="5" HorizontalAlignment="Center"
+                           Text="{Binding PB}"
+                           FontStyle="{Binding Active, Converter={StaticResource fontConverter}}"
+                           Foreground="{Binding Active, Converter={StaticResource boolToColourConverter}}"/>
+                <TextBlock Grid.Column="6" HorizontalAlignment="Center"
+                           Text="{Binding NumberOfRuns}"
+                           FontStyle="{Binding Active, Converter={StaticResource fontConverter}}"
+                           Foreground="{Binding Active, Converter={StaticResource boolToColourConverter}}"/>
+                <TextBlock Grid.Column="7" HorizontalAlignment="Center"
+                           Text="{Binding LastAppearance}"
+                           FontStyle="{Binding Active, Converter={StaticResource fontConverter}}"
+                           Foreground="{Binding Active, Converter={StaticResource boolToColourConverter}}"/>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </ScrollViewer>
+
+    <Canvas Background="{StaticResource HeaderBackground}"
+            Grid.Row="2"/>
+
+    <!-- Grid for individual athlete details -->
+    <Grid Grid.Row="3">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+
+      <!-- Title Row -->
+      <Grid Grid.Row="0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0" Content="{Binding AthleteSummaryKey}"/>
+        <Label Grid.Column="1" Content="{Binding AthleteSummaryName}"/>
+        <Label Grid.Column="2" Content="{Binding AthleteSummaryClub}"/>
+        <Label Grid.Column="3" Content="{Binding AthleteSummaryPB}"/>
+      </Grid>
+
+      <!-- Bottom Row -->
+      <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Details grid -->
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0" Content="Sex"/>
+                    <Label Grid.Column="1" Grid.Row="0" Content="{Binding AthleteSummarySex}"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Handicap"/>
+                    <Label Grid.Column="1" Grid.Row="1" Content="{Binding AthleteSummaryHandicap}"/>
+                    <Label Grid.Column="0" Grid.Row="2" Content="Last Appearance"/>
+                    <Label Grid.Column="1" Grid.Row="2" Content="{Binding AthleteSummaryLastAppearance}"/>
+                    <Label Grid.Column="0" Grid.Row="3" Content="Consented"/>
+                    <Label Grid.Column="1" Grid.Row="3" Content="{Binding AthleteSummarySignedConsent}"/>
+                    <Label Grid.Column="0" Grid.Row="4" Content="Active"/>
+                    <Label Grid.Column="1" Grid.Row="4" Content="{Binding AthleteSummaryActive}"/>
+                    <Label Grid.Column="0" Grid.Row="5" Content="Number Runs"/>
+                    <Label Grid.Column="1" Grid.Row="5" Content="{Binding AthleteSummaryEventsRun}"/>
+                </Grid>
+
+                <!-- All appearances -->
+        <StackPanel Grid.Column="1"
+                    Grid.Row="0">
+          <TextBlock Text="All Appearances"/>
+          <ListBox BorderThickness="0"
+                    MaxHeight="150"
+                   ItemsSource="{Binding Path=AthleteSummaryAllTimes, UpdateSourceTrigger=PropertyChanged}"
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Vertical" />
+              </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <components:AppearanceDetail DataContext="{Binding}"
+                                             Width="{Binding ViewportWidth, RelativeSource ={RelativeSource AncestorType = ScrollViewer}}"/>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </StackPanel>
+
+        <!-- Season Details grid -->
+        <Grid Grid.Column="2">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+
+          <Label Grid.Column="0" Grid.Row="0" Content="Numbers"/>
+          <ListBox Grid.Column="1"
+                   Grid.Row="0"
+                   BorderThickness="0"
+                   ItemsSource="{Binding Path=AthleteSummaryRunningNumbers, UpdateSourceTrigger=PropertyChanged}">
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" />
+              </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <Border Style="{StaticResource RunningNumberBorderStyle}">
+                  <TextBlock Text="{Binding}" Style="{StaticResource RunningNumberStyle}"/>
+                </Border>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <Label Grid.Column="0" Grid.Row="1" Content="SB"/>
+          <Label Grid.Column="1" Grid.Row="1" Content="{Binding AthleteSummarySB}"/>
+          <Label Grid.Column="0" Grid.Row="2" Content="Total Pts"/>
+          <Label Grid.Column="1" Grid.Row="2" Content="{Binding AthleteSummaryTotalPoints}"/>
+          <Label Grid.Column="0" Grid.Row="3" Content="Finishing Pts"/>
+          <Label Grid.Column="1" Grid.Row="3" Content="{Binding AthleteSummaryFinishingPoints}"/>
+          <Label Grid.Column="0" Grid.Row="4" Content="Position Pts"/>
+          <Label Grid.Column="1" Grid.Row="4" Content="{Binding AthleteSummaryPositionPoints}"/>
+          <Label Grid.Column="0" Grid.Row="5" Content="Best Pts"/>
+          <Label Grid.Column="1" Grid.Row="5" Content="{Binding AthleteSummaryBestPoints}"/>
+        </Grid>
+
+        <!-- Appearances in the current season -->
+        <StackPanel Grid.Column="3"
+                 Grid.Row="0">
+          <TextBlock Text="Appearances this season"/>
+          <ListBox BorderThickness="0"
+                   ItemsSource="{Binding Path=AthleteSummarySeasonTimes, UpdateSourceTrigger=PropertyChanged}"
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Vertical" />
+              </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <components:AppearanceDetail DataContext="{Binding}"
+                                             Width="{Binding ViewportWidth, RelativeSource ={RelativeSource AncestorType = ScrollViewer}}"/>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </StackPanel>
+
+      </Grid>
+    </Grid>
+  </Grid>
+  <!--</Grid>-->
+</Window>

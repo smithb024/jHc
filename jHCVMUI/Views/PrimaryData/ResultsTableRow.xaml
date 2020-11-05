@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="jHCVMUI.Views.PrimaryData.ResultsTableRow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:converterConfig="clr-namespace:jHCVMUI.Views.Converters.Configuration"
+             xmlns:converterPrimaryData="clr-namespace:jHCVMUI.Views.Converters.PrimaryData"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <converterConfig:BoolToVisCollapsedVisibilityConverter x:Key="visibilityConverter"></converterConfig:BoolToVisCollapsedVisibilityConverter>
+        <converterPrimaryData:BestToColourConverter x:Key="bestToColourConverter"></converterPrimaryData:BestToColourConverter>
+        <converterPrimaryData:SexStringToColourConverter x:Key="sexStringToColourConverter"></converterPrimaryData:SexStringToColourConverter>
+    </UserControl.Resources>
+    <Grid>
+        <ListBox ItemsSource="{Binding Path=ResultsTable}"
+             HorizontalContentAlignment="Stretch">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border Style="{StaticResource ItemBorder}">
+                        <Grid Background="{Binding SuccessState, Converter={StaticResource bestToColourConverter}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="75"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Content="{Binding Position}" HorizontalContentAlignment="Center"/>
+                                <Grid Grid.Column="1"
+                      Background="{Binding Sex, Converter={StaticResource sexStringToColourConverter}}">
+                                    <Label  Content="{Binding Name}"/>
+                                </Grid>
+                                <Label Grid.Column="2" Content="{Binding TotalTime}" HorizontalContentAlignment="Center"/>
+                                <Label Grid.Column="3" Content="{Binding RunningTime}" HorizontalContentAlignment="Center"/>
+                                <Label Grid.Column="4" Content="{Binding Handicap}" HorizontalContentAlignment="Center"/>
+                                <Label Grid.Column="5" Content="{Binding RunningOrder}" HorizontalContentAlignment="Center"/>
+                                <Label Grid.Column="6" Content="{Binding PersonalBest}" HorizontalContentAlignment="Center"/>
+                                <Label Grid.Column="7" Content="{Binding SeasonBest}" HorizontalContentAlignment="Center"/>
+                                <Label Grid.Column="8" Content="{Binding TotalPoints}" HorizontalContentAlignment="Center"/>
+                                <Label Grid.Column="9" Content="{Binding Notes}"/>
+                                <Border Grid.Column="10"
+                        Style="{StaticResource RunningNumberBorderStyle}"
+                        HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding RaceNumber}"
+                             Style="{StaticResource RunningNumberStyle}"/>
+                                </Border>
+                                <Label Grid.Column="11" Content="{Binding Club}"/>
+                            </Grid>
+                            <Grid Grid.Row="1" Visibility="{Binding ExpandedData, Converter={StaticResource visibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Content="{Binding FinishingPoints}"/>
+                                <Label Grid.Column="1" Content="{Binding PositionPoints}"/>
+                                <Label Grid.Column="2" Content="{Binding BestPoints}"/>
+                                <Label Grid.Column="3" Content="{Binding HarmonyPoints}"/>
+                                <Label Grid.Column="4" Content="{Binding ExtraInfo}"/>
+                                <Label Grid.Column="5" Content="{Binding FirstTimer}"/>
+                                <Label Grid.Column="6" Content="{Binding Sex}"/>
+                                <Label Grid.Column="7" Content="{Binding AgeGrading}"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

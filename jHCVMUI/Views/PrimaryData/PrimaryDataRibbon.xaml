@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="jHCVMUI.Views.PrimaryData.PrimaryDataRibbon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converter="clr-namespace:jHCVMUI.Views.Converters.Configuration"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <converter:BoolToHighlightColourConverter x:Key="highlightConverter"></converter:BoolToHighlightColourConverter>
+    </UserControl.Resources>
+
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Right"
+            BorderBrush="{Binding EventSummaryVisible, Converter={StaticResource highlightConverter}}"
+            BorderThickness="0,0,0,3"
+            Margin="5,0,5,0">
+            <Button Name="EventSummary"
+              Content="Event Summary"
+              Style="{StaticResource BodyButtonStyle}"
+              Command="{Binding ShowEventSummaryCommand}"
+              Height="25"
+              Width="100"/>
+        </Border>
+        <Border DockPanel.Dock="Right"
+            BorderBrush="{Binding TeamHarmonyPointsTableVisible, Converter={StaticResource highlightConverter}}"
+            BorderThickness="0,0,0,3"
+            Margin="5,0,0,0">
+            <Button Name="EventTeamHarmonyPointsTable"
+              Content="Club Points (2)"
+              Style="{StaticResource BodyButtonStyle}"
+              Command="{Binding ShowTeamHarmonyPointsTableCommand}"
+              Height="25"
+              Width="100"/>
+        </Border>
+        <Border DockPanel.Dock="Right"
+            BorderBrush="{Binding ClubPointsTableVisible, Converter={StaticResource highlightConverter}}"
+            BorderThickness="0,0,0,3"
+            Margin="5,0,0,0">
+            <Button Name="EventClubPointsTable"
+              Content="Club Points"
+              Style="{StaticResource BodyButtonStyle}"
+              Command="{Binding ShowClubPointsTableCommand}"
+              Height="25"
+              Width="100"/>
+        </Border>
+        <Border DockPanel.Dock="Right"
+            BorderBrush="{Binding PointsTableVisible, Converter={StaticResource highlightConverter}}"
+            BorderThickness="0,0,0,3"
+            Margin="5,0,0,0">
+            <Button Name="EventPointsTable"
+              Content="Points Table"
+              Style="{StaticResource BodyButtonStyle}"
+              Command="{Binding ShowPointsTableCommand}"
+              Height="25"
+              Width="100"/>
+        </Border>
+        <Border DockPanel.Dock="Right"
+            BorderBrush="{Binding ResultsTableVisible, Converter={StaticResource highlightConverter}}"
+            BorderThickness="0,0,0,3"
+            Margin="5,0,0,0">
+            <Button Name="EventResults"
+              Content="Results Table"
+              Style="{StaticResource BodyButtonStyle}"
+              Command="{Binding ShowResultsCommand}"
+              Height="25"
+              Width="100"/>
+        </Border>
+        <Border DockPanel.Dock="Right"
+            BorderBrush="{Binding SeasonSummaryVisible, Converter={StaticResource highlightConverter}}"
+            BorderThickness="0,0,0,3"
+            Margin="5,0,0,0">
+            <Button Name="GlobalResults"
+              Content="Season Summary"
+              Style="{StaticResource BodyButtonStyle}"
+              Command="{Binding ShowSeasonSummaryCommand}"
+              Height="25"
+              Width="100"/>
+        </Border>
+        <Label Name="EventDateLabel"
+           Content="{Binding EventDate}"
+           Style="{StaticResource SummaryTitleLabel}"/>
+    </DockPanel>
+</UserControl>

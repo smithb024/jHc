@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--Results Configuration XML-->
+<ResultsConfiguration>
+  <RacePoints Finishing="4" SB="2" Positions="10" />
+  <ClubPoints TFinishing="4" NumberCount="5" SB="2" />
+</ResultsConfiguration>

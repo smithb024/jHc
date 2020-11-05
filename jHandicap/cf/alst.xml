@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--Athlete's data XML-->
+<AthleteDetails>
+  <NextKey>1</NextKey>
+  <AthleteList />
+</AthleteDetails>

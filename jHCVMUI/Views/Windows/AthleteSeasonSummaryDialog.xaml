@@ -1,0 +1,38 @@
+﻿<Window x:Class="jHCVMUI.Views.Windows.AthleteSeasonSummaryDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="AthleteSeasonSummary" Height="300" Width="300">
+    <Grid>
+    <ScrollViewer>
+      <ListBox ItemsSource="{Binding Path=RegisteredAthletes}"
+               HorizontalContentAlignment="Stretch">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <Border Style="{StaticResource BodyListBoxItemBorder}">
+            <DockPanel LastChildFill="True">
+                <ListBox ItemsSource="{Binding Path=AthleteNumbers, UpdateSourceTrigger=PropertyChanged}"
+                         DockPanel.Dock="Right"
+                         BorderThickness="0">
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                  <DataTemplate>
+                    <Border Style="{StaticResource RunningNumberBorderStyle}">
+                      <TextBlock Text="{Binding}" Style="{StaticResource RunningNumberStyle}"/>
+                    </Border>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+              <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource BodyListBoxItemTextBlock}"/>
+            </DockPanel>
+            </Border>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </ScrollViewer>
+  </Grid>
+</Window>

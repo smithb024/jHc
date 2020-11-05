@@ -1,0 +1,595 @@
+﻿namespace HandicapModel.SeasonModel
+{
+  using System.Collections.Generic;
+  using CommonHandicapLib.Types;
+  using CommonLib.Types;
+  using HandicapModel.Admin.IO;
+  using HandicapModel.Admin.IO.TXT;
+  using HandicapModel.Admin.Manage;
+  using HandicapModel.Common;
+  using HandicapModel.SeasonModel.EventModel;
+
+  public class Season
+  {
+    private EventHC                    currentEvent         = null;
+    private List<string>               events        = new List<string>();
+    private string                     name          = string.Empty;
+    private Summary                    summary       = null;
+    private List<AthleteSeasonDetails> athletes      = new List<AthleteSeasonDetails>();
+    private List<ClubSeasonDetails>    clubs           = new List<ClubSeasonDetails>();
+    //private AthleteSeasonPoints        athletePoints   = new AthleteSeasonPoints();
+    //private ClubSeasonPoints           clubPoints      = new ClubSeasonPoints();
+    //private AthletePointsTable         m_athletePoints = new AthletePointsTable();
+    //private ClubPointsTable            m_clubPoints    = new ClubPointsTable();
+
+    private EventsDelegate         eventsCallback;
+    private SummaryDelegate        summaryCallback;
+    private StringDelegate         nameCallback;
+    private AthleteSeasonDelegate  athletesCallback;
+    //private AthletesPointsDelegate athletePointsCallback;
+    //private ClubPointsDelegate     clubPointsCallback;
+    private ClubSeasonDelegate     clubsCallback;
+    //private InformationDelegate    progressCallback;
+    //private InformationDelegate    errorCallback;
+
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    /// <name>HandicapSeason</name>
+    /// <date>25/03/15</date>
+    /// <summary>
+    /// Creates a new instance of the HandicapSeason class
+    /// </summary>
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    public Season()
+    {
+      CurrentEvent = new EventHC();
+    }
+
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    /// <name>Name</name>
+    /// <date>25/03/15</date>
+    /// <summary>
+    /// Gets the name of this season.
+    /// </summary>
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    public string Name
+    {
+      get { return name; }
+      private set { name = value; }
+    }
+
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    /// <name>Athletes</name>
+    /// <date>04/05/15</date>
+    /// <summary>
+    /// Gets the athletes lists.
+    /// </summary>
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    public List<AthleteSeasonDetails> Athletes
+    {
+      get { return athletes; }
+      private set
+      {
+        athletes = value;
+        InvokeAthletesCallback();
+      }
+    }
+
+    /// <summary>
+    /// Gets the club details.
+    /// </summary>
+    public List<ClubSeasonDetails> Clubs
+    {
+      get { return clubs; }
+      private set
+      {
+        clubs = value;
+        InvokeClubsCallback();
+      }
+    }
+
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    /// <summary>
+    /// Gets the current event.
+    /// </summary>
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    public EventHC CurrentEvent
+    {
+      get { return currentEvent; }
+      private set { currentEvent = value; }
+    }
+
+    /// <summary>
+    /// Summary for the current season.
+    /// </summary>
+    public Summary Summary
+    {
+      get { return summary; }
+      private set
+      {
+        summary = value;
+        InvokeSummaryCallback();
+      }
+    }
+
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    /// <name>Seasons</name>
+    /// <date>03/04/15</date>
+    /// <summary>
+    /// Gets the current season.
+    /// </summary>
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    public List<string> Events
+    {
+      get
+      {
+        return events;
+      }
+      private set
+      {
+        events = value;
+        if (EventsCallback != null)
+        {
+          EventsCallback.Invoke(Events);
+        }
+      }
+    }
+
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    /// <name>EventsCallback</name>
+    /// <date>05/04/15</date>
+    /// <summary>
+    /// Gets and sets the events names callback.
+    /// </summary>
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    public EventsDelegate EventsCallback
+    {
+      get { return eventsCallback; }
+      set { eventsCallback = value; }
+    }
+
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    /// <name>SeasonSummaryCallback</name>
+    /// <date>05/04/15</date>
+    /// <summary>
+    /// Gets and sets the season summary callback.
+    /// </summary>
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    public SummaryDelegate SeasonSummaryCallback
+    {
+      get { return summaryCallback; }
+      set { summaryCallback = value; }
+    }
+
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    /// <name>NameCallback</name>
+    /// <date>05/04/15</date>
+    /// <summary>
+    /// Gets and sets the name callback.
+    /// </summary>
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    public StringDelegate NameCallback
+    {
+      get { return nameCallback; }
+      set { nameCallback = value; }
+    }
+
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    /// <name>AthletesCallback</name>
+    /// <date>05/04/15</date>
+    /// <summary>
+    /// Gets and sets the athletes callback.
+    /// </summary>
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    public AthleteSeasonDelegate AthletePointsCallback
+    {
+      get { return athletesCallback; }
+      set { athletesCallback = value; }
+    }
+
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    /// <summary>
+    /// Gets and sets the clubs callback.
+    /// </summary>
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    public ClubSeasonDelegate ClubsCallback
+    {
+      get { return clubsCallback; }
+      set { clubsCallback = value; }
+    }
+
+    /// <summary>
+    /// Gets or sets the progress callback.
+    /// </summary>
+    public InformationDelegate ProgressCallback
+    {
+      get;
+      set;
+    }
+
+    /// <summary>
+    /// Gets or sets the error callback.
+    /// </summary>
+    public InformationDelegate ErrorCallback
+    {
+      get;
+      set;
+    }
+
+    ///// <summary>
+    ///// Gets the next available race number based on the highest existing one.
+    ///// </summary>
+    ///// <remarks>
+    ///// To be made obsolete, race numbers managed at global level.
+    ///// </remarks>
+    //public string NextAvailableRaceNumber
+    //{
+    //  get
+    //  {
+    //    int nextRaceNumber = 1;
+    //    SeriesConfigType config = SeriesConfigMngr.ReadSeriesConfiguration();
+    //    string numberPrefix = config?.NumberPrefix;
+
+    //    //foreach (AthleteSeasonDetails athlete in Athletes)
+    //    //{
+    //    //  foreach (int number in athlete.RunningNumbers)
+    //    //  {
+    //    //    if (number >= nextRaceNumber)
+    //    //    {
+    //    //      nextRaceNumber = number + 1;
+    //    //    }
+    //    //  }
+    //    //}
+
+    //    return "NotApplicable";
+    //  }
+    //}
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="seasonName"></param>
+    /// <returns></returns>
+    public bool LoadNewSeason(string seasonName)
+    {
+      bool success = true;
+
+      Name     = seasonName;
+      Summary  = SummaryData.LoadSummaryData(seasonName);
+      Athletes = AthleteData.LoadAthleteSeasonData(seasonName);
+      Clubs    = ClubData.LoadClubSeasonData(seasonName);
+      Events   = new List<string>();
+
+      UpdateEvents();
+
+//      if (EventsCallback != null)
+//      {
+        EventsCallback.Invoke(Events);
+//      }
+      //Call any callbacks
+
+      SeasonIO.SaveCurrentSeason(seasonName);
+
+      return success;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public bool SaveCurrentSeason()
+    {
+      bool success = true;
+
+      SummaryData.SaveSummaryData(Name, Summary);
+      AthleteData.SaveAthleteSeasonData(Name, Athletes);
+      ClubData.SaveClubSeasonData(Name, Clubs);
+
+      return success;
+    }
+
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    /// <name>LoadNewEvent</name>
+    /// <date>25/03/15</date>
+    /// <summary>
+    /// Loads and selects the given event.
+    /// </summary>
+    /// <param name="eventName">new event name</param>
+    /// <returns>success flag</returns>
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    public bool LoadNewEvent(string eventName)
+    {
+      if (currentEvent.LoadNewEvent(Name, eventName))
+      {
+        EventIO.SaveCurrentEvent(Name, eventName);
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    /// <name>CreateNewEvent</name>
+    /// <date>25/03/15</date>
+    /// <summary>
+    /// Creates a new event with the given name and selects it.
+    /// </summary>
+    /// <param name="eventName">new event name</param>
+    /// <returns>success flag</returns>
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    public bool CreateNewEvent(string eventName)
+    {
+      return EventIO.CreateNewEvent(Name, eventName);
+    }
+
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    /// <name>UpdateEvents</name>
+    /// <date>29/04/15</date>
+    /// <summary>
+    /// Gets the events present in this season.
+    /// </summary>
+    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    public void UpdateEvents()
+    {
+      Events = EventIO.GetEvents(Name);
+    }
+
+    /// <summary>
+    /// Create and add a new athlete to the athletes list. Save the list.
+    /// </summary>
+    /// <param name="key">athlete key</param>
+    /// <param name="name">athlete name</param>
+    /// <param name="runningNumbers">athlete running numbers</param>
+    /// <param name="handicap">athlete handicap</param>
+    /// <param name="firstTimer">first timer flag</param>
+    public void AddNewAthlete(
+      int       key,
+      string    name,
+      string    handicap,
+      bool      firstTimer)
+    {
+      AthleteSeasonDetails newAthlete = new AthleteSeasonDetails(key);
+      newAthlete.Name            = name;
+      //newAthlete.RunningNumbers  = runningNumbers;
+
+      Athletes.Add(newAthlete);
+
+      AthleteData.SaveAthleteSeasonData(Name, Athletes);
+    }
+
+    ///// <summary>
+    ///// Used to replace the running numbers with the argument. Save the running numbers.
+    ///// </summary>
+    ///// <param name="key">athlete key</param>
+    ///// <param name="runningNumbers">athlete running number</param>
+    //public void UpdateAthleteNumbers(
+    //  int       key,
+    //  List<string> runningNumbers)
+    //{
+    //  foreach (AthleteSeasonDetails newAthlete in Athletes)
+    //  {
+    //    if (newAthlete.Key == key)
+    //    {
+    //      newAthlete.RunningNumbers = runningNumbers;
+    //      break;
+    //    }
+    //  }
+
+    //  AthleteData.SaveAthleteSeasonData(Name, Athletes);
+    //}
+
+    ///// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    ///// <summary>
+    ///// Finds the athlete with the given running number and returns their unique id.
+    ///// </summary>
+    ///// <param name="runningNumber">running number to check against</param>
+    ///// <returns>athlete's unique id</returns>
+    ///// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+    //public int GetAthleteKey(string runningNumber)
+    //{
+    //  foreach (AthleteSeasonDetails athlete in Athletes)
+    //  {
+    //    if (athlete.RunningNumbers.Contains(runningNumber))
+    //    {
+    //      return athlete.Key;
+    //    }
+    //  }
+
+    //  return 0;
+    //}
+
+    /// <summary>
+    /// Get the current handicap for the athlete. The handicap is the rounded one.
+    /// </summary>
+    /// <param name="key">unique key</param>
+    /// <returns>rounded handicap</returns>
+    public RaceTimeType GetAthleteHandicap(int key, NormalisationConfigType hcConfiguration)
+    {
+      if (Athletes != null && Athletes.Count > 0)
+      {
+        if (Athletes.Exists(athlete => athlete.Key == key))
+        {
+          return Athletes.Find(athlete => athlete.Key == key).GetRoundedHandicap(hcConfiguration);
+        }
+      }
+
+      return new RaceTimeType(0, 0);
+    }
+
+    ///// <summary>
+    ///// Gets all the running numbers assigned to an athlete.
+    ///// </summary>
+    ///// <param name="key">unique key</param>
+    ///// <returns>all running numbers</returns>
+    //public List<string> GetAthleteRunningNumbers(int key)
+    //{
+    //  foreach (AthleteSeasonDetails details in Athletes)
+    //  {
+    //    if (details.Key == key)
+    //    {
+    //      return details.RunningNumbers;
+    //    }
+    //  }
+
+    //  return new List<string>();
+    //}
+
+    /// <summary>
+    /// Get the number of appearances by the athlete in the current season
+    /// </summary>
+    /// <param name="key">unique key</param>
+    /// <returns>number of appearances</returns>
+    public int GetAthleteAppearancesCount(int key)
+    {
+      return Athletes.Find(athlete => athlete.Key == key)?.NumberOfAppearances ?? 0;
+    }
+
+    /// <summary>
+    /// Get the current handicap season best
+    /// </summary>
+    /// <param name="key">unique key</param>
+    /// <returns>season best time</returns>
+    public TimeType GetSB(int key)
+    {
+      return Athletes.Find(athlete => athlete.Key == key)?.SB ?? new TimeType(0, 0);
+    }
+
+    /// <summary>
+    /// Add a new time to the indicated (key) athlete.
+    /// </summary>
+    /// <param name="key">unique key</param>
+    /// <param name="newTime">new time to add</param>
+    public void AddNewTime(int key, Appearances newTime)
+    {
+      AthleteSeasonDetails athlete = Athletes.Find(a => a.Key == key);
+
+      if (athlete == null)
+      {
+        return;
+      }
+
+      athlete.AddNewTime(newTime);
+    }
+
+    /// <summary>
+    /// Update the points earnt for position for the indicated athlete on the indicated date.
+    /// </summary>
+    /// <param name="key">unique key</param>
+    /// <param name="date">date of the event</param>
+    /// <param name="points">earned points</param>
+    public void UpdatePositionPoints(int key, DateType date, int points)
+    {
+      AthleteSeasonDetails athlete = Athletes.Find(a => a.Key == key);
+
+      if (athlete == null)
+      {
+        return;
+      }
+
+      athlete.UpdatePositionPoints(date, points);
+    }
+
+    /// <summary>
+    /// Add a new time to the indicated (key) athlete.
+    /// </summary>
+    /// <param name="key">unique key</param>
+    /// <param name="points">new points to add</param>
+    public void AddNewPoints(int          key,
+                             CommonPoints points)
+    {
+      AthleteSeasonDetails athlete = Athletes.Find(a => a.Key == key);
+
+      if (athlete == null)
+      {
+        return;
+      }
+
+      athlete.AddNewPoints(points);
+    }
+
+    /// <summary>
+    /// Add points to the named club
+    /// </summary>
+    /// <param name="clubName">name of club</param>
+    /// <param name="points">points to add</param>
+    public void AddNewClubPoints(string       clubName,
+                                 CommonPoints points)
+    {
+      ClubSeasonDetails clubDetails = Clubs.Find(club => club.Name.CompareTo(clubName) == 0);
+
+      if (clubDetails != null)
+      {
+        clubDetails.AddNewEvent(points);
+      }
+      else
+      {
+        ClubSeasonDetails newClubDetails = new ClubSeasonDetails(clubName);
+        newClubDetails.AddNewEvent(points);
+
+        Clubs.Add(newClubDetails);
+      }
+
+      //Clubs.Find(club => club.Name.CompareTo(clubName) == 0).AddNewEvent(points);
+    }
+
+    /// <summary>
+    /// Summary table has been updated.
+    /// </summary>
+    public void SummaryTableUpdated()
+    {
+      InvokeSummaryCallback();
+    }
+
+    /// <summary>
+    /// Points have been updated.
+    /// </summary>
+    public void PointsUpdated()
+    {
+      InvokeAthletesCallback();
+    }
+
+    /// <summary>
+    /// Club points have been updated.
+    /// </summary>
+    public void ClubPointsUpdated()
+    {
+      InvokeClubsCallback();
+    }
+
+    /// <summary>
+    /// Invoke the summary callback
+    /// </summary>
+    private void InvokeSummaryCallback()
+    {
+      if (SeasonSummaryCallback != null)
+      {
+        SeasonSummaryCallback.Invoke(Summary);
+      }
+    }
+
+    /// <summary>
+    /// Invoke the athletes callback.
+    /// </summary>
+    /// <remarks>
+    /// Eg. Used to update the points table.
+    /// </remarks>
+    private void InvokeAthletesCallback()
+    {
+      if (AthletePointsCallback != null)
+      {
+        AthletePointsCallback.Invoke(Athletes);
+      }
+    }
+    /// <summary>
+    /// Invoke the clubs callback.
+    /// </summary>
+    private void InvokeClubsCallback()
+    {
+      if (ClubsCallback != null)
+      {
+        ClubsCallback.Invoke(Clubs);
+      }
+    }
+  }
+}

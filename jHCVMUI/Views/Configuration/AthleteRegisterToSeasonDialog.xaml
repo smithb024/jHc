@@ -1,0 +1,118 @@
+﻿<Window x:Class="jHCVMUI.Views.Configuration.AthleteRegisterToSeasonDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:jHCVMUI.Views.Configuration"
+        xmlns:converter="clr-namespace:jHCVMUI.Views.Converters.Configuration"
+        Title="AthleteRegisterToSeasonDialog" Height="300" Width="650">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="3*"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="3*"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="35"/>
+    </Grid.RowDefinitions>
+    <ScrollViewer Grid.Column="0"
+                  Grid.Row="0"
+                  Margin="5">
+      <ListBox ItemsSource="{Binding Path=UnregisteredAthletes}"
+               SelectedIndex="{Binding UnregisteredSelectedAthleteIndex}">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding Name}"/>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </ScrollViewer>
+    <Button Content="->"
+             Grid.Column="1"
+            Grid.Row="0"
+            Command="{Binding RegisterNewCommand}"
+            Style="{StaticResource BodyButtonStyle}"
+            Margin="5"/>
+    <Button Content="Save"
+            Grid.Column="2"
+            Grid.Row="1"
+            Command="{Binding SaveCommand}"
+            Style="{StaticResource BodyButtonStyle}"
+            Margin="5"
+            Height="25"/>
+    <Grid Grid.Column="2"
+          Grid.Row="0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="35"/>
+        <RowDefinition Height="35"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <TextBox Grid.Row="0"
+               Grid.Column="0"
+               Text="{Binding NewRaceNumber}"
+               Style="{StaticResource BodyTextBoxStyle}"
+               Margin="5"
+               Height="25"/>
+      <Button Grid.Row="0"
+              Grid.Column="1"
+              Content="v"
+              Command="{Binding PreviousRaceNumberCommand}"
+              Style="{StaticResource BodyButtonStyle}"
+              Margin="5"
+              Height="25"/>
+      <Button Grid.Row="0"
+              Grid.Column="2"
+              Content="^"
+              Command="{Binding NextRaceNumberCommand}"
+              Style="{StaticResource BodyButtonStyle}"
+              Margin="5"
+              Height="25"/>
+      <Button Grid.Row="1"
+              Grid.Column="1"
+              Content="Add No"
+              Command="{Binding UpdateNumbersCommand}"
+              Style="{StaticResource BodyButtonStyle}"
+              Margin="5"
+              Height="25"/>
+      <ScrollViewer Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Margin="5">
+        <ListBox ItemsSource="{Binding Path=RegisteredAthletes}"
+                 SelectedIndex="{Binding RegisteredSelectedAthleteIndex}"
+                 HorizontalContentAlignment="Stretch">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Border Style="{StaticResource BodyListBoxItemBorder}">
+              <DockPanel LastChildFill="True">
+                <ListBox ItemsSource="{Binding Path=RunningNumbers, UpdateSourceTrigger=PropertyChanged}"
+                         DockPanel.Dock="Right">
+                  <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                  </ListBox.ItemsPanel>
+                  <ListBox.ItemTemplate>
+                    <DataTemplate>
+                      <Border Style="{StaticResource RunningNumberBorderStyle}">
+                        <TextBlock Text="{Binding}"
+                                   Style="{StaticResource RunningNumberStyle}"/>
+                      </Border>
+                    </DataTemplate>
+                  </ListBox.ItemTemplate>
+                </ListBox>
+                <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                           Style="{StaticResource BodyListBoxItemTextBlock}"/>
+              </DockPanel>
+              </Border>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </ScrollViewer>
+    </Grid>
+  </Grid>
+</Window>

@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="jHCVMUI.Views.Primary.DataPane"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dataView="clr-namespace:jHCVMUI.Views.PrimaryData"
+             xmlns:viewModel="clr-namespace:jHCVMUI.ViewModels.Primary.DataPanes"
+             DataContext="{Binding DataPaneViewModel, Source={StaticResource ViewModelLocator}}"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+
+        <DataTemplate x:Name="ClubPointsTableName" DataType="{x:Type viewModel:ClubPointsTableViewModel}">
+            <dataView:ClubPointsTable DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="TeamHarmonyPointsTableName" DataType="{x:Type viewModel:TeamHarmonyPointsTableViewModel}">
+            <dataView:TeamHarmonyPointsTable DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="ResultsTableName" DataType="{x:Type viewModel:ResultsTableViewModel}">
+            <dataView:ResultsTable DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="PointsTableName" DataType="{x:Type viewModel:PointsTableViewModel}">
+            <dataView:PointsTable DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="SummaryEventName" DataType="{x:Type viewModel:SummaryEventViewModel}">
+            <dataView:SummaryTable DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="SummarySeasonName" DataType="{x:Type viewModel:SummaryTotalViewModel}">
+            <dataView:SummaryTable DataContext="{Binding}"/>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <Grid Background="{StaticResource BodyBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <dataView:PrimaryDataRibbon
+            Grid.Row="0"
+            Grid.Column="0"/>
+        
+        <ContentControl 
+            Content="{Binding DataViewContents}"
+            Grid.Row="1" 
+            Grid.Column="0"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,27 @@
+<Application 
+    x:Class="jHandicap.App" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    StartupUri="PrimaryDisplay.xaml" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    d1p1:Ignorable="d"
+    xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="clr-namespace:jHandicap.ViewModel" >
+
+    <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/jHCVMUI;component/Views/WPFResources/Colours/BrushDictionary.xaml"/>
+                <ResourceDictionary Source="/jHCVMUI;component/Views/WPFResources/Styles/ControlStyles.xaml"/>
+                <ResourceDictionary Source="/jHCVMUI;component/Views/WPFResources/Styles/ButtonStyles.xaml"/>
+                <ResourceDictionary Source="/jHCVMUI;component/Views/WPFResources/Styles/DataEntryStyles.xaml"/>
+                <ResourceDictionary Source="/jHCVMUI;component/Views/WPFResources/Styles/ListBoxStyles.xaml"/>
+                <ResourceDictionary Source="/jHCVMUI;component/Views/WPFResources/Styles/RunningNumberStyles.xaml"/>
+                <ResourceDictionary Source="/jHCVMUI;component/Views/WPFResources/Styles/TableStyles.xaml"/>
+                <ResourceDictionary Source="/jHCVMUI;component/Views/WPFResources/Styles/SummaryStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        
+            <viewModel:ViewModelLocator x:Key="ViewModelLocator"  />
+        </ResourceDictionary>
+  </Application.Resources>
+</Application>

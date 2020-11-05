@@ -1,0 +1,52 @@
+﻿<Window x:Class="jHCVMUI.Views.DataEntry.StopwatchP610EditorDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:jHCVMUI.Views.DataEntry"
+        Title="Stopwatch P610 Editor"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0">
+      <ListBox BorderThickness="0"
+               ItemsSource="{Binding Path=Events}"
+               SelectedIndex="{Binding EventsIndex}"
+               HorizontalContentAlignment="Stretch">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <local:StopwatchP610EditorRow/>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Grid>
+
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Button Content="Open..."
+              Grid.Column="0"
+              Style="{StaticResource BodyButtonStyle}"
+              Command="{Binding OpenCommand}"
+              Margin="5"
+              Height="25"
+              Width="100"/>
+
+      <Button Content="Save As..."
+              Grid.Column="2"
+              Style="{StaticResource BodyButtonStyle}"
+              Command="{Binding SaveAsCommand}"
+              Margin="5"
+              Height="25"
+              Width="100"/>
+    </Grid>
+  </Grid>
+</Window>

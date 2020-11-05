@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="jHCVMUI.Views.Labels.VestLabel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converterCommon="clr-namespace:jHCVMUI.Views.Converters.Common"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="400"
+             Background="White"
+             Loaded="UserControl_Loaded"
+             Width="{Binding AthleteLabelWidth}"
+             Height="{Binding AthleteLabelHeight}">
+
+    <UserControl.Resources>
+        <converterCommon:HighlightBackgroundColourConverter x:Key="highlightBackgroundColourConverter"></converterCommon:HighlightBackgroundColourConverter>
+        <converterCommon:HighlightForegroundColourConverter x:Key="highlightForegroundColourConverter"></converterCommon:HighlightForegroundColourConverter>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Column="0"
+             Grid.Row="0"
+             Grid.RowSpan="2"
+             Content="{Binding AthleteHandicap}"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center"
+             FontFamily="Garamond"
+             FontSize="24"
+             Foreground="{Binding FirstTimer, Converter={StaticResource highlightForegroundColourConverter}}"
+             Background="{Binding FirstTimer, Converter={StaticResource highlightBackgroundColourConverter}}"/>
+            <Label Grid.Column="1"
+             Grid.Row="0"
+             Content="{Binding AthleteName}"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center"/>
+            <Label Grid.Column="1"
+             Grid.Row="1"
+             Content="{Binding AthleteTeam}"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center"/>
+        </Grid>
+
+        <Image Grid.Row="1" x:Name="barcodeImage" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+        
+        <Label Grid.Row="2" Content="{Binding EventDetails}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Content="{Binding AthleteNumber}" Visibility="Collapsed" x:Name="numberLabel"/>
+    </Grid>
+</UserControl>

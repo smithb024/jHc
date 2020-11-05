@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="jHCVMUI.Views.DataEntry.PositionEditorFaults"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:jHCVMUI.Views.DataEntry"
+             xmlns:converters="clr-namespace:jHCVMUI.Views.Converters.DataEntry"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+  <UserControl.Resources>
+    <converters:ErrorBarBackgroundConverter x:Key="DoubleConverter" Fault="DoubleRead"/>
+    <converters:ErrorBarBackgroundConverter x:Key="DunplicateConverter" Fault="Duplicate"/>
+    <converters:ErrorBarBackgroundConverter x:Key="MissingConverter" Fault="Missing"/>
+    <converters:ErrorBarBackgroundConverter x:Key="NotRecognisedConverter" Fault="NumberNotRecognised"/>
+    <converters:ErrorBarBackgroundConverter x:Key="TokenConverter" Fault="MissingPositionToken"/>
+    <converters:ErrorBarForegroundConverter x:Key="ForegroundConverter"/>
+  </UserControl.Resources>
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="125"/>
+      <ColumnDefinition Width="125"/>
+      <ColumnDefinition Width="125"/>
+      <ColumnDefinition Width="125"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <TextBlock Grid.Column="0"
+               Text="{Binding NumberOfDoubleReads, StringFormat=Double: {0}}"
+               Foreground="{Binding NumberOfDoubleReads, Converter={StaticResource ForegroundConverter}}"
+               Background="{Binding NumberOfDoubleReads, Converter={StaticResource DoubleConverter}}"
+               HorizontalAlignment="Stretch"
+               TextAlignment="Center"/>
+
+    <TextBlock Grid.Column="1"
+               Text="{Binding NumberOfDuplicates, StringFormat=Duplicate: {0}}"
+               Foreground="{Binding NumberOfDuplicates, Converter={StaticResource ForegroundConverter}}"
+               Background="{Binding NumberOfDuplicates, Converter={StaticResource DunplicateConverter}}"
+               HorizontalAlignment="Stretch"
+               TextAlignment="Center"/>
+
+    <TextBlock Grid.Column="2"
+               Text="{Binding NumberOfMissingBarcodes, StringFormat=Pair: {0}}"
+               Foreground="{Binding NumberOfMissingBarcodes, Converter={StaticResource ForegroundConverter}}"
+               Background="{Binding NumberOfMissingBarcodes, Converter={StaticResource MissingConverter}}"
+               HorizontalAlignment="Stretch"
+               TextAlignment="Center"/>
+
+    <TextBlock Grid.Column="3"
+               Text="{Binding NumberOfUnrecognisedNumbers, StringFormat=Not Recognised: {0}}"
+               Foreground="{Binding NumberOfUnrecognisedNumbers, Converter={StaticResource ForegroundConverter}}"
+               Background="{Binding NumberOfUnrecognisedNumbers, Converter={StaticResource NotRecognisedConverter}}"
+               HorizontalAlignment="Stretch"
+               TextAlignment="Center"/>
+
+    <TextBlock Grid.Column="4"
+               Text="{Binding MissingPositions, StringFormat=Positions Missing: {0}}"
+               Foreground="{Binding MissingPositionTokens.Count, Converter={StaticResource ForegroundConverter}}"
+               Background="{Binding MissingPositionTokens.Count, Converter={StaticResource TokenConverter}}"
+               HorizontalAlignment="Stretch"
+               TextAlignment="Center"/>
+  </Grid>
+</UserControl>

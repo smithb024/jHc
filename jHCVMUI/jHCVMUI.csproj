@@ -1,0 +1,511 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F6145446-0A8F-4146-B5F1-5430AA0CA5FD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>jHCVMUI</RootNamespace>
+    <AssemblyName>jHCVMUI</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net47\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.4.1.0, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="NynaeveLib">
+      <HintPath>..\NynaeveLib.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\Commands\Configuration\AthleteConfigAddNumberCmd.cs" />
+    <Compile Include="ViewModels\Commands\Configuration\ClubConfigDeleteCmd.cs" />
+    <Compile Include="ViewModels\Commands\Configuration\ClubConfigNewCmd.cs" />
+    <Compile Include="ViewModels\Commands\Configuration\ClubConfigSaveCmd.cs" />
+    <Compile Include="ViewModels\Commands\Configuration\NormaliseConfigSaveCmd.cs" />
+    <Compile Include="ViewModels\Commands\Configuration\ResultsConfigSaveCmd.cs" />
+    <Compile Include="ViewModels\Commands\Configuration\SeasonRegNextRaceNoCmd.cs" />
+    <Compile Include="ViewModels\Commands\Configuration\SeasonRegPreviousRaceNoCmd.cs" />
+    <Compile Include="ViewModels\Commands\Configuration\SeasonRegRegisterNewCmd.cs" />
+    <Compile Include="ViewModels\Commands\Configuration\SeasonRegSaveCmd.cs" />
+    <Compile Include="ViewModels\Commands\Configuration\SeasonRegUpdateNumbersCmd.cs" />
+    <Compile Include="ViewModels\Commands\Configuration\SeriesConfigSaveCmd.cs" />
+    <Compile Include="ViewModels\Commands\Label\CreateAndSaveAllLabelsCmd.cs" />
+    <Compile Include="ViewModels\Commands\Label\CreateAndSaveRaceLabelsCmd.cs" />
+    <Compile Include="ViewModels\Commands\Label\CreateAndSaveSpareLabelsCmd.cs" />
+    <Compile Include="ViewModels\Commands\Main\RunApplicationCmd.cs" />
+    <Compile Include="ViewModels\Common\OpenCotsFactory.cs" />
+    <Compile Include="ViewModels\Config\NormalisationConfigViewModel.cs" />
+    <Compile Include="ViewModels\Config\ResultsConfigViewModel.cs" />
+    <Compile Include="ViewModels\Config\SeriesConfigViewModel.cs" />
+    <Compile Include="ViewModels\DataEntry\DialogViewModelBase.cs" />
+    <Compile Include="ViewModels\DataEntry\PositionEditorDialogViewModel.cs" />
+    <Compile Include="ViewModels\DataEntry\PositionEditorRawItem.cs" />
+    <Compile Include="ViewModels\DataEntry\PositionEditorType.cs" />
+    <Compile Include="ViewModels\DataEntry\StopwatchP610EditorDialogViewModel.cs" />
+    <Compile Include="ViewModels\DataEntry\StopwatchP610EditorRawItem.cs" />
+    <Compile Include="ViewModels\DataEntry\TimeEntryDialogViewModel.cs" />
+    <Compile Include="ViewModels\Labels\A4Details.cs" />
+    <Compile Include="ViewModels\Labels\AthleteLabel.cs" />
+    <Compile Include="ViewModels\Labels\LabelGenerationViewModel.cs" />
+    <Compile Include="ViewModels\Labels\LabelImageGenerator.cs" />
+    <Compile Include="ViewModels\Labels\LabelsSheetViewModel.cs" />
+    <Compile Include="ViewModels\Primary\DataPanes\ClubPointsTableViewModel.cs" />
+    <Compile Include="ViewModels\Primary\DataPanes\PointsTableViewModel.cs" />
+    <Compile Include="ViewModels\Primary\DataPanes\ResultsTableViewModel.cs" />
+    <Compile Include="ViewModels\Primary\DataPanes\SummaryEventViewModel.cs" />
+    <Compile Include="ViewModels\Primary\DataPanes\SummaryTotalViewModel.cs" />
+    <Compile Include="ViewModels\Primary\DataPanes\SummaryViewModel.cs" />
+    <Compile Include="ViewModels\Primary\DataPanes\TeamHarmonyPointsTableViewModel.cs" />
+    <Compile Include="ViewModels\Primary\DataPaneViewModel.cs" />
+    <Compile Include="ViewModels\Primary\EventPaneViewModel.cs" />
+    <Compile Include="ViewModels\Primary\ResultsOrder.cs" />
+    <Compile Include="ViewModels\Primary\SeasonPaneViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\AthleteConfigurationViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\AthleteRegisterToSeasonViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\AthleteSeasonSummaryViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\AthleteSummaryViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\ClubConfigurationViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\ClubSummaryViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\EventRawResultsViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\Helpers\AthleteCollectionFilter.cs" />
+    <Compile Include="ViewModels\ViewModels\PrimaryDisplayViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Athletes\AthleteBase.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Athletes\AthleteCompleteViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Athletes\AthleteSeasonBase.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Athletes\AthleteSeasonConfig.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Athletes\AthleteSimpleViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Athletes\PointsTableRowViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Athletes\RawResults.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Athletes\ResultsTableRowViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\AthleteType.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Clubs\ClubPointsTableRowViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Clubs\ClubSummary.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Clubs\HarmonyPointsTypeViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Clubs\TeamHarmonyPointsTableRowViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\ClubType.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Misc\AppearancesViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Misc\ImportedRawPositionResults.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\PointsType.cs" />
+    <Compile Include="ViewModels\ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\Components\AppearanceDetail.xaml.cs">
+      <DependentUpon>AppearanceDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Configuration\AthleteConfigurationChangePanel.xaml.cs">
+      <DependentUpon>AthleteConfigurationChangePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Configuration\AthleteConfigurationDialog.xaml.cs">
+      <DependentUpon>AthleteConfigurationDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Configuration\AthleteConfigurationRow.xaml.cs">
+      <DependentUpon>AthleteConfigurationRow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Configuration\AthleteRegisterToSeasonDialog.xaml.cs">
+      <DependentUpon>AthleteRegisterToSeasonDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Configuration\ClubConfigurationDialog.xaml.cs">
+      <DependentUpon>ClubConfigurationDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Configuration\NormalisationConfigDialog.xaml.cs">
+      <DependentUpon>NormalisationConfigDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Configuration\ResultsConfigDialog.xaml.cs">
+      <DependentUpon>ResultsConfigDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Configuration\SeriesConfigurationDialog.xaml.cs">
+      <DependentUpon>SeriesConfigurationDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Converters\Common\HighlightBackgroundColourConverter.cs" />
+    <Compile Include="Views\Converters\Common\HighlightForegroundColourConverter.cs" />
+    <Compile Include="Views\Converters\Configuration\BoolToColourConverter.cs" />
+    <Compile Include="Views\Converters\Configuration\BoolToHighlightColourConverter.cs" />
+    <Compile Include="Views\Converters\Configuration\BoolToItalicConverter.cs" />
+    <Compile Include="Views\Converters\Configuration\BoolToNegVisCollapsedVisibilityConverter.cs" />
+    <Compile Include="Views\Converters\Configuration\BoolToVisCollapsedVisibilityConverter.cs" />
+    <Compile Include="Views\Converters\Configuration\FieldUpdatedToColourConverter.cs" />
+    <Compile Include="Views\Converters\Configuration\StatusToColourConverter.cs" />
+    <Compile Include="Views\Converters\DataEntry\ErrorBarBackgroundConverter.cs" />
+    <Compile Include="Views\Converters\DataEntry\ErrorBarForegroundConverter.cs" />
+    <Compile Include="Views\Converters\DataEntry\PositionEditorFaultColours.cs" />
+    <Compile Include="Views\Converters\DataEntry\PositionEditorRowBackgroundConverter.cs" />
+    <Compile Include="Views\Converters\PrimaryData\BestToColourConverter.cs" />
+    <Compile Include="Views\Converters\PrimaryData\SexStringToColourConverter.cs" />
+    <Compile Include="Views\DataEntry\PositionEditorDialog.xaml.cs">
+      <DependentUpon>PositionEditorDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DataEntry\PositionEditorFaults.xaml.cs">
+      <DependentUpon>PositionEditorFaults.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DataEntry\PositionEditorRow.xaml.cs">
+      <DependentUpon>PositionEditorRow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DataEntry\StopwatchP610EditorDialog.xaml.cs">
+      <DependentUpon>StopwatchP610EditorDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DataEntry\StopwatchP610EditorRow.xaml.cs">
+      <DependentUpon>StopwatchP610EditorRow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DataEntry\TimeEntryDialog.xaml.cs">
+      <DependentUpon>TimeEntryDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Image\ImageConverter.cs" />
+    <Compile Include="Views\Labels\LabelGenerationDialog.xaml.cs">
+      <DependentUpon>LabelGenerationDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Labels\LabelSheetDialog.xaml.cs">
+      <DependentUpon>LabelSheetDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Labels\LabelSummary.xaml.cs">
+      <DependentUpon>LabelSummary.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Labels\SummarySheetDialog.xaml.cs">
+      <DependentUpon>SummarySheetDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Labels\VestLabel.xaml.cs">
+      <DependentUpon>VestLabel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrimaryData\ClubPointsTable.xaml.cs">
+      <DependentUpon>ClubPointsTable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrimaryData\PointsTable.xaml.cs">
+      <DependentUpon>PointsTable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrimaryData\PrimaryDataRibbon.xaml.cs">
+      <DependentUpon>PrimaryDataRibbon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrimaryData\ResultsTable.xaml.cs">
+      <DependentUpon>ResultsTable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrimaryData\ResultsTableRow.xaml.cs">
+      <DependentUpon>ResultsTableRow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrimaryData\ResultsTableTitles.xaml.cs">
+      <DependentUpon>ResultsTableTitles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrimaryData\SummaryTable.xaml.cs">
+      <DependentUpon>SummaryTable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrimaryData\TeamHarmonyPointsTable.xaml.cs">
+      <DependentUpon>TeamHarmonyPointsTable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Primary\DataPane.xaml.cs">
+      <DependentUpon>DataPane.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Primary\EventRibbonPane.xaml.cs">
+      <DependentUpon>EventRibbonPane.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Primary\PrimaryView.xaml.cs">
+      <DependentUpon>PrimaryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Primary\SeasonRibbonPane.xaml.cs">
+      <DependentUpon>SeasonRibbonPane.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Summary\SummaryDialog.xaml.cs">
+      <DependentUpon>SummaryDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\AthleteSeasonSummaryDialog.xaml.cs">
+      <DependentUpon>AthleteSeasonSummaryDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\AthleteSummaryDialog.xaml.cs">
+      <DependentUpon>AthleteSummaryDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\ClubSummaryDialog.xaml.cs">
+      <DependentUpon>ClubSummaryDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\Results\EventRawResultsDlg.xaml.cs">
+      <DependentUpon>EventRawResultsDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\Results\EventRawResultsUnregisteredAthlete.xaml.cs">
+      <DependentUpon>EventRawResultsUnregisteredAthlete.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\Results\ImportEventRawResultDialog.xaml.cs">
+      <DependentUpon>ImportEventRawResultDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WPFResources\Colours\BrushDictionary.xaml.cs">
+      <DependentUpon>BrushDictionary.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WPFResources\Styles\ButtonStyles.xaml.cs">
+      <DependentUpon>ButtonStyles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WPFResources\Styles\ControlStyles.xaml.cs">
+      <DependentUpon>ControlStyles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WPFResources\Styles\DataEntryStyles.xaml.cs">
+      <DependentUpon>DataEntryStyles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WPFResources\Styles\ListBoxStyles.xaml.cs">
+      <DependentUpon>ListBoxStyles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WPFResources\Styles\RunningNumberStyles.xaml.cs">
+      <DependentUpon>RunningNumberStyles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WPFResources\Styles\SummaryStyles.xaml.cs">
+      <DependentUpon>SummaryStyles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WPFResources\Styles\TableStyles.xaml.cs">
+      <DependentUpon>TableStyles.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Page Include="Views\Components\AppearanceDetail.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Configuration\AthleteConfigurationChangePanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Configuration\AthleteConfigurationDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Configuration\AthleteConfigurationRow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Configuration\AthleteRegisterToSeasonDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Configuration\ClubConfigurationDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Configuration\NormalisationConfigDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Configuration\ResultsConfigDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Configuration\SeriesConfigurationDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DataEntry\PositionEditorDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DataEntry\PositionEditorFaults.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DataEntry\PositionEditorRow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DataEntry\StopwatchP610EditorDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DataEntry\StopwatchP610EditorRow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DataEntry\TimeEntryDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Labels\LabelGenerationDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Labels\LabelSheetDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Labels\LabelSummary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Labels\SummarySheetDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Labels\VestLabel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PrimaryData\ClubPointsTable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PrimaryData\PointsTable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PrimaryData\PrimaryDataRibbon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PrimaryData\ResultsTable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PrimaryData\ResultsTableRow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PrimaryData\ResultsTableTitles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PrimaryData\SummaryTable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PrimaryData\TeamHarmonyPointsTable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Primary\DataPane.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Primary\EventRibbonPane.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Primary\PrimaryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Primary\SeasonRibbonPane.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Summary\SummaryDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Windows\AthleteSeasonSummaryDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Windows\AthleteSummaryDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Windows\ClubSummaryDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Windows\Results\EventRawResultsDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Windows\Results\EventRawResultsUnregisteredAthlete.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Windows\Results\ImportEventRawResultDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\WPFResources\Colours\BrushDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WPFResources\Styles\ButtonStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WPFResources\Styles\ControlStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WPFResources\Styles\DataEntryStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WPFResources\Styles\ListBoxStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WPFResources\Styles\RunningNumberStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WPFResources\Styles\SummaryStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WPFResources\Styles\TableStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BarcodeLib\BarcodeLib.csproj">
+      <Project>{f8646414-0c9c-49bb-9da3-3923bf78a398}</Project>
+      <Name>BarcodeLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonHandicapLib\CommonHandicapLib.csproj">
+      <Project>{26d91b2d-51d8-4810-87ca-ca9338b463d9}</Project>
+      <Name>CommonHandicapLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj">
+      <Project>{4f8df153-679e-423d-b823-eb9204b36944}</Project>
+      <Name>CommonLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HandicapModel\HandicapModel.csproj">
+      <Project>{f338a2a2-30e2-48ed-a717-4a394b912ce0}</Project>
+      <Name>HandicapModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="jHCVMUI.Views.Primary.SeasonRibbonPane"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             DataContext="{Binding SeasonPaneViewModel, Source={StaticResource ViewModelLocator}}"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+  <UserControl.Resources>
+    <BooleanToVisibilityConverter x:Key="BoolToVis" />
+  </UserControl.Resources>
+  <Grid Background="{StaticResource HeaderBackground}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="40"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <DockPanel Grid.Row="0" LastChildFill="True">
+      <Button Name="NewSeasonButton"
+                Content="New"
+                DockPanel.Dock="Right"
+                Command="{Binding NewSeasonCommand}"
+                Style="{StaticResource HeaderButtonStyle}"
+                Height="25"
+                Width="100"
+                Margin="5"/>
+      <ComboBox Name="SeasonsComboBox"
+                  ItemsSource="{Binding Path=Seasons}"
+                  SelectedIndex="{Binding SelectedSeasonIndex}"
+                  Style="{StaticResource HeaderComboBoxStyle}"
+                  Height="25"
+                  Margin="10, 0, 0, 0">
+      </ComboBox>
+    </DockPanel>
+    <DockPanel Grid.Row="1" LastChildFill="True" Visibility="{Binding Path=NewSeasonAdditionEnabled, Converter={StaticResource BoolToVis}}">
+      <Button Name="CancelNewSeasonButton"
+                Content="Cancel"
+                DockPanel.Dock="Right"
+                Command="{Binding CancelSeasonCommand}"
+                Style="{StaticResource HeaderButtonStyle}"
+                Height="25"
+                Width="100"
+                Margin="5"/>
+      <Button Name="AddSeasonButton"
+                Content="Add"
+                DockPanel.Dock="Right"
+                Command="{Binding AddSeasonCommand}"
+                Style="{StaticResource HeaderButtonStyle}"
+                Height="25"
+                Width="100"
+                Margin="5, 0, 0, 0"/>
+      <TextBox Name="NewSeasonTextBox"
+                 Style="{StaticResource HeaderTextBoxStyle}"
+                 Height="25"
+                 Text="{Binding NewSeason, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                 Margin="10, 0, 0, 0"/>
+    </DockPanel>
+    <DockPanel Grid.Row="2" LastChildFill="False">
+      <Button Content="Register Athletes..."
+              Command="{Binding OpenAthleteSeasonNewRegCommand}"
+              DockPanel.Dock="Right"
+              Style="{StaticResource HeaderButtonStyle}"
+              Height="25"
+              Width="100"
+              Margin="5, 0, 0, 0"/>
+      <Button Name="ShowRegistered"
+              Content="Show Registered... "
+              Command="{Binding OpenAthleteSeasonSummaryCommand}"
+              DockPanel.Dock="Right"
+              Style="{StaticResource HeaderButtonStyle}"
+              Height="25"
+              Width="100"
+              Margin="5, 0, 0, 0"/>
+    </DockPanel>
+  </Grid>
+</UserControl>

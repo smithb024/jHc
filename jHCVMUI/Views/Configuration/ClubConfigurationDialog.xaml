@@ -1,0 +1,71 @@
+﻿<Window x:Class="jHCVMUI.Views.Configuration.ClubConfigurationDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:jHCVMUI.Views.Configuration"
+        xmlns:converter="clr-namespace:jHCVMUI.Views.Converters.Configuration"
+        Title="ClubConfigurationDialog" Height="300" Width="300">
+  <Grid>
+    <DockPanel LastChildFill="True">
+      <Grid Name="AddClubGrid" DockPanel.Dock="Top" Background="{StaticResource HeaderBackground}">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="45"/>
+        </Grid.ColumnDefinitions>
+        <TextBox Name="NewClubTextBox"
+                 Grid.Column="0"
+                 Background="Green"
+                 Text="{Binding NewClub, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                 Style="{StaticResource HeaderTextBoxStyle}"
+                 Margin="5"
+                 Height="25"/>
+        <Button Name="NewClubButton"
+                Content="Add"
+                Grid.Column="1"
+                Command="{Binding ClubNewCommand}"
+                Style="{StaticResource HeaderButtonStyle}"
+                Margin="5"
+                Height="25"/>
+      </Grid>
+      <Grid Name="ControlsGrid" DockPanel.Dock="Bottom">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Button Name="DeleteButton"
+                Content="Delete"
+                Grid.Column="0"
+                Command="{Binding ClubDeleteCommand}"
+                Style="{StaticResource BodyButtonStyle}"
+                Margin="5"
+                Height="25"/>
+        <Button Name="SaveButton"
+                Content="Save"
+                Grid.Column="1"
+                Command="{Binding ClubSaveCommand}"
+                Style="{StaticResource BodyButtonStyle}"
+                Margin="5"
+                Height="25"/>
+      </Grid>
+      <ScrollViewer>
+        <ListBox ItemsSource="{Binding Path=ClubCollection}"
+                 SelectedIndex="{Binding SelectedClubIndex}">
+          <ListBox.Resources>
+            <converter:StatusToColourConverter x:Key="statusToColourConverter"></converter:StatusToColourConverter>
+          </ListBox.Resources>
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"
+                           Text="{Binding Club}"
+                           Foreground="{Binding Status, Converter={StaticResource statusToColourConverter}}"/>
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </ScrollViewer>
+    </DockPanel>
+  </Grid>
+</Window>

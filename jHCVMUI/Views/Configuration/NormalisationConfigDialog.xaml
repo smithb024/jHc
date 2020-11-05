@@ -1,0 +1,114 @@
+﻿<Window x:Class="jHCVMUI.Views.Configuration.NormalisationConfigDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:converter="clr-namespace:jHCVMUI.Views.Converters.Configuration"
+        mc:Ignorable="d"
+        Title="Normalisation Configuration"
+        Height="210" Width="392">
+
+  <Window.Resources>
+    <converter:FieldUpdatedToColourConverter x:Key="fieldToColourConverter"/>
+  </Window.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="30"/>
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="9*"/>
+        <ColumnDefinition Width="3*"/>
+        <ColumnDefinition Width="30"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+
+      <Label Grid.Row="0"
+             Grid.Column="0"
+             Margin="5"
+             Content="Use Calculated Handicap"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center"/>
+      <CheckBox Grid.Row="0"
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                IsChecked="{Binding UseHandicap, UpdateSourceTrigger=PropertyChanged}"
+                Foreground="{Binding UseHandicapChanged, Converter={StaticResource fieldToColourConverter}}"/>
+
+      <Label Grid.Row="1"
+             Grid.Column="0"
+             Margin="5"
+             Content="Time (Mins) to measure H/C against"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center"
+             IsEnabled="{Binding UseHandicap}"/>
+      <TextBox Grid.Row="1"
+               Grid.Column="1"
+               Style="{StaticResource BodyTextBoxStyle}"
+               Text="{Binding HandicapTime, UpdateSourceTrigger=PropertyChanged}"
+               Foreground="{Binding HandicapTimeChanged, Converter={StaticResource fieldToColourConverter}}"
+               Margin="5"
+               Height="25"
+               HorizontalContentAlignment="Center"
+               IsEnabled="{Binding UseHandicap}"/>
+
+      <Label Grid.Row="2"
+             Grid.Column="0"
+             Margin="5"
+             Content="Minimum Handicap (Mins)"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center"
+             IsEnabled="{Binding UseHandicap}"/>
+      <TextBox Grid.Row="2"
+               Grid.Column="1"
+               Style="{StaticResource BodyTextBoxStyle}"
+               Text="{Binding MinimumHandicap, UpdateSourceTrigger=PropertyChanged}"
+               Foreground="{Binding MinimumHandicapChanged, Converter={StaticResource fieldToColourConverter}}"
+               Margin="5"
+               Height="25"
+               HorizontalContentAlignment="Center"
+               IsEnabled="{Binding UseHandicap}"/>
+
+      <Label Grid.Row="3"
+             Grid.Column="0"
+             Margin="5"
+             Content="Handicap Intervals (secs)"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center"
+             IsEnabled="{Binding UseHandicap}"/>
+      <TextBox Grid.Row="3"
+               Grid.Column="1"
+               Style="{StaticResource BodyTextBoxStyle}"
+               Text="{Binding HandicapInterval, UpdateSourceTrigger=PropertyChanged}"
+               Foreground="{Binding HandicapIntervalChanged, Converter={StaticResource fieldToColourConverter}}"
+               Margin="5"
+               Height="25"
+               HorizontalContentAlignment="Center"
+               IsEnabled="{Binding UseHandicap}"/>
+
+    </Grid>
+    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+      <Button Content="Cancel"
+              Style="{StaticResource BodyButtonStyle}"
+              Width="75"
+              Margin="5"
+              IsCancel="True"/>
+      <Button Content="Ok"
+              Style="{StaticResource BodyButtonStyle}"
+              Command="{Binding SaveCommand}"
+              Width="75"
+              Margin="5"
+              IsDefault="True"
+              Click="OkClick"/>
+    </StackPanel>
+  </Grid>
+</Window>

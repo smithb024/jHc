@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--Results Configuration XML-->
+<NormalisationConfiguration>
+  <Use Handicap="true" />
+  <Handicaps Time="20" MinimumTime="5" />
+</NormalisationConfiguration>
