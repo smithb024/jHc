@@ -546,6 +546,11 @@
                       Import610PFactory.Import(
                         fileName);
                     break;
+                case TimeSources.Parkrun:
+                    this.RawImportedTimes =
+                        ImportParkrunTimerFactory.Import(
+                            fileName);
+                    break;
                 default:
                     this.RawImportedTimes = new List<RaceTimeType>();
                     break;
