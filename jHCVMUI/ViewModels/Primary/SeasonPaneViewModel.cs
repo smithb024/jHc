@@ -38,7 +38,7 @@
         private AthleteSeasonSummaryViewModel m_athleteSeasonSummaryViewModel = null;
 
         private ObservableCollection<string> m_seasons = new ObservableCollection<string>();
-        private int m_currentSeasonIndex = 0;
+        private int currentSeasonIndex = 0;
         private bool m_newSeasonAdditionEnabled = false;
         private string m_newSeason = string.Empty;
 
@@ -103,21 +103,22 @@
         /// </summary>
         public int SelectedSeasonIndex
         {
-            get { return m_currentSeasonIndex; }
+            get
+            {
+                return currentSeasonIndex;
+            }
+
             set
             {
-                m_currentSeasonIndex = value;
-                RaisePropertyChangedEvent("SelectedSeasonIndex");
-                if (SelectedSeasonIndex >= 0)
+                if (currentSeasonIndex == value)
                 {
-                    LoadSeason(Seasons[value]);
-
-                    if (SeasonUpdatedCallback != null)
-                    {
-                        SeasonUpdatedCallback.Invoke();
-                    }
-                    //SelectCurrentEvent(BLMngr.LoadCurrentEvent());
+                    return;
                 }
+
+                currentSeasonIndex = value;
+                RaisePropertyChangedEvent(nameof(this.SelectedSeasonIndex));
+                
+                this.LoadSeason(this.Seasons[value]);
             }
         }
 
@@ -247,9 +248,19 @@
         /// <param name="seasons">seasons list</param>
         private void LoadSeason(string seasonName)
         {
-            Logger logger = Logger.GetInstance();
-            logger.WriteLog("Load season " + seasonName);
-            this.businessLayerManager.LoadNewSeason(seasonName);
+            if (this.SelectedSeasonIndex >= 0)
+            {
+                Logger logger = Logger.GetInstance();
+                logger.WriteLog("Load season " + seasonName);
+
+                this.businessLayerManager.LoadNewSeason(seasonName);
+
+                if (this.SeasonUpdatedCallback != null)
+                {
+                    this.SeasonUpdatedCallback.Invoke();
+                }
+                //SelectCurrentEvent(BLMngr.LoadCurrentEvent());
+            }
         }
 
         /// <summary>
