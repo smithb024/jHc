@@ -137,9 +137,12 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public bool CreateNewSeason(string seasonName)
         {
+            string seasonFilePath =
+                $"{this.dataPath}{Path.DirectorySeparatorChar}{seasonName}";
+
             try
             {
-                Directory.CreateDirectory(RootPath.DataPath + seasonName);
+                Directory.CreateDirectory(seasonFilePath);
             }
             catch (Exception ex)
             {

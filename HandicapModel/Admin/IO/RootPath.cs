@@ -23,6 +23,7 @@
     public static string DataPath =>
       RootIO.LoadRootFile() +
       Path.DirectorySeparatorChar +
-      IOPaths.dataPath;
+      IOPaths.dataPath +
+      Path.DirectorySeparatorChar;
   }
 }
