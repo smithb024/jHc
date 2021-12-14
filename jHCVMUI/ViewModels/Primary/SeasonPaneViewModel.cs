@@ -163,12 +163,14 @@
         public ICommand CancelSeasonCommand { get; private set; }
 
         /// <summary>
-        /// 
+        /// Initialise this view model.
         /// </summary>
         public void InitialiseSeasonPane()
         {
-            PopulateSeasons(this.model.Seasons);
-            SelectCurrentSeason(this.businessLayerManager.LoadCurrentSeason());
+            this.PopulateSeasons(this.model.Seasons);
+
+            string currentSeason = this.businessLayerManager.LoadCurrentSeason();
+            this.SelectCurrentSeason(currentSeason);
         }
 
         /// <summary>
@@ -177,15 +179,21 @@
         /// </summary>
         public void AddNewSeason()
         {
-            if (this.businessLayerManager.CreateNewSeason(NewSeason))
+            string newSeasonName = this.NewSeason;
+
+            if (!this.businessLayerManager.CreateNewSeason(newSeasonName))
             {
-                SelectCurrentSeason(NewSeason);
-
-                NewSeason = string.Empty;
-                NewSeasonAdditionEnabled = false;
-
-                this.businessLayerManager.SetProgressInformation("Season created");
+                this.businessLayerManager.SetProgressInformation($"Failed to create season {newSeasonName}");
+                return;
             }
+
+            this.Seasons.Add(newSeasonName);
+            this.SelectCurrentSeason(this.NewSeason);
+
+            this.NewSeason = string.Empty;
+            this.NewSeasonAdditionEnabled = false;
+
+            this.businessLayerManager.SetProgressInformation($"{newSeasonName} created");
         }
 
         /// <summary>
@@ -223,15 +231,12 @@
         /// <param name="currentSeason">season to find</param>
         private void SelectCurrentSeason(string currentSeason)
         {
-            if (currentSeason != string.Empty)
+            for (int seasonIndex = 0; seasonIndex < m_seasons.Count(); ++seasonIndex)
             {
-                for (int seasonIndex = 0; seasonIndex < m_seasons.Count(); ++seasonIndex)
+                if (Seasons[seasonIndex] == currentSeason)
                 {
-                    if (Seasons[seasonIndex] == currentSeason)
-                    {
-                        SelectedSeasonIndex = seasonIndex;
-                        break;
-                    }
+                    this.SelectedSeasonIndex = seasonIndex;
+                    break;
                 }
             }
         }

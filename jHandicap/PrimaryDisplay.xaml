@@ -5,6 +5,6 @@
         Title="Stragglers/Ranelagh Harriers Juniors"
         Height="700"
         Width="1024">
-    
-    <views:PrimaryView></views:PrimaryView>
+
+    <views:PrimaryView/>
 </Window>

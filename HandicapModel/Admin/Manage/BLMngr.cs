@@ -43,16 +43,23 @@
         private readonly CalculateResultsMngr resultsCalculator;
 
         /// <summary>
+        /// The season IO manager.
+        /// </summary>
+        private readonly ISeasonIO seasonIO;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="BLMngr"/> class.
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="resultsConfigurationManager"></param>
         public BLMngr(
             IModel model,
-            IResultsConfigMngr resultsConfigurationManager)
+            IResultsConfigMngr resultsConfigurationManager,
+            ISeasonIO seasonIO)
         {
             this.model = model;
             this.resultsConfigurationManager = resultsConfigurationManager;
+            this.seasonIO = seasonIO;
             this.ModelRootDirectory = RootIO.LoadRootFile();
 
             this.resultsCalculator =
@@ -74,7 +81,6 @@
             this.model.ReinitialiseSeason();
         }
 
-        /// <date>21/03/15</date>
         /// <summary>
         /// Creates a directory for a new season
         /// </summary>
@@ -88,7 +94,7 @@
                 new HandicapErrorMessage(
                     string.Empty));
 
-            success = SeasonIO.CreateNewSeason(seasonName);
+            success = this.seasonIO.CreateNewSeason(seasonName);
 
             if (success)
             {
@@ -212,7 +218,7 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public bool SaveCurrentSeason(string season)
         {
-            return SeasonIO.SaveCurrentSeason(season);
+            return this.seasonIO.SaveCurrentSeason(season);
         }
 
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
@@ -229,7 +235,9 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public string LoadCurrentSeason()
         {
-            return SeasonIO.LoadCurrentSeason();
+            string currentSeason = this.seasonIO.LoadCurrentSeason();
+
+            return currentSeason;
         }
 
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
