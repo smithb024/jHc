@@ -84,17 +84,6 @@
         void LoadNewEvent(string eventName);
 
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>SaveCurrentSeason</name>
-        /// <date>21/03/15</date>
-        /// <summary>
-        /// Saves the current season.
-        /// </summary>
-        /// <param name="season">current season</param>
-        /// <returns>success flag</returns>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        bool SaveCurrentSeason(string season);
-
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         /// <name>LoadCurrentSeason</name>
         /// <date>15/04/15</date>
         /// <summary>

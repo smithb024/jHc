@@ -99,22 +99,20 @@
             return currentSeason;
         }
 
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>SaveCurrentSeason</name>
-        /// <date>21/03/15</date>
         /// <summary>
         /// Saves the current season.
         /// </summary>
         /// <param name="season">current season</param>
         /// <returns>success flag</returns>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public bool SaveCurrentSeason(string season)
         {
+            string seasonFilePath =
+                $"{this.dataPath}{Path.DirectorySeparatorChar}{IOPaths.currentSeason}";
             bool success = false;
 
             try
             {
-                using (StreamWriter writer = new StreamWriter(RootPath.DataPath + IOPaths.currentSeason, false))
+                using (StreamWriter writer = new StreamWriter(seasonFilePath, false))
                 {
                     writer.Write(season);
                     success = true;

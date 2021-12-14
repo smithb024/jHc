@@ -144,6 +144,7 @@
         public void LoadNewSeason(string seasonName)
         {
             this.model.LoadNewSeason(seasonName);
+            this.SaveCurrentSeason(seasonName);
             Messenger.Default.Send(
                 new HandicapProgressMessage(
                     $"New Season Loaded - {seasonName}"));
@@ -205,20 +206,6 @@
             Messenger.Default.Send(
                 new HandicapProgressMessage(
                     $"New Event Loaded - {eventName}:{model.CurrentSeason.Name}"));
-        }
-
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>SaveCurrentSeason</name>
-        /// <date>21/03/15</date>
-        /// <summary>
-        /// Saves the current season.
-        /// </summary>
-        /// <param name="season">current season</param>
-        /// <returns>success flag</returns>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public bool SaveCurrentSeason(string season)
-        {
-            return this.seasonIO.SaveCurrentSeason(season);
         }
 
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
@@ -341,6 +328,16 @@
 
                 SetProgressInformation("Print completed successfully");
             }
+        }
+
+        /// <summary>
+        /// Saves the current season.
+        /// </summary>
+        /// <param name="season">current season</param>
+        /// <returns>success flag</returns>
+        private bool SaveCurrentSeason(string season)
+        {
+            return this.seasonIO.SaveCurrentSeason(season);
         }
     }
 }
