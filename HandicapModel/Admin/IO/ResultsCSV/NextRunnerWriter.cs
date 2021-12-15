@@ -44,7 +44,7 @@
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().WriteLog("Error, failed to print next runner: " + ex.ToString());
+                JHcLogger.GetInstance().WriteLog("Error, failed to print next runner: " + ex.ToString());
 
                 Messenger.Default.Send(
                   new HandicapErrorMessage(

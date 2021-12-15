@@ -279,7 +279,7 @@
             LabelImageGenerator.CreateRaceLabels(AthleteDetails, SaveFolder, NoColumns, NoRows);
             LabelImageGenerator.CreateRaceLabelsCribSheet(AthleteDetails, SaveFolder);
 
-            Logger.GetInstance().WriteLog("Race labels created");
+            JHcLogger.GetInstance().WriteLog("Race labels created");
         }
 
         /// <summary>
@@ -301,7 +301,7 @@
                 NoColumns,
                 NoRows);
 
-            Logger.GetInstance().WriteLog("Race labels created");
+            JHcLogger.GetInstance().WriteLog("Race labels created");
         }
 
         ///// <summary>

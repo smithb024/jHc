@@ -273,19 +273,19 @@
 
         if (!int.TryParse(HandicapTime, out saveHandicapTime))
         {
-          Logger.GetInstance().WriteLog("Can't save normalisation config, invalid handicap time");
+          JHcLogger.GetInstance().WriteLog("Can't save normalisation config, invalid handicap time");
           return;
         }
 
         if (!int.TryParse(MinimumHandicap, out saveMinimumTime))
         {
-          Logger.GetInstance().WriteLog("Can't save normalisation config, invalid minimum handicap time");
+          JHcLogger.GetInstance().WriteLog("Can't save normalisation config, invalid minimum handicap time");
           return;
         }
 
         if (!int.TryParse(this.HandicapInterval, out saveHandicapInterval))
         {
-          Logger.GetInstance().WriteLog("Can't save normalisation config, invalid handicap interval");
+          JHcLogger.GetInstance().WriteLog("Can't save normalisation config, invalid handicap interval");
           return;
         }
 
@@ -296,7 +296,7 @@
       }
       catch (Exception ex)
       {
-          Logger.GetInstance().WriteLog("Error saving normalisation config: " + ex.ToString());
+          JHcLogger.GetInstance().WriteLog("Error saving normalisation config: " + ex.ToString());
       }
     }
   }

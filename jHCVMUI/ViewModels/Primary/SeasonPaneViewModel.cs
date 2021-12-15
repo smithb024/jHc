@@ -250,7 +250,7 @@
         {
             if (this.SelectedSeasonIndex >= 0)
             {
-                Logger logger = Logger.GetInstance();
+                JHcLogger logger = JHcLogger.GetInstance();
                 logger.WriteLog("Load season " + seasonName);
 
                 this.businessLayerManager.LoadNewSeason(seasonName);
@@ -294,7 +294,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
+                JHcLogger logger = JHcLogger.GetInstance();
                 logger.WriteLog(ex.ToString());
             }
         }

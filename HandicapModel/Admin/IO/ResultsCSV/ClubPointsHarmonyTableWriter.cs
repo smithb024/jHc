@@ -89,7 +89,7 @@
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().WriteLog("Error, failed to print club points table: " + ex.ToString());
+                JHcLogger.GetInstance().WriteLog("Error, failed to print club points table: " + ex.ToString());
 
                 Messenger.Default.Send(
                     new HandicapErrorMessage(

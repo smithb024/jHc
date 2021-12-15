@@ -113,7 +113,7 @@
             catch (Exception ex)
             {
                 success = false;
-                Logger.Instance.WriteLog("Error writing Athlete points data " + ex.ToString());
+                JHcLogger.Instance.WriteLog("Error writing Athlete points data " + ex.ToString());
             }
 
             return success;
@@ -238,7 +238,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
+                JHcLogger logger = JHcLogger.GetInstance();
                 logger.WriteLog("Error reading athlete data: " + ex.ToString());
 
                 seasonDetails = new List<IClubSeasonDetails>();

@@ -452,7 +452,7 @@
                 Messenger.Default.Send(
                     new HandicapProgressMessage(
                         "Results inport failed"));
-                Logger.Instance.WriteLog("Failed on import of results: " + ex.ToString());
+                JHcLogger.Instance.WriteLog("Failed on import of results: " + ex.ToString());
             }
 
             bool saveSuccess = SaveRawEventResults();
@@ -506,7 +506,7 @@
                         Messenger.Default.Send(
                             new HandicapProgressMessage(
                                 errorString));
-                        Logger.Instance.WriteLog(errorString);
+                        JHcLogger.Instance.WriteLog(errorString);
                     }
                 }
                 else
@@ -515,7 +515,7 @@
                     Messenger.Default.Send(
                         new HandicapProgressMessage(
                             errorString));
-                    Logger.Instance.WriteLog(errorString);
+                    JHcLogger.Instance.WriteLog(errorString);
                 }
             }
 

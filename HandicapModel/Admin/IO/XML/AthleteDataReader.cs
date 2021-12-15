@@ -180,7 +180,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
+                JHcLogger logger = JHcLogger.GetInstance();
                 logger.WriteLog("Error writing Athlete data " + ex.ToString());
             }
 
@@ -203,7 +203,7 @@
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         error));
-                Logger.Instance.WriteLog(error);
+                JHcLogger.Instance.WriteLog(error);
                 SaveAthleteData(fileName, new Athletes());
             }
 
@@ -289,7 +289,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
+                JHcLogger logger = JHcLogger.GetInstance();
                 logger.WriteLog("Error reading athlete data: " + ex.ToString());
 
                 athleteData = new Athletes();

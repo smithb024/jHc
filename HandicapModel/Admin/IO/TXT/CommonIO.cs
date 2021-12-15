@@ -37,7 +37,7 @@
       }
       catch (Exception ex)
       {
-        Logger.GetInstance().WriteLog(string.Format("Error, failed to read {0}: {1}", fileName, ex.ToString()));
+        JHcLogger.GetInstance().WriteLog(string.Format("Error, failed to read {0}: {1}", fileName, ex.ToString()));
 
         return new List<string>();
       }
@@ -81,7 +81,7 @@
       }
       catch (Exception ex)
       {
-        Logger.GetInstance().WriteLog(string.Format("Error, failed to read {0}: {1}", fileName, ex.ToString()));
+        JHcLogger.GetInstance().WriteLog(string.Format("Error, failed to read {0}: {1}", fileName, ex.ToString()));
 
         return new List<List<string>>();
       }

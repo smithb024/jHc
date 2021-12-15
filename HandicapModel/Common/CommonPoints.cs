@@ -68,7 +68,7 @@
         PositionPoints  = 0;
         BestPoints      = 0;
 
-        Logger.GetInstance().WriteLog("Invalid athletes points entry:" + points);
+        JHcLogger.GetInstance().WriteLog("Invalid athletes points entry:" + points);
       }
 
       Date = date;

@@ -26,12 +26,12 @@
                 {
                     SeriesConfigReader.SaveSeriesConfigData(GeneralIO.SeriesConfigurationFile,
                                                               new SeriesConfigType(string.Empty, false));
-                    Logger.Instance.WriteLog("Couldn't find Series config file. Created a new default one");
+                    JHcLogger.Instance.WriteLog("Couldn't find Series config file. Created a new default one");
                 }
             }
             catch (Exception ex)
             {
-                Logger.Instance.WriteLog("Failed to save default series config file: " + ex.ToString());
+                JHcLogger.Instance.WriteLog("Failed to save default series config file: " + ex.ToString());
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         "Error creating default series config file"));
@@ -56,7 +56,7 @@
             }
             catch (Exception ex)
             {
-                Logger.Instance.WriteLog("Failed to save series config file: " + ex.ToString());
+                JHcLogger.Instance.WriteLog("Failed to save series config file: " + ex.ToString());
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         "Error creating series config file"));

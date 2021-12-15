@@ -272,7 +272,7 @@
         /// <param name="seasons">seasons list</param>
         private void LoadEvent(string eventName)
         {
-            Logger logger = Logger.GetInstance();
+            JHcLogger logger = JHcLogger.GetInstance();
             logger.WriteLog("Load event " + eventName);
             this.businessLayerManager.LoadNewEvent(eventName);
         }

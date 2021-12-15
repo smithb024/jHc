@@ -27,7 +27,7 @@
 
       if (config == null)
       {
-        Logger.Instance.WriteLog(
+        JHcLogger.Instance.WriteLog(
           "Series Config VM not initialised, Config reader has failed.");
         return;
       }
@@ -122,7 +122,7 @@
       }
       catch (Exception ex)
       {
-          Logger.GetInstance().WriteLog("Error saving series config: " + ex.ToString());
+          JHcLogger.GetInstance().WriteLog("Error saving series config: " + ex.ToString());
       }
     }
 

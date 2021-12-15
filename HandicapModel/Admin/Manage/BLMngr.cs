@@ -89,7 +89,7 @@
         public bool CreateNewSeason(string seasonName)
         {
             bool success = true;
-            Logger.Instance.WriteLog(string.Format("Create new season {0}", seasonName));
+            JHcLogger.Instance.WriteLog(string.Format("Create new season {0}", seasonName));
             Messenger.Default.Send(
                 new HandicapErrorMessage(
                     string.Empty));
@@ -120,11 +120,11 @@
 
             if (success)
             {
-                Logger.Instance.WriteLog(string.Format("Finishing creating new season {0}", seasonName));
+                JHcLogger.Instance.WriteLog(string.Format("Finishing creating new season {0}", seasonName));
             }
             else
             {
-                Logger.Instance.WriteLog("Failed to Create New Season");
+                JHcLogger.Instance.WriteLog("Failed to Create New Season");
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         "Season creation failed"));
@@ -182,11 +182,11 @@
 
             if (success)
             {
-                Logger.Instance.WriteLog(string.Format("Finishing creating new event {0}", eventName));
+                JHcLogger.Instance.WriteLog(string.Format("Finishing creating new event {0}", eventName));
             }
             else
             {
-                Logger.Instance.WriteLog("Failed to Create New Event");
+                JHcLogger.Instance.WriteLog("Failed to Create New Event");
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         "Event creation failed"));

@@ -65,7 +65,7 @@
     {
       if (!Directory.Exists(RootPath.DataPath))
       {
-        Logger.Instance.WriteLog("Data directory missing - new one created");
+        JHcLogger.Instance.WriteLog("Data directory missing - new one created");
         Directory.CreateDirectory(RootPath.DataPath);
       }
     }
@@ -77,7 +77,7 @@
     {
       if (!Directory.Exists(RootPath.ConfigurationPath))
       {
-        Logger.Instance.WriteLog("Configuration directory missing - new one created");
+        JHcLogger.Instance.WriteLog("Configuration directory missing - new one created");
         Directory.CreateDirectory(RootPath.ConfigurationPath);
       }
     }

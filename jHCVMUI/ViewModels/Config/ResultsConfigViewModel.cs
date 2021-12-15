@@ -413,43 +413,43 @@
 
         if (!int.TryParse(FinishingPoints, out saveFinishingPoints))
         {
-          Logger.GetInstance().WriteLog("Can't save results config, invalid finishing points");
+          JHcLogger.GetInstance().WriteLog("Can't save results config, invalid finishing points");
           return;
         }
 
         if (!int.TryParse(SeasonBestPoints, out saveSeasonBestPoints))
         {
-          Logger.GetInstance().WriteLog("Can't save results config, invalid season best points");
+          JHcLogger.GetInstance().WriteLog("Can't save results config, invalid season best points");
           return;
         }
 
         if (!int.TryParse(NumberOfScoringPositions, out saveScoringPostions))
         {
-          Logger.GetInstance().WriteLog("Can't save results config, invalid scoring positions");
+          JHcLogger.GetInstance().WriteLog("Can't save results config, invalid scoring positions");
           return;
         }
 
         if (!int.TryParse(NumberInTeam, out saveTeamSize))
         {
-          Logger.GetInstance().WriteLog("Can't save results config, invalid team size");
+          JHcLogger.GetInstance().WriteLog("Can't save results config, invalid team size");
           return;
         }
 
         if (!int.TryParse(TeamFinishingPoints, out saveTeamFinishingPoints))
         {
-          Logger.GetInstance().WriteLog("Can't save results config, invalid (team) finishing points");
+          JHcLogger.GetInstance().WriteLog("Can't save results config, invalid (team) finishing points");
           return;
         }
 
         if (!int.TryParse(TeamSeasonBestPoints, out saveTeamSeasonBestPoints))
         {
-          Logger.GetInstance().WriteLog("Can't save results config, invalid season best (team) points");
+          JHcLogger.GetInstance().WriteLog("Can't save results config, invalid season best (team) points");
           return;
         }
 
         if (!int.TryParse(this.ScoresToCount, out saveScoresToCount))
         {
-          Logger.GetInstance().WriteLog("Can't save results config, invalid season scores to count points");
+          JHcLogger.GetInstance().WriteLog("Can't save results config, invalid season scores to count points");
           return;
         }
 
@@ -468,7 +468,7 @@
       }
       catch (Exception ex)
       {
-          Logger.GetInstance().WriteLog("Error saving results config: " + ex.ToString());
+          JHcLogger.GetInstance().WriteLog("Error saving results config: " + ex.ToString());
       }
     }
 

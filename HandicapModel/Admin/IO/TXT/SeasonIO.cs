@@ -53,7 +53,7 @@
             }
             catch (Exception ex)
             {
-                Logger.Instance.WriteLog("Can't read seasons data: " + ex.ToString());
+                JHcLogger.Instance.WriteLog("Can't read seasons data: " + ex.ToString());
 
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
@@ -85,14 +85,14 @@
                 }
                 else
                 {
-                    Logger logger = Logger.GetInstance();
+                    JHcLogger logger = JHcLogger.GetInstance();
                     logger.WriteLog(
                         $"Error, file - {seasonFilePath} - does not exist.");
                 }
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
+                JHcLogger logger = JHcLogger.GetInstance();
                 logger.WriteLog("Error, failed to read current season: " + ex.ToString());
             }
 
@@ -120,7 +120,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
+                JHcLogger logger = JHcLogger.GetInstance();
                 logger.WriteLog("Error, failed to save current season: " + ex.ToString());
             }
 
@@ -146,7 +146,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
+                JHcLogger logger = JHcLogger.GetInstance();
                 logger.WriteLog("Failed to create season directory: " + ex.ToString());
 
                 return false;

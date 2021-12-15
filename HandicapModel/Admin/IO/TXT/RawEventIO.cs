@@ -49,7 +49,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
+                JHcLogger logger = JHcLogger.GetInstance();
                 logger.WriteLog("Error, failed to save current event raw results data: " + ex.ToString());
                 success = false;
             }
@@ -90,7 +90,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
+                JHcLogger logger = JHcLogger.GetInstance();
                 logger.WriteLog("Error, failed to read current event raw results data: " + ex.ToString());
             }
 

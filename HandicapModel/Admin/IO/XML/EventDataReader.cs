@@ -42,7 +42,7 @@
       }
       catch (Exception ex)
       {
-        Logger logger = Logger.GetInstance();
+        JHcLogger logger = JHcLogger.GetInstance();
         logger.WriteLog("Error saving event file: " + ex.ToString());
         success = false;
       }
@@ -73,7 +73,7 @@
       }
       catch (Exception ex)
       {
-        Logger logger = Logger.GetInstance();
+        JHcLogger logger = JHcLogger.GetInstance();
         logger.WriteLog("Error reading event data: " + ex.ToString());
 
         eventData = new EventMiscData();

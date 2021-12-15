@@ -156,7 +156,7 @@
         (rhs.Minutes == lhs.Minutes && rhs.Seconds > lhs.Seconds))
       {
         // TODO Need to raise an exception.
-        Logger logger = Logger.GetInstance();
+        JHcLogger logger = JHcLogger.GetInstance();
         logger.WriteLog("TRACE: MilesChains Error: tried to subtract " +
                          rhs.ToString() +
                          "from" +
@@ -358,7 +358,7 @@
       catch (Exception ex)
       {
         // TODO Need to raise an exception.
-        Logger logger = Logger.GetInstance();
+        JHcLogger logger = JHcLogger.GetInstance();
         logger.WriteLog("Error Dividing " + lhs + " Error: " + ex.ToString());
 
         string exception = ex.ToString();

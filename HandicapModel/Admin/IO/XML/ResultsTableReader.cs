@@ -91,7 +91,7 @@
 
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
+                JHcLogger logger = JHcLogger.GetInstance();
                 logger.WriteLog("Error writing results table" + ex.ToString());
                 success = false;
             }
@@ -147,7 +147,7 @@
                         SexType sex = SexType.Default;
                         if (!Enum.TryParse(row.sex, out sex))
                         {
-                            Logger.GetInstance().WriteLog("Error reading sex from " + row.name);
+                            JHcLogger.GetInstance().WriteLog("Error reading sex from " + row.name);
                         }
 
                         ResultsTableEntry rowEntry =
@@ -175,7 +175,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
+                JHcLogger logger = JHcLogger.GetInstance();
                 logger.WriteLog("Error reading results table: " + ex.ToString());
 
                 resultsTable = new EventResults();

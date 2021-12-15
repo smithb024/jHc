@@ -45,7 +45,7 @@
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().WriteLog($"Error creating date time: {ex}");
+                JHcLogger.GetInstance().WriteLog($"Error creating date time: {ex}");
                 this.SetDefaultValues();
                 return;
             }

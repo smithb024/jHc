@@ -7,9 +7,9 @@
   using System.Text;
   using System.Threading.Tasks;
 
-  public class Logger
+  public class JHcLogger
   {
-    private static Logger m_instance = null;
+    private static JHcLogger m_instance = null;
     private static readonly object s_locker = new object();
 
     private string       m_logName = "jHandicapLog";
@@ -24,7 +24,7 @@
     /// Prevents a default instance of the logger class from being created.
     /// </summary>
     /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-    private Logger()
+    private JHcLogger()
     {
       if (!Directory.Exists(c_logPath))
       {
@@ -45,15 +45,15 @@
     }
 
     /// <summary>
-    /// Gets a new instance of the <see cref="Logger"/> class.
+    /// Gets a new instance of the <see cref="JHcLogger"/> class.
     /// </summary>
-    public static Logger Instance
+    public static JHcLogger Instance
     {
       get
       {
         if (m_instance == null)
         {
-          m_instance = new Logger();
+          m_instance = new JHcLogger();
         }
 
         return m_instance;
@@ -68,11 +68,11 @@
     /// </summary>
     /// <returns>instance of the logger.</returns>
     /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-    public static Logger GetInstance()
+    public static JHcLogger GetInstance()
     {
       if (m_instance == null)
       {
-        m_instance = new Logger();
+        m_instance = new JHcLogger();
       }
 
       return m_instance;

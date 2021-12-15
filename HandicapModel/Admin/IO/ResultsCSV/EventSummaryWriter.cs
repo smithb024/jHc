@@ -70,7 +70,7 @@
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().WriteLog("Error, failed to print event summary: " + ex.ToString());
+                JHcLogger.GetInstance().WriteLog("Error, failed to print event summary: " + ex.ToString());
 
                 Messenger.Default.Send(
                     new HandicapErrorMessage(

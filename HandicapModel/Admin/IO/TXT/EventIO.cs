@@ -52,7 +52,7 @@
       }
       catch (Exception ex)
       {
-        Logger logger = Logger.GetInstance();
+        JHcLogger logger = JHcLogger.GetInstance();
         logger.WriteLog("Can't create new event: " + ex.ToString());
         return false;
       }
@@ -82,7 +82,7 @@
       }
       catch (Exception ex)
       {
-        Logger logger = Logger.GetInstance();
+        JHcLogger logger = JHcLogger.GetInstance();
         logger.WriteLog("Error, failed to read current event: " + ex.ToString());
       }
 
@@ -117,7 +117,7 @@
       }
       catch (Exception ex)
       {
-        Logger logger = Logger.GetInstance();
+        JHcLogger logger = JHcLogger.GetInstance();
         logger.WriteLog("Error, failed to save current season: " + ex.ToString());
       }
 

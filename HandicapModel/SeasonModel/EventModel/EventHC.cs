@@ -114,7 +114,7 @@
             }
             catch (Exception ex)
             {
-                Logger.Instance.WriteLog($"Failed to load new event: {ex}");
+                JHcLogger.Instance.WriteLog($"Failed to load new event: {ex}");
             }
 
             this.Name = eventName;

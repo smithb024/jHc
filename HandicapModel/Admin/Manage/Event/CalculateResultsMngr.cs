@@ -59,11 +59,11 @@
         /// </summary>
         public void CalculateResults()
         {
-            Logger.Instance.WriteLog("Calculate results");
+            JHcLogger.Instance.WriteLog("Calculate results");
 
             if (this.resultsConfiguration == null)
             {
-                Logger.Instance.WriteLog("Error reading the results config file. Results not generated");
+                JHcLogger.Instance.WriteLog("Error reading the results config file. Results not generated");
                 return;
             }
 
@@ -102,7 +102,7 @@
 
             this.SaveAll();
 
-            Logger.Instance.WriteLog("Calculate results completed.");
+            JHcLogger.Instance.WriteLog("Calculate results completed.");
         }
 
         /// <summary>
@@ -409,7 +409,7 @@
 
                 if (athlete == null)
                 {
-                    Logger.GetInstance().WriteLog(
+                    JHcLogger.GetInstance().WriteLog(
                         $"Calculate Results Manager - Can'f find athlete {result.Key}");
                     continue;
                 }

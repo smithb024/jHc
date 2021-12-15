@@ -190,7 +190,7 @@
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().WriteLog($"Season, Failed to load Season {ex}");
+                JHcLogger.GetInstance().WriteLog($"Season, Failed to load Season {ex}");
                 success = false;
             }
 
@@ -213,7 +213,7 @@
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().WriteLog($"Season, Failed to save Season {ex}");
+                JHcLogger.GetInstance().WriteLog($"Season, Failed to save Season {ex}");
                 success = false;
             }
 

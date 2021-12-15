@@ -52,7 +52,7 @@
       }
       catch (Exception ex)
       {
-        Logger logger = Logger.GetInstance();
+        JHcLogger logger = JHcLogger.GetInstance();
         logger.WriteLog("Error writing Series Configuration data " + ex.ToString());
       }
 
@@ -71,7 +71,7 @@
         if (!File.Exists(fileName))
         {
           string error = string.Format("Athlete Data file missing, one created - {0}", fileName);
-          Logger.Instance.WriteLog(error);
+          JHcLogger.Instance.WriteLog(error);
 
           SeriesConfigType newConfiguration =
             new SeriesConfigType(
@@ -100,7 +100,7 @@
       }
       catch (Exception ex)
       {
-        Logger logger = Logger.GetInstance();
+        JHcLogger logger = JHcLogger.GetInstance();
         logger.WriteLog("Error reading Series Configuration data " + ex.ToString());
         return null;
       }
@@ -125,7 +125,7 @@
       }
       catch (Exception ex)
       {
-        Logger.GetInstance().WriteLog(
+        JHcLogger.GetInstance().WriteLog(
           $"Error reading Series Configuration data attribute: {ex}");
         return defaultValue;
       }

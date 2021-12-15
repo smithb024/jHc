@@ -30,12 +30,12 @@
                         20,
                         5,
                         30));
-                    Logger.Instance.WriteLog("Couldn't find normalisation config file. Created a new default one");
+                    JHcLogger.Instance.WriteLog("Couldn't find normalisation config file. Created a new default one");
                 }
             }
             catch (Exception ex)
             {
-                Logger.Instance.WriteLog("Failed to save default normalisation config file: " + ex.ToString());
+                JHcLogger.Instance.WriteLog("Failed to save default normalisation config file: " + ex.ToString());
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         "Error creating default normalisation config file"));
@@ -65,7 +65,7 @@
             }
             catch (Exception ex)
             {
-                Logger.Instance.WriteLog("Failed to save normalisation config file: " + ex.ToString());
+                JHcLogger.Instance.WriteLog("Failed to save normalisation config file: " + ex.ToString());
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         "Error saving normalisation config file"));
@@ -85,7 +85,7 @@
             }
             catch (Exception ex)
             {
-                Logger.Instance.WriteLog("Failed to save normalisation config file: " + ex.ToString());
+                JHcLogger.Instance.WriteLog("Failed to save normalisation config file: " + ex.ToString());
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         "Error creating normalisation config file"));

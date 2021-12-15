@@ -65,7 +65,7 @@
       }
       catch (Exception ex)
       {
-        Logger logger = Logger.GetInstance();
+        JHcLogger logger = JHcLogger.GetInstance();
         logger.WriteLog("Error writing Normalisation Configuration data " + ex.ToString());
       }
 
@@ -113,7 +113,7 @@
       }
       catch (Exception ex)
       {
-        Logger logger = Logger.GetInstance();
+        JHcLogger logger = JHcLogger.GetInstance();
         logger.WriteLog("Error reading Normalisation Configuration data " + ex.ToString());
         return null;
       }
@@ -137,7 +137,7 @@
       }
       catch (Exception ex)
       {
-        Logger.GetInstance().WriteLog(
+        JHcLogger.GetInstance().WriteLog(
           $"Error reading Normalisation Configuration data attribute: {ex}");
         return defaultValue;
       }

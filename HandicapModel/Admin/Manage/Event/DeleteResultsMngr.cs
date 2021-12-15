@@ -29,7 +29,7 @@
         /// </summary>
         public void DeleteResults()
         {
-            Logger.Instance.WriteLog("Delete results");
+            JHcLogger.Instance.WriteLog("Delete results");
             DateType currentDate = this.Model.CurrentEvent.Date;
             NormalisationConfigType hcConfiguration = NormalisationConfigMngr.ReadNormalisationConfiguration();
 
@@ -64,7 +64,7 @@
 
             this.SaveAll();
 
-            Logger.Instance.WriteLog("Delete results completed");
+            JHcLogger.Instance.WriteLog("Delete results completed");
         }
 
         /// <summary>

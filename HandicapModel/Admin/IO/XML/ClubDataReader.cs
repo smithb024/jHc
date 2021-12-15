@@ -49,7 +49,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
+                JHcLogger logger = JHcLogger.GetInstance();
                 logger.WriteLog("Error saving club data " + ex.ToString());
             }
 
@@ -74,7 +74,7 @@
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         error));
-                Logger.Instance.WriteLog(error);
+                JHcLogger.Instance.WriteLog(error);
                 SaveClubData(fileName, new Clubs());
             }
 
@@ -96,7 +96,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
+                JHcLogger logger = JHcLogger.GetInstance();
                 logger.WriteLog("Error reading club data " + ex.ToString());
             }
 

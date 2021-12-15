@@ -43,7 +43,7 @@
             {
                 this.SaveResultsConfiguration(
                   new ResultsConfigType(4, 2, 10, 4, 5, 2, 0, true, true, true, false));
-                Logger.Instance.WriteLog("Couldn't find results config file. Created a new default one");
+                JHcLogger.Instance.WriteLog("Couldn't find results config file. Created a new default one");
             }
         }
 
@@ -118,7 +118,7 @@
             }
             catch (Exception ex)
             {
-                Logger.Instance.WriteLog("Failed to save results config file: " + ex.ToString());
+                JHcLogger.Instance.WriteLog("Failed to save results config file: " + ex.ToString());
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         "Error creating results config file"));

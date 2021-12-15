@@ -75,7 +75,7 @@
             IBLMngr businessLayerManager,
             IResultsConfigMngr resultsConfigurationManager)
         {
-            Logger logger = Logger.GetInstance();
+            JHcLogger logger = JHcLogger.GetInstance();
             logger.WriteLog("HandicapMainViewModel created");
             this.model = model;
             this.resultsConfigurationManager = resultsConfigurationManager;
@@ -561,7 +561,7 @@
         {
             if (this.resultsConfigurationManager == null)
             {
-                Logger.Instance.WriteLog(
+                JHcLogger.Instance.WriteLog(
                   "PrimaryDisplayViewModel failed to initalise, null results config manager");
                 return;
             }

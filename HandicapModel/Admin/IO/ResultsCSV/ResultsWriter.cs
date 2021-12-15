@@ -73,7 +73,7 @@
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().WriteLog("Error, failed to print results: " + ex.ToString());
+                JHcLogger.GetInstance().WriteLog("Error, failed to print results: " + ex.ToString());
 
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
