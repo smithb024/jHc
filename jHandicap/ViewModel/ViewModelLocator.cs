@@ -21,9 +21,12 @@ namespace jHandicap.ViewModel
     using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using HandicapModel;
+    using HandicapModel.Admin.IO;
     using HandicapModel.Admin.IO.TXT;
     using HandicapModel.Admin.Manage;
     using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.Admin.IO;
+    using HandicapModel.Interfaces.Admin.IO.TXT;
     using jHCVMUI.ViewModels.Primary;
     using jHCVMUI.ViewModels.ViewModels;
 
@@ -53,7 +56,12 @@ namespace jHandicap.ViewModel
 
             SimpleIoc.Default.Register<IJHcLogger, JHcLogger>();
 
+            SimpleIoc.Default.Register<ICommonIo, CommonIO>();
+            SimpleIoc.Default.Register<IEventIo, EventIO>();
+            SimpleIoc.Default.Register<IRawEventIo, RawEventIO>();
             SimpleIoc.Default.Register<ISeasonIO, SeasonIO>();
+            SimpleIoc.Default.Register<IGeneralIo, GeneralIO>();
+
             SimpleIoc.Default.Register<IResultsConfigMngr, ResultsConfigMngr>();
             SimpleIoc.Default.Register<IModel, Model>();
 

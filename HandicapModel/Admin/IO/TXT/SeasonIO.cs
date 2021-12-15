@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
+    using Interfaces.Admin.IO.TXT;
     using GalaSoft.MvvmLight.Messaging;
 
     /// <summary>

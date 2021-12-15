@@ -83,6 +83,10 @@
     <Compile Include="Admin\IO\RootPath.cs" />
     <Compile Include="Admin\IO\SummaryData.cs" />
     <Compile Include="Admin\IO\TXT\CommonIO.cs" />
+    <Compile Include="Interfaces\Admin\IO\IGeneralIo.cs" />
+    <Compile Include="Interfaces\Admin\IO\TXT\ICommonIo.cs" />
+    <Compile Include="Interfaces\Admin\IO\TXT\IEventIo.cs" />
+    <Compile Include="Interfaces\Admin\IO\TXT\IRawEventIo.cs" />
     <Compile Include="Interfaces\Admin\IO\TXT\ISeasonIO.cs" />
     <Compile Include="Admin\IO\TXT\RootIO.cs" />
     <Compile Include="Admin\IO\TXT\EventIO.cs" />
