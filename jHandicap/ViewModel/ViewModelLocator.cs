@@ -16,6 +16,7 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using HandicapModel;
+using HandicapModel.Admin.IO.TXT;
 using HandicapModel.Admin.Manage;
 using HandicapModel.Interfaces;
 using jHCVMUI.ViewModels.Primary;
@@ -47,6 +48,7 @@ namespace jHandicap.ViewModel
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
 
+            SimpleIoc.Default.Register<ISeasonIO, SeasonIO>();
             SimpleIoc.Default.Register<IResultsConfigMngr, ResultsConfigMngr>();
             SimpleIoc.Default.Register<IModel, Model>();
 

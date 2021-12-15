@@ -33,7 +33,9 @@
         /// Prevents a new instance of the HandicapModel class from being created.
         /// </summary>
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public Model(IResultsConfigMngr resultsConfigurationManager)
+        public Model(
+            IResultsConfigMngr resultsConfigurationManager,
+            ISeasonIO seasonIO)
         {
             this.resultsConfigurationManager = resultsConfigurationManager;
 
@@ -48,7 +50,7 @@
                 new Season(
                     resultsConfigurationManager);
             this.CurrentEvent = new EventHC();
-            this.Seasons = SeasonIO.GetSeasons();
+            this.Seasons = seasonIO.GetSeasons();
             this.Athletes = AthleteData.ReadAthleteData();
             this.Clubs = ClubData.LoadClubData();
             this.GlobalSummary = SummaryData.LoadSummaryData();

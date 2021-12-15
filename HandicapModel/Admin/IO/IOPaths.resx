@@ -142,7 +142,7 @@
     <value>season.txt</value>
   </data>
   <data name="dataPath" xml:space="preserve">
-    <value>.\dt\</value>
+    <value>dt</value>
   </data>
   <data name="eventMiscFile" xml:space="preserve">
     <value>msc.xml</value>

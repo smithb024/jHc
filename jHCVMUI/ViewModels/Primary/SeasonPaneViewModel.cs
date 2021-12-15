@@ -38,7 +38,7 @@
         private AthleteSeasonSummaryViewModel m_athleteSeasonSummaryViewModel = null;
 
         private ObservableCollection<string> m_seasons = new ObservableCollection<string>();
-        private int m_currentSeasonIndex = 0;
+        private int currentSeasonIndex = 0;
         private bool m_newSeasonAdditionEnabled = false;
         private string m_newSeason = string.Empty;
 
@@ -103,21 +103,22 @@
         /// </summary>
         public int SelectedSeasonIndex
         {
-            get { return m_currentSeasonIndex; }
+            get
+            {
+                return currentSeasonIndex;
+            }
+
             set
             {
-                m_currentSeasonIndex = value;
-                RaisePropertyChangedEvent("SelectedSeasonIndex");
-                if (SelectedSeasonIndex >= 0)
+                if (currentSeasonIndex == value)
                 {
-                    LoadSeason(Seasons[value]);
-
-                    if (SeasonUpdatedCallback != null)
-                    {
-                        SeasonUpdatedCallback.Invoke();
-                    }
-                    //SelectCurrentEvent(BLMngr.LoadCurrentEvent());
+                    return;
                 }
+
+                currentSeasonIndex = value;
+                RaisePropertyChangedEvent(nameof(this.SelectedSeasonIndex));
+                
+                this.LoadSeason(this.Seasons[value]);
             }
         }
 
@@ -163,12 +164,14 @@
         public ICommand CancelSeasonCommand { get; private set; }
 
         /// <summary>
-        /// 
+        /// Initialise this view model.
         /// </summary>
         public void InitialiseSeasonPane()
         {
-            PopulateSeasons(this.model.Seasons);
-            SelectCurrentSeason(this.businessLayerManager.LoadCurrentSeason());
+            this.PopulateSeasons(this.model.Seasons);
+
+            string currentSeason = this.businessLayerManager.LoadCurrentSeason();
+            this.SelectCurrentSeason(currentSeason);
         }
 
         /// <summary>
@@ -177,15 +180,21 @@
         /// </summary>
         public void AddNewSeason()
         {
-            if (this.businessLayerManager.CreateNewSeason(NewSeason))
+            string newSeasonName = this.NewSeason;
+
+            if (!this.businessLayerManager.CreateNewSeason(newSeasonName))
             {
-                SelectCurrentSeason(NewSeason);
-
-                NewSeason = string.Empty;
-                NewSeasonAdditionEnabled = false;
-
-                this.businessLayerManager.SetProgressInformation("Season created");
+                this.businessLayerManager.SetProgressInformation($"Failed to create season {newSeasonName}");
+                return;
             }
+
+            this.Seasons.Add(newSeasonName);
+            this.SelectCurrentSeason(this.NewSeason);
+
+            this.NewSeason = string.Empty;
+            this.NewSeasonAdditionEnabled = false;
+
+            this.businessLayerManager.SetProgressInformation($"{newSeasonName} created");
         }
 
         /// <summary>
@@ -223,15 +232,12 @@
         /// <param name="currentSeason">season to find</param>
         private void SelectCurrentSeason(string currentSeason)
         {
-            if (currentSeason != string.Empty)
+            for (int seasonIndex = 0; seasonIndex < m_seasons.Count(); ++seasonIndex)
             {
-                for (int seasonIndex = 0; seasonIndex < m_seasons.Count(); ++seasonIndex)
+                if (Seasons[seasonIndex] == currentSeason)
                 {
-                    if (Seasons[seasonIndex] == currentSeason)
-                    {
-                        SelectedSeasonIndex = seasonIndex;
-                        break;
-                    }
+                    this.SelectedSeasonIndex = seasonIndex;
+                    break;
                 }
             }
         }
@@ -242,9 +248,19 @@
         /// <param name="seasons">seasons list</param>
         private void LoadSeason(string seasonName)
         {
-            Logger logger = Logger.GetInstance();
-            logger.WriteLog("Load season " + seasonName);
-            this.businessLayerManager.LoadNewSeason(seasonName);
+            if (this.SelectedSeasonIndex >= 0)
+            {
+                Logger logger = Logger.GetInstance();
+                logger.WriteLog("Load season " + seasonName);
+
+                this.businessLayerManager.LoadNewSeason(seasonName);
+
+                if (this.SeasonUpdatedCallback != null)
+                {
+                    this.SeasonUpdatedCallback.Invoke();
+                }
+                //SelectCurrentEvent(BLMngr.LoadCurrentEvent());
+            }
         }
 
         /// <summary>

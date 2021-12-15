@@ -133,7 +133,7 @@ namespace HandicapModel.Admin.IO {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .\dt\.
+        ///   Looks up a localized string similar to dt.
         /// </summary>
         internal static string dataPath {
             get {

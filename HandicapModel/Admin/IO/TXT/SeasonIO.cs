@@ -7,8 +7,30 @@
     using CommonHandicapLib.Messages;
     using GalaSoft.MvvmLight.Messaging;
 
-    public static class SeasonIO
+    /// <summary>
+    /// Class responsible to managing all the season specific data.
+    /// </summary>
+    public class SeasonIO : ISeasonIO
     {
+        /// <summary>
+        /// The root directory.
+        /// </summary>
+        string rootDirectory;
+
+        /// <summary>
+        /// The path to all the season data.
+        /// </summary>
+        string dataPath;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="SeasonIO"/> class.
+        /// </summary>
+        public SeasonIO()
+        {
+            this.rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}";
+        }
+
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         /// <name>GetSeasons</name>
         /// <date>21/03/15</date>
@@ -17,7 +39,7 @@
         /// </summary>
         /// <returns>list of all seasons</returns>
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public static List<string> GetSeasons()
+        public List<string> GetSeasons()
         {
             List<string> seasons = new List<string>();
 
@@ -41,24 +63,31 @@
             return seasons;
         }
 
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>LoadCurrentSeason</name>
-        /// <date>21/03/15</date>
         /// <summary>
         /// Gets the name of the last selected season.
         /// </summary>
         /// <returns>current season</returns>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public static string LoadCurrentSeason()
+        public string LoadCurrentSeason()
         {
+            string seasonFilePath = 
+                $"{this.dataPath}{Path.DirectorySeparatorChar}{IOPaths.currentSeason}";
+            string currentSeason = string.Empty;
+
             try
             {
-                if (File.Exists(RootPath.DataPath + IOPaths.currentSeason))
+               
+                if (File.Exists(seasonFilePath))
                 {
-                    using (StreamReader reader = new StreamReader(RootPath.DataPath + IOPaths.currentSeason))
+                    using (StreamReader reader = new StreamReader(seasonFilePath))
                     {
-                        return reader.ReadLine();
+                        currentSeason = reader.ReadLine();
                     }
+                }
+                else
+                {
+                    Logger logger = Logger.GetInstance();
+                    logger.WriteLog(
+                        $"Error, file - {seasonFilePath} - does not exist.");
                 }
             }
             catch (Exception ex)
@@ -67,25 +96,23 @@
                 logger.WriteLog("Error, failed to read current season: " + ex.ToString());
             }
 
-            return string.Empty;
+            return currentSeason;
         }
 
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>SaveCurrentSeason</name>
-        /// <date>21/03/15</date>
         /// <summary>
         /// Saves the current season.
         /// </summary>
         /// <param name="season">current season</param>
         /// <returns>success flag</returns>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public static bool SaveCurrentSeason(string season)
+        public bool SaveCurrentSeason(string season)
         {
+            string seasonFilePath =
+                $"{this.dataPath}{Path.DirectorySeparatorChar}{IOPaths.currentSeason}";
             bool success = false;
 
             try
             {
-                using (StreamWriter writer = new StreamWriter(RootPath.DataPath + IOPaths.currentSeason, false))
+                using (StreamWriter writer = new StreamWriter(seasonFilePath, false))
                 {
                     writer.Write(season);
                     success = true;
@@ -108,11 +135,14 @@
         /// </summary>
         /// <param name="seasonName">new season</param>
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public static bool CreateNewSeason(string seasonName)
+        public bool CreateNewSeason(string seasonName)
         {
+            string seasonFilePath =
+                $"{this.dataPath}{Path.DirectorySeparatorChar}{seasonName}";
+
             try
             {
-                Directory.CreateDirectory(RootPath.DataPath + seasonName);
+                Directory.CreateDirectory(seasonFilePath);
             }
             catch (Exception ex)
             {

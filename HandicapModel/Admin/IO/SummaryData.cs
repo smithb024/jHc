@@ -42,7 +42,7 @@
                                        ISummary summaryDetails)
     {
       return SummaryDataReader.SaveSummaryData(
-        RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + seasonName + IOPaths.xmlExtension,
+        RootPath.DataPath + Path.DirectorySeparatorChar + seasonName + Path.DirectorySeparatorChar + seasonName + IOPaths.xmlExtension,
         summaryDetails);
     }
 
