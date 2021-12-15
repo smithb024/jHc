@@ -20,6 +20,8 @@ namespace jHandicap.ViewModel
 {
     using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Interfaces.XML;
+    using CommonHandicapLib.XML;
     using HandicapModel;
     using HandicapModel.Admin.IO;
     using HandicapModel.Admin.IO.TXT;
@@ -61,6 +63,10 @@ namespace jHandicap.ViewModel
             SimpleIoc.Default.Register<IRawEventIo, RawEventIO>();
             SimpleIoc.Default.Register<ISeasonIO, SeasonIO>();
             SimpleIoc.Default.Register<IGeneralIo, GeneralIO>();
+
+            SimpleIoc.Default.Register<INormalisationConfigReader, NormalisationConfigReader>();
+            SimpleIoc.Default.Register<IResultsConfigReader, ResultsConfigReader>();
+            SimpleIoc.Default.Register<ISeriesConfigReader, SeriesConfigReader>();
 
             SimpleIoc.Default.Register<IResultsConfigMngr, ResultsConfigMngr>();
             SimpleIoc.Default.Register<IModel, Model>();
