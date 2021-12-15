@@ -6,15 +6,20 @@
     using System.Xml.Linq;
 
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Types;
     using CommonLib.Types;
     using HandicapModel.Admin.Manage;
     using HandicapModel.Common;
+    using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
 
-    internal static class AthleteSeasonDataReader
+    /// <summary>
+    /// Athlete season data reader
+    /// </summary>
+    internal class AthleteSeasonDataReader : IAthleteSeasonDataReader
     {
         private const string c_rootElement = "AtlSea";
         private const string c_athleteElement = "entrant";
@@ -36,6 +41,20 @@
         private const string c_positionPoints = "ppts";
         private const string HarmonyPointsAttribute = "pts";
 
+        /// <summary>
+        /// The instance of the logger.
+        /// </summary>
+        private readonly IJHcLogger logger;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AthleteSeasonDataReader"/> class.
+        /// </summary>
+        /// <param name="logger">application logger</param>
+        public AthleteSeasonDataReader(IJHcLogger logger)
+        {
+            this.logger = logger;
+        }
+
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         /// <name>SaveAthleteSeasonSata</name>
         /// <date>29/03/15</date>
@@ -45,8 +64,9 @@
         /// <param name="fileName">file name</param>
         /// <param name="table">points table</param>
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public static bool SaveAthleteSeasonData(string fileName,
-                                                 List<AthleteSeasonDetails> seasons)
+        public bool SaveAthleteSeasonData(
+            string fileName,
+            List<AthleteSeasonDetails> seasons)
         {
             bool success = true;
 
@@ -113,8 +133,7 @@
             catch (Exception ex)
             {
                 success = false;
-                JHcLogger logger = JHcLogger.GetInstance();
-                logger.WriteLog("Error writing Athlete points data " + ex.ToString());
+                this.logger.WriteLog("Error writing Athlete points data " + ex.ToString());
             }
 
             return success;
@@ -129,7 +148,7 @@
         /// <param name="fileName">name of xml file</param>
         /// <returns>decoded athlete's details</returns>
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public static List<AthleteSeasonDetails> LoadAthleteSeasonData(
+        public List<AthleteSeasonDetails> LoadAthleteSeasonData(
           string fileName,
           IResultsConfigMngr resultsConfigurationManager)
         {
@@ -237,8 +256,7 @@
             }
             catch (Exception ex)
             {
-                JHcLogger logger = JHcLogger.GetInstance();
-                logger.WriteLog("Error reading athlete data: " + ex.ToString());
+                this.logger.WriteLog("Error reading athlete data: " + ex.ToString());
 
                 seasonDetails = new List<AthleteSeasonDetails>();
             }

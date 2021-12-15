@@ -3,29 +3,53 @@
     using System;
     using System.IO;
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Interfaces.XML;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using CommonHandicapLib.XML;
     using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.IO;
+    using HandicapModel.Interfaces.Admin.IO;
 
     /// <summary>
     /// Results configuration manager.
     /// </summary>
     public class ResultsConfigMngr : IResultsConfigMngr
     {
-        private IResultsConfigReader configurationReader;
+        /// <summary>
+        /// the configuration reader.
+        /// </summary>
+        private readonly IResultsConfigReader configurationReader;
+
+        /// <summary>
+        /// Application logger.
+        /// </summary>
+        private readonly IJHcLogger logger;
+
+        /// <summary>
+        /// The general IO manager.
+        /// </summary>
+        private readonly IGeneralIo generalIo;
 
         /// <summary>
         /// Initialise a new instance of the <see cref="ResultsConfigMngr"/> class.
         /// </summary>
-        public ResultsConfigMngr()
+        /// <param name="generalIo">general IO manager</param>
+        /// <param name="logger">application model</param>
+        public ResultsConfigMngr(
+            IGeneralIo generalIo,
+            IJHcLogger logger)
         {
-            this.configurationReader = new ResultsConfigReader();
+            this.logger = logger;
+            this.generalIo = generalIo;
+            this.configurationReader =
+                new ResultsConfigReader(
+                    logger);
 
             this.ResultsConfigurationDetails =
               this.configurationReader.LoadResultsConfigData(
-                GeneralIO.ResultsConfigurationFile);
+                this.generalIo.ResultsConfigurationFile);
         }
 
         /// <summary>
@@ -39,11 +63,11 @@
         public void SaveDefaultResultsConfiguration(
           bool overrideExisting = false)
         {
-            if (!File.Exists(GeneralIO.ResultsConfigurationFile) || overrideExisting)
+            if (!File.Exists(this.generalIo.ResultsConfigurationFile) || overrideExisting)
             {
                 this.SaveResultsConfiguration(
                   new ResultsConfigType(4, 2, 10, 4, 5, 2, 0, true, true, true, false));
-                JHcLogger.Instance.WriteLog("Couldn't find results config file. Created a new default one");
+                this.logger.WriteLog("Couldn't find results config file. Created a new default one");
             }
         }
 
@@ -112,13 +136,13 @@
             try
             {
                 this.configurationReader.SaveResultsConfigData(
-                  GeneralIO.ResultsConfigurationFile,
+                  this.generalIo.ResultsConfigurationFile,
                   resultsConfig);
                 this.ResultsConfigurationDetails = resultsConfig;
             }
             catch (Exception ex)
             {
-                JHcLogger.Instance.WriteLog("Failed to save results config file: " + ex.ToString());
+                this.logger.WriteLog("Failed to save results config file: " + ex.ToString());
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         "Error creating results config file"));

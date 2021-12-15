@@ -7,6 +7,7 @@
     using System.Xml.Linq;
 
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using CommonLib.Converters;
@@ -14,11 +15,12 @@
     using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.AthletesModel;
     using HandicapModel.Common;
+    using HandicapModel.Interfaces.Admin.IO.XML;
 
     /// <summary>
     /// IO Class for the Athlete data XML file.
     /// </summary>
-    internal static class AthleteDataReader
+    internal class AthleteDataReader : IAthleteDataReader
     {
         /// <summary>
         /// Root label in the file.
@@ -121,9 +123,23 @@
         private const string c_numberAttribute = "no";
 
         /// <summary>
+        /// The instance of the logger.
+        /// </summary>
+        private readonly IJHcLogger logger;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AthleteDataReader"/> class.
+        /// </summary>
+        /// <param name="logger">application logger</param>
+        public AthleteDataReader(IJHcLogger logger)
+        {
+            this.logger = logger;
+        }
+
+        /// <summary>
         /// Contructs the xml and writes it to a data file
         /// </summary>
-        public static bool SaveAthleteData(
+        public bool SaveAthleteData(
             string fileName,
             Athletes athleteDetailsList)
         {
@@ -180,8 +196,7 @@
             }
             catch (Exception ex)
             {
-                JHcLogger logger = JHcLogger.GetInstance();
-                logger.WriteLog("Error writing Athlete data " + ex.ToString());
+                this.logger.WriteLog("Error writing Athlete data " + ex.ToString());
             }
 
 
@@ -193,7 +208,7 @@
         /// </summary>
         /// <param name="fileName">name of xml file</param>
         /// <returns>decoded athlete's details</returns>
-        public static Athletes ReadAthleteData(string fileName)
+        public Athletes ReadAthleteData(string fileName)
         {
             Athletes athleteData = new Athletes();
 
@@ -203,7 +218,7 @@
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         error));
-                JHcLogger.Instance.WriteLog(error);
+                this.logger.WriteLog(error);
                 SaveAthleteData(fileName, new Athletes());
             }
 
@@ -249,8 +264,8 @@
 
                 foreach (var athlete in athleteList)
                 {
-                    bool signedConsent = AthleteDataReader.ConvertBool(athlete.signedConsent);
-                    bool isActive = AthleteDataReader.ConvertBool(athlete.active);
+                    bool signedConsent = this.ConvertBool(athlete.signedConsent);
+                    bool isActive = this.ConvertBool(athlete.active);
 
                     AthleteDetails athleteDetails =
                       new AthleteDetails(
@@ -289,8 +304,7 @@
             }
             catch (Exception ex)
             {
-                JHcLogger logger = JHcLogger.GetInstance();
-                logger.WriteLog("Error reading athlete data: " + ex.ToString());
+                this.logger.WriteLog("Error reading athlete data: " + ex.ToString());
 
                 athleteData = new Athletes();
             }
@@ -304,7 +318,7 @@
         /// </summary>
         /// <param name="xmlValue">value to convert</param>
         /// <returns>new boolean</returns>
-        private static bool ConvertBool(string xmlValue)
+        private bool ConvertBool(string xmlValue)
         {
             if (xmlValue == null)
             {

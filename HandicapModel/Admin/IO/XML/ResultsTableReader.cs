@@ -7,14 +7,19 @@
     using System.Text;
     using System.Xml.Linq;
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Types;
     using CommonLib.Enumerations;
     using CommonLib.Types;
     using HandicapModel.Common;
+    using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.SeasonModel.EventModel;
     using HandicapModel.SeasonModel.EventModel;
 
-    public class ResultsTableReader
+    /// <summary>
+    /// The results table reader.
+    /// </summary>
+    public class ResultsTableReader : IResultsTableReader
     {
         private const string c_rootElement = "ResTbl";
         private const string c_rowElement = "Row";
@@ -36,6 +41,20 @@
         private const string c_ybAttribute = "YB";
         private const string ageGradedRatingAttribute = "AGR";
 
+        /// <summary>
+        /// The instance of the logger.
+        /// </summary>
+        private readonly IJHcLogger logger;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="ResultsTableReader"/> class.
+        /// </summary>
+        /// <param name="logger"></param>
+        public ResultsTableReader(IJHcLogger logger)
+        {
+            this.logger = logger;
+        }
+
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         /// <name>SaveAthleteSeasonSata</name>
         /// <date>29/03/15</date>
@@ -46,7 +65,7 @@
         /// <param name="eventName">event name</param>
         /// <param name="resultsTable">points table</param>
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public static bool SaveResultsTable(
+        public bool SaveResultsTable(
             string seasonName,
             string eventName,
             List<IResultsTableEntry> resultsTable)
@@ -91,8 +110,7 @@
 
             catch (Exception ex)
             {
-                JHcLogger logger = JHcLogger.GetInstance();
-                logger.WriteLog("Error writing results table" + ex.ToString());
+                this.logger.WriteLog("Error writing results table" + ex.ToString());
                 success = false;
             }
 
@@ -106,7 +124,7 @@
         /// <param name="eventName">event name</param>
         /// <param name="date">event date</param>
         /// <returns>decoded athlete's details</returns>
-        public static IEventResults LoadResultsTable(
+        public IEventResults LoadResultsTable(
             string seasonName,
             string eventName,
             DateType date)
@@ -147,7 +165,7 @@
                         SexType sex = SexType.Default;
                         if (!Enum.TryParse(row.sex, out sex))
                         {
-                            JHcLogger.GetInstance().WriteLog("Error reading sex from " + row.name);
+                            this.logger.WriteLog("Error reading sex from " + row.name);
                         }
 
                         ResultsTableEntry rowEntry =
@@ -175,8 +193,7 @@
             }
             catch (Exception ex)
             {
-                JHcLogger logger = JHcLogger.GetInstance();
-                logger.WriteLog("Error reading results table: " + ex.ToString());
+                this.logger.WriteLog("Error reading results table: " + ex.ToString());
 
                 resultsTable = new EventResults();
             }

@@ -73,7 +73,6 @@ namespace jHandicap.ViewModel
 
             SimpleIoc.Default.Register<IBLMngr, BLMngr>();
 
-
             SimpleIoc.Default.Register<PrimaryDisplayViewModel>();
             SimpleIoc.Default.Register<SeasonPaneViewModel>();
             SimpleIoc.Default.Register<EventPaneViewModel>();

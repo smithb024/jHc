@@ -117,6 +117,13 @@
     <Compile Include="Common\CommonHarmonyPoints.cs" />
     <Compile Include="Common\CommonPoints.cs" />
     <Compile Include="Common\AthleteTime.cs" />
+    <Compile Include="Interfaces\Admin\IO\XML\IAthleteDataReader.cs" />
+    <Compile Include="Interfaces\Admin\IO\XML\IAthleteSeasonDataReader.cs" />
+    <Compile Include="Interfaces\Admin\IO\XML\IClubDataReader.cs" />
+    <Compile Include="Interfaces\Admin\IO\XML\IClubSeasonDataReader.cs" />
+    <Compile Include="Interfaces\Admin\IO\XML\IEventDataReader.cs" />
+    <Compile Include="Interfaces\Admin\IO\XML\IResultsTableReader.cs" />
+    <Compile Include="Interfaces\Admin\IO\XML\ISummaryDataReader.cs" />
     <Compile Include="Interfaces\Common\IAthleteHarmonyPoints.cs" />
     <Compile Include="Interfaces\Common\IAthleteTime.cs" />
     <Compile Include="Interfaces\Common\ICommonHarmonyPoints.cs" />

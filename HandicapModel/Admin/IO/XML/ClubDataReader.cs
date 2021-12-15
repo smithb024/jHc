@@ -8,14 +8,30 @@
     using System.Threading.Tasks;
     using System.Xml.Linq;
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.ClubsModel;
+    using HandicapModel.Interfaces.Admin.IO.XML;
 
-    internal static class ClubDataReader
+    internal class ClubDataReader : IClubDataReader
     {
         private const string c_rootLabel = "ClubDetails";
         private const string c_clubLabel = "club";
+
+        /// <summary>
+        /// The instance of the logger.
+        /// </summary>
+        private readonly IJHcLogger logger;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="ClubData"/> class.
+        /// </summary>
+        /// <param name="logger"></param>
+        public ClubDataReader(IJHcLogger logger)
+        {
+            this.logger = logger;
+        }
 
         /// ---------- ---------- ---------- ---------- ---------- ----------
         /// <name>SaveClubData</name>
@@ -26,8 +42,9 @@
         /// <param name="fileName">file name</param>
         /// <param name="clubList">list of clubs</param>
         /// ---------- ---------- ---------- ---------- ---------- ----------
-        public static bool SaveClubData(string fileName,
-                                        Clubs clubList)
+        public bool SaveClubData(
+            string fileName,
+            Clubs clubList)
         {
             bool success = true;
 
@@ -49,8 +66,7 @@
             }
             catch (Exception ex)
             {
-                JHcLogger logger = JHcLogger.GetInstance();
-                logger.WriteLog("Error saving club data " + ex.ToString());
+                this.logger.WriteLog("Error saving club data " + ex.ToString());
             }
 
             return success;
@@ -64,7 +80,7 @@
         /// </summary>
         /// <param name="fileName">file name</param>
         /// ---------- ---------- ---------- ---------- ---------- ----------
-        public static Clubs LoadClubData(string fileName)
+        public Clubs LoadClubData(string fileName)
         {
             Clubs clubList = new Clubs();
 
@@ -74,8 +90,8 @@
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         error));
-                JHcLogger.Instance.WriteLog(error);
-                SaveClubData(fileName, new Clubs());
+                this.logger.WriteLog(error);
+                this.SaveClubData(fileName, new Clubs());
             }
 
             try
@@ -96,8 +112,7 @@
             }
             catch (Exception ex)
             {
-                JHcLogger logger = JHcLogger.GetInstance();
-                logger.WriteLog("Error reading club data " + ex.ToString());
+                this.logger.WriteLog("Error reading club data " + ex.ToString());
             }
 
             return clubList;
