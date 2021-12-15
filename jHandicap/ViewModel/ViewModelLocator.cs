@@ -15,15 +15,18 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
-using HandicapModel;
-using HandicapModel.Admin.IO.TXT;
-using HandicapModel.Admin.Manage;
-using HandicapModel.Interfaces;
-using jHCVMUI.ViewModels.Primary;
-using jHCVMUI.ViewModels.ViewModels;
 
 namespace jHandicap.ViewModel
 {
+    using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
+    using HandicapModel;
+    using HandicapModel.Admin.IO.TXT;
+    using HandicapModel.Admin.Manage;
+    using HandicapModel.Interfaces;
+    using jHCVMUI.ViewModels.Primary;
+    using jHCVMUI.ViewModels.ViewModels;
+
     /// <summary>
     /// This class contains static references to all the view models in the
     /// application and provides an entry point for the bindings.
@@ -47,6 +50,8 @@ namespace jHandicap.ViewModel
             ////    // Create run time view services and models
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
+
+            SimpleIoc.Default.Register<IJHcLogger, JHcLogger>();
 
             SimpleIoc.Default.Register<ISeasonIO, SeasonIO>();
             SimpleIoc.Default.Register<IResultsConfigMngr, ResultsConfigMngr>();

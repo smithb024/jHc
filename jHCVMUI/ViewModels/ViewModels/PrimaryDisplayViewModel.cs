@@ -14,6 +14,7 @@
     using NynaeveLib.DialogService;
 
     using Common;
+    using CommonHandicapLib.Interfaces;
     using jHCVMUI.ViewModels.Config;
     using DataEntry;
     using jHCVMUI.ViewModels.Labels;
@@ -34,6 +35,11 @@
     /// </summary>
     public class PrimaryDisplayViewModel : ViewModelBase
     {
+        /// <summary>
+        /// The instance of the logger.
+        /// </summary>
+        private readonly IJHcLogger logger;
+
         private ClubConfigurationDialog m_clubConfigDialog = null;
         private AthleteConfigurationDialog m_athleteConfigDialog = null;
         private SummaryDialog m_summaryDialog = null;
@@ -68,15 +74,20 @@
         private IBLMngr businessLayerManager;
 
         /// <summary>
-        ///   Creates a new instance of the PrimaryDisplayViewModel class
+        /// Creates a new instance of the <see cref="PrimaryDisplayViewModel"/> class
         /// </summary>
+        /// <param name="model">application model</param>
+        /// <param name="businessLayerManager">business layer manager</param>
+        /// <param name="resultsConfigurationManager">results configuration manager</param>
+        /// <param name="logger">application logger</param>
         public PrimaryDisplayViewModel(
             IModel model,
             IBLMngr businessLayerManager,
-            IResultsConfigMngr resultsConfigurationManager)
+            IResultsConfigMngr resultsConfigurationManager,
+            IJHcLogger logger)
         {
-            JHcLogger logger = JHcLogger.GetInstance();
-            logger.WriteLog("HandicapMainViewModel created");
+            this.logger = logger;
+            this.logger.WriteLog("HandicapMainViewModel created");
             this.model = model;
             this.resultsConfigurationManager = resultsConfigurationManager;
             this.businessLayerManager = businessLayerManager;
@@ -561,7 +572,7 @@
         {
             if (this.resultsConfigurationManager == null)
             {
-                JHcLogger.Instance.WriteLog(
+                this.logger.WriteLog(
                   "PrimaryDisplayViewModel failed to initalise, null results config manager");
                 return;
             }

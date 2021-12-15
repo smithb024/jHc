@@ -7,7 +7,7 @@
     using System.Windows;
     using System.Windows.Input;
 
-    using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using HandicapModel;
     using HandicapModel.Admin.IO;
     using HandicapModel.Admin.Manage;
@@ -31,6 +31,11 @@
         /// </summary>
         private IModel model;
 
+        /// <summary>
+        /// The instance of the logger.
+        /// </summary>
+        private readonly IJHcLogger logger;
+
         private AthleteRegisterToSeasonDialog m_athleteSeasonRegDialog = null;
         private AthleteSeasonSummaryDialog m_athleteSeasonSummaryDialog = null;
 
@@ -49,10 +54,13 @@
         /// </summary>
         /// <param name="model"></param>
         /// <param name="businessLayerManager"></param>
+        /// <param name="logger">program logger</param>
         public SeasonPaneViewModel(
             IModel model,
-          IBLMngr businessLayerManager)
+          IBLMngr businessLayerManager,
+          IJHcLogger logger)
         {
+            this.logger = logger;
             this.model = model;
             this.businessLayerManager = businessLayerManager;
             //model.SeasonsCallback = new SeasonsDelegate(PopulateSeasons);
@@ -250,8 +258,7 @@
         {
             if (this.SelectedSeasonIndex >= 0)
             {
-                JHcLogger logger = JHcLogger.GetInstance();
-                logger.WriteLog("Load season " + seasonName);
+                this.logger.WriteLog("Load season " + seasonName);
 
                 this.businessLayerManager.LoadNewSeason(seasonName);
 
@@ -294,8 +301,7 @@
             }
             catch (Exception ex)
             {
-                JHcLogger logger = JHcLogger.GetInstance();
-                logger.WriteLog(ex.ToString());
+                this.logger.WriteLog(ex.ToString());
             }
         }
 

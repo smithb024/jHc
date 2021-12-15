@@ -1,11 +1,12 @@
 ﻿namespace CommonHandicapLib
 {
+    using Interfaces;
     using NynaeveLib.Logger;
 
     /// <summary>
     /// Wrapper for the <see cref="Logger"/> class.
     /// </summary>
-    public class JHcLogger
+    public class JHcLogger : IJHcLogger
     {
         /// <summary>
         /// The library logger.

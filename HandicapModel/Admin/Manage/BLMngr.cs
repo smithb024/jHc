@@ -4,6 +4,7 @@
     using System.IO;
 
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
 
@@ -33,6 +34,11 @@
         private readonly IModel model;
 
         /// <summary>
+        /// The instance of the logger.
+        /// </summary>
+        private readonly IJHcLogger logger;
+
+        /// <summary>
         /// The results configuration manager.
         /// </summary>
         private readonly IResultsConfigMngr resultsConfigurationManager;
@@ -55,8 +61,10 @@
         public BLMngr(
             IModel model,
             IResultsConfigMngr resultsConfigurationManager,
-            ISeasonIO seasonIO)
+            ISeasonIO seasonIO,
+            IJHcLogger logger)
         {
+            this.logger = logger;
             this.model = model;
             this.resultsConfigurationManager = resultsConfigurationManager;
             this.seasonIO = seasonIO;
@@ -89,7 +97,7 @@
         public bool CreateNewSeason(string seasonName)
         {
             bool success = true;
-            JHcLogger.Instance.WriteLog(string.Format("Create new season {0}", seasonName));
+            this.logger.WriteLog(string.Format("Create new season {0}", seasonName));
             Messenger.Default.Send(
                 new HandicapErrorMessage(
                     string.Empty));
@@ -120,11 +128,11 @@
 
             if (success)
             {
-                JHcLogger.Instance.WriteLog(string.Format("Finishing creating new season {0}", seasonName));
+                this.logger.WriteLog(string.Format("Finishing creating new season {0}", seasonName));
             }
             else
             {
-                JHcLogger.Instance.WriteLog("Failed to Create New Season");
+                this.logger.WriteLog("Failed to Create New Season");
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         "Season creation failed"));
@@ -182,11 +190,11 @@
 
             if (success)
             {
-                JHcLogger.Instance.WriteLog(string.Format("Finishing creating new event {0}", eventName));
+                this.logger.WriteLog(string.Format("Finishing creating new event {0}", eventName));
             }
             else
             {
-                JHcLogger.Instance.WriteLog("Failed to Create New Event");
+                this.logger.WriteLog("Failed to Create New Event");
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         "Event creation failed"));

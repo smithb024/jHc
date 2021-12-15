@@ -83,7 +83,7 @@
     <Compile Include="Admin\IO\RootPath.cs" />
     <Compile Include="Admin\IO\SummaryData.cs" />
     <Compile Include="Admin\IO\TXT\CommonIO.cs" />
-    <Compile Include="Admin\IO\TXT\ISeasonIO.cs" />
+    <Compile Include="Interfaces\Admin\IO\TXT\ISeasonIO.cs" />
     <Compile Include="Admin\IO\TXT\RootIO.cs" />
     <Compile Include="Admin\IO\TXT\EventIO.cs" />
     <Compile Include="Admin\IO\TXT\RawEventIO.cs" />

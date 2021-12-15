@@ -48,6 +48,7 @@
     <Compile Include="Helpers\EventRawResults\ResultsDecoder.cs" />
     <Compile Include="Helpers\HandicapHelper.cs" />
     <Compile Include="Helpers\NameHelper.cs" />
+    <Compile Include="Interfaces\IJHcLogger.cs" />
     <Compile Include="JHcLogger.cs" />
     <Compile Include="Messages\HandicapProgressMessage.cs" />
     <Compile Include="Messages\HandicapErrorMessage.cs" />
