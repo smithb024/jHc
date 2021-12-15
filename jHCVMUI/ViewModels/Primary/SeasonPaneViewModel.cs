@@ -11,6 +11,7 @@
     using HandicapModel;
     using HandicapModel.Admin.IO;
     using HandicapModel.Admin.Manage;
+    using HandicapModel.Interfaces.Admin.IO;
     using jHCVMUI.ViewModels.ViewModels;
     using jHCVMUI.ViewModels.Commands.Main;
     using jHCVMUI.Views.Configuration;
@@ -29,7 +30,12 @@
         /// <summary>
         /// Junior handicap model.
         /// </summary>
-        private IModel model;
+        private readonly IModel model;
+
+        /// <summary>
+        /// The general IO manager;
+        /// </summary>
+        private readonly IGeneralIo generalIo;
 
         /// <summary>
         /// The instance of the logger.
@@ -54,15 +60,18 @@
         /// </summary>
         /// <param name="model"></param>
         /// <param name="businessLayerManager"></param>
+        /// <param name="generalIo">general IO manager</param>
         /// <param name="logger">program logger</param>
         public SeasonPaneViewModel(
             IModel model,
-          IBLMngr businessLayerManager,
-          IJHcLogger logger)
+            IBLMngr businessLayerManager,
+            IGeneralIo generalIo,
+            IJHcLogger logger)
         {
             this.logger = logger;
             this.model = model;
             this.businessLayerManager = businessLayerManager;
+            this.generalIo = generalIo;
             //model.SeasonsCallback = new SeasonsDelegate(PopulateSeasons);
 
             OpenAthleteSeasonNewRegCommand =
@@ -91,7 +100,8 @@
         /// <summary>
         /// Gets a value indicating whether the location is valid or not.
         /// </summary>
-        public bool LocationValid => GeneralIO.DataFolderExists && GeneralIO.ConfigurationFolderExists;
+        public bool LocationValid =>
+            this.generalIo.DataFolderExists && this.generalIo.ConfigurationFolderExists;
 
         /// <summary>
         /// Gets or sets seasons list
@@ -125,7 +135,7 @@
 
                 currentSeasonIndex = value;
                 RaisePropertyChangedEvent(nameof(this.SelectedSeasonIndex));
-                
+
                 this.LoadSeason(this.Seasons[value]);
             }
         }

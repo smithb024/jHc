@@ -9,6 +9,7 @@
     using HandicapModel;
     using HandicapModel.Admin.IO;
     using HandicapModel.Admin.Manage;
+    using HandicapModel.Interfaces.Admin.IO;
 
     using NynaeveLib.Commands;
     using NynaeveLib.DialogService;
@@ -39,6 +40,11 @@
         /// The instance of the logger.
         /// </summary>
         private readonly IJHcLogger logger;
+
+        /// <summary>
+        /// The instance of the general IO manager.
+        /// </summary>
+        private readonly IGeneralIo generalIo;
 
         private ClubConfigurationDialog m_clubConfigDialog = null;
         private AthleteConfigurationDialog m_athleteConfigDialog = null;
@@ -79,11 +85,13 @@
         /// <param name="model">application model</param>
         /// <param name="businessLayerManager">business layer manager</param>
         /// <param name="resultsConfigurationManager">results configuration manager</param>
+        /// <param name="generalIo">general IO manager</param>
         /// <param name="logger">application logger</param>
         public PrimaryDisplayViewModel(
             IModel model,
             IBLMngr businessLayerManager,
             IResultsConfigMngr resultsConfigurationManager,
+            IGeneralIo generalIo,
             IJHcLogger logger)
         {
             this.logger = logger;
@@ -91,6 +99,7 @@
             this.model = model;
             this.resultsConfigurationManager = resultsConfigurationManager;
             this.businessLayerManager = businessLayerManager;
+            this.generalIo = generalIo;
 
             Messenger.Default.Register<HandicapErrorMessage>(this, this.PopulateErrorInformation);
             Messenger.Default.Register<HandicapProgressMessage>(this, this.PopulateProgressInformation);
@@ -167,7 +176,8 @@
         /// <summary>
         /// Gets a value indicating whether the location is valid or not.
         /// </summary>
-        public bool LocationValid => GeneralIO.DataFolderExists && GeneralIO.ConfigurationFolderExists;
+        public bool LocationValid =>
+            this.generalIo.DataFolderExists && this.generalIo.ConfigurationFolderExists;
 
         public ICommand CreateNewSeriesCommand { get; private set; }
         public ICommand LoadNewSeriesCommand { get; private set; }
@@ -548,8 +558,8 @@
         /// </summary>
         public void CreateNewSeries()
         {
-            GeneralIO.CreateConfigurationFolder();
-            GeneralIO.CreateDataFolder();
+            this.generalIo.CreateConfigurationFolder();
+            this.generalIo.CreateDataFolder();
             this.InitialiseViewModels();
             SeriesConfigMngr.ReadSeriesConfiguration();
 

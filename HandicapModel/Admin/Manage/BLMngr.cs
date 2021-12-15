@@ -18,10 +18,10 @@
 
     using HandicapModel.Common;
     using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.Admin.IO.TXT;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
-    using HandicapModel.SeasonModel.EventModel;
 
     /// <summary>
     /// Class which manages the business layer.
@@ -54,20 +54,30 @@
         private readonly ISeasonIO seasonIO;
 
         /// <summary>
+        /// The event IO manager.
+        /// </summary>
+        private readonly IEventIo eventIo;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="BLMngr"/> class.
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="resultsConfigurationManager"></param>
+        /// <param name="seasonIO">season IO manager</param>
+        /// <param name="eventIo">event IO manager</param>
+        /// <param name="logger">application logger</param>
         public BLMngr(
             IModel model,
             IResultsConfigMngr resultsConfigurationManager,
             ISeasonIO seasonIO,
+            IEventIo eventIo,
             IJHcLogger logger)
         {
             this.logger = logger;
             this.model = model;
             this.resultsConfigurationManager = resultsConfigurationManager;
             this.seasonIO = seasonIO;
+            this.eventIo = eventIo;
             this.ModelRootDirectory = RootIO.LoadRootFile();
 
             this.resultsCalculator =
@@ -167,7 +177,7 @@
         public bool CreateNewEvent(string eventName, DateType date)
         {
             bool success = 
-                EventIO.CreateNewEvent(
+                this.eventIo.CreateNewEvent(
                     this.model.CurrentSeason.Name, 
                     eventName);
 

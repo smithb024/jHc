@@ -10,6 +10,8 @@
     using HandicapModel.AthletesModel;
     using HandicapModel.ClubsModel;
     using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.Admin.IO;
+    using HandicapModel.Interfaces.Admin.IO.TXT;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.Interfaces.SeasonModel.EventModel;
@@ -24,24 +26,32 @@
         /// <summary>
         /// Instance of the results configuration manager.
         /// </summary>
-        private IResultsConfigMngr resultsConfigurationManager;
+        private readonly IResultsConfigMngr resultsConfigurationManager;
 
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>HandicapModel</name>
-        /// <date>25/03/15</date>
+        /// <summary>
+        /// The event IO manager.
+        /// </summary>
+        private readonly IEventIo eventIo;
+
         /// <summary>
         /// Prevents a new instance of the HandicapModel class from being created.
         /// </summary>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+        /// <param name="resultsConfigurationManager">Results configuration manager</param>
+        /// <param name="seasonIO">season IO Manager</param>
+        /// <param name="eventIo">event IO manager</param>
+        /// <param name="generalIo">general IO manager</param>
         public Model(
             IResultsConfigMngr resultsConfigurationManager,
-            ISeasonIO seasonIO)
+            ISeasonIO seasonIO,
+            IEventIo eventIo,
+            IGeneralIo generalIo)
         {
             this.resultsConfigurationManager = resultsConfigurationManager;
+            this.eventIo = eventIo;
 
             // Check for global files and create fresh if don't exist.
-            GeneralIO.CreateDataFolder();
-            GeneralIO.CreateConfigurationFolder();
+            generalIo.CreateDataFolder();
+            generalIo.CreateConfigurationFolder();
             this.resultsConfigurationManager.SaveDefaultResultsConfiguration();
             NormalisationConfigMngr.SaveDefaultNormalisationConfiguration();
 
@@ -116,7 +126,7 @@
                     this.CurrentSeason.Name,
                     eventName);
 
-            EventIO.SaveCurrentEvent(
+            this.eventIo.SaveCurrentEvent(
                 this.CurrentSeason.Name,
                 eventName);
 
@@ -317,7 +327,11 @@
         /// <returns>returns the name of the current event</returns>
         public string LoadCurrentEvent()
         {
-            return EventIO.LoadCurrentEvent(CurrentSeason.Name);
+            string currentEvent =
+                this.eventIo.LoadCurrentEvent(
+                    CurrentSeason.Name);
+
+            return currentEvent;
         }
 
         /// <summary>
