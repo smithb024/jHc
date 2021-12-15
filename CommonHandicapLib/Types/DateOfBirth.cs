@@ -39,16 +39,7 @@
                 return;
             }
 
-            try
-            {
-                dateOfBirth = new DateTime(year, month, day);
-            }
-            catch (Exception ex)
-            {
-                JHcLogger.GetInstance().WriteLog($"Error creating date time: {ex}");
-                this.SetDefaultValues();
-                return;
-            }
+            dateOfBirth = new DateTime(year, month, day);
 
             this.BirthYear = birthYear;
             this.BirthMonth = birthMonth;

@@ -155,13 +155,6 @@
       if (rhs.Minutes > lhs.Minutes ||
         (rhs.Minutes == lhs.Minutes && rhs.Seconds > lhs.Seconds))
       {
-        // TODO Need to raise an exception.
-        JHcLogger logger = JHcLogger.GetInstance();
-        logger.WriteLog("TRACE: MilesChains Error: tried to subtract " +
-                         rhs.ToString() +
-                         "from" +
-                         lhs.ToString());
-
         return new RaceTimeType(0, 0);
       }
       else
@@ -355,13 +348,8 @@
         double seconds = (dividedTime - Math.Truncate(dividedTime)) * 60;
         secondsInt = (int)Math.Round(seconds, MidpointRounding.AwayFromZero);
       }
-      catch (Exception ex)
+      catch
       {
-        // TODO Need to raise an exception.
-        JHcLogger logger = JHcLogger.GetInstance();
-        logger.WriteLog("Error Dividing " + lhs + " Error: " + ex.ToString());
-
-        string exception = ex.ToString();
         return new RaceTimeType(0, 0);
       }
 
