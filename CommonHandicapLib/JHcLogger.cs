@@ -22,22 +22,6 @@
         }
 
         /// <summary>
-        /// Gets a new instance of the <see cref="JHcLogger"/> class.
-        /// </summary>
-        public static JHcLogger Instance
-        {
-            get
-            {
-                if (m_instance == null)
-                {
-                    m_instance = new JHcLogger();
-                }
-
-                return m_instance;
-            }
-        }
-
-        /// <summary>
         /// Writes the log entry string to the log.
         /// </summary>
         /// <param name="logEntry">entry to log.</param>
