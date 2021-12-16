@@ -1,73 +1,107 @@
 ﻿namespace HandicapModel.Admin.IO
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Collections.ObjectModel;
-  using System.IO;
-  using System.Linq;
-  using System.Text;
-  using System.Threading.Tasks;
-  using HandicapModel.Admin.IO.XML;
-  using HandicapModel.ClubsModel;
+    using System.Collections.Generic;
+    using System.IO;
+    using CommonHandicapLib.Interfaces;
+    using HandicapModel.Admin.IO.XML;
+    using HandicapModel.ClubsModel;
+    using HandicapModel.Interfaces.Admin.IO;
+    using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.SeasonModel;
-    using HandicapModel.SeasonModel;
 
-  public static class ClubData
-  {
-    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-    /// <name>SaveClubData</name>
-    /// <date>22/02/15</date>
     /// <summary>
-    /// Saves the club list
+    /// Club data
     /// </summary>
-    /// <param name="fileName">file name</param>
-    /// <param name="clubList">list of clubs</param>
-    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-    public static bool SaveClubData(Clubs clubList)
+    public class ClubData : IClubData
     {
-      return ClubDataReader.SaveClubData(GeneralIO.ClubGlobalDataFile, clubList);
-    }
+        /// <summary>
+        /// The instance of the logger.
+        /// </summary>
+        private readonly IJHcLogger logger;
 
-    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-    /// <name>LoadClubData</name>
-    /// <date>22/02/15</date>
-    /// <summary>
-    /// Loads the club list from the data file and returns it.
-    /// </summary>
-    /// <param name="fileName">file name</param>
-    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-    public static Clubs LoadClubData()
-    {
-      return ClubDataReader.LoadClubData(GeneralIO.ClubGlobalDataFile);
-    }
+        /// <summary>
+        /// The general IO manager.
+        /// </summary>
+        private readonly IGeneralIo generalIo;
 
-    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-    /// <summary>
-    /// Saves the season club details.
-    /// </summary>
-    /// <param name="seasonName">season name</param>
-    /// <param name="seasons">season details to save</param>
-    /// <returns>success flag</returns>
-    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-    public static bool SaveClubSeasonData(string                  seasonName,
-                                          List<IClubSeasonDetails> seasons)
-    {
-      return ClubSeasonDataReader.SaveClubSeasonData(
-        RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.clubDataFile,
-        seasons);
-    }
+        /// <summary>
+        /// The club data reader.
+        /// </summary>
+        private IClubDataReader clubDataReader;
 
-    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-    /// <summary>
-    /// Loads the season club details.
-    /// </summary>
-    /// <param name="seasonName">season name</param>
-    /// <returns>season club details</returns>
-    /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-    public static List<IClubSeasonDetails> LoadClubSeasonData(string seasonName)
-    {
-      return ClubSeasonDataReader.LoadClubSeasonData(
-        RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.clubDataFile);
+        /// <summary>
+        /// The club season data reader.
+        /// </summary>
+        private IClubSeasonDataReader clubSeasonDataReader;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="ClubData"/> class.
+        /// </summary>
+        /// <param name="generalIo">general IO manager</param>
+        /// <param name="logger">application logger</param>
+        public ClubData(
+            IGeneralIo generalIo,
+            IJHcLogger logger)
+        {
+            this.logger = logger;
+            this.generalIo = generalIo;
+
+            this.clubDataReader =
+                new ClubDataReader(
+                    this.logger);
+            this.clubSeasonDataReader =
+                new ClubSeasonDataReader(
+                    this.logger);
+        }
+
+        /// <summary>
+        /// Saves the club list
+        /// </summary>
+        /// <param name="fileName">file name</param>
+        /// <param name="clubList">list of clubs</param>
+        public bool SaveClubData(Clubs clubList)
+        {
+            return this.clubDataReader.SaveClubData(
+                this.generalIo.ClubGlobalDataFile, 
+                clubList);
+        }
+
+        /// <summary>
+        /// Loads the club list from the data file and returns it.
+        /// </summary>
+        /// <param name="fileName">file name</param>
+        public Clubs LoadClubData()
+        {
+            return this.clubDataReader.LoadClubData(
+                this.generalIo.ClubGlobalDataFile);
+        }
+
+        /// <summary>
+        /// Saves the season club details.
+        /// </summary>
+        /// <param name="seasonName">season name</param>
+        /// <param name="seasons">season details to save</param>
+        /// <returns>success flag</returns>
+        public bool SaveClubSeasonData(
+            string seasonName,
+            List<IClubSeasonDetails> seasons)
+        {
+            return this.clubSeasonDataReader.SaveClubSeasonData(
+              RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.clubDataFile,
+              seasons);
+        }
+
+        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+        /// <summary>
+        /// Loads the season club details.
+        /// </summary>
+        /// <param name="seasonName">season name</param>
+        /// <returns>season club details</returns>
+        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+        public List<IClubSeasonDetails> LoadClubSeasonData(string seasonName)
+        {
+            return this.clubSeasonDataReader.LoadClubSeasonData(
+              RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.clubDataFile);
+        }
     }
-  }
 }

@@ -83,7 +83,11 @@
     <Compile Include="Admin\IO\RootPath.cs" />
     <Compile Include="Admin\IO\SummaryData.cs" />
     <Compile Include="Admin\IO\TXT\CommonIO.cs" />
+    <Compile Include="Interfaces\Admin\IO\IAthleteData.cs" />
+    <Compile Include="Interfaces\Admin\IO\IClubData.cs" />
+    <Compile Include="Interfaces\Admin\IO\IEventData.cs" />
     <Compile Include="Interfaces\Admin\IO\IGeneralIo.cs" />
+    <Compile Include="Interfaces\Admin\IO\ISummaryData.cs" />
     <Compile Include="Interfaces\Admin\IO\TXT\ICommonIo.cs" />
     <Compile Include="Interfaces\Admin\IO\TXT\IEventIo.cs" />
     <Compile Include="Interfaces\Admin\IO\TXT\IRawEventIo.cs" />
