@@ -12,12 +12,12 @@
 
     using Event;
     using GalaSoft.MvvmLight.Messaging;
-    using HandicapModel.Admin.IO;
     using HandicapModel.Admin.IO.ResultsCSV;
     using HandicapModel.Admin.IO.TXT;
 
     using HandicapModel.Common;
     using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO.TXT;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.Interfaces.SeasonModel;
@@ -49,6 +49,26 @@
         private readonly CalculateResultsMngr resultsCalculator;
 
         /// <summary>
+        /// The athlete data wrapper
+        /// </summary>
+        private readonly IAthleteData athleteData;
+
+        /// <summary>
+        /// The club data wrapper.
+        /// </summary>
+        private readonly IClubData clubData;
+
+        /// <summary>
+        /// The event data wrapper.
+        /// </summary>
+        private readonly IEventData eventData;
+
+        /// <summary>
+        /// The summary data wrapper
+        /// </summary>
+        private readonly ISummaryData summaryData;
+
+        /// <summary>
         /// The season IO manager.
         /// </summary>
         private readonly ISeasonIO seasonIO;
@@ -63,12 +83,20 @@
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="resultsConfigurationManager"></param>
+        /// <param name="athleteData">athlete data</param>
+        /// <param name="clubData">club data</param>
+        /// <param name="eventData">event data</param>
+        /// <param name="summaryData">summary data</param>
         /// <param name="seasonIO">season IO manager</param>
         /// <param name="eventIo">event IO manager</param>
         /// <param name="logger">application logger</param>
         public BLMngr(
             IModel model,
             IResultsConfigMngr resultsConfigurationManager,
+            IAthleteData athleteData,
+            IClubData clubData,
+            IEventData eventData,
+            ISummaryData summaryData,
             ISeasonIO seasonIO,
             IEventIo eventIo,
             IJHcLogger logger)
@@ -76,6 +104,10 @@
             this.logger = logger;
             this.model = model;
             this.resultsConfigurationManager = resultsConfigurationManager;
+            this.athleteData = athleteData;
+            this.clubData = clubData;
+            this.eventData = eventData;
+            this.summaryData = summaryData;
             this.seasonIO = seasonIO;
             this.eventIo = eventIo;
             this.ModelRootDirectory = RootIO.LoadRootFile();
@@ -122,16 +154,16 @@
                 List<AthleteSeasonDetails> athletes = new List<AthleteSeasonDetails>();
                 List<IClubSeasonDetails> clubs = new List<IClubSeasonDetails>();
 
-                success = SummaryData.SaveSummaryData(seasonName, summary);
+                success = this.summaryData.SaveSummaryData(seasonName, summary);
 
                 if (success)
                 {
-                    success = AthleteData.SaveAthleteSeasonData(seasonName, athletes);
+                    success = this.athleteData.SaveAthleteSeasonData(seasonName, athletes);
                 }
 
                 if (success)
                 {
-                    success = ClubData.SaveClubSeasonData(seasonName, clubs);
+                    success = this.clubData.SaveClubSeasonData(seasonName, clubs);
                 }
             }
 
@@ -186,15 +218,19 @@
                 this.model.UpdateEvents();
 
 
-                success = EventData.SaveEventData(this.model.CurrentSeason.Name,
-                                                  eventName,
-                                                  new EventMiscData() { EventDate = date });
+                success = 
+                    this.eventData.SaveEventData(
+                        this.model.CurrentSeason.Name,
+                        eventName,
+                        new EventMiscData() { EventDate = date });
 
                 if (success)
                 {
-                    success = SummaryData.SaveSummaryData(this.model.CurrentSeason.Name,
-                                                          eventName,
-                                                          new Summary());
+                    success = 
+                        this.summaryData.SaveSummaryData(
+                            this.model.CurrentSeason.Name,
+                            eventName,
+                            new Summary());
                 }
             }
 

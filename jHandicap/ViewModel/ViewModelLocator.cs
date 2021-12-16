@@ -25,10 +25,12 @@ namespace jHandicap.ViewModel
     using HandicapModel;
     using HandicapModel.Admin.IO;
     using HandicapModel.Admin.IO.TXT;
+    using HandicapModel.Admin.IO.XML;
     using HandicapModel.Admin.Manage;
     using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO.TXT;
+    using HandicapModel.Interfaces.Admin.IO.XML;
     using jHCVMUI.ViewModels.Primary;
     using jHCVMUI.ViewModels.ViewModels;
 
@@ -68,6 +70,8 @@ namespace jHandicap.ViewModel
             SimpleIoc.Default.Register<IClubData, ClubData>();
             SimpleIoc.Default.Register<IEventData, EventData>();
             SimpleIoc.Default.Register<ISummaryData, SummaryData>();
+
+            SimpleIoc.Default.Register<IResultsTableReader, ResultsTableReader>();
 
             SimpleIoc.Default.Register<INormalisationConfigReader, NormalisationConfigReader>();
             SimpleIoc.Default.Register<IResultsConfigReader, ResultsConfigReader>();

@@ -2,13 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Types;
     using CommonLib.Types;
-    using HandicapModel.Admin.IO;
-    using HandicapModel.Admin.IO.TXT;
     using HandicapModel.Admin.Manage;
     using HandicapModel.Common;
+    using HandicapModel.Interfaces.Admin.IO;
+    using HandicapModel.Interfaces.Admin.IO.TXT;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.Interfaces.SeasonModel;
 
@@ -17,6 +17,31 @@
     /// </summary>
     public class Season : ISeason
     {
+        /// <summary>
+        /// The athlete data wrapper
+        /// </summary>
+        private readonly IAthleteData athleteData;
+
+        /// <summary>
+        /// The club data wrapper.
+        /// </summary>
+        private readonly IClubData clubData;
+
+        /// <summary>
+        /// The summary data wrapper
+        /// </summary>
+        private readonly ISummaryData summaryData;
+
+        /// <summary>
+        /// The program logger;
+        /// </summary>
+        private readonly IJHcLogger logger;
+
+        /// <summary>
+        /// Event specific IO manager.
+        /// </summary>
+        private readonly IEventIo eventIo;
+
         /// <summary>
         /// List of all in the current season.
         /// </summary>
@@ -43,11 +68,30 @@
         private IResultsConfigMngr resultsConfigurationManager;
 
         /// <summary>
-        /// Creates a new instance of the HandicapSeason class
+        /// Initialises a new instance of the <see cref="Season"/> class
         /// </summary>
-        public Season(IResultsConfigMngr resultsConfigurationManager)
+        /// <param name="resultsConfigurationManager">
+        ///  The results configuration manager
+        /// </param>
+        /// <param name="athleteData">athlete data</param>
+        /// <param name="clubData">club data</param>
+        /// <param name="summaryData">summary data</param>
+        /// <param name="eventIo">event IO manager</param>
+        /// <param name="logger">application logger</param>
+        public Season(
+            IResultsConfigMngr resultsConfigurationManager,
+            IAthleteData athleteData,
+            IClubData clubData,
+            ISummaryData summaryData,
+            IEventIo eventIo,
+            IJHcLogger logger)
         {
             this.resultsConfigurationManager = resultsConfigurationManager;
+            this.athleteData = athleteData;
+            this.clubData = clubData;
+            this.summaryData = summaryData;
+            this.eventIo = eventIo;
+            this.logger = logger;
 
             this.athletes = new List<AthleteSeasonDetails>();
             this.clubs = new List<IClubSeasonDetails>();
@@ -177,20 +221,20 @@
             try
             {
                 this.Summary =
-                    SummaryData.LoadSummaryData(
+                    this.summaryData.LoadSummaryData(
                         seasonName);
                 this.Athletes =
-                  AthleteData.LoadAthleteSeasonData(
+                  this.athleteData.LoadAthleteSeasonData(
                     seasonName,
                     this.resultsConfigurationManager);
-                this.Clubs = ClubData.LoadClubSeasonData(seasonName);
+                this.Clubs = this.clubData.LoadClubSeasonData(seasonName);
                 this.Events =
-                    EventIO.GetEvents(
+                    this.eventIo.GetEvents(
                         seasonName);
             }
             catch (Exception ex)
             {
-                JHcLogger.GetInstance().WriteLog($"Season, Failed to load Season {ex}");
+                this.logger.WriteLog($"Season, Failed to load Season {ex}");
                 success = false;
             }
 
@@ -207,13 +251,13 @@
 
             try
             {
-                SummaryData.SaveSummaryData(Name, Summary);
-                AthleteData.SaveAthleteSeasonData(Name, Athletes);
-                ClubData.SaveClubSeasonData(Name, Clubs);
+                this.summaryData.SaveSummaryData(Name, Summary);
+                this.athleteData.SaveAthleteSeasonData(Name, Athletes);
+                this.clubData.SaveClubSeasonData(Name, Clubs);
             }
             catch (Exception ex)
             {
-                JHcLogger.GetInstance().WriteLog($"Season, Failed to save Season {ex}");
+                this.logger.WriteLog($"Season, Failed to save Season {ex}");
                 success = false;
             }
 
@@ -227,7 +271,7 @@
         /// <returns>success flag</returns>
         public bool CreateNewEvent(string eventName)
         {
-            return EventIO.CreateNewEvent(Name, eventName);
+            return this.eventIo.CreateNewEvent(Name, eventName);
         }
 
         /// <summary>
@@ -235,7 +279,7 @@
         /// </summary>
         public void NewEventCreated()
         {
-            this.Events = EventIO.GetEvents(Name);
+            this.Events = this.eventIo.GetEvents(Name);
         }
 
         /// <summary>
@@ -260,7 +304,7 @@
 
             Athletes.Add(newAthlete);
 
-            AthleteData.SaveAthleteSeasonData(Name, Athletes);
+            this.athleteData.SaveAthleteSeasonData(Name, Athletes);
 
             this.AthletesChangedEvent?.Invoke(this, new EventArgs());
         }

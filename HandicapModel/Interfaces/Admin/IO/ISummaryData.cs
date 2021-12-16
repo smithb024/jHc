@@ -1,19 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HandicapModel.Interfaces.Admin.IO
+﻿namespace HandicapModel.Interfaces.Admin.IO
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using HandicapModel.Admin.IO.XML;
-    using HandicapModel.Common;
     using HandicapModel.Interfaces.Common;
 
     /// <summary>

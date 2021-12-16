@@ -2,13 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Types;
     using CommonLib.Types;
-    using HandicapModel.Admin.IO;
-    using HandicapModel.Admin.IO.TXT;
-    using HandicapModel.Admin.IO.XML;
     using HandicapModel.Common;
+    using HandicapModel.Interfaces.Admin.IO;
+    using HandicapModel.Interfaces.Admin.IO.TXT;
+    using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.Interfaces.SeasonModel.EventModel;
 
@@ -18,15 +18,56 @@
     public class EventHC : IHandicapEvent
     {
         /// <summary>
+        /// The event data wrapper.
+        /// </summary>
+        private readonly IEventData eventData;
+
+        /// <summary>
+        /// The summary data wrapper
+        /// </summary>
+        private readonly ISummaryData summaryData;
+
+        /// <summary>
+        /// The results table reader.
+        /// </summary>
+        private readonly IResultsTableReader resultsTableReader;
+
+        /// <summary>
+        /// Raw event IO manager
+        /// </summary>
+        private readonly IRawEventIo rawEventIo;
+
+        /// <summary>
+        /// The instance of the logger.
+        /// </summary>
+        private readonly IJHcLogger logger;
+
+        /// <summary>
         /// Results table
         /// </summary>
         private IEventResults resultsTable;
 
         /// <summary>
-        /// Creates a new instance of the Handicap Event class.
+        /// Initialises a new instance of the <see cref="EventHC"/> class
         /// </summary>
-        public EventHC()
+        /// <param name="eventData">event data</param>
+        /// <param name="summaryData">summary data</param>
+        /// <param name="resultsTableReader">results table reader</param>
+        /// <param name="rawEventIo">raw events IO manager</param>
+        /// <param name="logger">application logger</param>
+        public EventHC(
+            IEventData eventData,
+            ISummaryData summaryData,
+            IResultsTableReader resultsTableReader,
+            IRawEventIo rawEventIo,
+            IJHcLogger logger)
         {
+            this.eventData = eventData;
+            this.summaryData = summaryData;
+            this.resultsTableReader = resultsTableReader;
+            this.rawEventIo = rawEventIo;
+            this.logger = logger;
+
             this.Name = string.Empty;
             this.SeasonName = string.Empty;
             this.Date = new DateType();
@@ -92,13 +133,17 @@
 
             try
             {
-                EventMiscData misc = EventData.LoadEventData(seasonName, eventName);
+                EventMiscData misc = this.eventData.LoadEventData(seasonName, eventName);
                 this.Date = misc.EventDate;
 
-                ResultsTable = ResultsTableReader.LoadResultsTable(seasonName, eventName, misc.EventDate);
+                ResultsTable = 
+                    this.resultsTableReader.LoadResultsTable(
+                        seasonName, 
+                        eventName, 
+                        misc.EventDate);
 
                 ISummary summary =
-                    SummaryData.LoadSummaryData(
+                    this.summaryData.LoadSummaryData(
                         seasonName, 
                         eventName);
 
@@ -114,7 +159,7 @@
             }
             catch (Exception ex)
             {
-                JHcLogger.Instance.WriteLog($"Failed to load new event: {ex}");
+                this.logger.WriteLog($"Failed to load new event: {ex}");
             }
 
             this.Name = eventName;
@@ -130,7 +175,7 @@
         public bool SaveRawResults(List<IRaw> results)
         {
             bool suceess =
-                RawEventIO.SaveRawEventData(
+                this.rawEventIo.SaveRawEventData(
                     this.SeasonName,
                     this.Name,
                     results);
@@ -145,7 +190,7 @@
         public List<IRaw> LoadRawResults()
         {
             List<IRaw> results =
-                RawEventIO.LoadRawEventData(
+                this.rawEventIo.LoadRawEventData(
                 this.SeasonName, 
                 this.Name);
 
@@ -166,7 +211,7 @@
         /// </summary>
         public void SaveResultsTable()
         {
-            ResultsTableReader.SaveResultsTable(
+            this.resultsTableReader.SaveResultsTable(
                 this.SeasonName,
                 this.Name,
                 this.ResultsTable.Entries);
@@ -178,7 +223,7 @@
         /// </summary>
         public void SaveEventSummary()
         {
-            SummaryData.SaveSummaryData(
+            this.summaryData.SaveSummaryData(
                 this.SeasonName, 
                 this.Name, 
                 this.Summary);
