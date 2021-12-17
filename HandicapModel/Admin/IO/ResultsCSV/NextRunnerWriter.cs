@@ -4,6 +4,7 @@
     using System.IO;
 
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using GalaSoft.MvvmLight.Messaging;
@@ -17,10 +18,12 @@
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="folder">output model</param>
+        /// <param name="logger">application logger</param>
         /// <returns>success flag</returns>
         public static bool WriteNextRunnerTable(
             IModel model,
-            string folder)
+            string folder,
+            IJHcLogger logger)
         {
             bool success = true;
 
@@ -44,7 +47,7 @@
             }
             catch (Exception ex)
             {
-                JHcLogger.GetInstance().WriteLog("Error, failed to print next runner: " + ex.ToString());
+                logger.WriteLog("Error, failed to print next runner: " + ex.ToString());
 
                 Messenger.Default.Send(
                   new HandicapErrorMessage(

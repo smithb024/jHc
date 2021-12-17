@@ -1,16 +1,11 @@
 ﻿namespace HandicapModel.Admin.IO.ResultsCSV
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using GalaSoft.MvvmLight.Messaging;
-    using HandicapModel;
-    using HandicapModel.Admin.Manage;
     using HandicapModel.Interfaces;
     using HandicapModel.SeasonModel;
 
@@ -21,10 +16,12 @@
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="folder">folder to save the file to</param>
+        /// <param name="logger">application logger</param>
         /// <returns>success flag</returns>
         public static bool SavePointsTable(
             IModel model,
-            string folder)
+            string folder,
+            IJHcLogger logger)
         {
             bool success = false;
 
@@ -72,7 +69,7 @@
             }
             catch (Exception ex)
             {
-                JHcLogger.GetInstance().WriteLog("Error, failed to print points table: " + ex.ToString());
+                logger.WriteLog("Error, failed to print points table: " + ex.ToString());
 
                 Messenger.Default.Send(
                     new HandicapErrorMessage(

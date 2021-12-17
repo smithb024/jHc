@@ -3,7 +3,7 @@
     using System.Collections.Generic;
 
     using CommonHandicapLib.Types;
-    using TXT;
+    using HandicapModel.Interfaces.Admin.IO.TXT;
 
     /// <summary>
     /// Factory class used to import the times from a file created by the parkrun timer smartphone
@@ -37,11 +37,14 @@
         /// Import the times from <paramref name="fileName"/>
         /// </summary>
         /// <param name="fileName">file containing times</param>
+        /// <param name="commonIo">common IO manager</param>
         /// <returns>collection of race times.</returns>
-        public static List<RaceTimeType> Import(string fileName)
+        public static List<RaceTimeType> Import(
+            string fileName,
+            ICommonIo commonIo)
         {
             List<RaceTimeType> rawImportedTimes = new List<RaceTimeType>();
-            List<string> rawTimes = CommonIO.ReadFile(fileName);
+            List<string> rawTimes = commonIo.ReadFile(fileName);
 
             if (rawTimes == null ||
               rawTimes.Count == 0)

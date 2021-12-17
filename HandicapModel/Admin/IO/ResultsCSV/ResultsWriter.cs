@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Interfaces;
@@ -15,10 +16,12 @@
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="folder">folder to save the file to</param>
+        /// <param name="logger">application logger</param>
         /// <returns>success flag</returns>
         public static bool WriteResultsTable(
             IModel model,
-            string folder)
+            string folder,
+            IJHcLogger logger)
         {
             bool success = false;
 
@@ -73,7 +76,7 @@
             }
             catch (Exception ex)
             {
-                JHcLogger.GetInstance().WriteLog("Error, failed to print results: " + ex.ToString());
+                logger.WriteLog("Error, failed to print results: " + ex.ToString());
 
                 Messenger.Default.Send(
                     new HandicapErrorMessage(

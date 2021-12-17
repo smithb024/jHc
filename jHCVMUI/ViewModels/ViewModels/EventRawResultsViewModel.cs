@@ -6,15 +6,14 @@
     using System.Linq;
     using System.Windows.Forms;
     using System.Windows.Input;
-    using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Helpers.EventRawResults;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.IO.RawResults;
-    using HandicapModel.Admin.IO.TXT;
     using HandicapModel.AthletesModel;
-    using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.Admin.IO.TXT;
     using HandicapModel.Interfaces.SeasonModel.EventModel;
     using HandicapModel.SeasonModel.EventModel;
     using jHCVMUI.ViewModels.ViewModels.Types.Athletes;
@@ -47,6 +46,16 @@
     /// </remarks>
     public class EventRawResultsViewModel : ViewModelBase
     {
+        /// <summary>
+        /// Common IO manager
+        /// </summary>
+        private readonly ICommonIo commonIo;
+
+        /// <summary>
+        /// aplication logger
+        /// </summary>
+        private readonly IJHcLogger logger;
+
         /// <summary>
         /// Associate athlete model..
         /// </summary>
@@ -85,13 +94,20 @@
         /// <summary>
         /// View model which manages raw results view.
         /// </summary>
-        /// <param name="model">junior handicap model</param>
+        /// <param name="handicapEventModel">junior handicap model</param>
+        /// <param name="athletesModel">athletes model</param>
+        /// <param name="commonIo">common IO manager</param>
+        /// <param name="logger">application logger</param>
         public EventRawResultsViewModel(
             IHandicapEvent handicapEventModel,
-            Athletes athletesModel)
+            Athletes athletesModel,
+            ICommonIo commonIo,
+            IJHcLogger logger)
         {
             this.handicapEventModel = handicapEventModel;
             this.athletesModel = athletesModel;
+            this.commonIo = commonIo;
+            this.logger = logger;
 
             // Get the list of athletes registered for the current season from the Business layer.
             // This doesn't include the raw results, so read this directly from a file and add
@@ -452,7 +468,7 @@
                 Messenger.Default.Send(
                     new HandicapProgressMessage(
                         "Results inport failed"));
-                JHcLogger.Instance.WriteLog("Failed on import of results: " + ex.ToString());
+                this.logger.WriteLog("Failed on import of results: " + ex.ToString());
             }
 
             bool saveSuccess = SaveRawEventResults();
@@ -480,7 +496,7 @@
         public void ImportPositionsData(string fileName)
         {
             RawImportedPostions = new List<ImportedRawPositionResults>();
-            List<List<string>> rawPositions = CommonIO.ReadPairedStringListFomFile(fileName);
+            List<List<string>> rawPositions = this.commonIo.ReadPairedStringListFomFile(fileName);
 
             foreach (List<string> positionAthleteData in rawPositions)
             {
@@ -506,7 +522,7 @@
                         Messenger.Default.Send(
                             new HandicapProgressMessage(
                                 errorString));
-                        JHcLogger.Instance.WriteLog(errorString);
+                        this.logger.WriteLog(errorString);
                     }
                 }
                 else
@@ -515,7 +531,7 @@
                     Messenger.Default.Send(
                         new HandicapProgressMessage(
                             errorString));
-                    JHcLogger.Instance.WriteLog(errorString);
+                    this.logger.WriteLog(errorString);
                 }
             }
 
@@ -534,12 +550,14 @@
                 case TimeSources.Manual:
                     this.RawImportedTimes =
                       ImportManualTimesFactory.Import(
-                        fileName);
+                        fileName,
+                        this.commonIo);
                     break;
                 case TimeSources.OPN200:
                     this.RawImportedTimes =
                       ImportOpn200TimesFactory.Import(
-                        fileName);
+                        fileName,
+                        this.commonIo);
                     break;
                 case TimeSources.Stopwatch610P:
                     this.RawImportedTimes =
@@ -549,7 +567,8 @@
                 case TimeSources.Parkrun:
                     this.RawImportedTimes =
                         ImportParkrunTimerFactory.Import(
-                            fileName);
+                            fileName,
+                            this.commonIo);
                     break;
                 default:
                     this.RawImportedTimes = new List<RaceTimeType>();

@@ -345,37 +345,37 @@
         {
             if (Directory.Exists(folder))
             {
-                if (!ResultsWriter.WriteResultsTable(this.model, folder))
+                if (!ResultsWriter.WriteResultsTable(this.model, folder, this.logger))
                 {
                     return;
                 }
 
-                if (!PointsTableWriter.SavePointsTable(this.model, folder))
+                if (!PointsTableWriter.SavePointsTable(this.model, folder, this.logger))
                 {
                     return;
                 }
 
-                if (!ClubPointsTableWriter.WriteClubPointsTable(this.model, folder))
+                if (!ClubPointsTableWriter.WriteClubPointsTable(this.model, folder, this.eventData, this.logger))
                 {
                     return;
                 }
 
-                if (!ClubPointsHarmonyTableWriter.Write(this.model, folder))
+                if (!ClubPointsHarmonyTableWriter.Write(this.model, folder, this.eventData, this.logger))
                 {
                     return;
                 }
 
-                if (!HandicapWriter.WriteHandicapTable(this.model, folder))
+                if (!HandicapWriter.WriteHandicapTable(this.model, folder, this.logger))
                 {
                     return;
                 }
 
-                if (!EventSummaryWriter.WriteEventSummaryTable(this.model, folder))
+                if (!EventSummaryWriter.WriteEventSummaryTable(this.model, folder, this.logger))
                 {
                     return;
                 }
 
-                if (!NextRunnerWriter.WriteNextRunnerTable(this.model, folder))
+                if (!NextRunnerWriter.WriteNextRunnerTable(this.model, folder, this.logger))
                 {
                     return;
                 }

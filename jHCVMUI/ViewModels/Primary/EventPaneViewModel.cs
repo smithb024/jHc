@@ -8,11 +8,13 @@
     using System.Windows.Input;
 
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonLib.Types;
-    using HandicapModel;
     using HandicapModel.Admin.IO;
     using HandicapModel.Admin.Manage;
     using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.Admin.IO;
+    using HandicapModel.Interfaces.Admin.IO.TXT;
     using jHCVMUI.ViewModels.ViewModels;
     using jHCVMUI.Views.Windows.Results;
 
@@ -20,6 +22,21 @@
 
     public class EventPaneViewModel : ViewModelBase
     {
+        /// <summary>
+        /// General IO manager
+        /// </summary>
+        private readonly IGeneralIo generalIo;
+
+        /// <summary>
+        /// Common IO manager
+        /// </summary>
+        private readonly ICommonIo commonIo;
+
+        /// <summary>
+        /// aplication logger
+        /// </summary>
+        private readonly IJHcLogger logger;
+
         private EventRawResultsDlg m_eventRawResultsDialog = null;
         private ImportEventRawResultDialog eventImportResultsDialog = null;
 
@@ -48,12 +65,21 @@
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="businessLayerManager">business layer manager</param>
+        /// <param name="generalIo">general IO manager</param>
+        /// <param name="commonIo">common IO manager</param>
+        /// <param name="logger">application logger</param>
         public EventPaneViewModel(
             IModel model,
-            IBLMngr businessLayerManager)
+            IBLMngr businessLayerManager,
+            IGeneralIo generalIo,
+            ICommonIo commonIo,
+            IJHcLogger logger)
         {
             this.model = model;
             this.businessLayerManager = businessLayerManager;
+            this.generalIo = generalIo;
+            this.commonIo = commonIo;
+            this.logger = logger;
 
             model.CurrentSeason.HandicapEventsChanged += this.ModelEventsChanged;
             this.PopulateEvents();
@@ -95,7 +121,8 @@
         /// <summary>
         /// Gets a value indicating whether the location is valid or not.
         /// </summary>
-        public bool LocationValid => GeneralIO.DataFolderExists && GeneralIO.ConfigurationFolderExists;
+        public bool LocationValid => 
+            this.generalIo.DataFolderExists && this.generalIo.ConfigurationFolderExists;
 
         /// <summary>
         /// Gets and sets seasons list
@@ -272,8 +299,7 @@
         /// <param name="seasons">seasons list</param>
         private void LoadEvent(string eventName)
         {
-            JHcLogger logger = JHcLogger.GetInstance();
-            logger.WriteLog("Load event " + eventName);
+            this.logger.WriteLog("Load event " + eventName);
             this.businessLayerManager.LoadNewEvent(eventName);
         }
 
@@ -401,7 +427,9 @@
             m_eventRawResultsViewModel =
                 new EventRawResultsViewModel(
                     this.model.CurrentEvent,
-                    this.model.Athletes);
+                    this.model.Athletes,
+                    this.commonIo,
+                    this.logger);
             m_eventRawResultsDialog.DataContext = m_eventRawResultsViewModel;
 
             // Close the import dialog if on display. These should be mutually exclusive.
@@ -430,7 +458,9 @@
             m_eventRawResultsViewModel =
                 new EventRawResultsViewModel(
                     this.model.CurrentEvent,
-                    this.model.Athletes);
+                    this.model.Athletes,
+                    this.commonIo,
+                    this.logger);
             eventImportResultsDialog.DataContext = m_eventRawResultsViewModel;
 
             // Close the raw imput dialog if on display. These should be mutually exclusive.
