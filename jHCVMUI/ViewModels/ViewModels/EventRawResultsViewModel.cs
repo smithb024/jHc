@@ -562,7 +562,8 @@
                 case TimeSources.Stopwatch610P:
                     this.RawImportedTimes =
                       Import610PFactory.Import(
-                        fileName);
+                        fileName,
+                        this.commonIo);
                     break;
                 case TimeSources.Parkrun:
                     this.RawImportedTimes =
