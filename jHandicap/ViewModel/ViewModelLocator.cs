@@ -77,7 +77,9 @@ namespace jHandicap.ViewModel
             SimpleIoc.Default.Register<IResultsConfigReader, ResultsConfigReader>();
             SimpleIoc.Default.Register<ISeriesConfigReader, SeriesConfigReader>();
 
+            SimpleIoc.Default.Register<INormalisationConfigMngr, NormalisationConfigMngr>();
             SimpleIoc.Default.Register<IResultsConfigMngr, ResultsConfigMngr>();
+            SimpleIoc.Default.Register<ISeriesConfigMngr, SeriesConfigMngr>();
             SimpleIoc.Default.Register<IModel, Model>();
 
             SimpleIoc.Default.Register<IBLMngr, BLMngr>();

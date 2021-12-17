@@ -3,35 +3,67 @@
     using System;
     using System.IO;
 
-    using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Interfaces.XML;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
-    using CommonHandicapLib.XML;
     using GalaSoft.MvvmLight.Messaging;
-    using HandicapModel.Admin.IO;
+    using HandicapModel.Interfaces.Admin.IO;
 
     /// <summary>
     /// Series configuration manager.
     /// </summary>
-    public static class SeriesConfigMngr
+    public class SeriesConfigMngr : ISeriesConfigMngr
     {
+        /// <summary>
+        /// The general IO manager.
+        /// </summary>
+        private IGeneralIo generalIo;
+
+        /// <summary>
+        /// The application logger
+        /// </summary>
+        private IJHcLogger logger;
+
+        /// <summary>
+        /// The normalisation configuration reader
+        /// </summary>
+        private ISeriesConfigReader reader;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="SeriesConfigMngr"/> class
+        /// </summary>
+        /// <param name="generalIo">general IO manager</param>
+        /// <param name="reader">series config reader</param>
+        /// <param name="logger">application logger</param>
+        public SeriesConfigMngr(
+            IGeneralIo generalIo,
+            ISeriesConfigReader reader,
+            IJHcLogger logger)
+        {
+            this.generalIo = generalIo;
+            this.reader = reader;
+            this.logger = logger;
+        }
+
         /// <summary>
         /// Creates and saves a default series configuration file.
         /// </summary>
-        public static void SaveDefaultSeriesConfiguration()
+        public void SaveDefaultSeriesConfiguration()
         {
             try
             {
-                if (!File.Exists(GeneralIO.SeriesConfigurationFile))
+                if (!File.Exists(this.generalIo.SeriesConfigurationFile))
                 {
-                    SeriesConfigReader.SaveSeriesConfigData(GeneralIO.SeriesConfigurationFile,
-                                                              new SeriesConfigType(string.Empty, false));
-                    JHcLogger.Instance.WriteLog("Couldn't find Series config file. Created a new default one");
+                    this.reader.SaveSeriesConfigData(
+                        this.generalIo.SeriesConfigurationFile,
+                        new SeriesConfigType(string.Empty, false));
+                    this.logger.WriteLog("Couldn't find Series config file. Created a new default one");
                 }
             }
             catch (Exception ex)
             {
-                JHcLogger.Instance.WriteLog("Failed to save default series config file: " + ex.ToString());
+                this.logger.WriteLog("Failed to save default series config file: " + ex.ToString());
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         "Error creating default series config file"));
@@ -42,21 +74,21 @@
         /// CSaves a series configuration file.
         /// </summary>
         /// <param name="numberPrefix">number prefix</param>
-        public static void SaveNormalisationConfiguration(
+        public void SaveNormalisationConfiguration(
           string numberPrefix,
           bool allPostions)
         {
             try
             {
-                SeriesConfigReader.SaveSeriesConfigData(
-                  GeneralIO.SeriesConfigurationFile,
+                this.reader.SaveSeriesConfigData(
+                  this.generalIo.SeriesConfigurationFile,
                   new SeriesConfigType(
                     numberPrefix,
                     allPostions));
             }
             catch (Exception ex)
             {
-                JHcLogger.Instance.WriteLog("Failed to save series config file: " + ex.ToString());
+                this.logger.WriteLog("Failed to save series config file: " + ex.ToString());
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         "Error creating series config file"));
@@ -67,19 +99,20 @@
         /// Reads the series configuration details
         /// </summary>
         /// <returns>All series configuration details</returns>
-        public static SeriesConfigType ReadSeriesConfiguration()
+        public SeriesConfigType ReadSeriesConfiguration()
         {
-            return SeriesConfigReader.LoadSeriesConfigData(
-              GeneralIO.SeriesConfigurationFile);
+            return this.reader.LoadSeriesConfigData(
+              this.generalIo.SeriesConfigurationFile);
         }
 
         /// <summary>
         /// Reads the series configuration details
         /// </summary>
         /// <returns>number prefix</returns>
-        public static string ReadNumberPrefix()
+        public string ReadNumberPrefix()
         {
-            return SeriesConfigReader.LoadSeriesConfigData(GeneralIO.SeriesConfigurationFile)?.NumberPrefix ?? string.Empty;
+            return this.reader.LoadSeriesConfigData(
+                this.generalIo.SeriesConfigurationFile)?.NumberPrefix ?? string.Empty;
         }
     }
 }
