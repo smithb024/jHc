@@ -18,11 +18,13 @@
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="folder">output model</param>
+        /// <param name="seriesConfigMngr">series configuraton manager</param>
         /// <param name="logger">application logger</param>
         /// <returns>success flag</returns>
         public static bool WriteNextRunnerTable(
             IModel model,
             string folder,
+            ISeriesConfigMngr seriesConfigMngr,
             IJHcLogger logger)
         {
             bool success = true;
@@ -31,7 +33,8 @@
                new HandicapProgressMessage(
                    "Printing next runner."));
 
-            SeriesConfigType config = SeriesConfigMngr.ReadSeriesConfiguration();
+            SeriesConfigType config = 
+                seriesConfigMngr.ReadSeriesConfiguration();
 
             try
             {

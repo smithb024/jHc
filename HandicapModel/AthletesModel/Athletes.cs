@@ -13,6 +13,11 @@
     public class Athletes
     {
         /// <summary>
+        /// The series configuration manager
+        /// </summary>
+        private readonly ISeriesConfigMngr seriesConfigManager;
+
+        /// <summary>
         /// The next available key.
         /// </summary>
         private int nextKey = 0;
@@ -20,9 +25,10 @@
         /// <summary>
         /// Initialises a new instance of the <see cref="Athletes"/> class.
         /// </summary>
-        /// <param name="nextKey">next key as read from the configuration file.</param>
-        public Athletes()
+        /// <param name="seriesConfigMngr">series configuration manager</param>
+        public Athletes(ISeriesConfigMngr seriesConfigMngr)
         {
+            this.seriesConfigManager = seriesConfigMngr;
             this.AthleteDetails = new List<AthleteDetails>();
         }
 
@@ -281,7 +287,8 @@
             get
             {
                 int nextRaceNumber = 1;
-                SeriesConfigType config = SeriesConfigMngr.ReadSeriesConfiguration();
+                SeriesConfigType config = 
+                    this.seriesConfigManager.ReadSeriesConfiguration();
                 string numberPrefix = config?.NumberPrefix;
 
                 foreach (AthleteDetails athlete in this.AthleteDetails)

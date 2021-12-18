@@ -66,16 +66,16 @@ namespace jHandicap.ViewModel
             SimpleIoc.Default.Register<ISeasonIO, SeasonIO>();
             SimpleIoc.Default.Register<IGeneralIo, GeneralIO>();
 
+            SimpleIoc.Default.Register<INormalisationConfigReader, NormalisationConfigReader>();
+            SimpleIoc.Default.Register<IResultsConfigReader, ResultsConfigReader>();
+            SimpleIoc.Default.Register<ISeriesConfigReader, SeriesConfigReader>();
+
             SimpleIoc.Default.Register<IAthleteData, AthleteData>();
             SimpleIoc.Default.Register<IClubData, ClubData>();
             SimpleIoc.Default.Register<IEventData, EventData>();
             SimpleIoc.Default.Register<ISummaryData, SummaryData>();
 
             SimpleIoc.Default.Register<IResultsTableReader, ResultsTableReader>();
-
-            SimpleIoc.Default.Register<INormalisationConfigReader, NormalisationConfigReader>();
-            SimpleIoc.Default.Register<IResultsConfigReader, ResultsConfigReader>();
-            SimpleIoc.Default.Register<ISeriesConfigReader, SeriesConfigReader>();
 
             SimpleIoc.Default.Register<INormalisationConfigMngr, NormalisationConfigMngr>();
             SimpleIoc.Default.Register<IResultsConfigMngr, ResultsConfigMngr>();

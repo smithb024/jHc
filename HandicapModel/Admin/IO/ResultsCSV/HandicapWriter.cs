@@ -21,11 +21,13 @@
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="folder">output folder</param>
+        /// <param name="normalisationConfigMngr">normalisation configuration manager</param>
         /// <param name="logger">application logger</param>
         /// <returns>success flag</returns>
         public static bool WriteHandicapTable(
             IModel model,
             string folder,
+            INormalisationConfigMngr normalisationConfigMngr,
             IJHcLogger logger)
         {
             bool success = true;
@@ -36,7 +38,8 @@
 
             try
             {
-                NormalisationConfigType hcConfiguration = NormalisationConfigMngr.ReadNormalisationConfiguration();
+                NormalisationConfigType hcConfiguration = 
+                    normalisationConfigMngr.ReadNormalisationConfiguration();
 
                 using (StreamWriter writer = new StreamWriter(Path.GetFullPath(folder) +
                                                                Path.DirectorySeparatorChar +

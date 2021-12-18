@@ -21,16 +21,24 @@
         private readonly IJHcLogger logger;
 
         /// <summary>
+        /// The normalisation config manager.
+        /// </summary>
+        private readonly INormalisationConfigMngr normalisationConfigMngr;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="DeleteResultsMngr"/> class.
         /// </summary>
         /// <param name="model">junior handicap model</param>
+        /// <param name="normalisationConfigManager">normalisation config manager</param>
         /// <param name="logger">application logger</param>
         public DeleteResultsMngr(
             IModel model,
+            INormalisationConfigMngr normalisationConfigManager,
             IJHcLogger logger)
             : base(model)
         {
             this.logger = logger;
+            this.normalisationConfigMngr = normalisationConfigManager;
         }
 
         /// <summary>
@@ -40,7 +48,8 @@
         {
             this.logger.WriteLog("Delete results");
             DateType currentDate = this.Model.CurrentEvent.Date;
-            NormalisationConfigType hcConfiguration = NormalisationConfigMngr.ReadNormalisationConfiguration();
+            NormalisationConfigType hcConfiguration = 
+                this.normalisationConfigMngr.ReadNormalisationConfiguration();
 
             // Remove points from all clubs for the known date.
             this.RemoveClubPoints(currentDate);

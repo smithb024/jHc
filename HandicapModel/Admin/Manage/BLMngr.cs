@@ -39,9 +39,19 @@
         private readonly IJHcLogger logger;
 
         /// <summary>
+        /// The normalisation configuration manager.
+        /// </summary>
+        private readonly INormalisationConfigMngr normalisationConfigurationManager;
+
+        /// <summary>
         /// The results configuration manager.
         /// </summary>
         private readonly IResultsConfigMngr resultsConfigurationManager;
+
+        /// <summary>
+        /// The series configuration manager.
+        /// </summary>
+        private readonly ISeriesConfigMngr seriesConfigurationManager;
 
         /// <summary>
         /// The results calculation manager
@@ -82,7 +92,9 @@
         /// Initialises a new instance of the <see cref="BLMngr"/> class.
         /// </summary>
         /// <param name="model">junior handicap model</param>
-        /// <param name="resultsConfigurationManager"></param>
+        /// <param name="normalisationConfigurationManager">the normalisation config manager</param>
+        /// <param name="resultsConfigurationManager">the results config manager</param>
+        /// <param name="seriesConfigurationManager">the series config manager</param>
         /// <param name="athleteData">athlete data</param>
         /// <param name="clubData">club data</param>
         /// <param name="eventData">event data</param>
@@ -92,7 +104,9 @@
         /// <param name="logger">application logger</param>
         public BLMngr(
             IModel model,
+            INormalisationConfigMngr normalisationConfigurationManager,
             IResultsConfigMngr resultsConfigurationManager,
+            ISeriesConfigMngr seriesConfigurationManager,
             IAthleteData athleteData,
             IClubData clubData,
             IEventData eventData,
@@ -103,7 +117,9 @@
         {
             this.logger = logger;
             this.model = model;
+            this.normalisationConfigurationManager = normalisationConfigurationManager;
             this.resultsConfigurationManager = resultsConfigurationManager;
+            this.seriesConfigurationManager = seriesConfigurationManager;
             this.athleteData = athleteData;
             this.clubData = clubData;
             this.eventData = eventData;
@@ -115,7 +131,10 @@
             this.resultsCalculator =
                 new CalculateResultsMngr(
                     this.model,
-                    this.resultsConfigurationManager);
+                    this.normalisationConfigurationManager,
+                    this.resultsConfigurationManager,
+                    this.seriesConfigurationManager,
+                    this.logger);
         }
 
         /// <summary>
@@ -313,7 +332,9 @@
         {
             DeleteResultsMngr mngr =
                 new DeleteResultsMngr(
-                    this.model);
+                    this.model,
+                    this.normalisationConfigurationManager,
+                    this.logger);
             mngr.DeleteResults();
         }
 
@@ -365,7 +386,7 @@
                     return;
                 }
 
-                if (!HandicapWriter.WriteHandicapTable(this.model, folder, this.logger))
+                if (!HandicapWriter.WriteHandicapTable(this.model, folder, this.normalisationConfigurationManager, this.logger))
                 {
                     return;
                 }
@@ -375,7 +396,7 @@
                     return;
                 }
 
-                if (!NextRunnerWriter.WriteNextRunnerTable(this.model, folder, this.logger))
+                if (!NextRunnerWriter.WriteNextRunnerTable(this.model, folder, this.seriesConfigurationManager, this.logger))
                 {
                     return;
                 }

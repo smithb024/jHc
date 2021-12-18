@@ -42,6 +42,8 @@
         /// <param name="logger">application logger</param>
         public AthleteData(
             IGeneralIo generalIo,
+            INormalisationConfigMngr normalisationConfigManager,
+            ISeriesConfigMngr seriesConfigManager,
             IJHcLogger logger)
         {
             this.generalIo = generalIo;
@@ -49,6 +51,8 @@
 
             this.athleteDataReader =
                 new AthleteDataReader(
+                    normalisationConfigManager,
+                    seriesConfigManager,
                     this.logger);
             this.athleteSeasonDataReader =
                 new AthleteSeasonDataReader(

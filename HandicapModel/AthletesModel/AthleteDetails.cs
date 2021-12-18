@@ -15,10 +15,18 @@
     public class AthleteDetails
     {
         /// <summary>
+        /// The normalisation config manager.
+        /// </summary>
+        private readonly INormalisationConfigMngr normalisationConfigMngr;
+
+        /// <summary>
         ///   Creates a new instance of the AthleteDetails class
         /// </summary>
         /// <param name="key">unique key</param>
-        public AthleteDetails(int key)
+        /// <param name="normalisationConfigManager">normalisation config manager</param>
+        public AthleteDetails(
+            int key,
+            INormalisationConfigMngr normalisationConfigManager)
           : this(
               key,
               string.Empty,
@@ -29,7 +37,8 @@
               "1",
               "1",
               false,
-              true)
+              true,
+              normalisationConfigManager)
         {
         }
 
@@ -48,6 +57,7 @@
         /// indicates whether the parental consent form has been signed
         /// </param>
         /// <param name="active">active</param>
+        /// <param name="normalisationConfigManager">normalisation config manager</param>
         public AthleteDetails(
           int key,
           string name,
@@ -58,7 +68,8 @@
           string birthMonth,
           string birthDay,
           bool signedConsent,
-          bool active)
+          bool active,
+            INormalisationConfigMngr normalisationConfigManager)
         {
             this.Key = key;
             this.Name = name;
@@ -77,6 +88,8 @@
                 birthYear,
                 birthMonth,
                 birthDay);
+
+            this.normalisationConfigMngr = normalisationConfigManager;
         }
 
         /// <summary>
@@ -95,6 +108,7 @@
         /// <param name="birthYear">birth year, no longer recorded</param>
         /// <param name="birthMonth">birth month, no longer recorded</param>
         /// <param name="birthDay">birth day, no longer recorded</param>
+        /// <param name="normalisationConfigManager">normalisation config manager</param>
         public AthleteDetails(
           int key,
           string name,
@@ -106,7 +120,8 @@
           List<Appearances> times,
           string birthYear,
           string birthMonth,
-          string birthDay)
+          string birthDay,
+            INormalisationConfigMngr normalisationConfigManager)
         {
             this.Key = key;
             this.Name = name;
@@ -126,6 +141,8 @@
                 birthYear,
                 birthMonth,
                 birthDay);
+
+            this.normalisationConfigMngr = normalisationConfigManager;
         }
 
         /// <summary>
@@ -235,7 +252,8 @@
                 }
 
                 // TODO, do we really want to read this every time, can it be stored in memory?
-                NormalisationConfigType normalisationConfig = NormalisationConfigMngr.ReadNormalisationConfiguration();
+                NormalisationConfigType normalisationConfig =
+                    this.normalisationConfigMngr.ReadNormalisationConfiguration();
 
                 if (!normalisationConfig.UseCalculatedHandicap)
                 {

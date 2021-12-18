@@ -13,6 +13,7 @@
     using CommonLib.Converters;
     using CommonLib.Types;
     using GalaSoft.MvvmLight.Messaging;
+    using HandicapModel.Admin.Manage;
     using HandicapModel.AthletesModel;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO.XML;
@@ -123,6 +124,16 @@
         private const string c_numberAttribute = "no";
 
         /// <summary>
+        /// Normalisation config manager.
+        /// </summary>
+        private readonly INormalisationConfigMngr normalisationConfigManager;
+
+        /// <summary>
+        /// Series config manager
+        /// </summary>
+        private readonly ISeriesConfigMngr seriesConfigManager;
+
+        /// <summary>
         /// The instance of the logger.
         /// </summary>
         private readonly IJHcLogger logger;
@@ -130,10 +141,17 @@
         /// <summary>
         /// Initialises a new instance of the <see cref="AthleteDataReader"/> class.
         /// </summary>
+        /// <param name="normalisationConfigManager">Normalisation config manager</param>
+        /// <param name="seriesConfigManager">series config manager</param>
         /// <param name="logger">application logger</param>
-        public AthleteDataReader(IJHcLogger logger)
+        public AthleteDataReader(
+            INormalisationConfigMngr normalisationConfigManager,
+            ISeriesConfigMngr seriesConfigManager,
+            IJHcLogger logger)
         {
             this.logger = logger;
+            this.normalisationConfigManager = normalisationConfigManager;
+            this.seriesConfigManager = seriesConfigManager;
         }
 
         /// <summary>
@@ -210,7 +228,7 @@
         /// <returns>decoded athlete's details</returns>
         public Athletes ReadAthleteData(string fileName)
         {
-            Athletes athleteData = new Athletes();
+            Athletes athleteData = new Athletes(this.seriesConfigManager);
 
             if (!File.Exists(fileName))
             {
@@ -219,7 +237,7 @@
                     new HandicapErrorMessage(
                         error));
                 this.logger.WriteLog(error);
-                SaveAthleteData(fileName, new Athletes());
+                SaveAthleteData(fileName, new Athletes(this.seriesConfigManager));
             }
 
             try
@@ -280,7 +298,8 @@
                           new List<Appearances>(),
                           athlete.birthYear,
                           athlete.birthMonth,
-                          athlete.birthDay);
+                          athlete.birthDay,
+                          this.normalisationConfigManager);
 
                     foreach (var runningNumbers in athlete.runningNumbers)
                     {
@@ -306,7 +325,7 @@
             {
                 this.logger.WriteLog("Error reading athlete data: " + ex.ToString());
 
-                athleteData = new Athletes();
+                athleteData = new Athletes(this.seriesConfigManager);
             }
 
             return athleteData;

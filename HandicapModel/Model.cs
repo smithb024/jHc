@@ -24,6 +24,11 @@
     public class Model : IModel
     {
         /// <summary>
+        /// Instance of the normalisation configuration manager.
+        /// </summary>
+        private readonly INormalisationConfigMngr normalisationConfigurationManager;
+
+        /// <summary>
         /// Instance of the results configuration manager.
         /// </summary>
         private readonly IResultsConfigMngr resultsConfigurationManager;
@@ -61,6 +66,7 @@
         /// <summary>
         /// Prevents a new instance of the HandicapModel class from being created.
         /// </summary>
+        /// <param name="normalisationConfigMngr">Normalisation configuration manager</param>
         /// <param name="resultsConfigurationManager">Results configuration manager</param>
         /// <param name="athleteData">athlete data</param>
         /// <param name="clubData">club data</param>
@@ -73,6 +79,7 @@
         /// <param name="generalIo">general IO manager</param>
         /// <param name="logger">application logger</param>
         public Model(
+            INormalisationConfigMngr normalisationConfigMngr,
             IResultsConfigMngr resultsConfigurationManager,
             IAthleteData athleteData,
             IClubData clubData,
@@ -85,6 +92,7 @@
             IGeneralIo generalIo,
             IJHcLogger logger)
         {
+            this.normalisationConfigurationManager = normalisationConfigMngr;
             this.resultsConfigurationManager = resultsConfigurationManager;
             this.athleteData = athleteData;
             this.clubData = clubData;
@@ -96,7 +104,7 @@
             generalIo.CreateDataFolder();
             generalIo.CreateConfigurationFolder();
             this.resultsConfigurationManager.SaveDefaultResultsConfiguration();
-            NormalisationConfigMngr.SaveDefaultNormalisationConfiguration();
+            this.normalisationConfigurationManager.SaveDefaultNormalisationConfiguration();
 
             // Setup local models.
             this.CurrentSeason =
@@ -286,7 +294,8 @@
                 birthMonth,
                 birthDay,
                 signedConsent,
-                active)
+                active,
+                this.normalisationConfigurationManager)
               {
                   RunningNumbers = runningNumbers
               });
@@ -332,7 +341,8 @@
                 birthMonth,
                 birthDay,
                 signedConsent,
-                active)
+                active,
+                this.normalisationConfigurationManager)
               {
                   RunningNumbers = runningNumbers
               });
