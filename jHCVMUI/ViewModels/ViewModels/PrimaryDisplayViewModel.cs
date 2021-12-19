@@ -10,6 +10,7 @@
     using HandicapModel.Admin.IO;
     using HandicapModel.Admin.Manage;
     using HandicapModel.Interfaces.Admin.IO;
+    using HandicapModel.Interfaces.Admin.IO.TXT;
 
     using NynaeveLib.Commands;
     using NynaeveLib.DialogService;
@@ -36,6 +37,26 @@
     /// </summary>
     public class PrimaryDisplayViewModel : ViewModelBase
     {
+        /// <summary>
+        /// The normalisation configuration manager
+        /// </summary>
+        private readonly INormalisationConfigMngr normalisationConfigManager;
+
+        /// <summary>
+        /// The results configuration manager
+        /// </summary>
+        private readonly IResultsConfigMngr resultsConfigManager;
+
+        /// <summary>
+        /// The series configuration manager
+        /// </summary>
+        private readonly ISeriesConfigMngr seriesConfigManager;
+
+        /// <summary>
+        /// Common IO manager
+        /// </summary>
+        private readonly ICommonIo commonIo;
+
         /// <summary>
         /// The instance of the logger.
         /// </summary>
@@ -84,22 +105,31 @@
         /// </summary>
         /// <param name="model">application model</param>
         /// <param name="businessLayerManager">business layer manager</param>
+        /// <param name="normalisationConfigurationManager">normalisation configuration manager</param>
         /// <param name="resultsConfigurationManager">results configuration manager</param>
+        /// <param name="seriesConfigurationManager">series configuration manager</param>
         /// <param name="generalIo">general IO manager</param>
+        /// <param name="commonIo">Common IO manager</param>
         /// <param name="logger">application logger</param>
         public PrimaryDisplayViewModel(
             IModel model,
             IBLMngr businessLayerManager,
+            INormalisationConfigMngr normalisationConfigurationManager,
             IResultsConfigMngr resultsConfigurationManager,
+            ISeriesConfigMngr seriesConfigurationManager,
             IGeneralIo generalIo,
+            ICommonIo commonIo,
             IJHcLogger logger)
         {
             this.logger = logger;
             this.logger.WriteLog("HandicapMainViewModel created");
             this.model = model;
+            this.normalisationConfigManager = normalisationConfigurationManager;
             this.resultsConfigurationManager = resultsConfigurationManager;
+            this.seriesConfigManager = seriesConfigurationManager;
             this.businessLayerManager = businessLayerManager;
             this.generalIo = generalIo;
+            this.commonIo = commonIo;
 
             Messenger.Default.Register<HandicapErrorMessage>(this, this.PopulateErrorInformation);
             Messenger.Default.Register<HandicapProgressMessage>(this, this.PopulateProgressInformation);
@@ -256,7 +286,10 @@
             m_athleteConfigDialog.Unloaded -= new System.Windows.RoutedEventHandler(CloseAthleteRegistrationDialog);
             m_athleteConfigDialog.Unloaded += new System.Windows.RoutedEventHandler(CloseAthleteRegistrationDialog);
 
-            m_athleteConfigViewModel = new AthleteConfigurationViewModel(this.model);
+            m_athleteConfigViewModel = 
+                new AthleteConfigurationViewModel(
+                    this.model,
+                    this.seriesConfigManager);
             m_athleteConfigDialog.DataContext = m_athleteConfigViewModel;
 
             m_athleteConfigDialog.Show();
@@ -317,7 +350,8 @@
             m_athleteSummaryDialog.DataContext =
               new AthleteSummaryViewModel(
                   this.model,
-                this.resultsConfigurationManager);
+                  this.normalisationConfigManager,
+                  this.resultsConfigurationManager);
 
             m_athleteSummaryDialog.Show();
             m_athleteSummaryDialog.Activate();
@@ -365,7 +399,10 @@
         public void OpenSeriesConfigDialog()
         {
             SeriesConfigurationDialog seriesConfigDialog = new SeriesConfigurationDialog();
-            SeriesConfigViewModel seriesConfigViewModel = new SeriesConfigViewModel();
+            SeriesConfigViewModel seriesConfigViewModel =
+                new SeriesConfigViewModel(
+                    this.seriesConfigManager,
+                    this.logger);
 
             seriesConfigDialog.DataContext = seriesConfigViewModel;
 
@@ -381,7 +418,10 @@
         public void OpenNormalisationConfigDialog()
         {
             NormalisationConfigDialog normalisationConfigDialog = new NormalisationConfigDialog();
-            NormalisationConfigViewModel normalisationConfigViewModel = new NormalisationConfigViewModel();
+            NormalisationConfigViewModel normalisationConfigViewModel =
+                new NormalisationConfigViewModel(
+                    this.normalisationConfigManager,
+                    this.logger);
 
             normalisationConfigDialog.DataContext = normalisationConfigViewModel;
 
@@ -399,7 +439,8 @@
             ResultsConfigDialog resultsConfigDialog = new ResultsConfigDialog();
             ResultsConfigViewModel resultsConfigViewModel =
               new ResultsConfigViewModel(
-                this.resultsConfigurationManager);
+                this.resultsConfigurationManager,
+                this.logger);
 
             resultsConfigDialog.DataContext = resultsConfigViewModel;
 
@@ -453,6 +494,9 @@
             LabelGenerationViewModel labelViewModel =
                 new LabelGenerationViewModel(
                     this.model,
+                    this.normalisationConfigManager,
+                    this.seriesConfigManager,
+                    this.logger,
                     folder);
 
             labelDialog.DataContext = labelViewModel;
@@ -482,11 +526,15 @@
               });
         }
 
+        /// <summary>
+        /// Open the <see cref="PositionEditorDialog"/>.
+        /// </summary>
         public void OpenPositionEditorDialog()
         {
             PositionEditorDialogViewModel dialogViewModel =
                 new PositionEditorDialogViewModel(
-                    this.model);
+                    this.model,
+                    this.commonIo);
 
             DialogService service = new DialogService();
 
@@ -561,7 +609,7 @@
             this.generalIo.CreateConfigurationFolder();
             this.generalIo.CreateDataFolder();
             this.InitialiseViewModels();
-            SeriesConfigMngr.ReadSeriesConfiguration();
+            this.seriesConfigManager.ReadSeriesConfiguration();
 
             HandicapProgressMessage progress = new HandicapProgressMessage("New Series Created");
             Messenger.Default.Send(progress);

@@ -89,7 +89,6 @@ namespace jHandicap.ViewModel
             SimpleIoc.Default.Register<EventPaneViewModel>();
             SimpleIoc.Default.Register<DataPaneViewModel>();
 
-
             SimpleIoc.Default.Register<MainViewModel>();
         }
 

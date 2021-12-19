@@ -23,29 +23,37 @@
     /// </summary>
     public class AthleteSummaryViewModel : ViewModelBase
     {
-        private ObservableCollection<AthleteCompleteViewModel> athleteCollection;
-        private int athleteCollectionIndex;
-
         /// <summary>
         /// Junior handicap model.
         /// </summary>
-        private IModel model;
+        private readonly IModel model;
+
+        /// <summary>
+        /// Normalisation configuration manager.
+        /// </summary>
+        private readonly INormalisationConfigMngr normalisationConfigManager;
 
         /// <summary>
         /// Results configuration manager.
         /// </summary>
-        private IResultsConfigMngr resultsConfigurationManager;
+        private readonly IResultsConfigMngr resultsConfigurationManager;
+
+        private ObservableCollection<AthleteCompleteViewModel> athleteCollection;
+        private int athleteCollectionIndex;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="AthleteSummaryViewModel"/> class.
         /// </summary>
         /// <param name="model">junior handicap model</param>
+        /// <param name="normalisationConfigManager">Normalisation configuration manager</param>
         /// <param name="resultsConfigurationManager">results configuration manager</param>
         public AthleteSummaryViewModel(
             IModel model,
+            INormalisationConfigMngr normalisationConfigManager,
             IResultsConfigMngr resultsConfigurationManager)
         {
             this.model = model;
+            this.normalisationConfigManager = normalisationConfigManager;
             this.resultsConfigurationManager = resultsConfigurationManager;
 
             this.LoadAthleteInformation(model.Athletes.AthleteDetails);
@@ -249,7 +257,7 @@
         private void LoadAthleteInformation(List<AthleteDetails> athletes)
         {
             NormalisationConfigType hcConfiguration =
-              NormalisationConfigMngr.ReadNormalisationConfiguration();
+              this.normalisationConfigManager.ReadNormalisationConfiguration();
 
             List<AthleteDetails> orderedList = athletes.OrderBy(athlete => athlete.Forename).ToList();
             orderedList = orderedList.OrderBy(athlete => athlete.Surname).ToList();

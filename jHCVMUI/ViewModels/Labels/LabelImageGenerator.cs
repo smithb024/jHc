@@ -126,6 +126,7 @@
         /// Creates a set of image files, each containing a spare barcodes.
         /// </summary>
         /// <param name="model">junior handicap model</param>
+        /// <param name="seriesConfigManager">series configuration manager</param>
         /// <param name="savePath">path to save the images to</param>
         /// <param name="numberOfSpareSheets">number of spare sheets to create</param>
         /// <param name="numberOfColumns">number of columns of labels</param>
@@ -133,6 +134,7 @@
         /// <param name="eventDetails">details of the event, name and date</param>
         public static void CreateSpareLabels(
             IModel model,
+            ISeriesConfigMngr seriesConfigManager,
             string savePath,
             int numberOfSpareSheets,
             int numberOfColumns,
@@ -140,7 +142,7 @@
             string eventDetails)
         {
             int raceNumber = model.Athletes.NextAvailableRaceNumber;
-            SeriesConfigType config = SeriesConfigMngr.ReadSeriesConfiguration();
+            SeriesConfigType config = seriesConfigManager.ReadSeriesConfiguration();
 
             for (int sheetNumber = 0; sheetNumber < numberOfSpareSheets; ++sheetNumber)
             {
@@ -174,18 +176,20 @@
         /// Creates a set of images containing spare barcodes on a crib sheet.
         /// </summary>
         /// <param name="model">junior handicap model</param>
+        /// <param name="seriesConfigurationManager">series configuration manager</param>
         /// <param name="savePath">path to save the images to</param>
         /// <param name="numberOfSpareSheets">number of spare sheets to create</param>
         /// <param name="numberOfLabelColumns">number of columns of labels</param>
         /// <param name="numberOfLabelRow">number of rows of labels</param>
         public static void CreateSpareLabelsCribSheet(
             IModel model,
+            ISeriesConfigMngr seriesConfigurationManager,
             string savePath,
             int numberOfSpareSheets,
             int numberOfLabelColumns,
             int numberOfLabelRow)
         {
-            SeriesConfigType config = SeriesConfigMngr.ReadSeriesConfiguration();
+            SeriesConfigType config = seriesConfigurationManager.ReadSeriesConfiguration();
 
             int summarySheetNumber = 1;
             int raceNumber = model.Athletes.NextAvailableRaceNumber;
