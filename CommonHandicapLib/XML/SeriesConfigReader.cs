@@ -27,7 +27,7 @@
         /// Initialises a new instance of the <see cref="SeriesConfigReader"/> class.
         /// </summary>
         /// <param name="logger"></param>
-        private SeriesConfigReader(IJHcLogger logger)
+        public SeriesConfigReader(IJHcLogger logger)
         {
             this.logger = logger;
         }
