@@ -17,12 +17,18 @@ namespace jHCVMUI.ViewModels.DataEntry
     using CommonHandicapLib.Types;
     using HandicapModel.Admin.IO.TXT;
     using HandicapModel.AthletesModel;
+    using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.Admin.IO.TXT;
 
     using NynaeveLib.Commands;
-    using HandicapModel.Interfaces;
 
     public class PositionEditorDialogViewModel : DialogViewModelBase
     {
+        /// <summary>
+        /// Common IO manager
+        /// </summary>
+        private readonly ICommonIo commonIo;
+
         /// <summary>
         /// Junior handicap model.
         /// </summary>
@@ -37,10 +43,13 @@ namespace jHCVMUI.ViewModels.DataEntry
         /// Initialises a new instance of the <see cref="PositionEditorDialogViewModel"/> class.
         /// </summary>
         /// <param name="model">junior handicap model</param>
+        /// <param name="commonIo">Common IO manager</param>
         public PositionEditorDialogViewModel(
-            IModel model)
+            IModel model,
+            ICommonIo commonIo)
         {
             this.model = model;
+            this.commonIo = commonIo;
             this.Barcodes = new ObservableCollection<PositionEditorRawItem>();
             this.MissingPositionTokens = new List<string>();
             this.barcodesIndex = -1;
@@ -147,7 +156,7 @@ namespace jHCVMUI.ViewModels.DataEntry
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                importedData = CommonIO.ReadFile(dialog.FileName);
+                importedData = this.commonIo.ReadFile(dialog.FileName);
             }
             else
             {

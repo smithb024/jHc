@@ -4,15 +4,36 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text;
-    using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Types;
+    using HandicapModel.Interfaces.Admin.IO.TXT;
     using HandicapModel.Interfaces.SeasonModel.EventModel;
     using HandicapModel.SeasonModel.EventModel;
 
-    public static class RawEventIO
+    /// <summary>
+    /// Raw event specific IO.
+    /// </summary>
+    public class RawEventIO : IRawEventIo
     {
+        /// <summary>
+        /// data splitter character
+        /// </summary>
         private static char dataSplitter = '|';
+
+        /// <summary>
+        /// Application logger.
+        /// </summary>
+        private readonly IJHcLogger logger;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="RawEventIO"/> class.
+        /// </summary>
+        /// <param name="logger">application logger</param>
+        public RawEventIO(
+            IJHcLogger logger)
+        {
+            this.logger = logger;
+        }
 
         /// <summary>
         /// Saves the raw results data for the indicated event
@@ -21,7 +42,7 @@
         /// <param name="eventName">event name</param>
         /// <param name="rawData">raw data to save</param>
         /// <returns></returns>
-        public static bool SaveRawEventData(
+        public bool SaveRawEventData(
             string seasonName,
             string eventName,
             List<IRaw> rawData)
@@ -49,8 +70,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
-                logger.WriteLog("Error, failed to save current event raw results data: " + ex.ToString());
+                this.logger.WriteLog("Error, failed to save current event raw results data: " + ex.ToString());
                 success = false;
             }
 
@@ -63,7 +83,7 @@
         /// <param name="seasonName">season name</param>
         /// <param name="eventName">event name</param>
         /// <returns>raw event results data</returns>
-        public static List<IRaw> LoadRawEventData(
+        public List<IRaw> LoadRawEventData(
             string seasonName,
             string eventName)
         {
@@ -78,7 +98,7 @@
                     {
                         while ((line = reader.ReadLine()) != null)
                         {
-                            IRaw converted = ConvertLine(line);
+                            IRaw converted = this.ConvertLine(line);
 
                             if (converted != null)
                             {
@@ -90,8 +110,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
-                logger.WriteLog("Error, failed to read current event raw results data: " + ex.ToString());
+                this.logger.WriteLog("Error, failed to read current event raw results data: " + ex.ToString());
             }
 
             return rawData;
@@ -103,7 +122,7 @@
         /// </summary>
         /// <param name="line">line read from file</param>
         /// <returns>raw piece of data</returns>
-        private static IRaw ConvertLine(string line)
+        private IRaw ConvertLine(string line)
         {
             string[] splitLine = line.Split(dataSplitter);
             RaceTimeType time = null;

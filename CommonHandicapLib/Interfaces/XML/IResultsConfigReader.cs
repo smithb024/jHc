@@ -1,4 +1,4 @@
-﻿namespace CommonHandicapLib.XML
+﻿namespace CommonHandicapLib.Interfaces.XML
 {
   using Types;
 

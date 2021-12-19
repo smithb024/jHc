@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Types;
     using CommonLib.Enumerations;
     using CommonLib.Types;
@@ -40,18 +41,36 @@
         private readonly SeriesConfigType seriesConfiguration;
 
         /// <summary>
+        /// Application logger
+        /// </summary>
+        private readonly IJHcLogger logger;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="CalculateResultsMngr"/> class.
         /// </summary>
         /// <param name="model">junior handicap model</param>
-        /// <param name="resultsConfigurationManager">results configuration manager</param>
+        /// <param name="normalisationConfigurationManager">
+        /// normalisation configuration manager
+        /// </param>
+        /// <param name="resultsConfigurationManager">
+        /// results configuration manager
+        /// </param>
+        /// <param name="seriesConfigurationManager">
+        /// series configuration manager
+        /// </param>
+        /// <param name="logger">application logger</param>
         public CalculateResultsMngr(
             IModel model,
-            IResultsConfigMngr resultsConfigurationManager)
+            INormalisationConfigMngr normalisationConfigurationManager,
+            IResultsConfigMngr resultsConfigurationManager,
+            ISeriesConfigMngr seriesConfigurationManager,
+            IJHcLogger logger)
             : base(model)
         {
+            this.logger = logger;
             this.resultsConfiguration = resultsConfigurationManager;
-            this.hcConfiguration = NormalisationConfigMngr.ReadNormalisationConfiguration();
-            this.seriesConfiguration = SeriesConfigMngr.ReadSeriesConfiguration();
+            this.hcConfiguration = normalisationConfigurationManager.ReadNormalisationConfiguration();
+            this.seriesConfiguration = seriesConfigurationManager.ReadSeriesConfiguration();
         }
 
         /// <summary>
@@ -59,11 +78,11 @@
         /// </summary>
         public void CalculateResults()
         {
-            Logger.Instance.WriteLog("Calculate results");
+            this.logger.WriteLog("Calculate results");
 
             if (this.resultsConfiguration == null)
             {
-                Logger.Instance.WriteLog("Error reading the results config file. Results not generated");
+                this.logger.WriteLog("Error reading the results config file. Results not generated");
                 return;
             }
 
@@ -102,7 +121,7 @@
 
             this.SaveAll();
 
-            Logger.Instance.WriteLog("Calculate results completed.");
+            this.logger.WriteLog("Calculate results completed.");
         }
 
         /// <summary>
@@ -409,7 +428,7 @@
 
                 if (athlete == null)
                 {
-                    Logger.GetInstance().WriteLog(
+                    this.logger.WriteLog(
                         $"Calculate Results Manager - Can'f find athlete {result.Key}");
                     continue;
                 }

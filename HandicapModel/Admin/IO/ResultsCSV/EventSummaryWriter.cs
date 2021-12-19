@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Interfaces;
@@ -14,10 +15,12 @@
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="folder">output folder</param>
+        /// <param name="logger">application logger</param>
         /// <returns>success folder</returns>
         public static bool WriteEventSummaryTable(
             IModel model,
-            string folder)
+            string folder,
+            IJHcLogger logger)
         {
             bool success = true;
 
@@ -70,7 +73,7 @@
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().WriteLog("Error, failed to print event summary: " + ex.ToString());
+                logger.WriteLog("Error, failed to print event summary: " + ex.ToString());
 
                 Messenger.Default.Send(
                     new HandicapErrorMessage(

@@ -4,9 +4,8 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using CommonLib.Types;
@@ -22,10 +21,14 @@
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="folder">output folder</param>
+        /// <param name="normalisationConfigMngr">normalisation configuration manager</param>
+        /// <param name="logger">application logger</param>
         /// <returns>success flag</returns>
         public static bool WriteHandicapTable(
             IModel model,
-            string folder)
+            string folder,
+            INormalisationConfigMngr normalisationConfigMngr,
+            IJHcLogger logger)
         {
             bool success = true;
 
@@ -35,7 +38,8 @@
 
             try
             {
-                NormalisationConfigType hcConfiguration = NormalisationConfigMngr.ReadNormalisationConfiguration();
+                NormalisationConfigType hcConfiguration = 
+                    normalisationConfigMngr.ReadNormalisationConfiguration();
 
                 using (StreamWriter writer = new StreamWriter(Path.GetFullPath(folder) +
                                                                Path.DirectorySeparatorChar +
@@ -90,7 +94,7 @@
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().WriteLog("Error, failed to print handicap: " + ex.ToString());
+                logger.WriteLog("Error, failed to print handicap: " + ex.ToString());
 
                 Messenger.Default.Send(
                   new HandicapErrorMessage(

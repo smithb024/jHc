@@ -15,15 +15,25 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
-using HandicapModel;
-using HandicapModel.Admin.IO.TXT;
-using HandicapModel.Admin.Manage;
-using HandicapModel.Interfaces;
-using jHCVMUI.ViewModels.Primary;
-using jHCVMUI.ViewModels.ViewModels;
 
 namespace jHandicap.ViewModel
 {
+    using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Interfaces.XML;
+    using CommonHandicapLib.XML;
+    using HandicapModel;
+    using HandicapModel.Admin.IO;
+    using HandicapModel.Admin.IO.TXT;
+    using HandicapModel.Admin.IO.XML;
+    using HandicapModel.Admin.Manage;
+    using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.Admin.IO;
+    using HandicapModel.Interfaces.Admin.IO.TXT;
+    using HandicapModel.Interfaces.Admin.IO.XML;
+    using jHCVMUI.ViewModels.Primary;
+    using jHCVMUI.ViewModels.ViewModels;
+
     /// <summary>
     /// This class contains static references to all the view models in the
     /// application and provides an entry point for the bindings.
@@ -48,18 +58,36 @@ namespace jHandicap.ViewModel
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
 
+            SimpleIoc.Default.Register<IJHcLogger, JHcLogger>();
+
+            SimpleIoc.Default.Register<ICommonIo, CommonIO>();
+            SimpleIoc.Default.Register<IEventIo, EventIO>();
+            SimpleIoc.Default.Register<IRawEventIo, RawEventIO>();
             SimpleIoc.Default.Register<ISeasonIO, SeasonIO>();
+            SimpleIoc.Default.Register<IGeneralIo, GeneralIO>();
+
+            SimpleIoc.Default.Register<INormalisationConfigReader, NormalisationConfigReader>();
+            SimpleIoc.Default.Register<IResultsConfigReader, ResultsConfigReader>();
+            SimpleIoc.Default.Register<ISeriesConfigReader, SeriesConfigReader>();
+
+            SimpleIoc.Default.Register<IAthleteData, AthleteData>();
+            SimpleIoc.Default.Register<IClubData, ClubData>();
+            SimpleIoc.Default.Register<IEventData, EventData>();
+            SimpleIoc.Default.Register<ISummaryData, SummaryData>();
+
+            SimpleIoc.Default.Register<IResultsTableReader, ResultsTableReader>();
+
+            SimpleIoc.Default.Register<INormalisationConfigMngr, NormalisationConfigMngr>();
             SimpleIoc.Default.Register<IResultsConfigMngr, ResultsConfigMngr>();
+            SimpleIoc.Default.Register<ISeriesConfigMngr, SeriesConfigMngr>();
             SimpleIoc.Default.Register<IModel, Model>();
 
             SimpleIoc.Default.Register<IBLMngr, BLMngr>();
-
 
             SimpleIoc.Default.Register<PrimaryDisplayViewModel>();
             SimpleIoc.Default.Register<SeasonPaneViewModel>();
             SimpleIoc.Default.Register<EventPaneViewModel>();
             SimpleIoc.Default.Register<DataPaneViewModel>();
-
 
             SimpleIoc.Default.Register<MainViewModel>();
         }

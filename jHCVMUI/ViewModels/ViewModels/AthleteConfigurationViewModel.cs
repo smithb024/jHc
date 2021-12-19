@@ -62,17 +62,19 @@
         private ObservableCollection<ClubType> m_clubCollection = new ObservableCollection<ClubType>();
 
         /// <summary>
-        ///   Creates a new instance of the ClubConfigurationViewModel class
+        /// Initialises a new instance of the <see cref="AthleteConfigurationViewModel"/> class.
         /// </summary>
-        /// <param name="model"Junior handicap model</param>
+        /// <param name="model">handicap model</param>
+        /// <param name="seriesConfigManager">series configutation manager</param>
         public AthleteConfigurationViewModel(
-            IModel model)
+            IModel model,
+            ISeriesConfigMngr seriesConfigManager)
         {
             this.model = model;
             this.athleteCollection = new ObservableCollection<AthleteType>();
             this.changePredeclaredHandicap = string.Empty;
 
-            this.numberPrefix = SeriesConfigMngr.ReadNumberPrefix();
+            this.numberPrefix = seriesConfigManager.ReadNumberPrefix();
             LoadAthleteInformation();
 
             ClubCollection.Add(new ClubType() { Club = string.Empty });

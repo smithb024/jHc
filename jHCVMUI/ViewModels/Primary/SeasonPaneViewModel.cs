@@ -7,10 +7,11 @@
     using System.Windows;
     using System.Windows.Input;
 
-    using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using HandicapModel;
     using HandicapModel.Admin.IO;
     using HandicapModel.Admin.Manage;
+    using HandicapModel.Interfaces.Admin.IO;
     using jHCVMUI.ViewModels.ViewModels;
     using jHCVMUI.ViewModels.Commands.Main;
     using jHCVMUI.Views.Configuration;
@@ -29,7 +30,17 @@
         /// <summary>
         /// Junior handicap model.
         /// </summary>
-        private IModel model;
+        private readonly IModel model;
+
+        /// <summary>
+        /// The general IO manager;
+        /// </summary>
+        private readonly IGeneralIo generalIo;
+
+        /// <summary>
+        /// The instance of the logger.
+        /// </summary>
+        private readonly IJHcLogger logger;
 
         private AthleteRegisterToSeasonDialog m_athleteSeasonRegDialog = null;
         private AthleteSeasonSummaryDialog m_athleteSeasonSummaryDialog = null;
@@ -49,12 +60,18 @@
         /// </summary>
         /// <param name="model"></param>
         /// <param name="businessLayerManager"></param>
+        /// <param name="generalIo">general IO manager</param>
+        /// <param name="logger">program logger</param>
         public SeasonPaneViewModel(
             IModel model,
-          IBLMngr businessLayerManager)
+            IBLMngr businessLayerManager,
+            IGeneralIo generalIo,
+            IJHcLogger logger)
         {
+            this.logger = logger;
             this.model = model;
             this.businessLayerManager = businessLayerManager;
+            this.generalIo = generalIo;
             //model.SeasonsCallback = new SeasonsDelegate(PopulateSeasons);
 
             OpenAthleteSeasonNewRegCommand =
@@ -83,7 +100,8 @@
         /// <summary>
         /// Gets a value indicating whether the location is valid or not.
         /// </summary>
-        public bool LocationValid => GeneralIO.DataFolderExists && GeneralIO.ConfigurationFolderExists;
+        public bool LocationValid =>
+            this.generalIo.DataFolderExists && this.generalIo.ConfigurationFolderExists;
 
         /// <summary>
         /// Gets or sets seasons list
@@ -117,7 +135,7 @@
 
                 currentSeasonIndex = value;
                 RaisePropertyChangedEvent(nameof(this.SelectedSeasonIndex));
-                
+
                 this.LoadSeason(this.Seasons[value]);
             }
         }
@@ -250,8 +268,7 @@
         {
             if (this.SelectedSeasonIndex >= 0)
             {
-                Logger logger = Logger.GetInstance();
-                logger.WriteLog("Load season " + seasonName);
+                this.logger.WriteLog("Load season " + seasonName);
 
                 this.businessLayerManager.LoadNewSeason(seasonName);
 
@@ -294,8 +311,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
-                logger.WriteLog(ex.ToString());
+                this.logger.WriteLog(ex.ToString());
             }
         }
 

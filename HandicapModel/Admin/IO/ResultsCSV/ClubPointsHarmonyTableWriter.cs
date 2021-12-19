@@ -3,17 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonLib.Types;
     using GalaSoft.MvvmLight.Messaging;
-    using HandicapModel;
     using HandicapModel.Admin.IO;
-    using HandicapModel.Admin.Manage;
     using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.SeasonModel;
 
     /// <summary>
@@ -26,10 +23,14 @@
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="folder">output folder</param>
+        /// <param name="eventData">event data wrapper</param>
+        /// <param name="logger">application logger</param>
         /// <returns>success flag</returns>
         public static bool Write(
             IModel model,
-            string folder)
+            string folder,
+            IEventData eventData,
+            IJHcLogger logger)
         {
             bool success = true;
             List<DateType> eventDates = new List<DateType>();
@@ -54,7 +55,7 @@
                     foreach (string eventName in model.CurrentSeason.Events)
                     {
                         titleString = titleString + ResultsPaths.separator + eventName;
-                        eventDates.Add(EventData.LoadEventData(model.CurrentSeason.Name, eventName).EventDate);
+                        eventDates.Add(eventData.LoadEventData(model.CurrentSeason.Name, eventName).EventDate);
                     }
 
                     writer.WriteLine(titleString);
@@ -89,7 +90,7 @@
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().WriteLog("Error, failed to print club points table: " + ex.ToString());
+                logger.WriteLog("Error, failed to print club points table: " + ex.ToString());
 
                 Messenger.Default.Send(
                     new HandicapErrorMessage(

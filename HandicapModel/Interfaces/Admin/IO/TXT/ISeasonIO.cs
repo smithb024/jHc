@@ -1,4 +1,4 @@
-﻿namespace HandicapModel.Admin.IO.TXT
+﻿namespace HandicapModel.Interfaces.Admin.IO.TXT
 {
     using System.Collections.Generic;
 

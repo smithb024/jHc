@@ -4,6 +4,7 @@
     using System.IO;
 
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
 
@@ -11,16 +12,16 @@
 
     using Event;
     using GalaSoft.MvvmLight.Messaging;
-    using HandicapModel.Admin.IO;
     using HandicapModel.Admin.IO.ResultsCSV;
     using HandicapModel.Admin.IO.TXT;
 
     using HandicapModel.Common;
     using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.Admin.IO;
+    using HandicapModel.Interfaces.Admin.IO.TXT;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
-    using HandicapModel.SeasonModel.EventModel;
 
     /// <summary>
     /// Class which manages the business layer.
@@ -33,9 +34,24 @@
         private readonly IModel model;
 
         /// <summary>
+        /// The instance of the logger.
+        /// </summary>
+        private readonly IJHcLogger logger;
+
+        /// <summary>
+        /// The normalisation configuration manager.
+        /// </summary>
+        private readonly INormalisationConfigMngr normalisationConfigurationManager;
+
+        /// <summary>
         /// The results configuration manager.
         /// </summary>
         private readonly IResultsConfigMngr resultsConfigurationManager;
+
+        /// <summary>
+        /// The series configuration manager.
+        /// </summary>
+        private readonly ISeriesConfigMngr seriesConfigurationManager;
 
         /// <summary>
         /// The results calculation manager
@@ -43,29 +59,82 @@
         private readonly CalculateResultsMngr resultsCalculator;
 
         /// <summary>
+        /// The athlete data wrapper
+        /// </summary>
+        private readonly IAthleteData athleteData;
+
+        /// <summary>
+        /// The club data wrapper.
+        /// </summary>
+        private readonly IClubData clubData;
+
+        /// <summary>
+        /// The event data wrapper.
+        /// </summary>
+        private readonly IEventData eventData;
+
+        /// <summary>
+        /// The summary data wrapper
+        /// </summary>
+        private readonly ISummaryData summaryData;
+
+        /// <summary>
         /// The season IO manager.
         /// </summary>
         private readonly ISeasonIO seasonIO;
 
         /// <summary>
+        /// The event IO manager.
+        /// </summary>
+        private readonly IEventIo eventIo;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="BLMngr"/> class.
         /// </summary>
         /// <param name="model">junior handicap model</param>
-        /// <param name="resultsConfigurationManager"></param>
+        /// <param name="normalisationConfigurationManager">the normalisation config manager</param>
+        /// <param name="resultsConfigurationManager">the results config manager</param>
+        /// <param name="seriesConfigurationManager">the series config manager</param>
+        /// <param name="athleteData">athlete data</param>
+        /// <param name="clubData">club data</param>
+        /// <param name="eventData">event data</param>
+        /// <param name="summaryData">summary data</param>
+        /// <param name="seasonIO">season IO manager</param>
+        /// <param name="eventIo">event IO manager</param>
+        /// <param name="logger">application logger</param>
         public BLMngr(
             IModel model,
+            INormalisationConfigMngr normalisationConfigurationManager,
             IResultsConfigMngr resultsConfigurationManager,
-            ISeasonIO seasonIO)
+            ISeriesConfigMngr seriesConfigurationManager,
+            IAthleteData athleteData,
+            IClubData clubData,
+            IEventData eventData,
+            ISummaryData summaryData,
+            ISeasonIO seasonIO,
+            IEventIo eventIo,
+            IJHcLogger logger)
         {
+            this.logger = logger;
             this.model = model;
+            this.normalisationConfigurationManager = normalisationConfigurationManager;
             this.resultsConfigurationManager = resultsConfigurationManager;
+            this.seriesConfigurationManager = seriesConfigurationManager;
+            this.athleteData = athleteData;
+            this.clubData = clubData;
+            this.eventData = eventData;
+            this.summaryData = summaryData;
             this.seasonIO = seasonIO;
+            this.eventIo = eventIo;
             this.ModelRootDirectory = RootIO.LoadRootFile();
 
             this.resultsCalculator =
                 new CalculateResultsMngr(
                     this.model,
-                    this.resultsConfigurationManager);
+                    this.normalisationConfigurationManager,
+                    this.resultsConfigurationManager,
+                    this.seriesConfigurationManager,
+                    this.logger);
         }
 
         /// <summary>
@@ -89,7 +158,7 @@
         public bool CreateNewSeason(string seasonName)
         {
             bool success = true;
-            Logger.Instance.WriteLog(string.Format("Create new season {0}", seasonName));
+            this.logger.WriteLog(string.Format("Create new season {0}", seasonName));
             Messenger.Default.Send(
                 new HandicapErrorMessage(
                     string.Empty));
@@ -104,27 +173,27 @@
                 List<AthleteSeasonDetails> athletes = new List<AthleteSeasonDetails>();
                 List<IClubSeasonDetails> clubs = new List<IClubSeasonDetails>();
 
-                success = SummaryData.SaveSummaryData(seasonName, summary);
+                success = this.summaryData.SaveSummaryData(seasonName, summary);
 
                 if (success)
                 {
-                    success = AthleteData.SaveAthleteSeasonData(seasonName, athletes);
+                    success = this.athleteData.SaveAthleteSeasonData(seasonName, athletes);
                 }
 
                 if (success)
                 {
-                    success = ClubData.SaveClubSeasonData(seasonName, clubs);
+                    success = this.clubData.SaveClubSeasonData(seasonName, clubs);
                 }
             }
 
 
             if (success)
             {
-                Logger.Instance.WriteLog(string.Format("Finishing creating new season {0}", seasonName));
+                this.logger.WriteLog(string.Format("Finishing creating new season {0}", seasonName));
             }
             else
             {
-                Logger.Instance.WriteLog("Failed to Create New Season");
+                this.logger.WriteLog("Failed to Create New Season");
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         "Season creation failed"));
@@ -159,7 +228,7 @@
         public bool CreateNewEvent(string eventName, DateType date)
         {
             bool success = 
-                EventIO.CreateNewEvent(
+                this.eventIo.CreateNewEvent(
                     this.model.CurrentSeason.Name, 
                     eventName);
 
@@ -168,25 +237,29 @@
                 this.model.UpdateEvents();
 
 
-                success = EventData.SaveEventData(this.model.CurrentSeason.Name,
-                                                  eventName,
-                                                  new EventMiscData() { EventDate = date });
+                success = 
+                    this.eventData.SaveEventData(
+                        this.model.CurrentSeason.Name,
+                        eventName,
+                        new EventMiscData() { EventDate = date });
 
                 if (success)
                 {
-                    success = SummaryData.SaveSummaryData(this.model.CurrentSeason.Name,
-                                                          eventName,
-                                                          new Summary());
+                    success = 
+                        this.summaryData.SaveSummaryData(
+                            this.model.CurrentSeason.Name,
+                            eventName,
+                            new Summary());
                 }
             }
 
             if (success)
             {
-                Logger.Instance.WriteLog(string.Format("Finishing creating new event {0}", eventName));
+                this.logger.WriteLog(string.Format("Finishing creating new event {0}", eventName));
             }
             else
             {
-                Logger.Instance.WriteLog("Failed to Create New Event");
+                this.logger.WriteLog("Failed to Create New Event");
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         "Event creation failed"));
@@ -259,7 +332,9 @@
         {
             DeleteResultsMngr mngr =
                 new DeleteResultsMngr(
-                    this.model);
+                    this.model,
+                    this.normalisationConfigurationManager,
+                    this.logger);
             mngr.DeleteResults();
         }
 
@@ -291,37 +366,37 @@
         {
             if (Directory.Exists(folder))
             {
-                if (!ResultsWriter.WriteResultsTable(this.model, folder))
+                if (!ResultsWriter.WriteResultsTable(this.model, folder, this.logger))
                 {
                     return;
                 }
 
-                if (!PointsTableWriter.SavePointsTable(this.model, folder))
+                if (!PointsTableWriter.SavePointsTable(this.model, folder, this.logger))
                 {
                     return;
                 }
 
-                if (!ClubPointsTableWriter.WriteClubPointsTable(this.model, folder))
+                if (!ClubPointsTableWriter.WriteClubPointsTable(this.model, folder, this.eventData, this.logger))
                 {
                     return;
                 }
 
-                if (!ClubPointsHarmonyTableWriter.Write(this.model, folder))
+                if (!ClubPointsHarmonyTableWriter.Write(this.model, folder, this.eventData, this.logger))
                 {
                     return;
                 }
 
-                if (!HandicapWriter.WriteHandicapTable(this.model, folder))
+                if (!HandicapWriter.WriteHandicapTable(this.model, folder, this.normalisationConfigurationManager, this.logger))
                 {
                     return;
                 }
 
-                if (!EventSummaryWriter.WriteEventSummaryTable(this.model, folder))
+                if (!EventSummaryWriter.WriteEventSummaryTable(this.model, folder, this.logger))
                 {
                     return;
                 }
 
-                if (!NextRunnerWriter.WriteNextRunnerTable(this.model, folder))
+                if (!NextRunnerWriter.WriteNextRunnerTable(this.model, folder, this.seriesConfigurationManager, this.logger))
                 {
                     return;
                 }

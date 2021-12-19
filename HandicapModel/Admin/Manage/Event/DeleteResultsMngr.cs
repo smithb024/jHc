@@ -1,6 +1,7 @@
 ﻿namespace HandicapModel.Admin.Manage.Event
 {
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Types;
     using CommonLib.Enumerations;
     using CommonLib.Types;
@@ -15,13 +16,29 @@
     public class DeleteResultsMngr : EventResultsMngr
     {
         /// <summary>
+        /// Application logger
+        /// </summary>
+        private readonly IJHcLogger logger;
+
+        /// <summary>
+        /// The normalisation config manager.
+        /// </summary>
+        private readonly INormalisationConfigMngr normalisationConfigMngr;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="DeleteResultsMngr"/> class.
         /// </summary>
         /// <param name="model">junior handicap model</param>
+        /// <param name="normalisationConfigManager">normalisation config manager</param>
+        /// <param name="logger">application logger</param>
         public DeleteResultsMngr(
-            IModel model)
+            IModel model,
+            INormalisationConfigMngr normalisationConfigManager,
+            IJHcLogger logger)
             : base(model)
         {
+            this.logger = logger;
+            this.normalisationConfigMngr = normalisationConfigManager;
         }
 
         /// <summary>
@@ -29,9 +46,10 @@
         /// </summary>
         public void DeleteResults()
         {
-            Logger.Instance.WriteLog("Delete results");
+            this.logger.WriteLog("Delete results");
             DateType currentDate = this.Model.CurrentEvent.Date;
-            NormalisationConfigType hcConfiguration = NormalisationConfigMngr.ReadNormalisationConfiguration();
+            NormalisationConfigType hcConfiguration = 
+                this.normalisationConfigMngr.ReadNormalisationConfiguration();
 
             // Remove points from all clubs for the known date.
             this.RemoveClubPoints(currentDate);
@@ -64,7 +82,7 @@
 
             this.SaveAll();
 
-            Logger.Instance.WriteLog("Delete results completed");
+            this.logger.WriteLog("Delete results completed");
         }
 
         /// <summary>

@@ -6,13 +6,18 @@
     using System.Text;
     using System.Xml.Linq;
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonLib.Types;
     using HandicapModel.Common;
+    using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
 
-    internal static class ClubSeasonDataReader
+    /// <summary>
+    /// Club season data reader.
+    /// </summary>
+    internal class ClubSeasonDataReader : IClubSeasonDataReader
     {
         private const string c_rootElement = "CbSea";
         private const string c_clubElement = "club";
@@ -33,6 +38,20 @@
 
         private const string nameAttribute = "name";
 
+        /// <summary>
+        /// The instance of the logger.
+        /// </summary>
+        private readonly IJHcLogger logger;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="ClubSeasonDataReader"/> class.
+        /// </summary>
+        /// <param name="logger">application logger</param>
+        public ClubSeasonDataReader(IJHcLogger logger)
+        {
+            this.logger = logger;
+        }
+
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         /// <name>SaveAthleteSeasonSata</name>
         /// <date>29/03/15</date>
@@ -42,8 +61,9 @@
         /// <param name="fileName">file name</param>
         /// <param name="table">points table</param>
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public static bool SaveClubSeasonData(string fileName,
-                                              List<IClubSeasonDetails> seasons)
+        public bool SaveClubSeasonData(
+            string fileName,
+            List<IClubSeasonDetails> seasons)
         {
             bool success = true;
 
@@ -113,7 +133,7 @@
             catch (Exception ex)
             {
                 success = false;
-                Logger.Instance.WriteLog("Error writing Athlete points data " + ex.ToString());
+                this.logger.WriteLog("Error writing Athlete points data " + ex.ToString());
             }
 
             return success;
@@ -128,7 +148,7 @@
         /// <param name="fileName">name of xml file</param>
         /// <returns>decoded athlete's details</returns>
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public static List<IClubSeasonDetails> LoadClubSeasonData(string fileName)
+        public List<IClubSeasonDetails> LoadClubSeasonData(string fileName)
         {
             List<IClubSeasonDetails> seasonDetails = new List<IClubSeasonDetails>();
 
@@ -238,8 +258,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
-                logger.WriteLog("Error reading athlete data: " + ex.ToString());
+                this.logger.WriteLog("Error reading athlete data: " + ex.ToString());
 
                 seasonDetails = new List<IClubSeasonDetails>();
             }

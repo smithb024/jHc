@@ -8,14 +8,19 @@
     using System.Threading.Tasks;
     using System.Xml.Linq;
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonLib.Converters;
     using CommonLib.Types;
     using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Common;
+    using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.Common;
 
-    internal static class SummaryDataReader
+    /// <summary>
+    /// Summary data reader
+    /// </summary>
+    internal class SummaryDataReader : ISummaryDataReader
     {
         private const string c_rootLabel = "SummaryDetails";
 
@@ -36,6 +41,20 @@
         private const string c_SecondsLabel = "Seconds";
         private const string dateLabel = "Date";
 
+        /// <summary>
+        /// The instance of the logger.
+        /// </summary>
+        private readonly IJHcLogger logger;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="SummaryDataReader"/> class.
+        /// </summary>
+        /// <param name="logger"></param>
+        public SummaryDataReader(IJHcLogger logger)
+        {
+            this.logger = logger;
+        }
+
         /// ---------- ---------- ---------- ---------- ---------- ----------
         /// <name>SaveSummaryData</name>
         /// <date>31/01/15</date>
@@ -43,8 +62,9 @@
         /// Contructs the xml and writes it to a data file
         /// </summary>
         /// ---------- ---------- ---------- ---------- ---------- ----------
-        public static bool SaveSummaryData(string fileName,
-                                           ISummary summaryDetails)
+        public bool SaveSummaryData(
+            string fileName,
+            ISummary summaryDetails)
         {
             bool success = true;
 
@@ -103,8 +123,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
-                logger.WriteLog("Error writing Athlete data " + ex.ToString());
+                this.logger.WriteLog("Error writing Athlete data " + ex.ToString());
             }
 
             return success;
@@ -119,7 +138,7 @@
         /// <param name="fileName">name of xml file</param>
         /// <returns>decoded summary data</returns>
         /// ---------- ---------- ---------- ---------- ---------- ----------
-        public static ISummary ReadCompleteSummaryData(string fileName)
+        public ISummary ReadCompleteSummaryData(string fileName)
         {
             ISummary summaryData = null;
 
@@ -129,7 +148,7 @@
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
                         error));
-                Logger.Instance.WriteLog(error);
+                this.logger.WriteLog(error);
                 SaveSummaryData(fileName, new Summary());
             }
 
@@ -196,8 +215,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
-                logger.WriteLog("Error reading summary data: " + ex.ToString());
+                this.logger.WriteLog("Error reading summary data: " + ex.ToString());
 
                 summaryData = new Summary();
             }

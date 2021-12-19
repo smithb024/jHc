@@ -3,8 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
+    using Interfaces.Admin.IO.TXT;
     using GalaSoft.MvvmLight.Messaging;
 
     /// <summary>
@@ -12,6 +13,11 @@
     /// </summary>
     public class SeasonIO : ISeasonIO
     {
+        /// <summary>
+        /// The instance of the logger.
+        /// </summary>
+        private readonly IJHcLogger logger;
+
         /// <summary>
         /// The root directory.
         /// </summary>
@@ -25,8 +31,11 @@
         /// <summary>
         /// Initialises a new instance of the <see cref="SeasonIO"/> class.
         /// </summary>
-        public SeasonIO()
+        /// <param name="logger">application logger</param>
+        public SeasonIO(
+            IJHcLogger logger)
         {
+            this.logger = logger;
             this.rootDirectory = RootIO.LoadRootFile();
             this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}";
         }
@@ -53,7 +62,7 @@
             }
             catch (Exception ex)
             {
-                Logger.Instance.WriteLog("Can't read seasons data: " + ex.ToString());
+                this.logger.WriteLog("Can't read seasons data: " + ex.ToString());
 
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
@@ -85,15 +94,13 @@
                 }
                 else
                 {
-                    Logger logger = Logger.GetInstance();
-                    logger.WriteLog(
+                    this.logger.WriteLog(
                         $"Error, file - {seasonFilePath} - does not exist.");
                 }
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
-                logger.WriteLog("Error, failed to read current season: " + ex.ToString());
+                this.logger.WriteLog("Error, failed to read current season: " + ex.ToString());
             }
 
             return currentSeason;
@@ -120,8 +127,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
-                logger.WriteLog("Error, failed to save current season: " + ex.ToString());
+                this.logger.WriteLog("Error, failed to save current season: " + ex.ToString());
             }
 
             return success;
@@ -146,8 +152,7 @@
             }
             catch (Exception ex)
             {
-                Logger logger = Logger.GetInstance();
-                logger.WriteLog("Failed to create season directory: " + ex.ToString());
+                this.logger.WriteLog("Failed to create season directory: " + ex.ToString());
 
                 return false;
             }

@@ -2,14 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
+    using CommonHandicapLib.Interfaces;
     using CommonLib.Enumerations;
     using CommonLib.Types;
-    using HandicapModel.Admin.IO;
-    using HandicapModel.Admin.IO.TXT;
     using HandicapModel.Admin.Manage;
     using HandicapModel.AthletesModel;
     using HandicapModel.ClubsModel;
     using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.Admin.IO;
+    using HandicapModel.Interfaces.Admin.IO.TXT;
+    using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.Interfaces.SeasonModel.EventModel;
@@ -22,38 +24,108 @@
     public class Model : IModel
     {
         /// <summary>
+        /// Instance of the normalisation configuration manager.
+        /// </summary>
+        private readonly INormalisationConfigMngr normalisationConfigurationManager;
+
+        /// <summary>
         /// Instance of the results configuration manager.
         /// </summary>
-        private IResultsConfigMngr resultsConfigurationManager;
+        private readonly IResultsConfigMngr resultsConfigurationManager;
 
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>HandicapModel</name>
-        /// <date>25/03/15</date>
+        /// <summary>
+        /// The athlete data wrapper
+        /// </summary>
+        private readonly IAthleteData athleteData;
+
+        /// <summary>
+        /// The club data wrapper.
+        /// </summary>
+        private readonly IClubData clubData;
+
+        /// <summary>
+        /// The summary data wrapper
+        /// </summary>
+        private readonly ISummaryData summaryData;
+
+        /// <summary>
+        /// The summary data reader.
+        /// </summary>
+        private readonly ISummaryDataReader summaryDataReader;
+
+        /// <summary>
+        /// The event IO manager.
+        /// </summary>
+        private readonly IEventIo eventIo;
+
+        /// <summary>
+        /// The program logger;
+        /// </summary>
+        private readonly IJHcLogger logger;
+
         /// <summary>
         /// Prevents a new instance of the HandicapModel class from being created.
         /// </summary>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+        /// <param name="normalisationConfigMngr">Normalisation configuration manager</param>
+        /// <param name="resultsConfigurationManager">Results configuration manager</param>
+        /// <param name="athleteData">athlete data</param>
+        /// <param name="clubData">club data</param>
+        /// <param name="eventData">event data</param>
+        /// <param name="summaryData">summary data</param>
+        /// <param name="resultsTableReader">results table reader</param>
+        /// <param name="seasonIO">season IO Manager</param>
+        /// <param name="eventIo">event IO manager</param>
+        /// <param name="rawEventIo">raw event IO manager</param>
+        /// <param name="generalIo">general IO manager</param>
+        /// <param name="logger">application logger</param>
         public Model(
+            INormalisationConfigMngr normalisationConfigMngr,
             IResultsConfigMngr resultsConfigurationManager,
-            ISeasonIO seasonIO)
+            IAthleteData athleteData,
+            IClubData clubData,
+            IEventData eventData,
+            ISummaryData summaryData,
+            IResultsTableReader resultsTableReader,
+            ISeasonIO seasonIO,
+            IEventIo eventIo,
+            IRawEventIo rawEventIo,
+            IGeneralIo generalIo,
+            IJHcLogger logger)
         {
+            this.normalisationConfigurationManager = normalisationConfigMngr;
             this.resultsConfigurationManager = resultsConfigurationManager;
+            this.athleteData = athleteData;
+            this.clubData = clubData;
+            this.summaryData = summaryData;
+            this.eventIo = eventIo;
+            this.logger = logger;
 
             // Check for global files and create fresh if don't exist.
-            GeneralIO.CreateDataFolder();
-            GeneralIO.CreateConfigurationFolder();
+            generalIo.CreateDataFolder();
+            generalIo.CreateConfigurationFolder();
             this.resultsConfigurationManager.SaveDefaultResultsConfiguration();
-            NormalisationConfigMngr.SaveDefaultNormalisationConfiguration();
+            this.normalisationConfigurationManager.SaveDefaultNormalisationConfiguration();
 
             // Setup local models.
             this.CurrentSeason =
                 new Season(
-                    resultsConfigurationManager);
-            this.CurrentEvent = new EventHC();
+                    resultsConfigurationManager,
+                    this.athleteData,
+                    this.clubData,
+                    this.summaryData,
+                    this.eventIo,
+                    this.logger);
+            this.CurrentEvent = 
+                new EventHC(
+                    eventData,
+                    this.summaryData,
+                    resultsTableReader,
+                    rawEventIo,
+                    this.logger);
             this.Seasons = seasonIO.GetSeasons();
-            this.Athletes = AthleteData.ReadAthleteData();
-            this.Clubs = ClubData.LoadClubData();
-            this.GlobalSummary = SummaryData.LoadSummaryData();
+            this.Athletes = this.athleteData.ReadAthleteData();
+            this.Clubs = this.clubData.LoadClubData();
+            this.GlobalSummary = this.summaryData.LoadSummaryData();
         }
 
         /// <summary>
@@ -116,7 +188,7 @@
                     this.CurrentSeason.Name,
                     eventName);
 
-            EventIO.SaveCurrentEvent(
+            this.eventIo.SaveCurrentEvent(
                 this.CurrentSeason.Name,
                 eventName);
 
@@ -155,7 +227,7 @@
         /// </summary>
         public void SaveClubList()
         {
-            ClubData.SaveClubData(this.Clubs);
+            this.clubData.SaveClubData(this.Clubs);
         }
 
         /// <summary>
@@ -181,7 +253,7 @@
         /// </summary>
         public void SaveAthleteList()
         {
-            AthleteData.SaveAthleteData(this.Athletes);
+            this.athleteData.SaveAthleteData(this.Athletes);
         }
 
         /// <summary>
@@ -222,7 +294,8 @@
                 birthMonth,
                 birthDay,
                 signedConsent,
-                active)
+                active,
+                this.normalisationConfigurationManager)
               {
                   RunningNumbers = runningNumbers
               });
@@ -268,7 +341,8 @@
                 birthMonth,
                 birthDay,
                 signedConsent,
-                active)
+                active,
+                this.normalisationConfigurationManager)
               {
                   RunningNumbers = runningNumbers
               });
@@ -317,7 +391,11 @@
         /// <returns>returns the name of the current event</returns>
         public string LoadCurrentEvent()
         {
-            return EventIO.LoadCurrentEvent(CurrentSeason.Name);
+            string currentEvent =
+                this.eventIo.LoadCurrentEvent(
+                    CurrentSeason.Name);
+
+            return currentEvent;
         }
 
         /// <summary>
@@ -327,7 +405,12 @@
         {
             this.CurrentSeason =
                 new Season(
-                    resultsConfigurationManager);
+                    resultsConfigurationManager,
+                    this.athleteData,
+                    this.clubData,
+                    this.summaryData,
+                    this.eventIo,
+                    this.logger);
         }
 
         /// <summary>
@@ -335,7 +418,7 @@
         /// </summary>
         public void SaveGlobalSummary()
         {
-            SummaryData.SaveSummaryData(GlobalSummary);
+            this.summaryData.SaveSummaryData(GlobalSummary);
         }
     }
 }

@@ -1,22 +1,12 @@
 ﻿namespace jHCVMUI.ViewModels.Labels
 {
-    using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.IO;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Windows;
-    using System.Windows.Controls;
     using System.Windows.Input;
-    using System.Windows.Media;
-    using System.Windows.Media.Imaging;
     using CommonHandicapLib;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Types;
-    using CommonLib.Images;
     using CommonLib.Types;
-    using HandicapModel;
     using HandicapModel.Admin.Manage;
     using HandicapModel.AthletesModel;
     using HandicapModel.Interfaces;
@@ -28,6 +18,10 @@
     /// </summary>
     public class LabelGenerationViewModel : ViewModelBase
     {
+        private ISeriesConfigMngr seriesConfigManager;
+
+        private IJHcLogger logger;
+
         /// <summary>
         /// Junior handicap model
         /// </summary>
@@ -50,14 +44,23 @@
         /// Initialises a new instance of the <see cref="LabelGenerationViewModel"/> class.
         /// </summary>
         /// <param name="model">junior handicap model</param>
+        /// <param name="normalisationConfigManager">normalisation configuration manager</param>
+        /// <param name="seriesConfigManager">series configuration manager</param>
+        /// <param name="logger">application logger</param>
         /// <param name="saveFolder">folder to save the output to</param>
         public LabelGenerationViewModel(
             IModel model,
+            INormalisationConfigMngr normalisationConfigManager,
+            ISeriesConfigMngr seriesConfigManager,
+            IJHcLogger logger,
             string saveFolder)
         {
             this.model = model;
+            this.seriesConfigManager = seriesConfigManager;
+            this.logger = logger;
             SaveFolder = saveFolder;
-            NormalisationConfigType hcConfiguration = NormalisationConfigMngr.ReadNormalisationConfiguration();
+            NormalisationConfigType hcConfiguration = 
+                normalisationConfigManager.ReadNormalisationConfiguration();
 
             // TODO, this is repeated code, see HandicapWriter.cs
             foreach (AthleteDetails athlete in model.Athletes.AthleteDetails)
@@ -279,7 +282,7 @@
             LabelImageGenerator.CreateRaceLabels(AthleteDetails, SaveFolder, NoColumns, NoRows);
             LabelImageGenerator.CreateRaceLabelsCribSheet(AthleteDetails, SaveFolder);
 
-            Logger.GetInstance().WriteLog("Race labels created");
+            this.logger.WriteLog("Race labels created");
         }
 
         /// <summary>
@@ -289,6 +292,7 @@
         {
             LabelImageGenerator.CreateSpareLabels(
                 this.model,
+                this.seriesConfigManager,
                 SaveFolder,
                 NoSpareSheets,
                 NoColumns, 
@@ -296,12 +300,13 @@
                 EventDetails);
             LabelImageGenerator.CreateSpareLabelsCribSheet(
                 this.model,
+                this.seriesConfigManager,
                 SaveFolder, 
                 NoSpareSheets, 
                 NoColumns,
                 NoRows);
 
-            Logger.GetInstance().WriteLog("Race labels created");
+            this.logger.WriteLog("Race labels created");
         }
 
         ///// <summary>

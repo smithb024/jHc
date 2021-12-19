@@ -67,8 +67,6 @@
         FinishingPoints = 0;
         PositionPoints  = 0;
         BestPoints      = 0;
-
-        Logger.GetInstance().WriteLog("Invalid athletes points entry:" + points);
       }
 
       Date = date;
