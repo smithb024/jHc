@@ -220,17 +220,27 @@
 
             try
             {
-                this.Summary =
-                    this.summaryData.LoadSummaryData(
-                        seasonName);
-                this.Athletes =
-                  this.athleteData.LoadAthleteSeasonData(
-                    seasonName,
-                    this.resultsConfigurationManager);
-                this.Clubs = this.clubData.LoadClubSeasonData(seasonName);
-                this.Events =
-                    this.eventIo.GetEvents(
-                        seasonName);
+                if (string.IsNullOrEmpty(seasonName))
+                {
+                    this.Summary = new Summary();
+                    this.Athletes = new List<AthleteSeasonDetails>();
+                    this.Clubs = new List<IClubSeasonDetails>();
+                    this.Events = new List<string>();
+                }
+                else
+                {
+                    this.Summary =
+                        this.summaryData.LoadSummaryData(
+                            seasonName);
+                    this.Athletes =
+                      this.athleteData.LoadAthleteSeasonData(
+                        seasonName,
+                        this.resultsConfigurationManager);
+                    this.Clubs = this.clubData.LoadClubSeasonData(seasonName);
+                    this.Events =
+                        this.eventIo.GetEvents(
+                            seasonName);
+                }
             }
             catch (Exception ex)
             {
