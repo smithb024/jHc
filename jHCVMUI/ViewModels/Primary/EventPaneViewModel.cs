@@ -112,9 +112,11 @@
                 this.CanCalculateResults);
 
             this.InitialiseEventPane();
-            if (this.SelectedEventIndex >= 0)
+
+            // Nothing to load if the first index.
+            if (this.SelectedEventIndex >= 1)
             {
-                LoadEvent(Events[this.SelectedEventIndex]);
+                this.LoadEvent(this.Events[this.SelectedEventIndex]);
             }
         }
 

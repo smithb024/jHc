@@ -95,6 +95,11 @@
                 this.CancelNewSeasonFields);
 
             this.InitialiseSeasonPane();
+
+            if (this.SelectedSeasonIndex >= 0)
+            {
+                this.LoadSeason(this.Seasons[this.SelectedSeasonIndex]);
+            }
         }
 
         /// <summary>
@@ -263,6 +268,9 @@
         /// <summary>
         /// Requests that a season is loaded into memory.
         /// </summary>
+        /// <remarks>
+        ///  This will create the season.txt file if one is not already present.
+        /// </remarks>
         /// <param name="seasons">seasons list</param>
         private void LoadSeason(string seasonName)
         {
