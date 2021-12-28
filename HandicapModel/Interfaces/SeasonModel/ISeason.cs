@@ -153,13 +153,6 @@
         //bool LoadNewEvent(string eventName);
 
         /// <summary>
-        /// Load a new season into the model.
-        /// </summary>
-        /// <param name="seasonName">season to load</param>
-        /// <returns>success flag</returns>
-        bool LoadNewSeason(string seasonName);
-
-        /// <summary>
         /// Save the current model to a file.
         /// </summary>
         /// <returns>success flag</returns>

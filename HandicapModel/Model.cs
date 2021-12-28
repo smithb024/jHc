@@ -165,16 +165,6 @@
         public ISummary GlobalSummary { get; }
 
         /// <summary>
-        /// Load the season in to memory.
-        /// </summary>
-        /// <param name="seasonName">season to load</param>
-        /// <returns>success flag</returns>
-        public bool LoadNewSeason(string seasonName)
-        {
-            return this.CurrentSeason.LoadNewSeason(seasonName);
-        }
-
-        /// <summary>
         /// Load the event in to memory.
         /// </summary>
         /// <param name="eventName">event to load</param>

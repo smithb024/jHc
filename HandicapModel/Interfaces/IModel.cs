@@ -54,13 +54,6 @@
         ISummary GlobalSummary { get; }
 
         /// <summary>
-        /// Load the season in to memory.
-        /// </summary>
-        /// <param name="seasonName">season to load</param>
-        /// <returns>success flag</returns>
-        bool LoadNewSeason(string seasonName);
-
-        /// <summary>
         /// Load the event in to memory.
         /// </summary>
         /// <param name="eventName">event to load</param>

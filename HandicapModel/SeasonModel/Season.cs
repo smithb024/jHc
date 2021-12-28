@@ -3,8 +3,10 @@
     using System;
     using System.Collections.Generic;
     using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using CommonLib.Types;
+    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.Manage;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO;
@@ -97,6 +99,8 @@
             this.clubs = new List<IClubSeasonDetails>();
             this.summary = new Summary();
             this.events = new List<string>();
+
+            Messenger.Default.Register<LoadNewSeasonMessage>(this, this.LoadNewSeason);
         }
 
         /// <summary>
@@ -210,17 +214,17 @@
         /// <summary>
         /// Load a new season into the model.
         /// </summary>
-        /// <param name="seasonName">season to load</param>
+        /// <param name="message">load a new season message</param>
         /// <returns>success flag</returns>
-        public bool LoadNewSeason(string seasonName)
+        private void LoadNewSeason(LoadNewSeasonMessage message)
         {
             bool success = true;
 
-            this.Name = seasonName;
+            this.Name = message.Name;
 
             try
             {
-                if (string.IsNullOrEmpty(seasonName))
+                if (string.IsNullOrEmpty(this.Name))
                 {
                     this.Summary = new Summary();
                     this.Athletes = new List<AthleteSeasonDetails>();
@@ -231,15 +235,15 @@
                 {
                     this.Summary =
                         this.summaryData.LoadSummaryData(
-                            seasonName);
+                            this.Name);
                     this.Athletes =
                       this.athleteData.LoadAthleteSeasonData(
-                        seasonName,
+                        this.Name,
                         this.resultsConfigurationManager);
-                    this.Clubs = this.clubData.LoadClubSeasonData(seasonName);
+                    this.Clubs = this.clubData.LoadClubSeasonData(this.Name);
                     this.Events =
                         this.eventIo.GetEvents(
-                            seasonName);
+                            this.Name);
                 }
             }
             catch (Exception ex)
@@ -248,7 +252,14 @@
                 success = false;
             }
 
-            return success;
+            if (success)
+            {
+                Messenger.Default.Send(
+                new HandicapProgressMessage(
+                    $"New Season Loaded - {this.Name}"));
+
+                this.logger.WriteLog($"Season, loaded {this.Name}");
+            }
         }
 
         /// <summary>

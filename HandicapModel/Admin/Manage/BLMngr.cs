@@ -135,6 +135,8 @@
                     this.resultsConfigurationManager,
                     this.seriesConfigurationManager,
                     this.logger);
+
+            Messenger.Default.Register<LoadNewSeasonMessage>(this, this.SaveCurrentSeason);
         }
 
         /// <summary>
@@ -200,23 +202,6 @@
             }
 
             return success;
-        }
-
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>LoadNewSeason</name>
-        /// <date>21/03/15</date>
-        /// <summary>
-        /// Loads a new season into memory.
-        /// </summary>
-        /// <param name="seasonName">season to load</param>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public void LoadNewSeason(string seasonName)
-        {
-            this.model.LoadNewSeason(seasonName);
-            this.SaveCurrentSeason(seasonName);
-            Messenger.Default.Send(
-                new HandicapProgressMessage(
-                    $"New Season Loaded - {seasonName}"));
         }
 
         /// <summary>
@@ -406,13 +391,12 @@
         }
 
         /// <summary>
-        /// Saves the current season.
+        /// Saves the selected season to file.
         /// </summary>
-        /// <param name="season">current season</param>
-        /// <returns>success flag</returns>
-        private bool SaveCurrentSeason(string season)
+        /// <param name="season">load season message</param>
+        private void SaveCurrentSeason(LoadNewSeasonMessage message)
         {
-            return this.seasonIO.SaveCurrentSeason(season);
+            this.seasonIO.SaveCurrentSeason(message.Name);
         }
     }
 }

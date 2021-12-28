@@ -59,16 +59,6 @@
         /// <returns>success flag</returns>
         bool CreateNewSeason(string seasonName);
 
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>LoadNewSeason</name>
-        /// <date>21/03/15</date>
-        /// <summary>
-        /// Loads a new season into memory.
-        /// </summary>
-        /// <param name="seasonName">season to load</param>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        void LoadNewSeason(string seasonName);
-
         /// <summary>
         /// Create a new event
         /// </summary>
