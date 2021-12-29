@@ -3,8 +3,10 @@
     using System;
     using System.Collections.Generic;
     using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using CommonLib.Types;
+    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO.TXT;
@@ -13,7 +15,7 @@
     using HandicapModel.Interfaces.SeasonModel.EventModel;
 
     /// <summary>
-    /// A single event.
+    /// A single model event.
     /// </summary>
     public class EventHC : IHandicapEvent
     {
@@ -48,6 +50,11 @@
         private IEventResults resultsTable;
 
         /// <summary>
+        /// The name of the current season.
+        /// </summary>
+        private string seasonName;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="EventHC"/> class
         /// </summary>
         /// <param name="eventData">event data</param>
@@ -69,10 +76,13 @@
             this.logger = logger;
 
             this.Name = string.Empty;
-            this.SeasonName = string.Empty;
+            this.seasonName = string.Empty;
             this.Date = new DateType();
             this.Summary = new Summary();
             this.resultsTable = new EventResults();
+
+            Messenger.Default.Register<LoadNewSeasonMessage>(this, this.NewSeasonSelected);
+            Messenger.Default.Register<LoadNewEventMessage>(this, this.LoadNewEvent);
         }
 
         /// <summary>
@@ -85,11 +95,6 @@
         /// Gets the name of this event.
         /// </summary>
         public string Name { get; private set; }
-
-        /// <summary>
-        /// Gets the name of this event's parent season.
-        /// </summary>
-        public string SeasonName { get; private set; }
 
         /// <summary>
         /// Gets the date of this event.
@@ -120,32 +125,33 @@
         }
 
         /// <summary>
-        /// Loads the given event.
+        /// Loads a  new event into the model.
         /// </summary>
-        /// <param name="seasonName">season name</param>
-        /// <param name="eventName">new event name</param>
-        /// <returns>success flag</returns>
-        public bool LoadNewEvent(
-            string seasonName,
-            string eventName)
+        /// <param name="message">load new event message</param>
+        private void LoadNewEvent(
+            LoadNewEventMessage message)
         {
             bool success = true;
+            this.Name = message.Name;
 
             try
             {
-                EventMiscData misc = this.eventData.LoadEventData(seasonName, eventName);
+                EventMiscData misc = 
+                    this.eventData.LoadEventData(
+                        this.seasonName, 
+                        this.Name);
                 this.Date = misc.EventDate;
 
-                ResultsTable = 
+                this.ResultsTable = 
                     this.resultsTableReader.LoadResultsTable(
-                        seasonName, 
-                        eventName, 
+                        this.seasonName,
+                        this.Name, 
                         misc.EventDate);
 
                 ISummary summary =
                     this.summaryData.LoadSummaryData(
-                        seasonName, 
-                        eventName);
+                        this.seasonName,
+                        this.Name);
 
                 this.Summary.UpdateSummary(
                     summary.MaleRunners,
@@ -159,13 +165,17 @@
             }
             catch (Exception ex)
             {
-                this.logger.WriteLog($"Failed to load new event: {ex}");
+                this.logger.WriteLog($"Failed to load new event ({this.Name}): {ex}");
             }
 
-            this.Name = eventName;
-            this.SeasonName = seasonName;
+            if (success)
+            {
+                Messenger.Default.Send(
+                 new HandicapProgressMessage(
+                     $"New Event Loaded - {this.Name}"));
 
-            return success;
+                this.logger.WriteLog($"Event, loaded {this.Name}");
+            }
         }
 
         /// <summary>
@@ -176,7 +186,7 @@
         {
             bool suceess =
                 this.rawEventIo.SaveRawEventData(
-                    this.SeasonName,
+                    this.seasonName,
                     this.Name,
                     results);
 
@@ -191,7 +201,7 @@
         {
             List<IRaw> results =
                 this.rawEventIo.LoadRawEventData(
-                this.SeasonName, 
+                this.seasonName, 
                 this.Name);
 
             return results;
@@ -212,7 +222,7 @@
         public void SaveResultsTable()
         {
             this.resultsTableReader.SaveResultsTable(
-                this.SeasonName,
+                this.seasonName,
                 this.Name,
                 this.ResultsTable.Entries);
 
@@ -224,9 +234,18 @@
         public void SaveEventSummary()
         {
             this.summaryData.SaveSummaryData(
-                this.SeasonName, 
+                this.seasonName, 
                 this.Name, 
                 this.Summary);
+        }
+
+        /// <summary>
+        /// Save the name of the currently selected season
+        /// </summary>
+        /// <param name="message">the load new season message</param>
+        private void NewSeasonSelected(LoadNewSeasonMessage message)
+        {
+            this.seasonName = message.Name;
         }
     }
 }

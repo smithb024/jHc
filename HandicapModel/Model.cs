@@ -165,38 +165,6 @@
         public ISummary GlobalSummary { get; }
 
         /// <summary>
-        /// Load the season in to memory.
-        /// </summary>
-        /// <param name="seasonName">season to load</param>
-        /// <returns>success flag</returns>
-        public bool LoadNewSeason(string seasonName)
-        {
-            return this.CurrentSeason.LoadNewSeason(seasonName);
-        }
-
-        /// <summary>
-        /// Load the event in to memory.
-        /// </summary>
-        /// <param name="eventName">event to load</param>
-        /// <returns>success flag</returns>
-        public bool LoadNewEvent(string eventName)
-        {
-            bool success;
-
-            success =
-                this.CurrentEvent.LoadNewEvent(
-                    this.CurrentSeason.Name,
-                    eventName);
-
-            this.eventIo.SaveCurrentEvent(
-                this.CurrentSeason.Name,
-                eventName);
-
-            return success;
-            //return this.CurrentSeason.LoadNewEvent(eventName);
-        }
-
-        /// <summary>
         /// Add a new season to the model.
         /// </summary>
         public void AddNewSeason(string newSeason)

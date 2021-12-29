@@ -89,6 +89,11 @@
         private readonly IEventIo eventIo;
 
         /// <summary>
+        /// The name of the currently selected season. It is set from the view model.
+        /// </summary>
+        private string currentSeason;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="BLMngr"/> class.
         /// </summary>
         /// <param name="model">junior handicap model</param>
@@ -127,6 +132,7 @@
             this.seasonIO = seasonIO;
             this.eventIo = eventIo;
             this.ModelRootDirectory = RootIO.LoadRootFile();
+            this.currentSeason = string.Empty;
 
             this.resultsCalculator =
                 new CalculateResultsMngr(
@@ -135,6 +141,9 @@
                     this.resultsConfigurationManager,
                     this.seriesConfigurationManager,
                     this.logger);
+
+            Messenger.Default.Register<LoadNewSeasonMessage>(this, this.NewCurrentSeason);
+            Messenger.Default.Register<LoadNewEventMessage>(this, this.NewCurrentEvent);
         }
 
         /// <summary>
@@ -202,23 +211,6 @@
             return success;
         }
 
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>LoadNewSeason</name>
-        /// <date>21/03/15</date>
-        /// <summary>
-        /// Loads a new season into memory.
-        /// </summary>
-        /// <param name="seasonName">season to load</param>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public void LoadNewSeason(string seasonName)
-        {
-            this.model.LoadNewSeason(seasonName);
-            this.SaveCurrentSeason(seasonName);
-            Messenger.Default.Send(
-                new HandicapProgressMessage(
-                    $"New Season Loaded - {seasonName}"));
-        }
-
         /// <summary>
         /// Create a new event.
         /// </summary>
@@ -266,19 +258,6 @@
             }
 
             return success;
-        }
-
-        /// <summary>
-        /// Load a new event
-        /// </summary>
-        /// <param name="eventName">event name</param>
-        public void LoadNewEvent(string eventName)
-        {
-            this.model.LoadNewEvent(eventName);
-
-            Messenger.Default.Send(
-                new HandicapProgressMessage(
-                    $"New Event Loaded - {eventName}:{model.CurrentSeason.Name}"));
         }
 
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
@@ -406,13 +385,24 @@
         }
 
         /// <summary>
-        /// Saves the current season.
+        /// Saves the selected season to file and make a note of the season name.
         /// </summary>
-        /// <param name="season">current season</param>
-        /// <returns>success flag</returns>
-        private bool SaveCurrentSeason(string season)
+        /// <param name="season">load season message</param>
+        private void NewCurrentSeason(LoadNewSeasonMessage message)
         {
-            return this.seasonIO.SaveCurrentSeason(season);
+            this.currentSeason = message.Name;
+            this.seasonIO.SaveCurrentSeason(message.Name);
+        }
+
+        /// <summary>
+        /// Save the selected event to file.
+        /// </summary>
+        /// <param name="message">load event message</param>
+        private void NewCurrentEvent(LoadNewEventMessage message)
+        {
+            this.eventIo.SaveCurrentEvent(
+                this.currentSeason,
+                message.Name);
         }
     }
 }

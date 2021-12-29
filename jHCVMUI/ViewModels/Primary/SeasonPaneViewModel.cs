@@ -8,8 +8,8 @@
     using System.Windows.Input;
 
     using CommonHandicapLib.Interfaces;
-    using HandicapModel;
-    using HandicapModel.Admin.IO;
+    using CommonHandicapLib.Messages;
+    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.Manage;
     using HandicapModel.Interfaces.Admin.IO;
     using jHCVMUI.ViewModels.ViewModels;
@@ -98,7 +98,7 @@
 
             if (this.SelectedSeasonIndex >= 0)
             {
-                this.LoadSeason(this.Seasons[this.SelectedSeasonIndex]);
+                this.LoadSeason();
             }
         }
 
@@ -141,7 +141,7 @@
                 currentSeasonIndex = value;
                 RaisePropertyChangedEvent(nameof(this.SelectedSeasonIndex));
 
-                this.LoadSeason(this.Seasons[value]);
+                this.LoadSeason();
             }
         }
 
@@ -271,20 +271,20 @@
         /// <remarks>
         ///  This will create the season.txt file if one is not already present.
         /// </remarks>
-        /// <param name="seasons">seasons list</param>
-        private void LoadSeason(string seasonName)
+        private void LoadSeason()
         {
-            if (this.SelectedSeasonIndex >= 0)
+            if (this.SelectedSeasonIndex >= 0 &&
+                this.SelectedSeasonIndex < this.Seasons.Count)
             {
+                string seasonName = this.Seasons[this.SelectedSeasonIndex];
+
                 this.logger.WriteLog("Load season " + seasonName);
 
-                this.businessLayerManager.LoadNewSeason(seasonName);
+                LoadNewSeasonMessage message =
+                    new LoadNewSeasonMessage(
+                        seasonName);
 
-                if (this.SeasonUpdatedCallback != null)
-                {
-                    this.SeasonUpdatedCallback.Invoke();
-                }
-                //SelectCurrentEvent(BLMngr.LoadCurrentEvent());
+                Messenger.Default.Send(message);
             }
         }
 

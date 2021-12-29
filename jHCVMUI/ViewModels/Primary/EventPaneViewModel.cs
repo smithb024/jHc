@@ -1,16 +1,15 @@
 ﻿namespace jHCVMUI.ViewModels.Primary
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows;
     using System.Windows.Input;
 
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Messages;
     using CommonLib.Types;
-    using HandicapModel.Admin.IO;
+    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.Manage;
     using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.Admin.IO;
@@ -112,12 +111,6 @@
                 this.CanCalculateResults);
 
             this.InitialiseEventPane();
-
-            // Nothing to load if the first index.
-            if (this.SelectedEventIndex >= 1)
-            {
-                this.LoadEvent(this.Events[this.SelectedEventIndex]);
-            }
         }
 
         /// <summary>
@@ -148,13 +141,10 @@
             set
             {
                 m_currentEventIndex = value;
-                if (SelectedEventIndex >= 0)
-                {
-                    LoadEvent(Events[value]);
-                }
+                this.LoadEvent();
 
-                UpdateResultsButton();
-                RaisePropertyChangedEvent("SelectedEventIndex");
+                this.UpdateResultsButton();
+                this.RaisePropertyChangedEvent(nameof(this.SelectedEventIndex));
             }
         }
 
@@ -296,13 +286,23 @@
         }
 
         /// <summary>
-        /// Requests that a season is loaded into memory.
+        /// Requests that an event is loaded into memory.
         /// </summary>
-        /// <param name="seasons">seasons list</param>
-        private void LoadEvent(string eventName)
+        private void LoadEvent()
         {
-            this.logger.WriteLog("Load event " + eventName);
-            this.businessLayerManager.LoadNewEvent(eventName);
+            if (this.SelectedEventIndex >= 0 &&
+                this.SelectedEventIndex < this.Events.Count)
+            {
+                string eventName = this.Events[this.SelectedEventIndex];
+
+                this.logger.WriteLog("Load event " + eventName);
+
+                LoadNewEventMessage message =
+                    new LoadNewEventMessage(
+                        eventName);
+
+                Messenger.Default.Send(message);
+            }
         }
 
         /// <summary>

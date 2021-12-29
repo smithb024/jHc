@@ -637,7 +637,7 @@
 
             //if (this.LocationValid)
             //{
-                this.businessLayerManager.InitialiseModel();
+                //this.businessLayerManager.InitialiseModel();
             //}
             //else
             //{
