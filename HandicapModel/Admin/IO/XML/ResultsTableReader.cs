@@ -9,12 +9,14 @@
     using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Types;
+    using CommonHandicapLib.XML.ResultsTable;
     using CommonLib.Enumerations;
     using CommonLib.Types;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.SeasonModel.EventModel;
     using HandicapModel.SeasonModel.EventModel;
+    using NynaeveLib.XML;
 
     /// <summary>
     /// The results table reader.
@@ -130,72 +132,57 @@
             DateType date)
         {
             IEventResults resultsTable = new EventResults();
+            ResultsTableRoot deserialisedResultTable;
             string resultsPath = RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + IOPaths.athleteResultsTable;
 
             try
             {
-                if (File.Exists(resultsPath))
-                {
-                    XDocument reader = XDocument.Load(resultsPath);
-                    XElement rootElement = reader.Root;
-
-                    var rowList = from Row in rootElement.Elements(c_rowElement)
-                                  select new
-                                  {
-                                      key = (int)Row.Attribute(keyAttribute),
-                                      club = (string)Row.Attribute(c_clubAttribute),
-                                      hc = (string)Row.Attribute(c_handicapAttribute),
-                                      name = (string)Row.Attribute(c_nameAttribute),
-                                      notes = (string)Row.Attribute(c_notesAttribute),
-                                      extraInfo = (string)Row.Attribute(extraInfoAttribute),
-                                      order = (int)Row.Attribute(c_orderAttribute),
-                                      pb = (bool)Row.Attribute(c_pbAttribute),
-                                      points = (string)Row.Attribute(c_pointsAttribute),
-                                      harmonyPoints = (int)Row.Attribute(HarmonyPointsAttribute),
-                                      number = (string)Row.Attribute(c_raceNumberAttribute),
-                                      runningOrder = (int)Row.Attribute(c_runningOrderAttribute),
-                                      time = (string)Row.Attribute(c_timeAttribute),
-                                      sex = (string)Row.Attribute(c_sexAttribute),
-                                      yb = (bool)Row.Attribute(c_ybAttribute),
-                                      ageGradedRating = (string)Row.Attribute(ageGradedRatingAttribute)
-                                  };
-
-                    foreach (var row in rowList)
-                    {
-                        SexType sex = SexType.Default;
-                        if (!Enum.TryParse(row.sex, out sex))
-                        {
-                            this.logger.WriteLog("Error reading sex from " + row.name);
-                        }
-
-                        ResultsTableEntry rowEntry =
-                          new ResultsTableEntry(
-                            row.key,
-                            row.name,
-                            new RaceTimeType(row.time),
-                            row.order,
-                            row.runningOrder,
-                            new RaceTimeType(row.hc),
-                            row.club,
-                            sex,
-                            row.number,
-                            new CommonPoints(row.points, date),
-                            row.harmonyPoints,
-                            row.pb,
-                            row.yb,
-                            row.ageGradedRating,
-                            row.notes,
-                            row.extraInfo,
-                            resultsTable.Entries.Count + 1);
-                        resultsTable.AddEntry(rowEntry);
-                    }
-                }
+                deserialisedResultTable =
+                    XmlFileIo.ReadXml<ResultsTableRoot>(
+                        resultsPath);
             }
-            catch (Exception ex)
+            catch (XmlException ex)
             {
-                this.logger.WriteLog("Error reading results table: " + ex.ToString());
+                this.logger.WriteLog(
+                    $"Error reading the results table; {ex.XmlMessage}");
 
-                resultsTable = new EventResults();
+                return resultsTable;
+            }
+
+            foreach(Row row in deserialisedResultTable)
+            {
+                RaceTimeType time =
+                    new RaceTimeType(
+                        row.Time);
+                RaceTimeType handicap =
+                    new RaceTimeType(
+                        row.Handicap);
+                CommonPoints points =
+                    new CommonPoints(
+                        row.Points,
+                        date);
+                int position = resultsTable.Entries.Count + 1;
+
+                ResultsTableEntry rowEntry =
+                          new ResultsTableEntry(
+                            row.Key,
+                            row.Name,
+                            time,
+                            row.Order,
+                            row.RunningOrder,
+                            handicap,
+                            row.Club,
+                            row.Sex,
+                            row.Number,
+                            points,
+                            row.HarmonyPoints,
+                            row.IsPersonalBest,
+                            row.IsYearBest,
+                            string.Empty,
+                            row.Notes,
+                            row.ExtraInformation,
+                            position);
+                resultsTable.AddEntry(rowEntry);
             }
 
             return resultsTable;

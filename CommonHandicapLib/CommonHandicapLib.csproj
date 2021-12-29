@@ -68,6 +68,8 @@
     <Compile Include="Types\ResultsState.cs" />
     <Compile Include="Types\StatusType.cs" />
     <Compile Include="Interfaces\XML\IResultsConfigReader.cs" />
+    <Compile Include="XML\ResultsTable\ResultsTableRoot.cs" />
+    <Compile Include="XML\ResultsTable\Row.cs" />
     <Compile Include="XML\SeriesConfigReader.cs" />
     <Compile Include="XML\NormalisationConfigReader.cs" />
     <Compile Include="XML\ResultsConfigReader.cs" />
