@@ -33,24 +33,11 @@
         IEventResults ResultsTable { get; }
 
         /// <summary>
-        /// Gets the name of the season which this event belongs to.
-        /// </summary>
-        string SeasonName { get; }
-
-        /// <summary>
         /// Gets the event summary information.
         /// </summary>
         ISummary Summary { get; }
         //SummaryDelegate EventSummaryCallback { get; set; }
         //ResultsDelegate ResultsCallback { get; set; }
-
-        /// <summary>
-        /// Load a new event.
-        /// </summary>
-        /// <param name="seasonName">parent season name</param>
-        /// <param name="eventName">current event name</param>
-        /// <returns></returns>
-        bool LoadNewEvent(string seasonName, string eventName);
         
         /// <summary>
         /// Load the raw results.

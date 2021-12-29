@@ -67,12 +67,6 @@
         /// <returns>success flag</returns>
         bool CreateNewEvent(string eventName, DateType date);
 
-        /// <summary>
-        /// Load a new event
-        /// </summary>
-        /// <param name="eventName">event name</param>
-        void LoadNewEvent(string eventName);
-
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         /// <name>LoadCurrentSeason</name>
         /// <date>15/04/15</date>
