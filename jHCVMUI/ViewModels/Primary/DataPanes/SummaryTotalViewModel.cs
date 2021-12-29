@@ -6,9 +6,6 @@
     /// <summary>
     /// View model for the total season summary view.
     /// </summary>
-    /// It contains no information, the type is just used to determine which view model is linked
-    /// as the data context.
-    /// </remarks>
     public class SummaryTotalViewModel : SummaryViewModel
     {
         /// <summary>

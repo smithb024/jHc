@@ -50,6 +50,11 @@
         private IEventResults resultsTable;
 
         /// <summary>
+        /// Summary of the current event.
+        /// </summary>
+        private ISummary summary;
+
+        /// <summary>
         /// The name of the current season.
         /// </summary>
         private string seasonName;
@@ -78,7 +83,7 @@
             this.Name = string.Empty;
             this.seasonName = string.Empty;
             this.Date = new DateType();
-            this.Summary = new Summary();
+            this.summary = new Summary();
             this.resultsTable = new EventResults();
 
             Messenger.Default.Register<LoadNewSeasonMessage>(this, this.NewSeasonSelected);
@@ -90,6 +95,12 @@
         /// results.
         /// </summary>
         public event EventHandler ResultsChangedEvent;
+
+        /// <summary>
+        /// Event which is used to inform interested parties that there has been a change to this
+        /// event's summary.
+        /// </summary>
+        public event EventHandler SummaryChangedEvent;
 
         /// <summary>
         /// Gets the name of this event.
@@ -104,7 +115,22 @@
         /// <summary>
         /// Gets the summary of this event.
         /// </summary>
-        public ISummary Summary { get; }
+        public ISummary Summary
+        {
+            get
+            {
+                return this.summary;
+            }
+
+            private set
+            {
+                if (this.summary != value)
+                {
+                    this.summary = value;
+                    this.SummaryChangedEvent?.Invoke(this, new EventArgs());
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the results table.
@@ -136,32 +162,31 @@
 
             try
             {
-                EventMiscData misc = 
-                    this.eventData.LoadEventData(
-                        this.seasonName, 
-                        this.Name);
-                this.Date = misc.EventDate;
+                if (string.IsNullOrEmpty(this.Name))
+                {
+                    this.ResultsTable = new EventResults();
+                    this.Summary = new Summary();
+                    this.Date = new DateType();
+                }
+                else
+                {
+                    EventMiscData misc =
+                        this.eventData.LoadEventData(
+                            this.seasonName,
+                            this.Name);
+                    this.Date = misc.EventDate;
 
-                this.ResultsTable = 
-                    this.resultsTableReader.LoadResultsTable(
-                        this.seasonName,
-                        this.Name, 
-                        misc.EventDate);
-
-                ISummary summary =
-                    this.summaryData.LoadSummaryData(
-                        this.seasonName,
-                        this.Name);
-
-                this.Summary.UpdateSummary(
-                    summary.MaleRunners,
-                    summary.FemaleRunners,
-                    summary.SBs,
-                    summary.PBs,
-                    summary.FirstTimers);
-                this.Summary.LoadFastest(
-                    summary.FastestBoys,
-                    summary.FastestGirls);
+                    this.ResultsTable =
+                        this.resultsTableReader.LoadResultsTable(
+                            this.seasonName,
+                            this.Name,
+                            misc.EventDate);
+                    
+                    this.Summary =
+                        this.summaryData.LoadSummaryData(
+                            this.seasonName,
+                            this.Name);
+                }
             }
             catch (Exception ex)
             {
