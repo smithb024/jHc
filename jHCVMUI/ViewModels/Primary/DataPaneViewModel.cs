@@ -77,7 +77,7 @@
                     this.model.CurrentEvent.Summary);
             this.seasonSummaryViewModel = 
                 new SummaryTotalViewModel(
-                    this.model.CurrentSeason.Summary);
+                    this.model.CurrentSeason);
             this.resultsTableViewModel =
                 new ResultsTableViewModel(
                     this.model.CurrentEvent);

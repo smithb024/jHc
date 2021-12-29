@@ -90,7 +90,7 @@
         /// Populate the season summary with the latest information.
         /// </summary>
         /// <param name="summary">summary information</param>
-        public void PopulateSummaryFromModel(
+        protected void PopulateSummaryFromModel(
             object sender,
             EventArgs e)
         {
@@ -112,7 +112,7 @@
         /// Populate the season summary with the latest information.
         /// </summary>
         /// <param name="summary">summary information</param>
-        public void FastestAthletesFromModel(
+        protected void FastestAthletesFromModel(
             object sender,
             EventArgs e)
         {
@@ -125,6 +125,24 @@
             this.RaisePropertyChangedEvent(nameof(this.FastestGirl));
             this.RaisePropertyChangedEvent(nameof(this.FastestBoyTime));
             this.RaisePropertyChangedEvent(nameof(this.FastestGirlTime));
+        }
+
+        /// <summary>
+        /// Release the old model and reset with the new one.
+        /// </summary>
+        /// <param name="newModel">new model.</param>
+        protected void UpdateModel(ISummary newModel)
+        {
+            this.model.SummaryDataChangedEvent -= this.PopulateSummaryFromModel;
+            this.model.FastestDataChangedEvent -= this.FastestAthletesFromModel;
+
+            this.model = newModel;
+
+            this.model.SummaryDataChangedEvent += this.PopulateSummaryFromModel;
+            this.model.FastestDataChangedEvent += this.FastestAthletesFromModel;
+
+            this.PopulateSummaryFromModel(null, EventArgs.Empty);
+            this.FastestAthletesFromModel(null, EventArgs.Empty);
         }
     }
 }
