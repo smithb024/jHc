@@ -9,23 +9,84 @@
     /// </summary>
     public class Row
     {
+        /// <summary>
+        /// The key for this athlete.
+        /// </summary>
         private int key;
+
+        /// <summary>
+        /// The athlete's club.
+        /// </summary>
         private string club;
+
+        /// <summary>
+        /// The athlete's handicap.
+        /// </summary>
         private string handicap;
+
+        /// <summary>
+        /// The athlete's name.
+        /// </summary>
         private string name;
+
+        /// <summary>
+        /// relevant notes.
+        /// </summary>
         private string notes;
+
+        /// <summary>
+        /// Extra information.
+        /// </summary>
         private string extraInformation;
+
+        /// <summary>
+        /// Finishing order.
+        /// </summary>
         private int order;
+
+        /// <summary>
+        /// Indicates whether this is the athlete's personal best.
+        /// </summary>
         private bool personalBest;
+
+        /// <summary>
+        /// The points scored in the normal competition.
+        /// </summary>
         private string points;
+
+        /// <summary>
+        /// The points scored in the harmony competition.
+        /// </summary>
         private int harmonyPoints;
+
+        /// <summary>
+        /// The athlete's number.
+        /// </summary>
         private string number;
+
+        /// <summary>
+        /// Used to separate results with the same time.
+        /// </summary>
         private int runningOrder;
+
+        /// <summary>
+        /// The athlete's time.
+        /// </summary>
         private string time;
+
+        /// <summary>
+        /// The athlete's sex.
+        /// </summary>
         private SexType sex;
+
+        /// <summary>
+        /// Indicates whether this is the athlete's year best.
+        /// </summary>
         private bool yearBest;
 
-
+        /// <summary>
+        /// Initialises a new instance of the <see cref="Row"/> class.
+        /// </summary>
         public Row()
         {
             this.key = -1;
@@ -43,7 +104,59 @@
             this.time = string.Empty;
             this.sex = SexType.Default;
             this.yearBest = false;
-       }
+        }
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="Row"/> class.
+        /// </summary>
+        /// <param name="key">the athlete key</param>
+        /// <param name="name">the athlete's name</param>
+        /// <param name="club">the athlete's club</param>
+        /// <param name="handicap">the athlete's handicap</param>
+        /// <param name="notes">relevant notes</param>
+        /// <param name="extraInformation">extra information</param>
+        /// <param name="order">finishing order</param>
+        /// <param name="isPersonalBest">indicates whether this is the athlete's personal best</param>
+        /// <param name="isYearBest">indicates whether this is the athlete's year best</param>
+        /// <param name="points">the athlete's points in the normal competition</param>
+        /// <param name="harmonyPoints">the athlete's points in the harmony competition</param>
+        /// <param name="number">the athlete's number</param>
+        /// <param name="runningOrder">identifies the postion when sharing times</param>
+        /// <param name="time">the athlete's time</param>
+        /// <param name="sex">the athlete's sex</param>
+        public Row(
+            int key,
+            string name,
+            string club,
+            string handicap,
+            string notes,
+            string extraInformation,
+            int order,
+            bool isPersonalBest,
+            bool isYearBest,
+            string points,
+            int harmonyPoints,
+            string number,
+            int runningOrder,
+            string time,
+            SexType sex)
+        {
+            this.key = key;
+            this.name = name;
+            this.club = club;
+            this.handicap = handicap;
+            this.notes = notes;
+            this.extraInformation = extraInformation;
+            this.order = order;
+            this.personalBest = isPersonalBest;
+            this.yearBest = isYearBest;
+            this.points = points;
+            this.harmonyPoints = harmonyPoints;
+            this.number = number;
+            this.runningOrder = runningOrder;
+            this.time = time;
+            this.sex = sex;
+        }
 
         /// <summary>
         /// Gets or sets the Key of the athlete in the row.

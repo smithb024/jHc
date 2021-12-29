@@ -57,16 +57,12 @@
             this.logger = logger;
         }
 
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>SaveAthleteSeasonSata</name>
-        /// <date>29/03/15</date>
         /// <summary>
         /// Save the points table
         /// </summary>
         /// <param name="seasonName">season name</param>
         /// <param name="eventName">event name</param>
         /// <param name="resultsTable">points table</param>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public bool SaveResultsTable(
             string seasonName,
             string eventName,
@@ -76,43 +72,47 @@
 
             try
             {
+                ResultsTableRoot rootElement = new ResultsTableRoot();
+
                 XDocument writer = new XDocument(
                  new XDeclaration("1.0", "uft-8", "yes"),
-                 new XComment("Athlete's season XML"));
-                XElement rootElement = new XElement(c_rootElement);
+                 new XComment("Results Table XML"));
 
                 foreach (ResultsTableEntry entry in resultsTable)
                 {
-                    XElement entryElement =
-                        new XElement(
-                            c_rowElement,
-                            new XAttribute(keyAttribute, entry.Key),
-                            new XAttribute(c_nameAttribute, entry.Name),
-                            new XAttribute(c_clubAttribute, entry.Club),
-                            new XAttribute(c_handicapAttribute, entry.Handicap.ToString()),
-                            new XAttribute(c_notesAttribute, entry.Notes),
-                            new XAttribute(extraInfoAttribute, entry.ExtraInfo),
-                            new XAttribute(c_orderAttribute, entry.Order),
-                            new XAttribute(c_pbAttribute, entry.PB.ToString()),
-                            new XAttribute(c_pointsAttribute, entry.Points.ToString()),
-                            new XAttribute(HarmonyPointsAttribute, entry.HarmonyPoints.ToString()),
-                            new XAttribute(c_raceNumberAttribute, entry.RaceNumber.ToString()),
-                            new XAttribute(c_runningOrderAttribute, entry.RunningOrder.ToString()),
-                            new XAttribute(c_timeAttribute, entry.Time.ToString()),
-                            new XAttribute(c_sexAttribute, entry.Sex.ToString()),
-                            new XAttribute(c_ybAttribute, entry.SB),
-                            new XAttribute(ageGradedRatingAttribute, entry.AgeGrading));
+                    Row entryElement =
+                        new Row(
+                            entry.Key,
+                            entry.Name,
+                            entry.Club,
+                            entry.Handicap.ToString(),
+                            entry.Notes,
+                            entry.ExtraInfo,
+                            entry.Order,
+                            entry.PB,
+                            entry.SB,
+                            entry.Points.ToString(),
+                            entry.HarmonyPoints,
+                            entry.RaceNumber,
+                            entry.RunningOrder,
+                            entry.Time.ToString(),
+                            entry.Sex);
 
                     rootElement.Add(entryElement);
                 }
 
-                writer.Add(rootElement);
-                writer.Save(RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + IOPaths.athleteResultsTable);
+                string fileName =
+                    ResultsTableReader.GetPath(
+                        seasonName,
+                        eventName);
+                XmlFileIo.WriteXml<ResultsTableRoot>(
+                        rootElement,
+                        fileName);
             }
 
-            catch (Exception ex)
+            catch (XmlException ex)
             {
-                this.logger.WriteLog("Error writing results table" + ex.ToString());
+                this.logger.WriteLog($"Error writing results table file: {ex.XmlMessage}");
                 success = false;
             }
 
@@ -133,7 +133,10 @@
         {
             IEventResults resultsTable = new EventResults();
             ResultsTableRoot deserialisedResultTable;
-            string resultsPath = RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + IOPaths.athleteResultsTable;
+            string resultsPath =
+                ResultsTableReader.GetPath(
+                    seasonName,
+                    eventName);
 
             try
             {
@@ -186,6 +189,19 @@
             }
 
             return resultsTable;
+        }
+
+        /// <summary>
+        /// Create and return the file path.
+        /// </summary>
+        /// <param name="seasonName">season name</param>
+        /// <param name="eventName">event name</param>
+        /// <returns>XML path</returns>
+        private static string GetPath(
+            string seasonName,
+            string eventName)
+        {
+            return RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + IOPaths.athleteResultsTable;
         }
     }
 }

@@ -144,35 +144,6 @@
             EventArgs e)
         {
             this.PopulateResultsTable();
-            //this.ResultsTable = new ObservableCollection<ResultsTableRowViewModel>();
-
-            //foreach (IResultsTableEntry entry in this.model.ResultsTable.Entries)
-            //{
-            //    this.ResultsTable.Add(
-            //      new ResultsTableRowViewModel(
-            //        entry.Key,
-            //        entry.Position,
-            //        entry.Name,
-            //        entry.AgeGrading,
-            //        entry.Club,
-            //        entry.Handicap.ToString(),
-            //        entry.ExtraInfo,
-            //        entry.Notes,
-            //        entry.FirstTimer,
-            //        entry.RunningOrder,
-            //        entry.PB,
-            //        entry.Points.TotalPoints,
-            //        entry.Points.FinishingPoints,
-            //        entry.Points.PositionPoints,
-            //        entry.Points.BestPoints,
-            //        entry.RaceNumber,
-            //        entry.Time.ToString(),
-            //        entry.RunningTime.ToString(),
-            //        entry.Sex.ToString(),
-            //        entry.SB));
-            //}
-
-            //this.resultsOrder = ResultsOrder.Time;
         }
 
         /// <summary>
