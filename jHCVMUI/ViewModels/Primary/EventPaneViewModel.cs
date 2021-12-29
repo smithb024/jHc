@@ -111,8 +111,6 @@
                 this.CanCalculateResults);
 
             this.InitialiseEventPane();
-
-            this.LoadEvent();
         }
 
         /// <summary>
