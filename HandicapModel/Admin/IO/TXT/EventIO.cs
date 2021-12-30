@@ -33,7 +33,13 @@
         public List<string> GetEvents(string season)
         {
             List<string> events = new List<string>();
-            string[] eventsArray = System.IO.Directory.GetDirectories(RootPath.DataPath + season);
+
+            if (string.IsNullOrEmpty(season))
+            {
+                return events;
+            }
+
+            string[] eventsArray = Directory.GetDirectories(RootPath.DataPath + season);
 
             foreach (string occasion in eventsArray)
             {
