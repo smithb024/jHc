@@ -365,15 +365,12 @@
         /// <param name="currentSeason">season to find</param>
         public void SelectCurrentEvent(string currentEvent)
         {
-            if (currentEvent != string.Empty)
+            for (int eventIndex = 0; eventIndex < Events.Count(); ++eventIndex)
             {
-                for (int eventIndex = 0; eventIndex < Events.Count(); ++eventIndex)
+                if (Events[eventIndex] == currentEvent)
                 {
-                    if (Events[eventIndex] == currentEvent)
-                    {
-                        SelectedEventIndex = eventIndex;
-                        break;
-                    }
+                    SelectedEventIndex = eventIndex;
+                    break;
                 }
             }
         }

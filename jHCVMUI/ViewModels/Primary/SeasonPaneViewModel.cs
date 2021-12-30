@@ -393,7 +393,6 @@
         private void LoadNewSeries(LoadNewSeriesMessage message)
         {
             this.InitialiseSeasonPane();
-            this.LoadSeason();
         }
     }
 }

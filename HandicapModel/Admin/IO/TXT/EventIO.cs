@@ -100,7 +100,7 @@
                 {
                     using (StreamReader reader = new StreamReader(this.dataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.currentEvent))
                     {
-                        return reader.ReadLine();
+                        return reader.ReadLine() ?? string.Empty;
                     }
                 }
             }
