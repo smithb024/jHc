@@ -354,19 +354,6 @@
         }
 
         /// <summary>
-        /// Loads the current event.
-        /// </summary>
-        /// <returns>returns the name of the current event</returns>
-        public string LoadCurrentEvent()
-        {
-            string currentEvent =
-                this.eventIo.LoadCurrentEvent(
-                    CurrentSeason.Name);
-
-            return currentEvent;
-        }
-
-        /// <summary>
         /// Reinitialise the season.
         /// </summary>
         public void ReinitialiseSeason()

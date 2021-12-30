@@ -1,6 +1,7 @@
 ﻿namespace jHCVMUI.ViewModels.Primary
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows;
@@ -32,6 +33,11 @@
         private readonly ICommonIo commonIo;
 
         /// <summary>
+        /// Event IO manager.
+        /// </summary>
+        private readonly IEventIo eventIo;
+
+        /// <summary>
         /// aplication logger
         /// </summary>
         private readonly IJHcLogger logger;
@@ -60,6 +66,11 @@
         private IBLMngr businessLayerManager;
 
         /// <summary>
+        /// The name of the current season.
+        /// </summary>
+        private string seasonName;
+
+        /// <summary>
         /// Initialise a new instance of the <see cref="EventPaneViewModel"/> class.
         /// </summary>
         /// <param name="model">junior handicap model</param>
@@ -72,17 +83,17 @@
             IBLMngr businessLayerManager,
             IGeneralIo generalIo,
             ICommonIo commonIo,
+            IEventIo eventIo,
             IJHcLogger logger)
         {
             this.model = model;
             this.businessLayerManager = businessLayerManager;
             this.generalIo = generalIo;
             this.commonIo = commonIo;
+            this.eventIo = eventIo;
             this.logger = logger;
 
-            model.CurrentSeason.HandicapEventsChanged += this.ModelEventsChanged;
-            this.PopulateEvents();
-            //model.CurrentSeason.EventsCallback = new EventsDelegate(PopulateEvents);
+            this.seasonName = this.model.CurrentSeason.Name;
 
             // TODO, this.IsLocationValid has been copied from PrimaryDisplayViewModel. Can this be rationalised.
             NewEventCommand =
@@ -111,6 +122,8 @@
                 this.CanCalculateResults);
 
             this.InitialiseEventPane();
+
+            Messenger.Default.Register<LoadNewSeasonMessage>(this, this.NewSeasonSelected);
         }
 
         /// <summary>
@@ -243,12 +256,15 @@
         public ICommand CancelEventCommand { get; private set; }
 
         /// <summary>
-        /// 
+        /// Initialise the controls on the view model.
         /// </summary>
         public void InitialiseEventPane()
         {
-            SelectCurrentEvent(this.businessLayerManager.LoadCurrentEvent());
-            UpdateResultsButton();
+            string currentEventName = this.businessLayerManager.LoadCurrentEvent();
+
+            this.PopulateEvents();
+            this.SelectCurrentEvent(currentEventName);
+            this.UpdateResultsButton();
         }
 
         /// <summary>
@@ -513,10 +529,25 @@
         {
             this.Events = new ObservableCollection<string>();
             this.Events.Add(string.Empty);
-            foreach (string newEvent in this.model.CurrentSeason.Events)
+
+            List<string> events =
+                this.eventIo.GetEvents(
+                    this.seasonName);
+            foreach (string newEvent in events)
             {
                 this.Events.Add(newEvent);
             }
+        }
+
+
+        /// <summary>
+        /// A new season has been selected, reinitialise the view model to reflect the new season.
+        /// </summary>
+        /// <param name="message">the load new season message</param>
+        private void NewSeasonSelected(LoadNewSeasonMessage message)
+        {
+            this.seasonName = message.Name;
+            this.InitialiseEventPane();
         }
     }
 }

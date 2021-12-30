@@ -279,9 +279,6 @@
             return currentSeason;
         }
 
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>LoadCurrentSeason</name>
-        /// <date>15/04/15</date>
         /// <summary>
         /// Loads the current season.
         /// </summary>
@@ -290,10 +287,13 @@
         /// application to the next.
         /// </remarks>
         /// <returns>returns the name of the current season</returns>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public string LoadCurrentEvent()
         {
-            return this.model.LoadCurrentEvent();
+            string currentEvent =
+                this.eventIo.LoadCurrentEvent(
+                    this.currentSeason);
+
+            return currentEvent;
         }
 
         /// <summary>

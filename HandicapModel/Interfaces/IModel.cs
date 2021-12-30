@@ -173,12 +173,6 @@
           TimeType predeclaredHandicap);
 
         /// <summary>
-        /// Loads the current event.
-        /// </summary>
-        /// <returns>returns the name of the current event</returns>
-        string LoadCurrentEvent();
-
-        /// <summary>
         /// Reinitialise the season.
         /// </summary>
         void ReinitialiseSeason();

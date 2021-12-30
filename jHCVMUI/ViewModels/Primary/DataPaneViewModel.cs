@@ -74,10 +74,10 @@
                     this.model.Athletes);
             this.eventSummaryViewModel = 
                 new SummaryEventViewModel(
-                    this.model.CurrentEvent.Summary);
+                    this.model.CurrentEvent);
             this.seasonSummaryViewModel = 
                 new SummaryTotalViewModel(
-                    this.model.CurrentSeason.Summary);
+                    this.model.CurrentSeason);
             this.resultsTableViewModel =
                 new ResultsTableViewModel(
                     this.model.CurrentEvent);

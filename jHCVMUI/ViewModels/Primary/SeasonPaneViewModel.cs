@@ -306,8 +306,8 @@
                 m_athleteSeasonRegDialog = new AthleteRegisterToSeasonDialog();
             }
 
-            m_athleteSeasonRegDialog.Unloaded -= new System.Windows.RoutedEventHandler(CloseAthleteSeasonRegDialog);
-            m_athleteSeasonRegDialog.Unloaded += new System.Windows.RoutedEventHandler(CloseAthleteSeasonRegDialog);
+            m_athleteSeasonRegDialog.Unloaded -= new RoutedEventHandler(CloseAthleteSeasonRegDialog);
+            m_athleteSeasonRegDialog.Unloaded += new RoutedEventHandler(CloseAthleteSeasonRegDialog);
 
             m_athleteSeasonRegViewModel = new AthleteRegisterToSeasonViewModel(this.model);
             m_athleteSeasonRegDialog.DataContext = m_athleteSeasonRegViewModel;
@@ -326,7 +326,7 @@
         /// <summary>
         /// Closes the athlete registration dialog
         /// </summary>
-        public void CloseAthleteSeasonRegDialog(object sender, System.Windows.RoutedEventArgs e)
+        public void CloseAthleteSeasonRegDialog(object sender, RoutedEventArgs e)
         {
             m_athleteSeasonRegDialog = null;
         }
