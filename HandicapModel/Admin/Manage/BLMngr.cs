@@ -324,6 +324,9 @@
         public void SaveRootDirectory(string rootDirectory)
         {
             RootIO.SaveRootFile(rootDirectory);
+
+            ReinitialiseRoot message = new ReinitialiseRoot();
+            Messenger.Default.Send(message);
         }
 
         /// <summary>

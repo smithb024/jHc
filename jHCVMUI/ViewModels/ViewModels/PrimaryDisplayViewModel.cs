@@ -595,9 +595,11 @@
             DialogResult result = dialog.ShowDialog();
 
             this.businessLayerManager.SaveRootDirectory(dialog.SelectedPath);
-            this.InitialiseViewModels();
 
+            LoadNewSeriesMessage loadNewMessage = new LoadNewSeriesMessage();
             HandicapProgressMessage progress = new HandicapProgressMessage("New Series Loaded");
+
+            Messenger.Default.Send(loadNewMessage);
             Messenger.Default.Send(progress);
         }
 
@@ -634,32 +636,6 @@
                   "PrimaryDisplayViewModel failed to initalise, null results config manager");
                 return;
             }
-
-            //if (this.LocationValid)
-            //{
-                //this.businessLayerManager.InitialiseModel();
-            //}
-            //else
-            //{
-            //    this.businessLayerManager.SimpleInitialiseModel();
-            //}
-
-            //this.model.ErrorCallback = new InformationDelegate(PopulateErrorInformation);
-            //this.model.ProgressCallback = new InformationDelegate(PopulateProgressInformation);
-
-            // Ensure any information which may have been missed is updated to the view model.
-            //PopulateErrorInformation(this.model.ErrorInformation);
-            //PopulateProgressInformation(this.model.ProgressInformation);
-
-            //MainDisplaySeasonPane =
-            //  new SeasonPaneViewModel(
-            //    this.businessLayerManager);
-            //MainDisplayEventPane =
-            //  new EventPaneViewModel(
-            //    this.businessLayerManager);
-            //MainDisplayDataPane = new DataPaneViewModel();
-
-            //MainDisplaySeasonPane.SeasonUpdatedCallback = new CallDelegate(SeasonUpdated);
 
             this.CreateNewSeriesCommand =
               new SimpleCommand(
@@ -721,10 +697,6 @@
               new SimpleCommand(
                 this.OpenStopwatchP610EEditorDialog,
                 this.IsLocationValid);
-
-            //MainDisplaySeasonPane.InitialiseSeasonPane();
-            //MainDisplayEventPane.InitialiseEventPane();
-            //MainDisplayDataPane.InitialiseDataPane();
         }
 
         /// <summary>

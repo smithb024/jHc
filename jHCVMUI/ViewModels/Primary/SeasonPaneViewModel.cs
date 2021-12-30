@@ -100,6 +100,8 @@
             {
                 this.LoadSeason();
             }
+
+            Messenger.Default.Register<LoadNewSeriesMessage>(this, this.LoadNewSeries);
         }
 
         /// <summary>
@@ -241,11 +243,11 @@
         /// <param name="seasons">seasons list</param>
         public void PopulateSeasons(List<string> seasons)
         {
-            Seasons = new ObservableCollection<string>();
-            Seasons.Add(string.Empty);
+            this.Seasons = new ObservableCollection<string>();
+            this.Seasons.Add(string.Empty);
             foreach (string season in seasons)
             {
-                Seasons.Add(season);
+                this.Seasons.Add(season);
             }
         }
 
@@ -384,6 +386,21 @@
         private bool IsLocationValid()
         {
             return this.LocationValid;
+        }
+
+        /// <summary>
+        /// A load new series command has been initiated. 
+        /// Select the current season and let the load trickle through the models.
+        /// </summary>
+        /// <param name="message">load new series message</param>
+        private void LoadNewSeries(LoadNewSeriesMessage message)
+        {
+            this.InitialiseSeasonPane();
+
+            if (this.SelectedSeasonIndex >= 0)
+            {
+                this.LoadSeason();
+            }
         }
     }
 }

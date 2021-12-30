@@ -38,6 +38,8 @@
             this.logger = logger;
             this.rootDirectory = RootIO.LoadRootFile();
             this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}";
+
+            Messenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
         }
 
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
@@ -54,7 +56,7 @@
 
             try
             {
-                string[] seasonsArray = Directory.GetDirectories(RootPath.DataPath);
+                string[] seasonsArray = Directory.GetDirectories(this.dataPath);
                 foreach (string season in seasonsArray)
                 {
                     seasons.Add(season.Substring(season.LastIndexOf('\\') + 1));
@@ -158,6 +160,16 @@
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Reinitialise the data path value from the file.
+        /// </summary>
+        /// <param name="message">reinitialise message</param>
+        private void ReinitialiseRoot(ReinitialiseRoot message)
+        {
+            this.rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}";
         }
     }
 }
