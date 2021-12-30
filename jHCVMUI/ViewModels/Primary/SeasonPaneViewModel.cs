@@ -96,10 +96,7 @@
 
             this.InitialiseSeasonPane();
 
-            if (this.SelectedSeasonIndex >= 0)
-            {
-                this.LoadSeason();
-            }
+            this.LoadSeason();
 
             Messenger.Default.Register<LoadNewSeriesMessage>(this, this.LoadNewSeries);
         }
@@ -396,11 +393,7 @@
         private void LoadNewSeries(LoadNewSeriesMessage message)
         {
             this.InitialiseSeasonPane();
-
-            if (this.SelectedSeasonIndex >= 0)
-            {
-                this.LoadSeason();
-            }
+            this.LoadSeason();
         }
     }
 }

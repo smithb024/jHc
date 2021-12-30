@@ -91,7 +91,7 @@
                 {
                     using (StreamReader reader = new StreamReader(seasonFilePath))
                     {
-                        currentSeason = reader.ReadLine();
+                        currentSeason = reader.ReadLine() ?? string.Empty;
                     }
                 }
                 else
