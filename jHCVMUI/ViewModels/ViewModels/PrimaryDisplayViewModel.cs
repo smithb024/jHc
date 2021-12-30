@@ -67,6 +67,11 @@
         /// </summary>
         private readonly IGeneralIo generalIo;
 
+        /// <summary>
+        /// Indicates whether the currently selected location is valid
+        /// </summary>
+        private bool isValidLocation;
+
         private ClubConfigurationDialog m_clubConfigDialog = null;
         private AthleteConfigurationDialog m_athleteConfigDialog = null;
         private SummaryDialog m_summaryDialog = null;
@@ -130,9 +135,11 @@
             this.businessLayerManager = businessLayerManager;
             this.generalIo = generalIo;
             this.commonIo = commonIo;
+            this.isValidLocation = this.businessLayerManager.IsValid;
 
             Messenger.Default.Register<HandicapErrorMessage>(this, this.PopulateErrorInformation);
             Messenger.Default.Register<HandicapProgressMessage>(this, this.PopulateProgressInformation);
+            Messenger.Default.Register<ValidLocationMessage>(this, this.InvalidLocationMessage);
 
             this.InitialiseViewModels();
             this.InitialiseOpenAppCommands();
@@ -202,12 +209,6 @@
                 RaisePropertyChangedEvent("ErrorInformation");
             }
         }
-
-        /// <summary>
-        /// Gets a value indicating whether the location is valid or not.
-        /// </summary>
-        public bool LocationValid =>
-            this.generalIo.DataFolderExists && this.generalIo.ConfigurationFolderExists;
 
         public ICommand CreateNewSeriesCommand { get; private set; }
         public ICommand LoadNewSeriesCommand { get; private set; }
@@ -597,9 +598,11 @@
             this.businessLayerManager.SaveRootDirectory(dialog.SelectedPath);
 
             LoadNewSeriesMessage loadNewMessage = new LoadNewSeriesMessage();
+            NewSeriesLoadedMessage newLoadedMessage = new NewSeriesLoadedMessage();
             HandicapProgressMessage progress = new HandicapProgressMessage("New Series Loaded");
 
             Messenger.Default.Send(loadNewMessage);
+            Messenger.Default.Send(newLoadedMessage);
             Messenger.Default.Send(progress);
         }
 
@@ -727,7 +730,7 @@
         /// <returns>is location valid flag</returns>
         private bool IsLocationValid()
         {
-            return this.LocationValid;
+            return this.isValidLocation;
         }
 
         /// <summary>
@@ -736,7 +739,16 @@
         /// <returns>is location not valid flag</returns>
         private bool IsLocationNotValid()
         {
-            return !this.LocationValid;
+            return !this.isValidLocation;
+        }
+
+        /// <summary>
+        /// Invalid location message has been received
+        /// </summary>
+        /// <param name="message">invalid location message</param>
+        private void InvalidLocationMessage(ValidLocationMessage message)
+        {
+            this.isValidLocation = message.IsValid;
         }
     }
 }

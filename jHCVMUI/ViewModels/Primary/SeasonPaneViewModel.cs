@@ -98,7 +98,7 @@
 
             this.LoadSeason();
 
-            Messenger.Default.Register<LoadNewSeriesMessage>(this, this.LoadNewSeries);
+            Messenger.Default.Register<NewSeriesLoadedMessage>(this, this.NewSeriesLoaded);
         }
 
         /// <summary>
@@ -386,11 +386,11 @@
         }
 
         /// <summary>
-        /// A load new series command has been initiated. 
+        /// A load new series command has been completed and the model has been updated. 
         /// Select the current season and let the load trickle through the models.
         /// </summary>
         /// <param name="message">load new series message</param>
-        private void LoadNewSeries(LoadNewSeriesMessage message)
+        private void NewSeriesLoaded(NewSeriesLoadedMessage message)
         {
             this.InitialiseSeasonPane();
         }

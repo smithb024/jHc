@@ -228,12 +228,21 @@
                     {
                         foreach (var point in points.point)
                         {
-                            athleteDetails.Points.AddNewEvent(new CommonPoints(point.finishing,
-                                                                               point.position,
-                                                                               point.best,
-                                                                               new DateType(point.date)));
+                            DateType eventDate =
+                                new DateType(
+                                    point.date);
+
+                            CommonPoints commonPoints =
+                                new CommonPoints(
+                                    point.finishing,
+                                    point.position,
+                                    point.best,
+                                    eventDate);
+
+                            athleteDetails.Points.AddNewEvent(commonPoints);
                             // TODO, should probably check that there are the correct number read from the xml file.
                             // i.e. there is one for each event in the currently loaded season.
+                            // Will want to change it to proper serialisation at some point.
                         }
                     }
 

@@ -3,12 +3,15 @@
     using System.Collections.Generic;
     using System.IO;
     using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Messages;
+    using HandicapModel.Admin.IO.TXT;
     using HandicapModel.Admin.IO.XML;
     using HandicapModel.Admin.Manage;
     using HandicapModel.AthletesModel;
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.SeasonModel;
+    using GalaSoft.MvvmLight.Messaging;
 
     /// <summary>
     /// Athlete data
@@ -36,6 +39,11 @@
         private IAthleteSeasonDataReader athleteSeasonDataReader;
 
         /// <summary>
+        /// The path to all the season data.
+        /// </summary>
+        private string dataPath;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="AthleteData"/> class. 
         /// </summary>
         /// <param name="generalIo">general IO manager</param>
@@ -57,6 +65,10 @@
             this.athleteSeasonDataReader =
                 new AthleteSeasonDataReader(
                     this.logger);
+
+            string rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
+            Messenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
         }
 
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
@@ -104,7 +116,7 @@
             List<AthleteSeasonDetails> seasons)
         {
             return this.athleteSeasonDataReader.SaveAthleteSeasonData(
-              RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.athleteDataFile,
+              this.dataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.athleteDataFile,
               seasons);
         }
 
@@ -122,8 +134,18 @@
           IResultsConfigMngr resultsConfigurationManager)
         {
             return this.athleteSeasonDataReader.LoadAthleteSeasonData(
-              RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.athleteDataFile,
+              this.dataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.athleteDataFile,
               resultsConfigurationManager);
+        }
+
+        /// <summary>
+        /// A reinitialise root message has been received.
+        /// </summary>
+        /// <param name="message">reinitialise root message</param>
+        public void ReinitialiseRoot(ReinitialiseRoot message)
+        {
+            string rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
         }
     }
 }

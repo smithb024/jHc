@@ -109,10 +109,10 @@
             this.logger = logger;
 
             // Check for global files and create fresh if don't exist.
-            generalIo.CreateDataFolder();
-            generalIo.CreateConfigurationFolder();
-            this.resultsConfigurationManager.SaveDefaultResultsConfiguration();
-            this.normalisationConfigurationManager.SaveDefaultNormalisationConfiguration();
+            //generalIo.CreateDataFolder();
+            //generalIo.CreateConfigurationFolder();
+            //this.resultsConfigurationManager.SaveDefaultResultsConfiguration();
+            //this.normalisationConfigurationManager.SaveDefaultNormalisationConfiguration();
 
             // Setup local models.
             this.CurrentSeason =
@@ -396,6 +396,6 @@
             this.Athletes = this.athleteData.ReadAthleteData();
             this.Clubs = this.clubData.LoadClubData();
             this.GlobalSummary = this.summaryData.LoadSummaryData();
-        }
+       }
     }
 }

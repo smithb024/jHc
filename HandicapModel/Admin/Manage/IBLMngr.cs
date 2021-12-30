@@ -47,6 +47,11 @@
         string ModelRootDirectory { get; }
 
         /// <summary>
+        /// Gets a value inddicating whether the current root location has a valid series.
+        /// </summary>
+        bool IsValid { get; }
+
+        /// <summary>
         /// Initialise the model 
         /// </summary>
         void InitialiseModel();

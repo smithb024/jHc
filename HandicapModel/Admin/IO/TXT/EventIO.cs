@@ -21,12 +21,12 @@
         /// <summary>
         /// The root directory.
         /// </summary>
-        string rootDirectory;
+        private string rootDirectory;
 
         /// <summary>
         /// The path to all the season data.
         /// </summary>
-        string dataPath;
+        private string dataPath;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="EventIO"/> class.

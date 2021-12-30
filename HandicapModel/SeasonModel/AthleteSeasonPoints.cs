@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using Admin.Manage;
+    using CommonHandicapLib.Types;
     using CommonLib.Types;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.SeasonModel;
@@ -160,7 +161,10 @@
             }
 
             // If all scores used, just return.
-            if (this.resultsConfigurationManager.ResultsConfigurationDetails.AllResults)
+            ResultsConfigType resultsConfigurationDetails =
+                this.resultsConfigurationManager.ResultsConfigurationDetails;
+
+            if (resultsConfigurationDetails.AllResults)
             {
                 return this.SumCollection(points);
             }

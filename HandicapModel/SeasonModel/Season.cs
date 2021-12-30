@@ -215,7 +215,6 @@
         /// Load a new season into the model.
         /// </summary>
         /// <param name="message">load a new season message</param>
-        /// <returns>success flag</returns>
         private void LoadNewSeason(LoadNewSeasonMessage message)
         {
             bool success = true;

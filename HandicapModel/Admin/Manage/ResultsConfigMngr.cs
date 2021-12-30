@@ -50,6 +50,8 @@
             this.ResultsConfigurationDetails =
               this.configurationReader.LoadResultsConfigData(
                 this.generalIo.ResultsConfigurationFile);
+
+            Messenger.Default.Register<LoadNewSeriesMessage>(this, this.LoadNewSeries);
         }
 
         /// <summary>
@@ -147,6 +149,17 @@
                     new HandicapErrorMessage(
                         "Error creating results config file"));
             }
+        }
+
+        /// <summary>
+        /// Load a new series into the model.
+        /// </summary>
+        /// <param name="message">load a new series</param>
+        private void LoadNewSeries(LoadNewSeriesMessage message)
+        {
+            this.ResultsConfigurationDetails =
+                this.configurationReader.LoadResultsConfigData(
+                    this.generalIo.ResultsConfigurationFile);
         }
     }
 }
