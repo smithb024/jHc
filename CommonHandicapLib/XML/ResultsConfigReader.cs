@@ -1,7 +1,6 @@
 ﻿namespace CommonHandicapLib.XML
 {
     using System;
-    using System.Collections.Generic;
     using System.Xml.Linq;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Interfaces.XML;
@@ -117,12 +116,14 @@
                   this.ReadBoolAttribute(
                     RacePoints,
                     excludeFirstTimersAttribute,
-                    true);
+                    true,
+                    fileName);
                 bool allResults =
                   this.ReadBoolAttribute(
                     RacePoints,
                     allResultsAttribute,
-                    true);
+                    true,
+                    fileName);
                 int scoresToCount =
                   this.ReadIntAttribute(
                     RacePoints,
@@ -132,13 +133,15 @@
                   this.ReadBoolAttribute(
                     RacePoints,
                     scoresDescendingAttribute,
-                    true);
+                    true,
+                    fileName);
 
                 bool useTeams =
                   this.ReadBoolAttribute(
                     ClubPoints,
                     useTeamsAttribute,
-                    true);
+                    true,
+                    fileName);
                 int teamFinishingPoints = (int)ClubPoints.Attribute(teamFinishingPointsAttribute);
                 int teamSize = (int)ClubPoints.Attribute(teamSizeAttribute);
                 int teamSeasonBestPoints = (int)ClubPoints.Attribute(teamSeasonBestAttribute);
@@ -169,11 +172,13 @@
         /// <param name="element">element to read</param>
         /// <param name="attributeName">attribute name</param>
         /// <param name="defaultValue">default value</param>
+        /// <param name="path">path to the file being read</param>
         /// <returns>attribute value</returns>
         private bool ReadBoolAttribute(
           XElement element,
           string attributeName,
-          bool defaultValue)
+          bool defaultValue,
+          string path)
         {
             // TODO, could be generic. There are others
             try
@@ -183,7 +188,7 @@
             catch (Exception ex)
             {
                 this.logger.WriteLog(
-                  $"Error reading Series Configuration data attribute: {ex}");
+                  $"Error reading Results Configuration data attribute: {attributeName} : {path} :{ex}");
                 return defaultValue;
             }
         }
