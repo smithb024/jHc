@@ -70,8 +70,7 @@
                     this.model.CurrentSeason);
             this.pointsTableViewModel = 
                 new PointsTableViewModel(
-                    this.model.CurrentSeason,
-                    this.model.Athletes);
+                    this.model);
             this.eventSummaryViewModel = 
                 new SummaryEventViewModel(
                     this.model.CurrentEvent);

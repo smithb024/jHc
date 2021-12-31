@@ -5,6 +5,7 @@
     using System.Linq;
     using CommonLib.Types;
     using HandicapModel.AthletesModel;
+    using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
     using jHCVMUI.ViewModels.ViewModels;
@@ -16,14 +17,14 @@
     public class PointsTableViewModel : ViewModelBase
     {
         /// <summary>
-        /// Associated season model.
+        /// The handicap model.
         /// </summary>
-        private ISeason seasonModel;
+        private readonly IModel model;
 
         /// <summary>
-        /// Associated athletes model.
+        /// Associated season model.
         /// </summary>
-        private Athletes athletesModel;
+        private readonly ISeason seasonModel;
 
         /// <summary>
         /// Points table.
@@ -33,14 +34,12 @@
         /// <summary>
         /// Initialises a new instance of the <see cref="PointsTableViewModel"/> class.
         /// </summary>
-        /// <param name="seasonModel">season model</param>
-        /// <param name="athletesModel">athletes model</param>
+        /// <param name="model">handicap model</param>
         public PointsTableViewModel(
-            ISeason seasonModel,
-            Athletes athletesModel)
+            IModel model)
         {
-            this.seasonModel = seasonModel;
-            this.athletesModel = athletesModel;
+            this.model = model;
+            this.seasonModel = this.model.CurrentSeason;
             this.pointsTable = new ObservableCollection<PointsTableRowViewModel>();
 
             this.seasonModel.AthletesChangedEvent += this.PopulateAthleteCurrentSeasonData;
@@ -117,6 +116,8 @@
         /// </summary>
         private void PopulatePointsTable()
         {
+            Athletes athletesModel = this.model.Athletes;
+
             foreach (AthleteSeasonDetails athlete in this.seasonModel.Athletes)
             {
                 if (athlete.Points.TotalPoints > 0)
@@ -127,9 +128,9 @@
                         averagePoints = (double)athlete.Points.TotalPoints / (double)athlete.NumberOfAppearances;
                     }
 
-                    TimeType pb = this.athletesModel.GetPB(athlete.Key);
+                    TimeType pb = athletesModel.GetPB(athlete.Key);
                     string runningNumber =
-                        this.athletesModel.GetAthleteRunningNumber(
+                        athletesModel.GetAthleteRunningNumber(
                             athlete.Key);
 
                     this.PointsTable.Add(
