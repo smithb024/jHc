@@ -156,6 +156,7 @@
             Messenger.Default.Register<LoadNewSeasonMessage>(this, this.NewCurrentSeason);
             Messenger.Default.Register<LoadNewEventMessage>(this, this.NewCurrentEvent);
             Messenger.Default.Register<LoadNewSeriesMessage>(this, this.LoadNewSeries);
+            Messenger.Default.Register<CreateNewSeriesMessage>(this, this.CreateNewSeries);
         }
 
         /// <summary>
@@ -438,6 +439,19 @@
                 new ValidLocationMessage(this.IsValid);
 
             Messenger.Default.Send(locationMessage);
+
+        }
+
+        /// <summary>
+        /// Request to create a new series.
+        /// </summary>
+        /// <param name="message"></param>
+        private void CreateNewSeries(CreateNewSeriesMessage message)
+        {
+            this.generalIo.CreateConfigurationFolder();
+            this.generalIo.CreateDataFolder();
+            this.resultsConfigurationManager.SaveDefaultResultsConfiguration();
+            this.normalisationConfigurationManager.SaveDefaultNormalisationConfiguration();
 
         }
     }

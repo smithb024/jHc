@@ -611,12 +611,14 @@
         /// </summary>
         public void CreateNewSeries()
         {
-            this.generalIo.CreateConfigurationFolder();
-            this.generalIo.CreateDataFolder();
-            this.InitialiseViewModels();
-            this.seriesConfigManager.ReadSeriesConfiguration();
-
             HandicapProgressMessage progress = new HandicapProgressMessage("New Series Created");
+            CreateNewSeriesMessage createNew = new CreateNewSeriesMessage();
+            LoadNewSeriesMessage loadNewMessage = new LoadNewSeriesMessage();
+            NewSeriesLoadedMessage newLoadedMessage = new NewSeriesLoadedMessage();
+
+            Messenger.Default.Send(createNew);
+            Messenger.Default.Send(loadNewMessage);
+            Messenger.Default.Send(newLoadedMessage);
             Messenger.Default.Send(progress);
         }
 

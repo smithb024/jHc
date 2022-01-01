@@ -52,6 +52,7 @@
     <Compile Include="Interfaces\XML\INormalisationConfigReader.cs" />
     <Compile Include="Interfaces\XML\ISeriesConfigReader.cs" />
     <Compile Include="JHcLogger.cs" />
+    <Compile Include="Messages\CreateNewSeriesMessage.cs" />
     <Compile Include="Messages\HandicapProgressMessage.cs" />
     <Compile Include="Messages\HandicapErrorMessage.cs" />
     <Compile Include="Messages\NewSeriesLoadedMessage.cs" />

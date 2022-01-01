@@ -108,12 +108,6 @@
             this.seasonIo = seasonIo;
             this.logger = logger;
 
-            // Check for global files and create fresh if don't exist.
-            //generalIo.CreateDataFolder();
-            //generalIo.CreateConfigurationFolder();
-            //this.resultsConfigurationManager.SaveDefaultResultsConfiguration();
-            //this.normalisationConfigurationManager.SaveDefaultNormalisationConfiguration();
-
             // Setup local models.
             this.CurrentSeason =
                 new Season(
