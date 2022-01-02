@@ -157,12 +157,13 @@
             Messenger.Default.Register<LoadNewEventMessage>(this, this.NewCurrentEvent);
             Messenger.Default.Register<LoadNewSeriesMessage>(this, this.LoadNewSeries);
             Messenger.Default.Register<CreateNewSeriesMessage>(this, this.CreateNewSeries);
+            Messenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
         }
 
         /// <summary>
         /// Root directory for the model.
         /// </summary>
-        public string ModelRootDirectory { get; }
+        public string ModelRootDirectory { get; private set; }
 
         /// <summary>
         /// Gets a value inddicating whether the current root location has a valid series.
@@ -453,6 +454,15 @@
             this.resultsConfigurationManager.SaveDefaultResultsConfiguration();
             this.normalisationConfigurationManager.SaveDefaultNormalisationConfiguration();
 
+        }
+
+        /// <summary>
+        /// Reinitialise the data path value from the file.
+        /// </summary>
+        /// <param name="message">reinitialise message</param>
+        private void ReinitialiseRoot(ReinitialiseRoot message)
+        {
+            this.ModelRootDirectory = RootIO.LoadRootFile();
         }
     }
 }
