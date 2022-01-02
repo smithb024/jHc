@@ -52,10 +52,15 @@
     <Compile Include="Interfaces\XML\INormalisationConfigReader.cs" />
     <Compile Include="Interfaces\XML\ISeriesConfigReader.cs" />
     <Compile Include="JHcLogger.cs" />
+    <Compile Include="Messages\CreateNewSeriesMessage.cs" />
     <Compile Include="Messages\HandicapProgressMessage.cs" />
     <Compile Include="Messages\HandicapErrorMessage.cs" />
+    <Compile Include="Messages\NewSeriesLoadedMessage.cs" />
+    <Compile Include="Messages\ValidLocationMessage.cs" />
     <Compile Include="Messages\LoadNewEventMessage.cs" />
     <Compile Include="Messages\LoadNewSeasonMessage.cs" />
+    <Compile Include="Messages\LoadNewSeriesMessage.cs" />
+    <Compile Include="Messages\ReinitialiseRoot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\DateOfBirth.cs" />
     <Compile Include="Types\EventMiscData.cs" />

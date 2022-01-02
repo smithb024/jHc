@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.IO;
     using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Messages;
     using HandicapModel.Interfaces.Admin.IO.TXT;
+    using GalaSoft.MvvmLight.Messaging;
 
     /// <summary>
     /// Event specific IO.
@@ -17,12 +19,26 @@
         private readonly IJHcLogger logger;
 
         /// <summary>
+        /// The root directory.
+        /// </summary>
+        private string rootDirectory;
+
+        /// <summary>
+        /// The path to all the season data.
+        /// </summary>
+        private string dataPath;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="EventIO"/> class.
         /// </summary>
         /// <param name="logger">application logger</param>
         public EventIO(IJHcLogger logger)
         {
             this.logger = logger;
+            this.rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
+
+            Messenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
         }
 
         /// <summary>
@@ -39,7 +55,7 @@
                 return events;
             }
 
-            string[] eventsArray = Directory.GetDirectories(RootPath.DataPath + season);
+            string[] eventsArray = Directory.GetDirectories(this.dataPath + season);
 
             foreach (string occasion in eventsArray)
             {
@@ -61,7 +77,7 @@
         {
             try
             {
-                Directory.CreateDirectory(RootPath.DataPath + seasonName + '\\' + eventName);
+                Directory.CreateDirectory(this.dataPath + seasonName + '\\' + eventName);
             }
             catch (Exception ex)
             {
@@ -80,11 +96,11 @@
         {
             try
             {
-                if (File.Exists(RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.currentEvent))
+                if (File.Exists(this.dataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.currentEvent))
                 {
-                    using (StreamReader reader = new StreamReader(RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.currentEvent))
+                    using (StreamReader reader = new StreamReader(this.dataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.currentEvent))
                     {
-                        return reader.ReadLine();
+                        return reader.ReadLine() ?? string.Empty;
                     }
                 }
             }
@@ -112,7 +128,7 @@
                 using (
                   StreamWriter writer =
                   new StreamWriter(
-                    RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.currentEvent,
+                    this.dataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.currentEvent,
                     false))
                 {
                     writer.Write(eventName);
@@ -125,6 +141,16 @@
             }
 
             return success;
+        }
+
+        /// <summary>
+        /// Reinitialise the data path value from the file.
+        /// </summary>
+        /// <param name="message">reinitialise message</param>
+        private void ReinitialiseRoot(ReinitialiseRoot message)
+        {
+            this.rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
         }
     }
 }

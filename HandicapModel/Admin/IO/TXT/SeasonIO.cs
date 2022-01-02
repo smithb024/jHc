@@ -21,12 +21,12 @@
         /// <summary>
         /// The root directory.
         /// </summary>
-        string rootDirectory;
+        private string rootDirectory;
 
         /// <summary>
         /// The path to all the season data.
         /// </summary>
-        string dataPath;
+        private string dataPath;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="SeasonIO"/> class.
@@ -38,6 +38,8 @@
             this.logger = logger;
             this.rootDirectory = RootIO.LoadRootFile();
             this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}";
+
+            Messenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
         }
 
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
@@ -54,7 +56,7 @@
 
             try
             {
-                string[] seasonsArray = Directory.GetDirectories(RootPath.DataPath);
+                string[] seasonsArray = Directory.GetDirectories(this.dataPath);
                 foreach (string season in seasonsArray)
                 {
                     seasons.Add(season.Substring(season.LastIndexOf('\\') + 1));
@@ -89,7 +91,7 @@
                 {
                     using (StreamReader reader = new StreamReader(seasonFilePath))
                     {
-                        currentSeason = reader.ReadLine();
+                        currentSeason = reader.ReadLine() ?? string.Empty;
                     }
                 }
                 else
@@ -158,6 +160,16 @@
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Reinitialise the data path value from the file.
+        /// </summary>
+        /// <param name="message">reinitialise message</param>
+        private void ReinitialiseRoot(ReinitialiseRoot message)
+        {
+            this.rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}";
         }
     }
 }

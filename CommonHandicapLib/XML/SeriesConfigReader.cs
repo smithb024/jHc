@@ -107,7 +107,8 @@
                   this.ReadBoolAttribute(
                     number,
                     allPositionsAttribute,
-                    false);
+                    false,
+                    fileName);
 
                 return new SeriesConfigType(
                   (string)number.Attribute(prefixAttribute),
@@ -126,11 +127,13 @@
         /// <param name="element">element to read</param>
         /// <param name="attributeName">attribute name</param>
         /// <param name="defaultValue">default value</param>
+        /// <param name="path">path to the file being read</param>
         /// <returns>attribute value</returns>
         private bool ReadBoolAttribute(
           XElement element,
           string attributeName,
-          bool defaultValue)
+          bool defaultValue,
+          string path)
         {
             // TODO, could be generic. There are others
             try
@@ -140,7 +143,7 @@
             catch (Exception ex)
             {
                 this.logger.WriteLog(
-                  $"Error reading Series Configuration data attribute: {ex}");
+                  $"Error reading Series Configuration data attribute: {attributeName} : {path} :{ex}");
                 return defaultValue;
             }
         }

@@ -89,6 +89,11 @@
         private readonly IEventIo eventIo;
 
         /// <summary>
+        /// The general IO manager.
+        /// </summary>
+        private readonly IGeneralIo generalIo;
+
+        /// <summary>
         /// The name of the currently selected season. It is set from the view model.
         /// </summary>
         private string currentSeason;
@@ -106,6 +111,7 @@
         /// <param name="summaryData">summary data</param>
         /// <param name="seasonIO">season IO manager</param>
         /// <param name="eventIo">event IO manager</param>
+        /// <param name="generalIo">general IO manager</param>
         /// <param name="logger">application logger</param>
         public BLMngr(
             IModel model,
@@ -118,6 +124,7 @@
             ISummaryData summaryData,
             ISeasonIO seasonIO,
             IEventIo eventIo,
+            IGeneralIo generalIo,
             IJHcLogger logger)
         {
             this.logger = logger;
@@ -131,6 +138,7 @@
             this.summaryData = summaryData;
             this.seasonIO = seasonIO;
             this.eventIo = eventIo;
+            this.generalIo = generalIo;
             this.ModelRootDirectory = RootIO.LoadRootFile();
             this.currentSeason = string.Empty;
 
@@ -142,14 +150,25 @@
                     this.seriesConfigurationManager,
                     this.logger);
 
+            this.IsValid =
+                this.generalIo.DataFolderExists && this.generalIo.ConfigurationFolderExists;
+
             Messenger.Default.Register<LoadNewSeasonMessage>(this, this.NewCurrentSeason);
             Messenger.Default.Register<LoadNewEventMessage>(this, this.NewCurrentEvent);
+            Messenger.Default.Register<LoadNewSeriesMessage>(this, this.LoadNewSeries);
+            Messenger.Default.Register<CreateNewSeriesMessage>(this, this.CreateNewSeries);
+            Messenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
         }
 
         /// <summary>
         /// Root directory for the model.
         /// </summary>
-        public string ModelRootDirectory { get; }
+        public string ModelRootDirectory { get; private set; }
+
+        /// <summary>
+        /// Gets a value inddicating whether the current root location has a valid series.
+        /// </summary>
+        public bool IsValid { get; private set; }
 
         /// <summary>
         /// Initialise the model.
@@ -324,6 +343,9 @@
         public void SaveRootDirectory(string rootDirectory)
         {
             RootIO.SaveRootFile(rootDirectory);
+
+            ReinitialiseRoot message = new ReinitialiseRoot();
+            Messenger.Default.Send(message);
         }
 
         /// <summary>
@@ -403,6 +425,44 @@
             this.eventIo.SaveCurrentEvent(
                 this.currentSeason,
                 message.Name);
+        }
+
+        /// <summary>
+        /// A new series has loaded, check the local validity.
+        /// </summary>
+        /// <param name="message">load series message</param>
+        private void LoadNewSeries(LoadNewSeriesMessage message)
+        {
+            this.IsValid =
+                this.generalIo.DataFolderExists && this.generalIo.ConfigurationFolderExists;
+
+            ValidLocationMessage locationMessage =
+                new ValidLocationMessage(this.IsValid);
+
+            Messenger.Default.Send(locationMessage);
+
+        }
+
+        /// <summary>
+        /// Request to create a new series.
+        /// </summary>
+        /// <param name="message"></param>
+        private void CreateNewSeries(CreateNewSeriesMessage message)
+        {
+            this.generalIo.CreateConfigurationFolder();
+            this.generalIo.CreateDataFolder();
+            this.resultsConfigurationManager.SaveDefaultResultsConfiguration();
+            this.normalisationConfigurationManager.SaveDefaultNormalisationConfiguration();
+
+        }
+
+        /// <summary>
+        /// Reinitialise the data path value from the file.
+        /// </summary>
+        /// <param name="message">reinitialise message</param>
+        private void ReinitialiseRoot(ReinitialiseRoot message)
+        {
+            this.ModelRootDirectory = RootIO.LoadRootFile();
         }
     }
 }

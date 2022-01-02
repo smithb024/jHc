@@ -3,8 +3,10 @@
     using System;
     using System.Collections.Generic;
     using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Messages;
     using CommonLib.Enumerations;
     using CommonLib.Types;
+    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.Manage;
     using HandicapModel.AthletesModel;
     using HandicapModel.ClubsModel;
@@ -59,6 +61,11 @@
         private readonly IEventIo eventIo;
 
         /// <summary>
+        /// The season IO manager.
+        /// </summary>
+        private readonly ISeasonIO seasonIo;
+
+        /// <summary>
         /// The program logger;
         /// </summary>
         private readonly IJHcLogger logger;
@@ -73,7 +80,7 @@
         /// <param name="eventData">event data</param>
         /// <param name="summaryData">summary data</param>
         /// <param name="resultsTableReader">results table reader</param>
-        /// <param name="seasonIO">season IO Manager</param>
+        /// <param name="seasonIo">season IO Manager</param>
         /// <param name="eventIo">event IO manager</param>
         /// <param name="rawEventIo">raw event IO manager</param>
         /// <param name="generalIo">general IO manager</param>
@@ -86,7 +93,7 @@
             IEventData eventData,
             ISummaryData summaryData,
             IResultsTableReader resultsTableReader,
-            ISeasonIO seasonIO,
+            ISeasonIO seasonIo,
             IEventIo eventIo,
             IRawEventIo rawEventIo,
             IGeneralIo generalIo,
@@ -98,13 +105,8 @@
             this.clubData = clubData;
             this.summaryData = summaryData;
             this.eventIo = eventIo;
+            this.seasonIo = seasonIo;
             this.logger = logger;
-
-            // Check for global files and create fresh if don't exist.
-            generalIo.CreateDataFolder();
-            generalIo.CreateConfigurationFolder();
-            this.resultsConfigurationManager.SaveDefaultResultsConfiguration();
-            this.normalisationConfigurationManager.SaveDefaultNormalisationConfiguration();
 
             // Setup local models.
             this.CurrentSeason =
@@ -122,10 +124,12 @@
                     resultsTableReader,
                     rawEventIo,
                     this.logger);
-            this.Seasons = seasonIO.GetSeasons();
+            this.Seasons = seasonIo.GetSeasons();
             this.Athletes = this.athleteData.ReadAthleteData();
             this.Clubs = this.clubData.LoadClubData();
             this.GlobalSummary = this.summaryData.LoadSummaryData();
+
+            Messenger.Default.Register<LoadNewSeriesMessage>(this, this.LoadNewSeries);
         }
 
         /// <summary>
@@ -147,22 +151,22 @@
         /// <summary>
         /// Gets the current season.
         /// </summary>
-        public List<string> Seasons { get; }
+        public List<string> Seasons { get; private set; }
 
         /// <summary>
         /// Gets the athletes model.
         /// </summary>
-        public Athletes Athletes { get; }
+        public Athletes Athletes { get; private set;  }
 
         /// <summary>
         /// Gets the clubs model.
         /// </summary>
-        public Clubs Clubs { get; }
+        public Clubs Clubs { get; private set; }
 
         /// <summary>
         /// Gets the system wide summary
         /// </summary>
-        public ISummary GlobalSummary { get; }
+        public ISummary GlobalSummary { get; private set; }
 
         /// <summary>
         /// Add a new season to the model.
@@ -375,5 +379,17 @@
         {
             this.summaryData.SaveSummaryData(GlobalSummary);
         }
+
+        /// <summary>
+        /// A load new series command has been initiated. Reload the models from the files.
+        /// </summary>
+        /// <param name="message"></param>
+        private void LoadNewSeries(LoadNewSeriesMessage message)
+        {
+            this.Seasons = this.seasonIo.GetSeasons();
+            this.Athletes = this.athleteData.ReadAthleteData();
+            this.Clubs = this.clubData.LoadClubData();
+            this.GlobalSummary = this.summaryData.LoadSummaryData();
+       }
     }
 }
