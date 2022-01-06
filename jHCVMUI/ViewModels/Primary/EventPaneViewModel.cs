@@ -290,15 +290,21 @@
         /// </summary>
         public void AddNewEvent()
         {
-            if (this.businessLayerManager.CreateNewEvent(NewEvent, NewEventDate))
+            string newEventName = this.NewEvent;
+
+            if (!this.businessLayerManager.CreateNewEvent(NewEvent, NewEventDate))
             {
-                SelectCurrentEvent(NewEvent);
-
-                NewEvent = string.Empty;
-                NewEventAdditionEnabled = false;
-
-                this.businessLayerManager.SetProgressInformation("Event created");
+                this.businessLayerManager.SetProgressInformation($"Failed to create season {newEventName}");
+                return;
             }
+
+            this.Events.Add(newEventName);
+            SelectCurrentEvent(newEventName);
+
+            NewEvent = string.Empty;
+            NewEventAdditionEnabled = false;
+
+            this.businessLayerManager.SetProgressInformation($"{newEventName} created");
         }
 
         /// <summary>
