@@ -172,7 +172,7 @@
         /// <returns>athlete's sex</returns>
         public SexType GetAthleteSex(int key)
         {
-            return AthleteDetails.Find(athlete => athlete.Key == key)?.Sex ?? SexType.Default;
+            return AthleteDetails.Find(athlete => athlete.Key == key)?.Sex ?? SexType.NotSpecified;
         }
 
         /// <summary>

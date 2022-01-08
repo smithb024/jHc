@@ -533,12 +533,12 @@
                         result.ExtraInfo = "First Gal";
                         firstGirlFound = true;
                     }
-                    else if (!this.seriesConfiguration.AllPositionsShown && !secondFound && result.Sex != SexType.Default)
+                    else if (!this.seriesConfiguration.AllPositionsShown && !secondFound && result.Sex != SexType.NotSpecified)
                     {
                         result.ExtraInfo = "Second";
                         secondFound = true;
                     }
-                    else if (!this.seriesConfiguration.AllPositionsShown && !thirdFound && result.Sex != SexType.Default)
+                    else if (!this.seriesConfiguration.AllPositionsShown && !thirdFound && result.Sex != SexType.NotSpecified)
                     {
                         result.ExtraInfo = "Third";
                         thirdFound = true;

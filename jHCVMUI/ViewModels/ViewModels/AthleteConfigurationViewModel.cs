@@ -545,13 +545,10 @@
             private set;
         }
 
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>SaveAthletes</name>
         /// <date>14/03/15</date>
         /// <summary>
         /// Saves the current list to a file.
         /// </summary>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public void SaveAthletes()
         {
             foreach (AthleteType athlete in AthleteCollection)
@@ -710,7 +707,7 @@
                 return false;
             }
 
-            if (NewName != string.Empty && NewSex != SexType.Default)
+            if (NewName != string.Empty && NewSex != SexType.NotSpecified)
             {
                 return this.TimeValid(this.NewInitialHandicap);
                 //int initialHandicap = 0;

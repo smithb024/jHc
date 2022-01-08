@@ -32,7 +32,7 @@
               string.Empty,
               string.Empty,
               new TimeType(59, 59),
-              SexType.Default,
+              SexType.NotSpecified,
               "1970",
               "1",
               "1",
@@ -80,7 +80,6 @@
             this.Active = active;
 
             this.RunningNumbers = new List<string>();
-            this.Sex = SexType.Default;
             this.Times = new List<Appearances>();
 
             this.BirthDate =
@@ -133,7 +132,7 @@
             this.Active = active;
 
             this.RunningNumbers = new List<string>();
-            this.Sex = SexType.Default;
+            this.Sex = SexType.NotSpecified;
             this.Times = new List<Appearances>();
 
             this.BirthDate =
