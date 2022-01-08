@@ -14,7 +14,7 @@
         private int m_key = -1;
         private string m_name = string.Empty;
         private string m_club = string.Empty;
-        private SexType m_sex = SexType.Default;
+        private SexType m_sex = SexType.NotSpecified;
         private string predeclaredHandicap = string.Empty;
         private StatusType m_status = StatusType.Ok;
         private string birthYear = string.Empty;

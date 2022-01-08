@@ -231,7 +231,7 @@
       SexType sex
       )
     {
-      if (sex == SexType.Default)
+      if (sex == SexType.NotSpecified)
       {
         return string.Empty;
       }

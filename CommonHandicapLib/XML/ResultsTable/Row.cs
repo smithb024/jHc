@@ -102,7 +102,7 @@
             this.number = string.Empty;
             this.runningOrder = 0;
             this.time = string.Empty;
-            this.sex = SexType.Default;
+            this.sex = SexType.NotSpecified;
             this.yearBest = false;
         }
 
@@ -386,7 +386,7 @@
                 }
                 else
                 {
-                    this.sex = SexType.Default;
+                    this.sex = SexType.NotSpecified;
                 }
             }
         }

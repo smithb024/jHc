@@ -8,7 +8,7 @@
         /// <summary>
         /// No sex is defined.
         /// </summary>
-        Default,
+        NotSpecified,
 
         /// <summary>
         /// The sex is male.
