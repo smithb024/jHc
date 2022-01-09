@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows.Input;
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Types;
     using CommonLib.Types;
@@ -18,8 +17,14 @@
     /// </summary>
     public class LabelGenerationViewModel : ViewModelBase
     {
+        /// <summary>
+        /// The series configuration manager.
+        /// </summary>
         private ISeriesConfigMngr seriesConfigManager;
 
+        /// <summary>
+        /// The application logger.
+        /// </summary>
         private IJHcLogger logger;
 
         /// <summary>
@@ -82,11 +87,13 @@
                     // Ensure that the athlete is registered for the season.
                     if (runningNumbers.Count > 0)
                     {
-                        AthleteLabel modelAthlete = new AthleteLabel(athlete.Name,
-                                                                     athlete.Club,
-                                                                     runningNumbers[0],
-                                                                     newHandicap,
-                                                                     athlete.Appearances == 0);
+                        AthleteLabel modelAthlete = 
+                            new AthleteLabel(
+                                athlete.Name,
+                                athlete.Club,
+                                runningNumbers[0],
+                                newHandicap,
+                                athlete.Appearances == 0);
                         modelAthlete.AthleteLabelWidth = A4Details.GetLabelWidth96DPI(NoColumns);
                         modelAthlete.AthleteLabelHeight = A4Details.GetLabelHeight96DPI(NoRows);
                         AthleteDetails.Add(modelAthlete);
@@ -114,8 +121,19 @@
             RaisePropertyChangedEvent("NoRows");
         }
 
+        /// <summary>
+        /// Gets the create race labels command.
+        /// </summary>
         public ICommand CreateRaceLabelsCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the create spare labels command.
+        /// </summary>
         public ICommand CreateSpareLabelsCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the all labels command.
+        /// </summary>
         public ICommand CreateAllLabelsCommand { get; private set; }
 
         /// <summary>
@@ -123,7 +141,11 @@
         /// </summary>
         public List<AthleteLabel> AthleteDetails
         {
-            get { return athleteDetails; }
+            get
+            {
+                return athleteDetails;
+            }
+
             private set
             {
                 athleteDetails = value;
@@ -131,72 +153,95 @@
         }
 
         /// <summary>
-        /// Gets the sample name
+        /// Gets or sets the sample name
         /// </summary>
         public string AthleteName
         {
-            get { return sampleName; }
+            get
+            {
+                return this.sampleName;
+            }
+
             set
             {
-                sampleName = value;
-                RaisePropertyChangedEvent("AthleteName");
+                if (this.sampleName != value)
+                {
+                    this.sampleName = value;
+                    this.RaisePropertyChangedEvent(nameof(this.AthleteName));
+                }
             }
         }
 
         /// <summary>
-        /// Gets the same team
+        /// Gets or sets the same team
         /// </summary>
         public string AthleteTeam
         {
-            get { return sampleTeam; }
+            get
+            {
+                return this.sampleTeam;
+            }
+
             set
             {
-                sampleTeam = value;
-                RaisePropertyChangedEvent("AthleteTeam");
+                this.sampleTeam = value;
+                this.RaisePropertyChangedEvent(nameof(this.AthleteTeam));
             }
         }
 
         /// <summary>
-        /// Gets the sample number
+        /// Gets or sets the sample number
         /// </summary>
         public int AthleteNumber
         {
-            get { return sampleNumber; }
+            get
+            {
+                return this.sampleNumber;
+            }
+
             set
             {
-                sampleNumber = value;
-                RaisePropertyChangedEvent("AthleteNumber");
+                this.sampleNumber = value;
+                this.RaisePropertyChangedEvent(nameof(this.AthleteNumber));
             }
         }
 
         /// <summary>
-        /// Gets the sample handicap.
+        /// Gets or sets the sample handicap.
         /// </summary>
         public TimeType AthleteHandicap
         {
-            get { return sampleHandicap; }
+            get
+            {
+                return this.sampleHandicap;
+            }
+
             set
             {
-                sampleHandicap = value;
-                RaisePropertyChangedEvent("AthleteHandicap");
+                this.sampleHandicap = value;
+                this.RaisePropertyChangedEvent(nameof(this.AthleteHandicap));
             }
         }
 
         /// <summary>
-        /// Gets the sample handicap.
+        /// Gets or sets the sample handicap.
         /// </summary>
         public string SaveFolder
         {
-            get { return saveDirectory; }
+            get
+            {
+                return this.saveDirectory;
+            }
+
             set
             {
-                saveDirectory = value;
-                RaisePropertyChangedEvent("SaveFolder");
+                this.saveDirectory = value;
+                this.RaisePropertyChangedEvent(nameof(this.SaveFolder));
             }
         }
 
         /// <summary>
-        /// Gets the sample event details
+        /// Gets or sets the sample event details
         /// </summary>
         public string EventDetails
         {
@@ -224,53 +269,64 @@
         }
 
         /// <summary>
-        /// Gets the number of columns on the printed sheet.
+        /// Gets or sets the number of columns on the printed sheet.
         /// </summary>
         public int NoColumns
         {
-            get { return numberColumns; }
+            get
+            {
+                return this.numberColumns;
+            }
+
             set
             {
-                numberColumns = value;
-
-                foreach (AthleteLabel label in AthleteDetails)
+                this.numberColumns = value;
+                foreach (AthleteLabel label in this.AthleteDetails)
                 {
-                    label.AthleteLabelWidth = A4Details.GetLabelWidth96DPI(numberColumns);
+                    label.AthleteLabelWidth = A4Details.GetLabelWidth96DPI(this.numberColumns);
                 }
 
-                RaisePropertyChangedEvent("NoColumns");
+                this.RaisePropertyChangedEvent(nameof(this.NoColumns));
             }
         }
 
         /// <summary>
-        /// Gets the number of rows on the printed sheet.
+        /// Gets or sets the number of rows on the printed sheet.
         /// </summary>
         public int NoRows
         {
-            get { return numberRows; }
+            get
+            {
+                return this.numberRows;
+            }
+
             set
             {
-                numberRows = value;
+                this.numberRows = value;
 
-                foreach (AthleteLabel label in AthleteDetails)
+                foreach (AthleteLabel label in this.AthleteDetails)
                 {
-                    label.AthleteLabelHeight = A4Details.GetLabelHeight96DPI(numberRows);
+                    label.AthleteLabelHeight = A4Details.GetLabelHeight96DPI(this.numberRows);
                 }
 
-                RaisePropertyChangedEvent("NoRows");
+                this.RaisePropertyChangedEvent(nameof(this.NoRows));
             }
         }
 
         /// <summary>
-        /// Gets the number of spare sheets to create.
+        /// Gets or sets the number of spare sheets to create.
         /// </summary>
         public int NoSpareSheets
         {
-            get { return numberSpareSheets; }
+            get
+            {
+                return this.numberSpareSheets;
+            }
+
             set
             {
-                numberSpareSheets = value;
-                RaisePropertyChangedEvent("NoSpareSheets");
+                this.numberSpareSheets = value;
+                this.RaisePropertyChangedEvent(nameof(this.NoSpareSheets));
             }
         }
 
