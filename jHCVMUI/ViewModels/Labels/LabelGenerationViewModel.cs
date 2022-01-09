@@ -13,7 +13,7 @@
     using jHCVMUI.ViewModels.ViewModels;
 
     /// <summary>
-    /// 
+    /// The view model which supports the label generation dialog.
     /// </summary>
     public class LabelGenerationViewModel : ViewModelBase
     {
@@ -28,7 +28,7 @@
         private IJHcLogger logger;
 
         /// <summary>
-        /// Junior handicap model
+        /// Junior handicap model.
         /// </summary>
         private IModel model;
 
@@ -64,7 +64,7 @@
             this.seriesConfigManager = seriesConfigManager;
             this.logger = logger;
             SaveFolder = saveFolder;
-            NormalisationConfigType hcConfiguration = 
+            NormalisationConfigType hcConfiguration =
                 normalisationConfigManager.ReadNormalisationConfiguration();
 
             // TODO, this is repeated code, see HandicapWriter.cs
@@ -87,7 +87,7 @@
                     // Ensure that the athlete is registered for the season.
                     if (runningNumbers.Count > 0)
                     {
-                        AthleteLabel modelAthlete = 
+                        AthleteLabel modelAthlete =
                             new AthleteLabel(
                                 athlete.Name,
                                 athlete.Club,
@@ -96,29 +96,22 @@
                                 athlete.Appearances == 0);
                         modelAthlete.AthleteLabelWidth = A4Details.GetLabelWidth96DPI(NoColumns);
                         modelAthlete.AthleteLabelHeight = A4Details.GetLabelHeight96DPI(NoRows);
-                        AthleteDetails.Add(modelAthlete);
+                        this.AthleteDetails.Add(modelAthlete);
                     }
                 }
             }
 
             // Order the athletes alphabetically.
-            AthleteDetails = AthleteDetails.OrderBy(athlete => athlete.Forename).ToList();
-            AthleteDetails = AthleteDetails.OrderBy(athlete => athlete.Surname).ToList();
+            this.AthleteDetails =
+                this.AthleteDetails.OrderBy(athlete => athlete.Forename).ToList();
+            this.AthleteDetails =
+                this.AthleteDetails.OrderBy(athlete => athlete.Surname).ToList();
 
             this.saveDirectory = saveFolder;
 
-            CreateRaceLabelsCommand = new CreateAndSaveRaceLabelsCmd(this);
-            CreateSpareLabelsCommand = new CreateAndSaveSpareLabelsCmd(this);
-            CreateAllLabelsCommand = new CreateAndSaveAllLabelsCmd(this);
-
-            // Force the GUI to update.
-            RaisePropertyChangedEvent("AthleteName");
-            RaisePropertyChangedEvent("AthleteTeam");
-            RaisePropertyChangedEvent("AthleteNumber");
-            RaisePropertyChangedEvent("AthleteHandicap");
-            RaisePropertyChangedEvent("EventDetails");
-            RaisePropertyChangedEvent("NoColumns");
-            RaisePropertyChangedEvent("NoRows");
+            this.CreateRaceLabelsCommand = new CreateAndSaveRaceLabelsCmd(this);
+            this.CreateSpareLabelsCommand = new CreateAndSaveSpareLabelsCmd(this);
+            this.CreateAllLabelsCommand = new CreateAndSaveAllLabelsCmd(this);
         }
 
         /// <summary>
@@ -252,11 +245,6 @@
 
             set
             {
-                if (this.sampleEvent != value)
-                {
-                    return;
-                }
-
                 this.sampleEvent = value;
 
                 foreach (AthleteLabel label in this.AthleteDetails)
@@ -331,6 +319,11 @@
         }
 
         /// <summary>
+        /// Gets the flag to show off the first timer decorator.
+        /// </summary>
+        public bool FirstTimer => true;
+
+        /// <summary>
         /// Create images for all race and spare labels and their crib sheets.
         /// </summary>
         public void CreateAllLabels()
@@ -351,7 +344,7 @@
         }
 
         /// <summary>
-        /// Cenerate images for all spare labels and their crib sheets.
+        /// Generate images for all spare labels and their crib sheets.
         /// </summary>
         public void CreateSpareLabels()
         {
@@ -360,167 +353,18 @@
                 this.seriesConfigManager,
                 SaveFolder,
                 NoSpareSheets,
-                NoColumns, 
-                NoRows, 
+                NoColumns,
+                NoRows,
                 EventDetails);
             LabelImageGenerator.CreateSpareLabelsCribSheet(
                 this.model,
                 this.seriesConfigManager,
-                SaveFolder, 
-                NoSpareSheets, 
+                SaveFolder,
+                NoSpareSheets,
                 NoColumns,
                 NoRows);
 
             this.logger.WriteLog("Race labels created");
         }
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public void CreateRaceLabels()
-        //{
-        //  ObservableCollection<AthleteLabel> labels        = new ObservableCollection<AthleteLabel>();
-        //  int                                labelsOnSheet = 0;
-        //  int                                sheetNumber   = 1;
-
-        //  // loop through all athletedetails.
-        //  // Every (columns * rows) call create sheet.
-
-        //  foreach (AthleteLabel athlete in AthleteDetails)
-        //  {
-        //    ++labelsOnSheet;
-
-        //    labels.Add(athlete);
-
-        //    if (labelsOnSheet == numberColumns * numberRows)
-        //    {
-        //      CreateSingleSheet(labels, sheetNumber.ToString() + "Racetest.png");
-
-        //      ++sheetNumber;
-        //      labelsOnSheet = 0;
-        //      labels = new ObservableCollection<AthleteLabel>();
-        //    }
-        //  }
-
-        //  if (labelsOnSheet > 0)
-        //  {
-        //    CreateSingleSheet(labels, sheetNumber.ToString() + "Racetest.png");
-        //  }
-
-        //  // Create the summary sheets TODO, this is ugly
-        //  labels = new ObservableCollection<AthleteLabel>();
-        //  labelsOnSheet = 0;
-
-        //  foreach (AthleteLabel athlete in AthleteDetails)
-        //  {
-        //    ++labelsOnSheet;
-
-        //    labels.Add(athlete);
-
-        //    if (labelsOnSheet == 50)
-        //    {
-        //      CreateSingleSummarySheet(labels, sheetNumber.ToString() + "Summarytest.png");
-
-        //      ++sheetNumber;
-        //      labelsOnSheet = 0;
-        //      labels = new ObservableCollection<AthleteLabel>();
-        //    }
-        //  }
-
-        //  if (labelsOnSheet > 0)
-        //  { 
-        //      CreateSingleSummarySheet(labels, sheetNumber.ToString() + "Summarytest.png");
-        //  }
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public void CreateSpareLabels()
-        //{
-        //  int number = Model.Instance.CurrentSeason.NextAvailableRaceNumber;
-
-        //  for (int sheetNumber = 0; sheetNumber < NoSpareSheets; ++sheetNumber)
-        //  {
-        //    ObservableCollection<AthleteLabel> sheet = new ObservableCollection<AthleteLabel>();
-
-        //    for (int labelIndex = 0; labelIndex < numberColumns * numberRows; ++labelIndex)
-        //    {
-        //      AthleteLabel newLabel = new AthleteLabel(string.Empty, string.Empty, number, null);
-        //      newLabel.EventDetails = EventDetails;
-        //      newLabel.AthleteLabelWidth = A4Details.GetLabelWidth96DPI(numberColumns);
-        //      newLabel.AthleteLabelHeight = A4Details.GetLabelHeight96DPI(numberRows);
-
-        //      sheet.Add(newLabel);
-
-        //      ++number;
-        //    }
-
-        //    CreateSingleSheet(sheet, sheetNumber.ToString() + "test.png");
-        //  }
-
-        //  // Crib sheet TODO, all this is ugly.
-        //  number = Model.Instance.CurrentSeason.NextAvailableRaceNumber;
-        //  ObservableCollection<AthleteLabel> labels = new ObservableCollection<AthleteLabel>();
-        //  int summarySheetNumber = 1;
-
-        //  for (int labelIndex = 0; labelIndex < numberColumns * numberRows * NoSpareSheets; ++labelIndex)
-        //  {
-        //    labels.Add(new AthleteLabel("________________________________________________________________________", string.Empty, number, null));
-
-        //    if (labels.Count == 50)
-        //    {
-        //      CreateSingleSummarySheet(labels, summarySheetNumber.ToString() + "SummaryCribtest.png");
-
-        //      ++summarySheetNumber;
-        //      labels = new ObservableCollection<AthleteLabel>();
-        //    }
-
-        //    ++number;
-        //  }
-
-        //  if (labels.Count > 0)
-        //  {
-        //      CreateSingleSummarySheet(labels, summarySheetNumber.ToString() + "SummaryCribtest.png");
-        //  }
-        //}
-
-        ///// <summary>
-        ///// Creates a single sheet of labels.
-        ///// </summary>
-        ///// <param name="labels">list of label images</param>
-        ///// <param name="imageName">file name</param>
-        //public void CreateSingleSheet(ObservableCollection<AthleteLabel> labels, string imageName)
-        //{
-        //  LabelSheetDialog     labelDialog    = new LabelSheetDialog();
-        //  LabelsSheetViewModel labelViewModel = new LabelsSheetViewModel(labels);
-
-        //  labelDialog.DataContext = labelViewModel;
-
-        //  labelDialog.Show();
-
-        //  labelDialog.SaveMyWindow(96, SaveFolder + Path.DirectorySeparatorChar + imageName);
-
-        //  labelDialog.Close();
-        //}
-
-        ///// <summary>
-        ///// Creates a single label summary sheet.
-        ///// </summary>
-        ///// <param name="labels">list of label images</param>
-        ///// <param name="imageName">file name</param>
-        //public void CreateSingleSummarySheet(ObservableCollection<AthleteLabel> labels, string imageName)
-        //{
-        //  SummarySheetDialog   summaryDialog  = new SummarySheetDialog();
-        //  LabelsSheetViewModel labelViewModel = new LabelsSheetViewModel(labels);
-
-        //  summaryDialog.DataContext = labelViewModel;
-
-        //  summaryDialog.Show();
-
-        //  summaryDialog.SaveMyWindow(96, SaveFolder + Path.DirectorySeparatorChar + imageName);
-
-        //  summaryDialog.Close();
-        //}
     }
 }
