@@ -136,7 +136,7 @@
         public string AthleteName
         {
             get { return sampleName; }
-            private set
+            set
             {
                 sampleName = value;
                 RaisePropertyChangedEvent("AthleteName");
@@ -149,7 +149,7 @@
         public string AthleteTeam
         {
             get { return sampleTeam; }
-            private set
+            set
             {
                 sampleTeam = value;
                 RaisePropertyChangedEvent("AthleteTeam");
@@ -162,7 +162,7 @@
         public int AthleteNumber
         {
             get { return sampleNumber; }
-            private set
+            set
             {
                 sampleNumber = value;
                 RaisePropertyChangedEvent("AthleteNumber");
@@ -175,7 +175,7 @@
         public TimeType AthleteHandicap
         {
             get { return sampleHandicap; }
-            private set
+            set
             {
                 sampleHandicap = value;
                 RaisePropertyChangedEvent("AthleteHandicap");
@@ -188,7 +188,7 @@
         public string SaveFolder
         {
             get { return saveDirectory; }
-            private set
+            set
             {
                 saveDirectory = value;
                 RaisePropertyChangedEvent("SaveFolder");
@@ -200,17 +200,26 @@
         /// </summary>
         public string EventDetails
         {
-            get { return sampleEvent; }
-            private set
+            get
             {
-                sampleEvent = value;
+                return this.sampleEvent;
+            }
 
-                foreach (AthleteLabel label in AthleteDetails)
+            set
+            {
+                if (this.sampleEvent != value)
                 {
-                    label.EventDetails = sampleEvent;
+                    return;
                 }
 
-                RaisePropertyChangedEvent("EventDetails");
+                this.sampleEvent = value;
+
+                foreach (AthleteLabel label in this.AthleteDetails)
+                {
+                    label.EventDetails = this.sampleEvent;
+                }
+
+                this.RaisePropertyChangedEvent(nameof(this.EventDetails));
             }
         }
 
