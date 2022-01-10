@@ -8,162 +8,224 @@
         d:DesignHeight="350" d:DesignWidth="800"
         Height="350"
         Width="800"
-        ResizeMode="NoResize"
-        >
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="*"/>
-      <RowDefinition Height="40"/>
-    </Grid.RowDefinitions>
-    <Grid Grid.Row="0">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="2*"/>
-        <ColumnDefinition Width="3*"/>
-      </Grid.ColumnDefinitions>
-      <DockPanel Grid.Column="0" LastChildFill="False">
+        ResizeMode="NoResize">
 
-        <Label DockPanel.Dock="Top" Content="Save Setup" HorizontalAlignment="Center"/>
-
-        <Grid DockPanel.Dock="Top">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-          <Label Grid.Column="0" HorizontalAlignment="Center" Content="Event Details"/>
-          <TextBox Grid.Column="1"
-                 HorizontalContentAlignment="Center"
-                 VerticalContentAlignment="Center"
-                 Text="{Binding EventDetails, UpdateSourceTrigger=PropertyChanged}"
-                   Width="150"
-                 Style="{StaticResource BodyTextBoxStyle}"/>
-        </Grid>
-
-        <Grid DockPanel.Dock="Top">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-          <Label Grid.Column="0" HorizontalAlignment="Center" Content="Number Of Columns"/>
-          <TextBox Grid.Column="1"
-                 HorizontalContentAlignment="Center"
-                 VerticalContentAlignment="Center"
-                   Width="150"
-                 Text="{Binding NoColumns, UpdateSourceTrigger=PropertyChanged}"
-                 Style="{StaticResource BodyTextBoxStyle}"/>
-        </Grid>
-
-        <Grid DockPanel.Dock="Top">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-          <Label Grid.Column="0" HorizontalAlignment="Center" Content="Number Of Rows"/>
-          <TextBox Grid.Column="1"
-                 HorizontalContentAlignment="Center"
-                 VerticalContentAlignment="Center"
-                 Text="{Binding NoRows, UpdateSourceTrigger=PropertyChanged}"
-                   Width="150"
-                   Style="{StaticResource BodyTextBoxStyle}"/>
-        </Grid>
-
-        <Grid DockPanel.Dock="Top">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-          <Label Grid.Column="0" HorizontalAlignment="Center" Content="Number Of Spare Sheets"/>
-          <TextBox Grid.Column="1"
-                 HorizontalContentAlignment="Center"
-                 VerticalContentAlignment="Center"
-                 Text="{Binding NoSpareSheets, UpdateSourceTrigger=PropertyChanged}"
-                   Width="150"
-                   Style="{StaticResource BodyTextBoxStyle}"/>
-        </Grid>
-
-        <Label DockPanel.Dock="Top" Content="Sample Label Contents" HorizontalAlignment="Center"/>
-
-        <Grid DockPanel.Dock="Top">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-          <Label Grid.Column="0" HorizontalAlignment="Center" Content="Sample Name"/>
-          <TextBox Grid.Column="1"
-                   HorizontalContentAlignment="Center"
-                   VerticalContentAlignment="Center"
-                   Text="{Binding AthleteName, UpdateSourceTrigger=PropertyChanged}"
-                   Width="150"
-                   Style="{StaticResource BodyTextBoxStyle}"/>
-        </Grid>
-
-        <Grid DockPanel.Dock="Top">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-          <Label Grid.Column="0" HorizontalAlignment="Center" Content="Sample Team"/>
-          <TextBox Grid.Column="1"
-                 HorizontalContentAlignment="Center"
-                 VerticalContentAlignment="Center"
-                 Text="{Binding AthleteTeam, UpdateSourceTrigger=PropertyChanged}"
-                   Width="150"
-                 Style="{StaticResource BodyTextBoxStyle}"/>
-        </Grid>
-
-        <Grid DockPanel.Dock="Top">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-          <Label Grid.Column="0" HorizontalAlignment="Center" Content="Sample Number"/>
-          <Label Grid.Column="1" HorizontalAlignment="Center" Content="{Binding AthleteNumber}"/>
-        </Grid>
-
-        <Grid DockPanel.Dock="Top">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
-          <Label Grid.Column="0" HorizontalAlignment="Center" Content="Sample Time"/>
-          <Label Grid.Column="1" HorizontalAlignment="Center" Content="{Binding AthleteHandicap}"/>
-        </Grid>
-
-      </DockPanel>
-
-      <Grid Grid.Column="1" >
-        <Grid>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
+    <Grid>
+        <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
-          <Label Grid.Row="0" HorizontalAlignment="Center" Content="{Binding SaveFolder}"/>
-          <Grid Grid.Row="1">
-            <view:VestLabel DataContext="{Binding}" Width="350" Height="150" Background="Wheat"/>
-          </Grid>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <DockPanel 
+                Grid.Column="0" 
+                LastChildFill="False">
+
+                <Label 
+                    DockPanel.Dock="Top"
+                    Content="Save Setup" 
+                    HorizontalAlignment="Center"/>
+
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        Grid.Column="0" 
+                        HorizontalAlignment="Center" 
+                        Content="Event Details"/>
+                    <TextBox 
+                        Grid.Column="1"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding EventDetails, UpdateSourceTrigger=PropertyChanged}"
+                        Width="150"
+                        Style="{StaticResource BodyTextBoxStyle}"/>
+                </Grid>
+
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label
+                        Grid.Column="0" 
+                        HorizontalAlignment="Center" 
+                        Content="Number Of Columns"/>
+                    <TextBox 
+                        Grid.Column="1"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Width="150"
+                        Text="{Binding NoColumns, UpdateSourceTrigger=PropertyChanged}"
+                        Style="{StaticResource BodyTextBoxStyle}"/>
+                </Grid>
+
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        Grid.Column="0" 
+                        HorizontalAlignment="Center" 
+                        Content="Number Of Rows"/>
+                    <TextBox 
+                        Grid.Column="1"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding NoRows, UpdateSourceTrigger=PropertyChanged}"
+                        Width="150"
+                        Style="{StaticResource BodyTextBoxStyle}"/>
+                </Grid>
+
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label
+                        Grid.Column="0"
+                        HorizontalAlignment="Center"
+                        Content="Number Of Spare Sheets"/>
+                    <TextBox 
+                        Grid.Column="1"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding NoSpareSheets, UpdateSourceTrigger=PropertyChanged}"
+                        Width="150"
+                        Style="{StaticResource BodyTextBoxStyle}"/>
+                </Grid>
+
+                <Label
+                    DockPanel.Dock="Top" 
+                    Content="Sample Label Contents" 
+                    HorizontalAlignment="Center"/>
+
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        Grid.Column="0" 
+                        HorizontalAlignment="Center" 
+                        Content="Sample Name"/>
+                    <TextBox 
+                        Grid.Column="1"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding AthleteName, UpdateSourceTrigger=PropertyChanged}"
+                        Width="150"
+                        Style="{StaticResource BodyTextBoxStyle}"/>
+                </Grid>
+
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        Grid.Column="0" 
+                        HorizontalAlignment="Center" 
+                        Content="Sample Team"/>
+                    <TextBox 
+                        Grid.Column="1"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding AthleteTeam, UpdateSourceTrigger=PropertyChanged}"
+                        Width="150"
+                        Style="{StaticResource BodyTextBoxStyle}"/>
+                </Grid>
+
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        Grid.Column="0" 
+                        HorizontalAlignment="Center" 
+                        Content="Sample Number"/>
+                    <Label 
+                        Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        Content="{Binding AthleteNumber}"/>
+                </Grid>
+
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        Grid.Column="0" 
+                        HorizontalAlignment="Center" 
+                        Content="Sample Time"/>
+                    <Label 
+                        Grid.Column="1" 
+                        HorizontalAlignment="Center" 
+                        Content="{Binding AthleteHandicap, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+
+            </DockPanel>
+
+            <Grid Grid.Column="1" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label 
+                        Grid.Row="0" 
+                        HorizontalAlignment="Center" 
+                        Content="{Binding SaveFolder}"/>
+                    <Grid Grid.Row="1">
+                        <view:VestLabel 
+                            DataContext="{Binding}" 
+                            Width="350" 
+                            Height="150" 
+                            Background="Wheat"/>
+                    </Grid>
+                </Grid>
+            </Grid>
         </Grid>
-      </Grid>
+        <StackPanel 
+            Orientation="Horizontal" 
+            FlowDirection="RightToLeft" 
+            Grid.Row="1">
+            <Button
+                Content="Close" 
+                Style="{StaticResource BodyButtonStyle}" 
+                Width="150" 
+                Margin="5" 
+                IsCancel="True"/>
+
+            <Button 
+                Content="Close and Create All Labels"
+                Style="{StaticResource BodyButtonStyle}"
+                Width="150"
+                Margin="5"
+                Click="OkClick"
+                Command="{Binding CreateAllLabelsCommand}"/>
+
+            <Button 
+                Content="Create Race Labels"
+                Style="{StaticResource BodyButtonStyle}"
+                Width="150"
+                Margin="5"
+                Command="{Binding CreateRaceLabelsCommand}"/>
+
+            <Button 
+                Content="Create Spare Labels"
+                Style="{StaticResource BodyButtonStyle}"
+                Width="150"
+                Margin="5"
+                Command="{Binding CreateSpareLabelsCommand}"/>
+        </StackPanel>
     </Grid>
-    <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Row="1">
-      <Button Content="Close" Style="{StaticResource BodyButtonStyle}" Width="150" Margin="5" IsCancel="True"/>
-
-      <Button Content="Close and Create All Labels"
-              Style="{StaticResource BodyButtonStyle}"
-              Width="150"
-              Margin="5"
-              Click="OkClick"
-              Command="{Binding CreateAllLabelsCommand}"/>
-
-      <Button Content="Create Race Labels"
-              Style="{StaticResource BodyButtonStyle}"
-              Width="150"
-              Margin="5"
-              Command="{Binding CreateRaceLabelsCommand}"/>
-
-      <Button Content="Create Spare Labels"
-              Style="{StaticResource BodyButtonStyle}"
-              Width="150"
-              Margin="5"
-              Command="{Binding CreateSpareLabelsCommand}"/>
-    </StackPanel>
-  </Grid>
 </Window>
