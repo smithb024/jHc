@@ -30,6 +30,27 @@
         private string teamSeasonBestPoints = string.Empty;
         private string teamSeasonBestPointsOrig = string.Empty;
 
+        /// <summary>
+        /// The number of members of a harmony team team.
+        /// </summary>
+        private string numberInHarmonyTeam;
+
+        /// <summary>
+        /// The number of members of a harmony team at the start up.
+        /// </summary>
+        private string numberInHarmonyTeamOrig;
+
+        /// <summary>
+        /// A comma separated list detailing the points scored per position in the harmony team
+        /// competition.
+        /// </summary>
+        private string harmonyPointsScoring;
+
+        /// <summary>
+        /// The harmony competition scoring at start up.
+        /// </summary>
+        private string harmonyPointsScoringOrig;
+
         private IResultsConfigMngr resultsConfigurationManager;
 
         /// <summary>
@@ -49,34 +70,38 @@
             this.logger = logger;
             this.resultsConfigurationManager = resultsConfigurationManager;
 
-            finishingPoints = resultsConfigurationManager.ResultsConfigurationDetails.FinishingPoints.ToString();
-            seasonBestPoints = resultsConfigurationManager.ResultsConfigurationDetails.SeasonBestPoints.ToString();
-            scoringPositions = resultsConfigurationManager.ResultsConfigurationDetails.NumberOfScoringPositions.ToString();
-            teamFinishingPoints = resultsConfigurationManager.ResultsConfigurationDetails.TeamFinishingPoints.ToString();
-            teamSize = resultsConfigurationManager.ResultsConfigurationDetails.NumberInTeam.ToString();
-            teamSeasonBestPoints = resultsConfigurationManager.ResultsConfigurationDetails.TeamSeasonBestPoints.ToString();
+            this.finishingPoints = resultsConfigurationManager.ResultsConfigurationDetails.FinishingPoints.ToString();
+            this.seasonBestPoints = resultsConfigurationManager.ResultsConfigurationDetails.SeasonBestPoints.ToString();
+            this.scoringPositions = resultsConfigurationManager.ResultsConfigurationDetails.NumberOfScoringPositions.ToString();
+            this.teamFinishingPoints = resultsConfigurationManager.ResultsConfigurationDetails.TeamFinishingPoints.ToString();
+            this.teamSize = resultsConfigurationManager.ResultsConfigurationDetails.NumberInTeam.ToString();
+            this.teamSeasonBestPoints = resultsConfigurationManager.ResultsConfigurationDetails.TeamSeasonBestPoints.ToString();
             this.scoresToCount = resultsConfigurationManager.ResultsConfigurationDetails.ScoresToCount.ToString();
             this.allResults = resultsConfigurationManager.ResultsConfigurationDetails.AllResults;
             this.useTeams = resultsConfigurationManager.ResultsConfigurationDetails.UseTeams;
             this.scoresAreDescending = resultsConfigurationManager.ResultsConfigurationDetails.ScoresAreDescending;
             this.exludeFirstTimers = resultsConfigurationManager.ResultsConfigurationDetails.ExcludeFirstTimers;
 
-            finishingPointsOrig = finishingPoints;
-            seasonBestPointsOrig = seasonBestPoints;
-            scoringPositionsOrig = scoringPositions;
-            teamFinishingPointsOrig = teamFinishingPoints;
-            teamSizeOrig = teamSize;
-            teamSeasonBestPointsOrig = teamSeasonBestPoints;
+            this.numberInHarmonyTeam = string.Empty;
+            this.numberInHarmonyTeamOrig = string.Empty;
+            this.harmonyPointsScoring = string.Empty;
+            this.harmonyPointsScoringOrig = string.Empty;
+
+            this.finishingPointsOrig = finishingPoints;
+            this.seasonBestPointsOrig = seasonBestPoints;
+            this.scoringPositionsOrig = scoringPositions;
+            this.teamFinishingPointsOrig = teamFinishingPoints;
+            this.teamSizeOrig = teamSize;
+            this.teamSeasonBestPointsOrig = teamSeasonBestPoints;
             this.scoresToCountOrig = this.scoresToCount;
 
-            SaveCommand = new ResultsConfigSaveCmd(this);
+            this.SaveCommand = new ResultsConfigSaveCmd(this);
         }
 
-        public ICommand SaveCommand
-        {
-            get;
-            private set;
-        }
+        /// <summary>
+        /// Gets the save command.
+        /// </summary>
+        public ICommand SaveCommand { get; private set; }
 
         /// <summary>
         /// Gets or sets the number of points scored for finishing.
@@ -347,6 +372,75 @@
         }
 
         /// <summary>
+        /// Gets or sets the number of athletes in a harmony team competition team.
+        /// </summary>
+        public string NumberInHarmonyTeam
+        {
+            get => this.numberInHarmonyTeam;
+            set
+            {
+                this.numberInHarmonyTeam = value;
+                RaisePropertyChangedEvent(nameof(this.NumberInHarmonyTeam));
+                RaisePropertyChangedEvent(nameof(this.HarmonyTeamSizeChanged));
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating the changed state of the <see cref="NumberInHarmonyTeam"/> property.
+        /// </summary>
+        public FieldUpdatedType HarmonyTeamSizeChanged
+        {
+            get
+            {
+                if (!this.StringIsValidAsInt(this.NumberInHarmonyTeam))
+                {
+                    return FieldUpdatedType.Invalid;
+                }
+                else if (string.Compare(this.NumberInHarmonyTeam, this.numberInHarmonyTeamOrig) != 0)
+                {
+                    return FieldUpdatedType.Changed;
+                }
+                else
+                {
+                    return FieldUpdatedType.Unchanged;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the number of athletes in a harmony team competition team.
+        /// </summary>
+        public string HarmonyPointsScoring
+        {
+            get => this.harmonyPointsScoring;
+            set
+            {
+                this.harmonyPointsScoring = value;
+                RaisePropertyChangedEvent(nameof(this.HarmonyPointsScoring));
+                RaisePropertyChangedEvent(nameof(this.HarmonyPointsScoringChanged));
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating the changed state of the <see cref="HarmonyPointsScoring"/> 
+        /// property.
+        /// </summary>
+        public FieldUpdatedType HarmonyPointsScoringChanged
+        {
+            get
+            {
+                if (string.Compare(this.HarmonyPointsScoring, this.harmonyPointsScoringOrig) != 0)
+                {
+                    return FieldUpdatedType.Changed;
+                }
+                else
+                {
+                    return FieldUpdatedType.Unchanged;
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating wh
         /// </summary>
         public bool ScoresAreDescending
@@ -397,7 +491,8 @@
               this.StringIsValidAsInt(this.NumberOfScoringPositions) &&
               this.StringIsValidAsInt(this.NumberInTeam) &&
               this.StringIsValidAsInt(this.TeamSeasonBestPoints) &&
-              this.StringIsValidAsInt(this.ScoresToCount);
+              this.StringIsValidAsInt(this.ScoresToCount) &&
+              this.StringIsValidAsInt(this.NumberInHarmonyTeam);
         }
 
         /// <summary>
