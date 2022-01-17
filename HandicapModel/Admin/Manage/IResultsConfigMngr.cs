@@ -45,6 +45,13 @@
         /// A value which indicates whether first timers should be excluded from scoring position 
         /// points.
         /// </param>
+        /// <param name="teamHarmonySize">
+        /// The number of members of a Harmony Team team.
+        /// </param>
+        /// <param name="harmonyPointsScoring">
+        /// A comma separated list detailing the points scored per position in the harmony team
+        /// competition. 
+        /// </param>
         void SaveResultsConfiguration(
           int finishingPoints,
           int seasonBestPoints,
@@ -56,7 +63,9 @@
           bool allResults,
           bool useTeams,
           bool scoresAreDescending,
-          bool excludeFirstTimers);
+          bool excludeFirstTimers,
+          int teamHarmonySize,
+          string harmonyPointsScoring);
 
         /// <summary>
         /// Creates and saves a default results configuration file.

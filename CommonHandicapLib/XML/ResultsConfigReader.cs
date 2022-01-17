@@ -14,6 +14,7 @@
         private const string rootElement = "ResultsConfiguration";
         private const string racePointsElement = "RacePoints";
         private const string clubPointsElement = "ClubPoints";
+        private const string harmonyPointsElement = "HmClubPoints";
 
         private const string finishingPointsAttribute = "Finishing";
         private const string seasonBestAttribute = "SB";
@@ -27,6 +28,9 @@
 
         private const string teamSizeAttribute = "NumberCount";
         private const string teamSeasonBestAttribute = "SB";
+
+        private const string harmonyTeamSizeAttribute = "NumberCount";
+        private const string harmonyScoringAttribute = "Scr";
 
         /// <summary>
         /// The application logger.
@@ -79,6 +83,11 @@
                     new XAttribute(teamFinishingPointsAttribute, configData.TeamFinishingPoints),
                     new XAttribute(teamSizeAttribute, configData.NumberInTeam),
                     new XAttribute(teamSeasonBestAttribute, configData.TeamSeasonBestPoints));
+                XElement harmonyPoints =
+                  new XElement(
+                    harmonyPointsElement,
+                    new XAttribute(harmonyTeamSizeAttribute, configData.NumberInHarmonyTeam),
+                    new XAttribute(harmonyScoringAttribute, configData.HarmonyPointsScoring));
 
                 root.Add(racePoints);
                 root.Add(clubPoints);

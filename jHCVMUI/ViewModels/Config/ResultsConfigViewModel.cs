@@ -509,6 +509,7 @@
                 int saveTeamSize = 0;
                 int saveTeamSeasonBestPoints = 0;
                 int saveScoresToCount = 0;
+                int saveTeamHarmonySize = 0;
 
                 if (!int.TryParse(FinishingPoints, out saveFinishingPoints))
                 {
@@ -552,6 +553,12 @@
                     return;
                 }
 
+                if (!int.TryParse(this.NumberInHarmonyTeam, out saveTeamHarmonySize))
+                {
+                    this.logger.WriteLog("Can't save results config, invalid harmony team size");
+                    return;
+                }
+
                 this.resultsConfigurationManager.SaveResultsConfiguration(
                   saveFinishingPoints,
                   saveSeasonBestPoints,
@@ -563,7 +570,9 @@
                   this.AllResults,
                   this.UseTeams,
                   this.ScoresAreDescending,
-                  this.ExcludeFirstTimers);
+                  this.ExcludeFirstTimers,
+                  saveTeamHarmonySize,
+                  this.HarmonyPointsScoring);
             }
             catch (Exception ex)
             {
