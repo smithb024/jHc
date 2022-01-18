@@ -91,6 +91,7 @@
 
                 root.Add(racePoints);
                 root.Add(clubPoints);
+                root.Add(harmonyPoints);
 
                 writer.Add(root);
                 writer.Save(fileName);
@@ -117,6 +118,7 @@
 
                 XElement RacePoints = root.Element(racePointsElement);
                 XElement ClubPoints = root.Element(clubPointsElement);
+                XElement HarmonyPoints = root.Element(harmonyPointsElement);
 
                 int finishingPoints = (int)RacePoints.Attribute(finishingPointsAttribute);
                 int seasonBestPoints = (int)RacePoints.Attribute(seasonBestAttribute);
@@ -155,6 +157,9 @@
                 int teamSize = (int)ClubPoints.Attribute(teamSizeAttribute);
                 int teamSeasonBestPoints = (int)ClubPoints.Attribute(teamSeasonBestAttribute);
 
+                int harmonyTeamSize = (int)HarmonyPoints.Attribute(harmonyTeamSizeAttribute);
+                string harmonyScoring = (string)HarmonyPoints.Attribute(harmonyScoringAttribute);
+
                 return new ResultsConfigType(
                   finishingPoints,
                   seasonBestPoints,
@@ -166,7 +171,9 @@
                   allResults,
                   useTeams,
                   scoresAreDescending,
-                  excludeFirstTimers);
+                  excludeFirstTimers,
+                  harmonyTeamSize,
+                  harmonyScoring);
             }
             catch (Exception ex)
             {

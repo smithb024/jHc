@@ -82,10 +82,10 @@
             this.scoresAreDescending = resultsConfigurationManager.ResultsConfigurationDetails.ScoresAreDescending;
             this.exludeFirstTimers = resultsConfigurationManager.ResultsConfigurationDetails.ExcludeFirstTimers;
 
-            this.numberInHarmonyTeam = string.Empty;
-            this.numberInHarmonyTeamOrig = string.Empty;
-            this.harmonyPointsScoring = string.Empty;
-            this.harmonyPointsScoringOrig = string.Empty;
+            this.numberInHarmonyTeam = resultsConfigurationManager.ResultsConfigurationDetails.NumberInHarmonyTeam.ToString();
+            this.numberInHarmonyTeamOrig = this.numberInHarmonyTeam;
+            this.harmonyPointsScoring = resultsConfigurationManager.ResultsConfigurationDetails.HarmonyPointsScoring;
+            this.harmonyPointsScoringOrig = this.harmonyPointsScoring;
 
             this.finishingPointsOrig = finishingPoints;
             this.seasonBestPointsOrig = seasonBestPoints;
