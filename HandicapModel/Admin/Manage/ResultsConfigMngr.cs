@@ -67,8 +67,10 @@
         {
             if (!File.Exists(this.generalIo.ResultsConfigurationFile) || overrideExisting)
             {
+                string harmonyPoints = "6,5,4,3,2,1";
+
                 this.SaveResultsConfiguration(
-                  new ResultsConfigType(4, 2, 10, 4, 5, 2, 0, true, true, true, false));
+                  new ResultsConfigType(4, 2, 10, 4, 5, 2, 0, true, true, true, false, 8, harmonyPoints));
                 this.logger.WriteLog("Couldn't find results config file. Created a new default one");
             }
         }
@@ -101,6 +103,13 @@
         /// A value which indicates whether first timers should be excluded from scoring position 
         /// points.
         /// </param>
+        /// <param name="teamHarmonySize">
+        /// The number of members of a Harmony Team team.
+        /// </param>
+        /// <param name="harmonyPointsScoring">
+        /// A comma separated list detailing the points scored per position in the harmony team
+        /// competition. 
+        /// </param>
         public void SaveResultsConfiguration(
           int finishingPoints,
           int seasonBestPoints,
@@ -112,7 +121,9 @@
           bool allResults,
           bool useTeams,
           bool scoresAreDescending,
-          bool excludeFirstTimers)
+          bool excludeFirstTimers,
+          int teamHarmonySize,
+          string harmonyPointsScoring)
         {
             this.SaveResultsConfiguration(
                 new ResultsConfigType(
@@ -126,7 +137,9 @@
                   allResults,
                   useTeams,
                   scoresAreDescending,
-                  excludeFirstTimers));
+                  excludeFirstTimers,
+                  teamHarmonySize,
+                  harmonyPointsScoring));
         }
 
         /// <summary>

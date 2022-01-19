@@ -14,6 +14,7 @@
         private const string rootElement = "ResultsConfiguration";
         private const string racePointsElement = "RacePoints";
         private const string clubPointsElement = "ClubPoints";
+        private const string harmonyPointsElement = "HmClubPoints";
 
         private const string finishingPointsAttribute = "Finishing";
         private const string seasonBestAttribute = "SB";
@@ -27,6 +28,9 @@
 
         private const string teamSizeAttribute = "NumberCount";
         private const string teamSeasonBestAttribute = "SB";
+
+        private const string harmonyTeamSizeAttribute = "NumberCount";
+        private const string harmonyScoringAttribute = "Scr";
 
         /// <summary>
         /// The application logger.
@@ -79,9 +83,15 @@
                     new XAttribute(teamFinishingPointsAttribute, configData.TeamFinishingPoints),
                     new XAttribute(teamSizeAttribute, configData.NumberInTeam),
                     new XAttribute(teamSeasonBestAttribute, configData.TeamSeasonBestPoints));
+                XElement harmonyPoints =
+                  new XElement(
+                    harmonyPointsElement,
+                    new XAttribute(harmonyTeamSizeAttribute, configData.NumberInHarmonyTeam),
+                    new XAttribute(harmonyScoringAttribute, configData.HarmonyPointsScoring));
 
                 root.Add(racePoints);
                 root.Add(clubPoints);
+                root.Add(harmonyPoints);
 
                 writer.Add(root);
                 writer.Save(fileName);
@@ -108,6 +118,7 @@
 
                 XElement RacePoints = root.Element(racePointsElement);
                 XElement ClubPoints = root.Element(clubPointsElement);
+                XElement HarmonyPoints = root.Element(harmonyPointsElement);
 
                 int finishingPoints = (int)RacePoints.Attribute(finishingPointsAttribute);
                 int seasonBestPoints = (int)RacePoints.Attribute(seasonBestAttribute);
@@ -146,6 +157,9 @@
                 int teamSize = (int)ClubPoints.Attribute(teamSizeAttribute);
                 int teamSeasonBestPoints = (int)ClubPoints.Attribute(teamSeasonBestAttribute);
 
+                int harmonyTeamSize = (int)HarmonyPoints.Attribute(harmonyTeamSizeAttribute);
+                string harmonyScoring = (string)HarmonyPoints.Attribute(harmonyScoringAttribute);
+
                 return new ResultsConfigType(
                   finishingPoints,
                   seasonBestPoints,
@@ -157,7 +171,9 @@
                   allResults,
                   useTeams,
                   scoresAreDescending,
-                  excludeFirstTimers);
+                  excludeFirstTimers,
+                  harmonyTeamSize,
+                  harmonyScoring);
             }
             catch (Exception ex)
             {

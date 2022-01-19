@@ -10,204 +10,274 @@
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
 
-  <Window.Resources>
-    <converter:FieldUpdatedToColourConverter x:Key="fieldToColourConverter"></converter:FieldUpdatedToColourConverter>
-  </Window.Resources>
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="*"/>
-      <RowDefinition Height="30"/>
-    </Grid.RowDefinitions>
-    <Grid Grid.Row="0">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="9*"/>
-        <ColumnDefinition Width="3*"/>
-        <ColumnDefinition Width="3*"/>
-        <ColumnDefinition Width="30"/>
-      </Grid.ColumnDefinitions>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="*"/>
-      </Grid.RowDefinitions>
-      <Label Grid.Row="0"
-             Grid.Column="0"
-             Margin="5"
-             Content="Finishing Points"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center"/>
-      <TextBox Grid.Row="0"
-               Grid.Column="2"
-               Style="{StaticResource BodyTextBoxStyle}"
-               Text="{Binding FinishingPoints, UpdateSourceTrigger=PropertyChanged}"
-               Foreground="{Binding FinishingPointsChanged, Converter={StaticResource fieldToColourConverter}}"
-               Margin="5"
-               Height="25"
-               HorizontalContentAlignment="Center"/>
-      <Label Grid.Row="1"
-             Grid.Column="0"
-             Margin="5"
-             Content="Season Best Points"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center"/>
-      <TextBox Grid.Row="1"
-               Grid.Column="2"
-               Style="{StaticResource BodyTextBoxStyle}"
-               Text="{Binding SeasonBestPoints, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-               Foreground="{Binding SeasonBestPointsChanged, Converter={StaticResource fieldToColourConverter}}"
-               Margin="5"
-               Height="25"
-               HorizontalContentAlignment="Center"/>
-      <Label Grid.Row="2"
-             Grid.Column="0"
-             Margin="5"
-             Content="Scores to Count in a Season"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center"/>
+    <Window.Resources>
+        <converter:FieldUpdatedToColourConverter x:Key="fieldToColourConverter"></converter:FieldUpdatedToColourConverter>
+    </Window.Resources>
 
-      <StackPanel
-        Grid.Row="2"
-        Grid.Column="1"
-        Orientation="Horizontal">
-        <CheckBox
-          Margin="5"
-          VerticalAlignment="Center"
-          IsChecked="{Binding AllResults, UpdateSourceTrigger=PropertyChanged}"/>
-        <Label 
-          VerticalAlignment="Center"
-          Grid.Column="1"
-          Grid.Row="1"
-          Content="All"/>
-      </StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
 
-      <TextBox Grid.Row="2"
-               Grid.Column="2"
-               Style="{StaticResource BodyTextBoxStyle}"
-               Text="{Binding ScoresToCount, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-               Foreground="{Binding ScoresToCountChanged, Converter={StaticResource fieldToColourConverter}}"
-               Margin="5.4,0,5.2,5.6"
-               Height="25"
-               HorizontalContentAlignment="Center" VerticalAlignment="Bottom"/>
+        <Border Grid.Row="0"
+                BorderBrush="Black"
+                BorderThickness="0,0,0,1">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="9*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-      <Label Grid.Row="3"
-             Grid.Column="0"
-             Margin="5"
-             Content="Points Descending (1st - high)"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center"/>
-      <CheckBox
-        Grid.Row="3"
-        Grid.Column="2"
-        Margin="30, 0 10, 0"
-        VerticalAlignment="Center"
-        IsChecked="{Binding ScoresAreDescending, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Margin="5"
+                       Content="Finishing Points"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+                <TextBox Grid.Row="0"
+                         Grid.Column="2"
+                         Style="{StaticResource BodyTextBoxStyle}"
+                         Text="{Binding FinishingPoints, UpdateSourceTrigger=PropertyChanged}"
+                         Foreground="{Binding FinishingPointsChanged, Converter={StaticResource fieldToColourConverter}}"
+                         Margin="5"
+                         Height="25"
+                         HorizontalContentAlignment="Center"/>
 
-      <Label Grid.Row="4"
-             Grid.Column="0"
-             Margin="5"
-             Content="Number Of Scoring Positions"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center"/>
-      <StackPanel
-        Grid.Row="4"
-        Grid.Column="1"
-        Orientation="Horizontal">
-        <CheckBox
-          Margin="5"
-          VerticalAlignment="Center"
-          IsChecked="{Binding ExcludeFirstTimers, UpdateSourceTrigger=PropertyChanged}"/>
-        <Label 
-          VerticalAlignment="Center"
-          Grid.Column="1"
-          Grid.Row="1"
-          Content="Excl FT"/>
-      </StackPanel>
-      <TextBox Grid.Row="4"
-               Grid.Column="2"
-               Style="{StaticResource BodyTextBoxStyle}"
-               Text="{Binding NumberOfScoringPositions, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-               Foreground="{Binding NumberOfScoringPositionsChanged, Converter={StaticResource fieldToColourConverter}}"
-               Margin="5"
-               Height="25"
-               HorizontalContentAlignment="Center"/>
+                <Label Grid.Row="1"
+                       Grid.Column="0"
+                       Margin="5"
+                       Content="Season Best Points"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+                <TextBox Grid.Row="1"
+                         Grid.Column="2"
+                         Style="{StaticResource BodyTextBoxStyle}"
+                         Text="{Binding SeasonBestPoints, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Foreground="{Binding SeasonBestPointsChanged, Converter={StaticResource fieldToColourConverter}}"
+                         Margin="5"
+                         Height="25"
+                         HorizontalContentAlignment="Center"/>
 
-      <Label 
-        Grid.Row="5"
-        Grid.Column="0"
-        Margin="5"
-        Content="Use Teams"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center"/>
-      <CheckBox
-        Grid.Row="5"
-        Grid.Column="2"
-          Margin="30, 0 10, 0"
-          VerticalAlignment="Center"
-          IsChecked="{Binding UseTeams, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="2"
+                       Grid.Column="0"
+                       Margin="5"
+                       Content="Scores to Count in a Season"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+                <StackPanel Grid.Row="2"
+                            Grid.Column="1"
+                            Orientation="Horizontal">
+                    <CheckBox Margin="5"
+                              VerticalAlignment="Center"
+                              IsChecked="{Binding AllResults, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label VerticalAlignment="Center"
+                           Grid.Column="1"
+                           Grid.Row="1"
+                           Content="All"/>
+                </StackPanel>
+                <TextBox Grid.Row="2"
+                         Grid.Column="2"
+                         Style="{StaticResource BodyTextBoxStyle}"
+                         Text="{Binding ScoresToCount, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Foreground="{Binding ScoresToCountChanged, Converter={StaticResource fieldToColourConverter}}"
+                         Margin="5.4,0,5.2,5.6"
+                         Height="25"
+                         HorizontalContentAlignment="Center"
+                         VerticalAlignment="Bottom"/>
+    
+                <Label Grid.Row="3"
+                       Grid.Column="0"
+                       Margin="5"
+                       Content="Points Descending (1st - high)"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+                <CheckBox Grid.Row="3"
+                          Grid.Column="2"
+                          Margin="30, 0 10, 0"
+                          VerticalAlignment="Center"
+                          IsChecked="{Binding ScoresAreDescending, UpdateSourceTrigger=PropertyChanged}"/>
 
-      <Label Grid.Row="6"
-             Grid.Column="0"
-             Margin="5"
-             Content="Team Size"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center"/>
-      <TextBox Grid.Row="6"
-               Grid.Column="2"
-               Style="{StaticResource BodyTextBoxStyle}"
-               Text="{Binding NumberInTeam, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-               Foreground="{Binding TeamSizeChanged, Converter={StaticResource fieldToColourConverter}}"
-               Margin="5"
-               Height="25"
-               HorizontalContentAlignment="Center"/>
-      <Label Grid.Row="7"
-             Grid.Column="0"
-             Margin="5"
-             Content="Team Finishing Points"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center"/>
-      <TextBox Grid.Row="7"
-               Grid.Column="2"
-               Style="{StaticResource BodyTextBoxStyle}"
-               Text="{Binding TeamFinishingPoints, UpdateSourceTrigger=PropertyChanged}"
-               Foreground="{Binding TeamFinishingPointsChanged, Converter={StaticResource fieldToColourConverter}}"
-               Margin="5"
-               Height="25"
-               HorizontalContentAlignment="Center"/>
-      <Label Grid.Row="8"
-             Grid.Column="0"
-             Margin="5"
-             Content="Team Season Best Points"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center"/>
-      <TextBox Grid.Row="8"
-               Grid.Column="2"
-               Style="{StaticResource BodyTextBoxStyle}"
-               Text="{Binding TeamSeasonBestPoints, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-               Foreground="{Binding TeamSeasonBestPointsChanged, Converter={StaticResource fieldToColourConverter}}"
-               Margin="5"
-               Height="25"
-               HorizontalContentAlignment="Center"/>
+                <Label Grid.Row="4"
+                       Grid.Column="0"
+                       Margin="5"
+                       Content="Number Of Scoring Positions"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+                <StackPanel Grid.Row="4"
+                            Grid.Column="1"
+                            Orientation="Horizontal">
+                    <CheckBox Margin="5"
+                              VerticalAlignment="Center"
+                              IsChecked="{Binding ExcludeFirstTimers, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label VerticalAlignment="Center"
+                           Grid.Column="1"
+                           Grid.Row="1"
+                           Content="Excl FT"/>
+                </StackPanel>
+                <TextBox Grid.Row="4"
+                         Grid.Column="2"
+                         Style="{StaticResource BodyTextBoxStyle}"
+                         Text="{Binding NumberOfScoringPositions, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Foreground="{Binding NumberOfScoringPositionsChanged, Converter={StaticResource fieldToColourConverter}}"
+                         Margin="5"
+                         Height="25"
+                         HorizontalContentAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1"
+                BorderBrush="Black"
+                BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="9*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0"
+                      Grid.Column="0"
+                      Margin="5"
+                      Content="Use Teams"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"/>
+                <CheckBox Grid.Row="0"
+                          Grid.Column="2"
+                          Margin="30, 0 10, 0"
+                          VerticalAlignment="Center"
+                          IsChecked="{Binding UseTeams, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Grid.Row="1"
+                       Grid.Column="0"
+                       Margin="5"
+                       Content="Team Size"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+                <TextBox Grid.Row="1"
+                         Grid.Column="2"
+                         Style="{StaticResource BodyTextBoxStyle}"
+                         Text="{Binding NumberInTeam, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Foreground="{Binding TeamSizeChanged, Converter={StaticResource fieldToColourConverter}}"
+                         Margin="5"
+                         Height="25"
+                         HorizontalContentAlignment="Center"/>
+
+                <Label Grid.Row="2"
+                       Grid.Column="0"
+                       Margin="5"
+                       Content="Team Finishing Points"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+                <TextBox Grid.Row="2"
+                         Grid.Column="2"
+                         Style="{StaticResource BodyTextBoxStyle}"
+                         Text="{Binding TeamFinishingPoints, UpdateSourceTrigger=PropertyChanged}"
+                         Foreground="{Binding TeamFinishingPointsChanged, Converter={StaticResource fieldToColourConverter}}"
+                         Margin="5"
+                         Height="25"
+                         HorizontalContentAlignment="Center"/>
+
+                <Label Grid.Row="3"
+                       Grid.Column="0"
+                       Margin="5"
+                       Content="Team Season Best Points"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+                <TextBox Grid.Row="3"
+                         Grid.Column="2"
+                         Style="{StaticResource BodyTextBoxStyle}"
+                         Text="{Binding TeamSeasonBestPoints, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Foreground="{Binding TeamSeasonBestPointsChanged, Converter={StaticResource fieldToColourConverter}}"
+                         Margin="5"
+                         Height="25"
+                         HorizontalContentAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2"
+                BorderBrush="Black"
+                BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="9*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Margin="5"
+                       Content="Team Size"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+                <TextBox Grid.Row="0"
+                         Grid.Column="2"
+                         Style="{StaticResource BodyTextBoxStyle}"
+                         Text="{Binding NumberInHarmonyTeam, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Foreground="{Binding HarmonyTeamSizeChanged, Converter={StaticResource fieldToColourConverter}}"
+                         Margin="5"
+                         Height="25"
+                         HorizontalContentAlignment="Center"/>
+
+                <Label Grid.Row="1"
+                       Grid.Column="0"
+                       Margin="5"
+                       Content="Points Scoring"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+                <TextBox Grid.Row="1"
+                         Grid.Column="2"
+                         Style="{StaticResource BodyTextBoxStyle}"
+                         Text="{Binding HarmonyPointsScoring, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Foreground="{Binding HarmonyPointsScoringChanged, Converter={StaticResource fieldToColourConverter}}"
+                         Margin="5"
+                         Height="25"
+                         HorizontalContentAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <StackPanel 
+            Grid.Row="3" 
+            Orientation="Horizontal" 
+            HorizontalAlignment="Right">
+            <Button 
+                Content="Cancel"
+                Style="{StaticResource BodyButtonStyle}"
+                Width="75"
+                Margin="5"
+                IsCancel="True"/>
+            <Button 
+                Content="Ok"
+                Style="{StaticResource BodyButtonStyle}"
+                Command="{Binding SaveCommand}"
+                Width="75"
+                Margin="5"
+                IsDefault="True"
+                Click="OkClick"/>
+        </StackPanel>
     </Grid>
-
-    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-      <Button Content="Cancel"
-              Style="{StaticResource BodyButtonStyle}"
-              Width="75"
-              Margin="5"
-              IsCancel="True"/>
-      <Button Content="Ok"
-              Style="{StaticResource BodyButtonStyle}"
-              Command="{Binding SaveCommand}"
-              Width="75"
-              Margin="5"
-              IsDefault="True"
-              Click="OkClick"/>
-    </StackPanel>
-  </Grid>
 </Window>
