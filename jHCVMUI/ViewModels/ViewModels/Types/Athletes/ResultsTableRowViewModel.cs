@@ -1,25 +1,12 @@
 ﻿namespace jHCVMUI.ViewModels.ViewModels.Types.Athletes
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Windows;
     using CommonHandicapLib.Types;
-    using CommonLib.Enumerations;
-    using CommonLib.Types;
 
     /// <summary>
     /// Class describing a single result for the GUI.
     /// </summary>
     public class ResultsTableRowViewModel : AthleteBase
     {
-        /// <summary>
-        /// Age grading for the athlete.
-        /// </summary>
-        private string ageGrading;
-
         /// <summary>
         /// Athlete's club
         /// </summary>
@@ -121,7 +108,6 @@
         /// <param name="key">athete key</param>
         /// <param name="position">athlete position--</param>
         /// <param name="name">athlete name</param>
-        /// <param name="ageGrading">age grading</param>
         /// <param name="club">athlete club</param>
         /// <param name="handicap">athlte handicap</param>
         /// <param name="extraInfo">athlete extra information</param>
@@ -143,7 +129,6 @@
           int key,
           int position,
           string name,
-          string ageGrading,
           string club,
           string handicap,
           string extraInfo,
@@ -163,7 +148,6 @@
           bool sb)
           : base(key, name)
         {
-            this.ageGrading = ageGrading;
             this.club = club;
             this.handicap = handicap;
             this.extraInfo = extraInfo;
@@ -184,23 +168,6 @@
             this.sb = sb ? "Y" : string.Empty;
 
             this.expandedData = false;
-    }
-
-        /// <summary>
-        /// Gets or sets the athlete's age grading.
-        /// </summary>
-        public string AgeGrading
-        {
-            get
-            {
-                return this.ageGrading;
-            }
-
-            set
-            {
-                this.ageGrading = value;
-                RaisePropertyChangedEvent(nameof(this.AgeGrading));
-            }
         }
 
         /// <summary>

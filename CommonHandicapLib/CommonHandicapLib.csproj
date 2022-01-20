@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HandicapConverter.cs" />
-    <Compile Include="Helpers\AgeRating.cs" />
     <Compile Include="Helpers\EventRawResults\ResultsDecoder.cs" />
     <Compile Include="Helpers\HandicapHelper.cs" />
     <Compile Include="Helpers\NameHelper.cs" />

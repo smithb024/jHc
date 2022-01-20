@@ -10,11 +10,6 @@
     public interface IResultsTableEntry
     {
         /// <summary>
-        /// Gets the athlete age grading
-        /// </summary>
-        string AgeGrading { get; }
-
-        /// <summary>
         /// Gets the athlete club.
         /// </summary>
         string Club { get; }

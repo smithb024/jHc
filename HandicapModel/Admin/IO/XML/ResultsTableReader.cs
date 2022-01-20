@@ -41,7 +41,6 @@
         private const string c_sexAttribute = "sx";
         private const string c_timeAttribute = "time";
         private const string c_ybAttribute = "YB";
-        private const string ageGradedRatingAttribute = "AGR";
 
         /// <summary>
         /// The instance of the logger.
@@ -181,7 +180,6 @@
                             row.HarmonyPoints,
                             row.IsPersonalBest,
                             row.IsYearBest,
-                            string.Empty,
                             row.Notes,
                             row.ExtraInformation,
                             position);
