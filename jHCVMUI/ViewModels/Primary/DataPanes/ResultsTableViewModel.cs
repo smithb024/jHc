@@ -221,7 +221,6 @@
                     entry.Key,
                     entry.Position,
                     entry.Name,
-                    entry.AgeGrading,
                     entry.Club,
                     entry.Handicap.ToString(),
                     entry.ExtraInfo,

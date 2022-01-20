@@ -56,7 +56,6 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="FPts"/>
             <Label Grid.Column="1" Content="PPts"/>
@@ -65,7 +64,6 @@
             <Label Grid.Column="4" Content="ExtraInfo"/>
             <Label Grid.Column="5" Content="FirstTimer"/>
             <Label Grid.Column="6" Content="Sex"/>
-            <Label Grid.Column="7" Content="Age Grading"/>
         </Grid>
     </Grid>
 </UserControl>

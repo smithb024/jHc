@@ -2,7 +2,6 @@
 {
     using CommonLib.Enumerations;
     using CommonLib.Types;
-    using CommonHandicapLib.Helpers;
     using CommonHandicapLib.Types;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Common;
@@ -46,13 +45,11 @@
           int harmonyPoints,
           bool pb,
           bool yb,
-          string ageGradedRating,
           string notes,
           string extraInfo,
           int position)
         {
             this.Key = key;
-            this.AgeGrading = ageGradedRating;
             this.Club = club;
             this.ExtraInfo = extraInfo;
             this.Handicap = handicap;
@@ -112,25 +109,7 @@
             this.Time = time;
             this.Position = position;
             this.ExtraInfo = string.Empty;
-
-            if (age == null)
-            {
-                this.AgeGrading = string.Empty;
-            }
-            else
-            {
-                this.AgeGrading =
-                  AgeRating.GetAgeGradedRating(
-                    (int)age,
-                    this.RunningTime,
-                    sex);
-            }
         }
-
-        /// <summary>
-        /// Gets the athlete's age grading.
-        /// </summary>
-        public string AgeGrading { get; private set; }
 
         /// <summary>
         /// Gets the club.

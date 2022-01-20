@@ -2,7 +2,6 @@
 {
     using System;
     using System.IO;
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using GalaSoft.MvvmLight.Messaging;
@@ -65,9 +64,7 @@
                                              ResultsPaths.separator +
                                              entry.RaceNumber +
                                              ResultsPaths.separator +
-                                             entry.Club +
-                                             ResultsPaths.separator +
-                                             entry.AgeGrading;
+                                             entry.Club;
 
                         writer.WriteLine(entryString);
                     }
