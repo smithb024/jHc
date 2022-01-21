@@ -1,16 +1,11 @@
 ﻿namespace HandicapModel.Admin.IO.XML
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-    using System.Text;
     using System.Xml.Linq;
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Types;
     using CommonHandicapLib.XML.ResultsTable;
-    using CommonLib.Enumerations;
     using CommonLib.Types;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO.XML;
@@ -23,25 +18,6 @@
     /// </summary>
     public class ResultsTableReader : IResultsTableReader
     {
-        private const string c_rootElement = "ResTbl";
-        private const string c_rowElement = "Row";
-
-        private const string keyAttribute = "key";
-        private const string c_clubAttribute = "club";
-        private const string extraInfoAttribute = "EI";
-        private const string c_handicapAttribute = "HC";
-        private const string c_nameAttribute = "name";
-        private const string c_notesAttribute = "notes";
-        private const string c_orderAttribute = "order";
-        private const string c_pbAttribute = "PB";
-        private const string c_pointsAttribute = "pts";
-        private const string HarmonyPointsAttribute = "hPts";
-        private const string c_raceNumberAttribute = "number";
-        private const string c_runningOrderAttribute = "timePosition";
-        private const string c_sexAttribute = "sx";
-        private const string c_timeAttribute = "time";
-        private const string c_ybAttribute = "YB";
-
         /// <summary>
         /// The instance of the logger.
         /// </summary>
