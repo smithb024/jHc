@@ -42,6 +42,11 @@
         int VirtualAthletePoints { get; }
 
         /// <summary>
+        /// Gets the size of a harmony team.
+        /// </summary>
+        int TeamSize { get; }
+
+        /// <summary>
         /// Add a new point to the <see cref="Points"/> collection.
         /// </summary>
         /// <remarks>

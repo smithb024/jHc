@@ -243,7 +243,8 @@
                             IHarmonyEvent readEvent =
                                 new HarmonyEvent(
                                     date,
-                                    pointsList);
+                                    pointsList,
+                                    harmonyEvent.size);
                             readEvent.Complete(
                                 harmonyEvent.size,
                                 harmonyEvent.virtualPoint);

@@ -413,7 +413,8 @@
             {
                 IHarmonyEvent newEvent =
                     new HarmonyEvent(
-                        currentDate);
+                        currentDate,
+                        this.resultsConfiguration.ResultsConfigurationDetails.NumberInHarmonyTeam);
                 eventDictionary.Add(
                     club.Name,
                     newEvent);
@@ -478,7 +479,9 @@
 
             foreach (KeyValuePair<string, IHarmonyEvent> entry in eventDictionary)
             {
-                entry.Value.Complete(HarmonyEvent.TeamSize, nextScore);
+                entry.Value.Complete(
+                    this.resultsConfiguration.ResultsConfigurationDetails.NumberInHarmonyTeam,
+                    nextScore);
                 this.Model.CurrentSeason.AddNewClubPoints(entry.Key, entry.Value);
             }
         }
