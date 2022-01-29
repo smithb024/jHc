@@ -11,12 +11,12 @@
         /// <param name="message">error message</param>
         public HandicapErrorMessage(string message)
         {
-            this.ErroMessage = message;
+            this.ErrorMessage = message;
         }
 
         /// <summary>
         /// Gets the error message.
         /// </summary>
-        public string ErroMessage { get; }
+        public string ErrorMessage { get; }
     }
 }

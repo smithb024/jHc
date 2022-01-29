@@ -1,8 +1,8 @@
 ﻿namespace HandicapModel.Admin.Manage.Event
 {
     using System.Collections.Generic;
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using CommonLib.Enumerations;
     using CommonLib.Types;
@@ -14,6 +14,7 @@
     using HandicapModel.Interfaces.SeasonModel.EventModel;
     using HandicapModel.SeasonModel;
     using HandicapModel.SeasonModel.EventModel;
+    using GalaSoft.MvvmLight.Messaging;
 
     /// <summary>
     /// Manager class for calculating results.
@@ -79,10 +80,34 @@
         public void CalculateResults()
         {
             this.logger.WriteLog("Calculate results");
+            HandicapProgressMessage startMessage = new HandicapProgressMessage("Calculate Results");
+            Messenger.Default.Send(startMessage);
 
             if (this.resultsConfiguration == null)
             {
                 this.logger.WriteLog("Error reading the results config file. Results not generated");
+
+                HandicapErrorMessage faultMessage =
+                    new HandicapErrorMessage(
+                        "Can't calculate results - invalid config");
+                Messenger.Default.Send(faultMessage);
+                HandicapProgressMessage terminateMessage = new HandicapProgressMessage("Calculate Results - Terminated");
+                Messenger.Default.Send(terminateMessage);
+
+                return;
+            }
+
+            if (this.resultsConfiguration.ResultsConfigurationDetails.HarmonyPoints == null)
+            {
+                this.logger.WriteLog("Can't calculate results, Harmony points are invalid");
+
+                HandicapErrorMessage faultMessage =
+                    new HandicapErrorMessage(
+                        "Can't calculate results - check config");
+                Messenger.Default.Send(faultMessage);
+                HandicapProgressMessage terminateMessage = new HandicapProgressMessage("Calculate Results - Terminated");
+                Messenger.Default.Send(terminateMessage);
+
                 return;
             }
 
@@ -122,6 +147,9 @@
             this.SaveAll();
 
             this.logger.WriteLog("Calculate results completed.");
+            HandicapProgressMessage finishedMessage = new HandicapProgressMessage("Calculate Results - Completed");
+            Messenger.Default.Send(finishedMessage);
+
         }
 
         /// <summary>
