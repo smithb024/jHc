@@ -38,7 +38,7 @@
 
                 foreach (IHarmonyEvent race in this.Events)
                 {
-                    points += race.TotalPoints;
+                    points += race.TotalAthletePoints;
                 }
 
                 return points;

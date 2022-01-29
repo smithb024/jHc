@@ -172,7 +172,7 @@
                 {
                     HarmonyPointsTypeViewModel points =
                         new HarmonyPointsTypeViewModel(
-                            eventPoints.TotalPoints,
+                            eventPoints.TotalAthletePoints,
                             eventPoints.NumberOfAthletes,
                             eventPoints.Points,
                             eventPoints.Date);

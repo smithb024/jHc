@@ -71,7 +71,7 @@
                             {
                                 if (club.ClubCompetition.Points.Exists(points => points.Date == eventDate))
                                 {
-                                    int eventPoints = club.HarmonyCompetition.Events.Find(points => points.Date == eventDate).TotalPoints;
+                                    int eventPoints = club.HarmonyCompetition.Events.Find(points => points.Date == eventDate).TotalAthletePoints;
 
                                     entryString = entryString + ResultsPaths.separator + eventPoints;
                                 }

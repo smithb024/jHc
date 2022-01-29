@@ -17,7 +17,16 @@
         /// <summary>
         /// Gets the total points scored in this event.
         /// </summary>
-        int TotalPoints { get; }
+        /// <remarks>
+        /// This is the total number of points scored by all the athletes (real and virtual) in 
+        /// this event.
+        /// </remarks>
+        int TotalAthletePoints { get; }
+
+        /// <summary>
+        /// Gets or sets the score which is scored by this team for this event.
+        /// </summary>
+        int Score { get; set; }
 
         /// <summary>
         /// Gets the number of athletes present in the team to a maximum of 10.
@@ -61,7 +70,7 @@
         /// as the points value of the remaining points up to the team size.
         /// </summary>
         /// <param name="teamSize">size of the team</param>
-        /// <param name="pointsValue">value oof remaining points</param>
+        /// <param name="pointsValue">value of remaining points</param>
         void Complete(
             int teamSize,
             int pointsValue);

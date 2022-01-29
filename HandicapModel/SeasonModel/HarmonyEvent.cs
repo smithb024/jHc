@@ -27,6 +27,7 @@
             this.TeamSize = teamSize;
             this.Points = points;
             this.VirtualAthletePoints = 0;
+            this.Score = 0;
         }
 
         /// <summary>
@@ -42,6 +43,7 @@
             this.TeamSize = teamSize;
             this.Points = new List<ICommonHarmonyPoints>();
             this.VirtualAthletePoints = 0;
+            this.Score = 0;
         }
 
         /// <summary>
@@ -52,7 +54,11 @@
         /// <summary>
         /// Gets the total points scored in this event.
         /// </summary>
-        public int TotalPoints 
+        /// <remarks>
+        /// This is the total number of points scored by all the athletes (real and virtual) in 
+        /// this event.
+        /// </remarks>
+        public int TotalAthletePoints 
         {
             get
             {
@@ -71,6 +77,11 @@
         /// Gets the number of athletes present in the team to a maximum of 10.
         /// </summary>
         public int NumberOfAthletes => this.Points.FindAll(p => p.IsReal).Count;
+
+        /// <summary>
+        /// Gets or sets the score which is scored by this team for this event.
+        /// </summary>
+        public int Score { get; set; }
 
         /// <summary>
         /// Gets a collection containing the break down of points.
