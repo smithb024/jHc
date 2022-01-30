@@ -33,6 +33,7 @@
         private const string HarmonyTeamSizeAttribute = "tm";
         private const string HarmonyVirtualAthletePointAttribute = "vr";
         private const string HarmonyEventDateAttribute = "dt";
+        private const string HarmonyScoreAttribute = "scr";
         private const string HarmonyPointAttribute = "pt";
         private const string AthleteKeyAttribute = "key";
 
@@ -76,8 +77,10 @@
 
                 foreach (ClubSeasonDetails season in seasons)
                 {
-                    XElement athleteElement = new XElement(c_clubElement,
-                                                           new XAttribute(nameAttribute, season.Name));
+                    XElement athleteElement = 
+                        new XElement(
+                            c_clubElement,
+                            new XAttribute(nameAttribute, season.Name));
 
                     XElement pointsElement = new XElement(c_pointsElement);
                     athleteElement.Add(pointsElement);
@@ -104,7 +107,8 @@
                                 EventElement,
                                 new XAttribute(HarmonyTeamSizeAttribute, harmonyEvent.Points.Count),
                                 new XAttribute(HarmonyVirtualAthletePointAttribute, harmonyEvent.VirtualAthletePoints),
-                                new XAttribute(HarmonyEventDateAttribute, harmonyEvent.Date.ToString()));
+                                new XAttribute(HarmonyEventDateAttribute, harmonyEvent.Date.ToString()),
+                                new XAttribute(HarmonyScoreAttribute, harmonyEvent.Score));
 
                         foreach(ICommonHarmonyPoints point in harmonyEvent.Points)
                         {
@@ -182,6 +186,7 @@
                                                                     size = (int)HarmonyEvent.Attribute(HarmonyTeamSizeAttribute),
                                                                     virtualPoint = (int)HarmonyEvent.Attribute(HarmonyVirtualAthletePointAttribute),
                                                                     date = (string)HarmonyEvent.Attribute(HarmonyEventDateAttribute),
+                                                                    score = (int)HarmonyEvent.Attribute(HarmonyScoreAttribute),
                                                                     points = from Point in HarmonyEvent.Elements(c_eventPointsElement)
                                                                             select new
                                                                             {
@@ -244,7 +249,8 @@
                                 new HarmonyEvent(
                                     date,
                                     pointsList,
-                                    harmonyEvent.size);
+                                    harmonyEvent.size,
+                                    harmonyEvent.score);
                             readEvent.Complete(
                                 harmonyEvent.size,
                                 harmonyEvent.virtualPoint);

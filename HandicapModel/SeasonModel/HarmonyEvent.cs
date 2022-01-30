@@ -18,16 +18,18 @@
         /// <param name="date">date of the event</param>
         /// <param name="points">event points</param>
         /// <param name="teamSize">the size of a harmony team</param>
+        /// <param name="score">the score of the team in the current event</param>
         public HarmonyEvent(
             DateType date,
             List<ICommonHarmonyPoints> points,
-            int teamSize)
+            int teamSize,
+            int score)
         {
             this.Date = date;
             this.TeamSize = teamSize;
             this.Points = points;
             this.VirtualAthletePoints = 0;
-            this.Score = 0;
+            this.Score = score;
         }
 
         /// <summary>
