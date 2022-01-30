@@ -65,7 +65,7 @@
                         if (club.ClubCompetition.TotalPoints > 0)
                         {
                             string entryString =
-                                $"{club.Name}{ResultsPaths.separator}{club.HarmonyCompetition.TotalPoints}";
+                                $"{club.Name}{ResultsPaths.separator}{club.HarmonyCompetition.TotalScore}";
 
                             foreach (DateType eventDate in eventDates)
                             {

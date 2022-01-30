@@ -28,9 +28,9 @@
         public List<IHarmonyEvent> Events { get; }
 
         /// <summary>
-        /// Gets the total points scored by this team.
+        /// Gets the total score for this team.
         /// </summary>
-        public int TotalPoints
+        public int TotalScore
         {
             get
             {
@@ -38,7 +38,7 @@
 
                 foreach (IHarmonyEvent race in this.Events)
                 {
-                    points += race.TotalAthletePoints;
+                    points += race.Score;
                 }
 
                 return points;

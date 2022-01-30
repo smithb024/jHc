@@ -158,7 +158,7 @@
                 TeamHarmonyPointsTableRowViewModel clubPoints =
                     new TeamHarmonyPointsTableRowViewModel(
                         clubSeasonDetail.Name,
-                        clubSeasonDetail.HarmonyCompetition.TotalPoints);
+                        clubSeasonDetail.HarmonyCompetition.TotalScore);
 
                 //ClubPointsTableRowViewModel clubPoints =
                 //    new ClubPointsTableRowViewModel(
