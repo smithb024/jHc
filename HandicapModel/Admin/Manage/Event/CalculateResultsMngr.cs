@@ -433,7 +433,7 @@
           EventResults resultsTable,
           DateType currentDate)
         {
-            int position = 0;
+            int harmonyCompetitionPosition = 0;
             int nextScore = 1;
             resultsTable.OrderByFinishingTime();
             Dictionary<string, IHarmonyEvent> eventDictionary = new Dictionary<string, IHarmonyEvent>();
@@ -463,7 +463,6 @@
                     continue;
                 }
 
-                ++position;
                 if (result.Club == string.Empty ||
                     result.FirstTimer)
                 {
@@ -475,14 +474,17 @@
                             currentDate);
 
                     athlete.HarmonyPoints.AddNewEvent(athletePoints);
+
+                    // Not part of the harmony competition, move onto the next loop.
                     continue;
                 }
 
+                ++harmonyCompetitionPosition;
                 IHarmonyEvent clubEvent = eventDictionary[result.Club];
 
                 ICommonHarmonyPoints clubPoint =
                     new CommonHarmonyPoints(
-                        position,
+                        harmonyCompetitionPosition,
                         result.Name,
                         result.Key,
                         true,
@@ -491,8 +493,8 @@
 
                 if (success)
                 {
-                    nextScore = position + 1;
-                    result.HarmonyPoints = position;
+                    nextScore = harmonyCompetitionPosition + 1;
+                    result.HarmonyPoints = harmonyCompetitionPosition;
                 }
                 else
                 {
