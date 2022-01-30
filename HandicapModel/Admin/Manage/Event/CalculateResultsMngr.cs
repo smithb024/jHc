@@ -433,8 +433,11 @@
           EventResults resultsTable,
           DateType currentDate)
         {
+            // Next score is used to complete the harmony competion by filling in any blank spots.
+            // The position is used to assign points to an athlete in the harmony competion.
             int harmonyCompetitionPosition = 0;
             int nextScore = 1;
+ 
             resultsTable.OrderByFinishingTime();
             Dictionary<string, IHarmonyEvent> eventDictionary = new Dictionary<string, IHarmonyEvent>();
 
@@ -489,6 +492,8 @@
                         result.Key,
                         true,
                         currentDate);
+
+                // Attempt to add point to the club. It will fail if the team is already full.
                 bool success = clubEvent.AddPoint(clubPoint);
 
                 if (success)
@@ -498,6 +503,8 @@
                 }
                 else
                 {
+                    // Add points failed, rever the harmony competition position.
+                    --harmonyCompetitionPosition;
                     result.HarmonyPoints = HarmonyNoScore;
                 }
 
