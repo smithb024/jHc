@@ -65,13 +65,13 @@
                         if (club.ClubCompetition.TotalPoints > 0)
                         {
                             string entryString =
-                                $"{club.Name}{ResultsPaths.separator}{club.HarmonyCompetition.TotalPoints}";
+                                $"{club.Name}{ResultsPaths.separator}{club.HarmonyCompetition.TotalScore}";
 
                             foreach (DateType eventDate in eventDates)
                             {
                                 if (club.ClubCompetition.Points.Exists(points => points.Date == eventDate))
                                 {
-                                    int eventPoints = club.HarmonyCompetition.Events.Find(points => points.Date == eventDate).TotalPoints;
+                                    int eventPoints = club.HarmonyCompetition.Events.Find(points => points.Date == eventDate).TotalAthletePoints;
 
                                     entryString = entryString + ResultsPaths.separator + eventPoints;
                                 }

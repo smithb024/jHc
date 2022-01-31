@@ -158,7 +158,7 @@
                 TeamHarmonyPointsTableRowViewModel clubPoints =
                     new TeamHarmonyPointsTableRowViewModel(
                         clubSeasonDetail.Name,
-                        clubSeasonDetail.HarmonyCompetition.TotalPoints);
+                        clubSeasonDetail.HarmonyCompetition.TotalScore);
 
                 //ClubPointsTableRowViewModel clubPoints =
                 //    new ClubPointsTableRowViewModel(
@@ -172,7 +172,7 @@
                 {
                     HarmonyPointsTypeViewModel points =
                         new HarmonyPointsTypeViewModel(
-                            eventPoints.TotalPoints,
+                            eventPoints.TotalAthletePoints,
                             eventPoints.NumberOfAthletes,
                             eventPoints.Points,
                             eventPoints.Date);

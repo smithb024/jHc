@@ -9,9 +9,9 @@
     public interface IHarmonyCompetition
     {
         /// <summary>
-        /// Gets the total points scored by the team during the competition.
+        /// Gets the total score for this team.
         /// </summary>
-        int TotalPoints { get; }
+        int TotalScore { get; }
 
         /// <summary>
         /// Gets a collection of all the events recorded for this team in this season's competition.

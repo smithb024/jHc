@@ -1,8 +1,9 @@
 ﻿namespace HandicapModel.Admin.Manage.Event
 {
     using System.Collections.Generic;
-    using CommonHandicapLib;
+    using System.Linq;
     using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using CommonLib.Enumerations;
     using CommonLib.Types;
@@ -14,6 +15,7 @@
     using HandicapModel.Interfaces.SeasonModel.EventModel;
     using HandicapModel.SeasonModel;
     using HandicapModel.SeasonModel.EventModel;
+    using GalaSoft.MvvmLight.Messaging;
 
     /// <summary>
     /// Manager class for calculating results.
@@ -79,10 +81,34 @@
         public void CalculateResults()
         {
             this.logger.WriteLog("Calculate results");
+            HandicapProgressMessage startMessage = new HandicapProgressMessage("Calculate Results");
+            Messenger.Default.Send(startMessage);
 
             if (this.resultsConfiguration == null)
             {
                 this.logger.WriteLog("Error reading the results config file. Results not generated");
+
+                HandicapErrorMessage faultMessage =
+                    new HandicapErrorMessage(
+                        "Can't calculate results - invalid config");
+                Messenger.Default.Send(faultMessage);
+                HandicapProgressMessage terminateMessage = new HandicapProgressMessage("Calculate Results - Terminated");
+                Messenger.Default.Send(terminateMessage);
+
+                return;
+            }
+
+            if (this.resultsConfiguration.ResultsConfigurationDetails.HarmonyPoints == null)
+            {
+                this.logger.WriteLog("Can't calculate results, Harmony points are invalid");
+
+                HandicapErrorMessage faultMessage =
+                    new HandicapErrorMessage(
+                        "Can't calculate results - check config");
+                Messenger.Default.Send(faultMessage);
+                HandicapProgressMessage terminateMessage = new HandicapProgressMessage("Calculate Results - Terminated");
+                Messenger.Default.Send(terminateMessage);
+
                 return;
             }
 
@@ -122,6 +148,9 @@
             this.SaveAll();
 
             this.logger.WriteLog("Calculate results completed.");
+            HandicapProgressMessage finishedMessage = new HandicapProgressMessage("Calculate Results - Completed");
+            Messenger.Default.Send(finishedMessage);
+
         }
 
         /// <summary>
@@ -404,8 +433,11 @@
           EventResults resultsTable,
           DateType currentDate)
         {
-            int position = 0;
+            // Next score is used to complete the harmony competion by filling in any blank spots.
+            // The position is used to assign points to an athlete in the harmony competion.
+            int harmonyCompetitionPosition = 0;
             int nextScore = 1;
+ 
             resultsTable.OrderByFinishingTime();
             Dictionary<string, IHarmonyEvent> eventDictionary = new Dictionary<string, IHarmonyEvent>();
 
@@ -413,7 +445,8 @@
             {
                 IHarmonyEvent newEvent =
                     new HarmonyEvent(
-                        currentDate);
+                        currentDate,
+                        this.resultsConfiguration.ResultsConfigurationDetails.NumberInHarmonyTeam);
                 eventDictionary.Add(
                     club.Name,
                     newEvent);
@@ -433,7 +466,6 @@
                     continue;
                 }
 
-                ++position;
                 if (result.Club == string.Empty ||
                     result.FirstTimer)
                 {
@@ -445,27 +477,34 @@
                             currentDate);
 
                     athlete.HarmonyPoints.AddNewEvent(athletePoints);
+
+                    // Not part of the harmony competition, move onto the next loop.
                     continue;
                 }
 
+                ++harmonyCompetitionPosition;
                 IHarmonyEvent clubEvent = eventDictionary[result.Club];
 
                 ICommonHarmonyPoints clubPoint =
                     new CommonHarmonyPoints(
-                        position,
+                        harmonyCompetitionPosition,
                         result.Name,
                         result.Key,
                         true,
                         currentDate);
+
+                // Attempt to add point to the club. It will fail if the team is already full.
                 bool success = clubEvent.AddPoint(clubPoint);
 
                 if (success)
                 {
-                    nextScore = position + 1;
-                    result.HarmonyPoints = position;
+                    nextScore = harmonyCompetitionPosition + 1;
+                    result.HarmonyPoints = harmonyCompetitionPosition;
                 }
                 else
                 {
+                    // Add points failed, rever the harmony competition position.
+                    --harmonyCompetitionPosition;
                     result.HarmonyPoints = HarmonyNoScore;
                 }
 
@@ -476,9 +515,28 @@
                 athlete.HarmonyPoints.AddNewEvent(athletePoints);
             }
 
+            List<IHarmonyEvent> orderedEvent = new List<IHarmonyEvent>();
             foreach (KeyValuePair<string, IHarmonyEvent> entry in eventDictionary)
             {
-                entry.Value.Complete(HarmonyEvent.TeamSize, nextScore);
+                entry.Value.Complete(
+                    this.resultsConfiguration.ResultsConfigurationDetails.NumberInHarmonyTeam,
+                    nextScore);
+                orderedEvent.Add(entry.Value);
+            }
+
+            // Apply the score for each team as defined by the configuration file.
+            // To order the teams, they've needed to be pulled out from the dictionary into a list.
+            orderedEvent = orderedEvent.OrderBy(e => e.TotalAthletePoints).ToList();
+            for (int index = 0; index < orderedEvent.Count; ++index)
+            {
+                if (index < this.resultsConfiguration.ResultsConfigurationDetails.HarmonyPoints.Count)
+                {
+                    orderedEvent[index].Score = this.resultsConfiguration.ResultsConfigurationDetails.HarmonyPoints[index];
+                }
+            }
+
+            foreach (KeyValuePair<string, IHarmonyEvent> entry in eventDictionary)
+            {
                 this.Model.CurrentSeason.AddNewClubPoints(entry.Key, entry.Value);
             }
         }

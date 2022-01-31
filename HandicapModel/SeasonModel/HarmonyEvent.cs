@@ -13,34 +13,39 @@
     public class HarmonyEvent : IHarmonyEvent
     {
         /// <summary>
-        /// The size of a team. To be valid, the points collection should equal this size.
-        /// </summary>
-        public const int TeamSize = 10;
-
-        /// <summary>
         /// Initialises a new instance of the <see cref="HarmonyEvent"/> class.
         /// </summary>
         /// <param name="date">date of the event</param>
         /// <param name="points">event points</param>
+        /// <param name="teamSize">the size of a harmony team</param>
+        /// <param name="score">the score of the team in the current event</param>
         public HarmonyEvent(
             DateType date,
-            List<ICommonHarmonyPoints> points)
+            List<ICommonHarmonyPoints> points,
+            int teamSize,
+            int score)
         {
             this.Date = date;
+            this.TeamSize = teamSize;
             this.Points = points;
             this.VirtualAthletePoints = 0;
+            this.Score = score;
         }
 
         /// <summary>
         /// Initialises a new instance of the <see cref="HarmonyEvent"/> class.
         /// </summary>
         /// <param name="date">date of the event</param>
+        /// <param name="teamSize">the size of a harmony team</param>
         public HarmonyEvent(
-            DateType date)
+            DateType date,
+            int teamSize)
         {
             this.Date = date;
+            this.TeamSize = teamSize;
             this.Points = new List<ICommonHarmonyPoints>();
             this.VirtualAthletePoints = 0;
+            this.Score = 0;
         }
 
         /// <summary>
@@ -51,7 +56,11 @@
         /// <summary>
         /// Gets the total points scored in this event.
         /// </summary>
-        public int TotalPoints 
+        /// <remarks>
+        /// This is the total number of points scored by all the athletes (real and virtual) in 
+        /// this event.
+        /// </remarks>
+        public int TotalAthletePoints 
         {
             get
             {
@@ -72,6 +81,11 @@
         public int NumberOfAthletes => this.Points.FindAll(p => p.IsReal).Count;
 
         /// <summary>
+        /// Gets or sets the score which is scored by this team for this event.
+        /// </summary>
+        public int Score { get; set; }
+
+        /// <summary>
         /// Gets a collection containing the break down of points.
         /// </summary>
         public List<ICommonHarmonyPoints> Points { get; }
@@ -87,6 +101,11 @@
         /// This value will be one greater than the highest scoring real athlete.
         /// </summary>
         public int VirtualAthletePoints { get; private set; }
+
+        /// <summary>
+        /// Gets the size of a harmony team.
+        /// </summary>
+        public int TeamSize { get; }
 
         /// <summary>
         /// Add a new point to the <see cref="Points"/> collection.

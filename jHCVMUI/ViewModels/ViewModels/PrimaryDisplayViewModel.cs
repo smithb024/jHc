@@ -566,7 +566,7 @@
         /// <param name="errorInformation">error information</param>
         public void PopulateErrorInformation(HandicapErrorMessage errorInformation)
         {
-            this.ErrorInformation = errorInformation.ErroMessage;
+            this.ErrorInformation = errorInformation.ErrorMessage;
         }
 
         /// <summary>

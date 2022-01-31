@@ -1,5 +1,8 @@
 ﻿namespace CommonHandicapLib.Types
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     /// <summary>
     /// Class contains all the configuration information used to work out the results.
     /// </summary>
@@ -56,6 +59,24 @@
             this.ExcludeFirstTimers = excludeFirstTimers;
             this.NumberInHarmonyTeam = teamHarmonySize;
             this.HarmonyPointsScoring = harmonyPointsScoring;
+
+            // Decode the harmony points from the input values into a collection of integers
+            this.HarmonyPoints = new List<int>();
+            List<string> harmonyPointStrings =
+                this.HarmonyPointsScoring.Split(',').ToList();
+
+            foreach(string pointString in harmonyPointStrings)
+            {
+                int point;
+
+                if(!int.TryParse(pointString, out point))
+                {
+                    this.HarmonyPoints = null;
+                    break;
+                }
+
+                this.HarmonyPoints.Add(point);
+            }
         }
 
         /// <summary>
@@ -135,5 +156,10 @@
         /// harmony team competition. 
         /// </summary>
         public string HarmonyPointsScoring { get; set; }
+
+        /// <summary>
+        /// Gets a collection of the harmony club points.
+        /// </summary>
+        public List<int> HarmonyPoints { get; }
     }
 }
