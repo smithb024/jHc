@@ -22,12 +22,12 @@
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="50"/>
                     <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="30"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="Club Name"/>
-                <Label Grid.Column="1" Content="Pts" HorizontalContentAlignment="Center"/>
+                <Label Grid.Column="1" Content="Score" HorizontalContentAlignment="Center"/>
                 <Grid Grid.Column="2" Visibility="{Binding Path=ExpandedData, Converter={StaticResource visibilityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -59,7 +59,7 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="50"/>
                                     <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="30"/>
                                 </Grid.ColumnDefinitions>
