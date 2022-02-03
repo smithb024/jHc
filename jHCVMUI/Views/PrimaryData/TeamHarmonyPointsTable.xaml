@@ -31,14 +31,16 @@
                 <Grid Grid.Column="2" Visibility="{Binding Path=ExpandedData, Converter={StaticResource visibilityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Content="Total Pts" HorizontalContentAlignment="Center"/>
-                    <Label Grid.Column="1" Content="Points" HorizontalContentAlignment="Center"/>
-                    <Label Grid.Column="2" Content="Date" HorizontalContentAlignment="Center"/>
-                    <Label Grid.Column="3" Content="Size" HorizontalContentAlignment="Center"/>
+                    <Label Grid.Column="0" Content="Event Score" HorizontalContentAlignment="Center"/>
+                    <Label Grid.Column="1" Content="Aggregate Points" HorizontalContentAlignment="Center"/>
+                    <Label Grid.Column="2" Content="Points" HorizontalContentAlignment="Center"/>
+                    <Label Grid.Column="3" Content="Date" HorizontalContentAlignment="Center"/>
+                    <Label Grid.Column="4" Content="Team Size" HorizontalContentAlignment="Center"/>
                 </Grid>
                 <Button Grid.Column="3"
                 Content="{Binding ExpandedLabel}"
@@ -76,14 +78,16 @@
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="2*"/>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <Label Grid.Column="0" Content="{Binding TotalPoints}" HorizontalContentAlignment="Center"/>
-                                                <Label Grid.Column="1" Content="{Binding AllPoints}" HorizontalContentAlignment="Center"/>
-                                                <Label Grid.Column="2" Content="{Binding PointsDate}" HorizontalContentAlignment="Center"/>
-                                                <Label Grid.Column="3" Content="{Binding ContributingSize}" HorizontalContentAlignment="Center"/>
+                                                <Label Grid.Column="0" Content="{Binding Score}" HorizontalContentAlignment="Center"/>
+                                                <Label Grid.Column="1" Content="{Binding AggregatePoints}" HorizontalContentAlignment="Center"/>
+                                                <Label Grid.Column="2" Content="{Binding AllPoints}" HorizontalContentAlignment="Center"/>
+                                                <Label Grid.Column="3" Content="{Binding PointsDate}" HorizontalContentAlignment="Center"/>
+                                                <Label Grid.Column="4" Content="{Binding ContributingSize}" HorizontalContentAlignment="Center"/>
                                             </Grid>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>

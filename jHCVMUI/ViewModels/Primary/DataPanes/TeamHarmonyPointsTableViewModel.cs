@@ -65,8 +65,6 @@
         /// </summary>
         public ICommand ExpandCommand { get; private set; }
 
-        public string Test => "My Test";
-
         /// <summary>
         /// Gets and sets the expanded data flag.
         /// </summary>
@@ -160,33 +158,17 @@
                         clubSeasonDetail.Name,
                         clubSeasonDetail.HarmonyCompetition.TotalScore);
 
-                //ClubPointsTableRowViewModel clubPoints =
-                //    new ClubPointsTableRowViewModel(
-                //        clubSeasonDetail.Name,
-                //        clubSeasonDetail.ClubCompetition.TotalPoints,
-                //        clubSeasonDetail.ClubCompetition.TotalFinishingPoints.ToString(),
-                //        clubSeasonDetail.ClubCompetition.TotalPositionPoints.ToString(),
-                //        clubSeasonDetail.ClubCompetition.TotalBestPoints.ToString());
-
                 foreach (IHarmonyEvent eventPoints in clubSeasonDetail.HarmonyCompetition.Events)
                 {
                     HarmonyPointsTypeViewModel points =
                         new HarmonyPointsTypeViewModel(
+                            eventPoints.Score,
                             eventPoints.TotalAthletePoints,
                             eventPoints.NumberOfAthletes,
                             eventPoints.Points,
                             eventPoints.Date);
                     clubPoints.Points.Add(points);
                 }
-                //foreach (CommonPoints eventPoints in clubSeasonDetail.ClubCompetition.Points)
-                //{
-                //    clubPoints.AddPoints(
-                //        new PointsType(
-                //            eventPoints.FinishingPoints,
-                //            eventPoints.PositionPoints,
-                //            eventPoints.BestPoints,
-                //            eventPoints.Date));
-                //}
 
                 PointsTable.Add(clubPoints);
             }
