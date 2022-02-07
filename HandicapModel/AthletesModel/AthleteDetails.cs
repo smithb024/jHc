@@ -132,7 +132,6 @@
             this.Active = active;
 
             this.RunningNumbers = new List<string>();
-            this.Sex = SexType.NotSpecified;
             this.Times = new List<Appearances>();
 
             this.BirthDate =
