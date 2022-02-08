@@ -6,11 +6,11 @@
     using System.Linq;
     using System.Xml.Linq;
 
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using CommonLib.Converters;
+    using CommonLib.Enumerations;
     using CommonLib.Types;
     using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.Manage;
@@ -285,17 +285,25 @@
                     bool signedConsent = this.ConvertBool(athlete.signedConsent);
                     bool isActive = this.ConvertBool(athlete.active);
 
-                    AthleteDetails athleteDetails =
-                      new AthleteDetails(
+                    int athleteKey = 
                         (int)StringToIntConverter.ConvertStringToInt(
-                          athlete.key),
+                          athlete.key);
+                    TimeType athleteTime =
+                        new TimeType(
+                            athlete.predeclaredHandicap);
+                    SexType athleteSex = StringToSexType.ConvertStringToSexType(athlete.sex);
+                    List<Appearances> athleteAppearances = new List<Appearances>();
+
+                    AthleteDetails athleteDetails = 
+                      new AthleteDetails(
+                          athleteKey,
                           athlete.name,
                           athlete.club,
-                          new TimeType(athlete.predeclaredHandicap),
-                          StringToSexType.ConvertStringToSexType(athlete.sex),
+                          athleteTime,
+                          athleteSex,
                           signedConsent,
                           isActive,
-                          new List<Appearances>(),
+                          athleteAppearances,
                           athlete.birthYear,
                           athlete.birthMonth,
                           athlete.birthDay,
