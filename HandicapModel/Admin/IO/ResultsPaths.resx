@@ -120,6 +120,9 @@
   <data name="clubHarmonyTable" xml:space="preserve">
     <value>ClubHyPoints</value>
   </data>
+  <data name="clubHarmonyTableCurrentEvent" xml:space="preserve">
+    <value>ClubHyPointsCurrent</value>
+  </data>
   <data name="clubPointsTable" xml:space="preserve">
     <value>ClubPoints</value>
   </data>

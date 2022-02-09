@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonLib.Types;
@@ -11,6 +10,8 @@
     using HandicapModel.Admin.IO;
     using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.Admin.IO;
+    using HandicapModel.Interfaces.Common;
+    using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
 
     /// <summary>
@@ -85,8 +86,60 @@
                             writer.WriteLine(entryString);
                         }
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.WriteLog("Error, failed to print club points table: " + ex.ToString());
 
-                    success = true;
+                Messenger.Default.Send(
+                    new HandicapErrorMessage(
+                        "Failed to print club points table"));
+
+                success = false;
+            }
+
+            try
+            {
+                using (
+                    StreamWriter writer =
+                    new StreamWriter(
+                        Path.GetFullPath(folder) +
+                        Path.DirectorySeparatorChar +
+                        model.CurrentSeason.Name +
+                        model.CurrentEvent.Name +
+                        ResultsPaths.clubHarmonyTableCurrentEvent +
+                        ResultsPaths.csvExtension))
+                {
+                    string titleString = "Club" + ResultsPaths.separator + "TotalPoints";
+
+                    foreach (string eventName in model.CurrentSeason.Events)
+                    {
+                        titleString = titleString + ResultsPaths.separator + eventName;
+                        eventDates.Add(eventData.LoadEventData(model.CurrentSeason.Name, eventName).EventDate);
+                    }
+
+                    writer.WriteLine(titleString);
+
+                    foreach (ClubSeasonDetails club in model.CurrentSeason.Clubs)
+                    {
+                        if (club.ClubCompetition.TotalPoints > 0)
+                        {
+                            IHarmonyEvent foundEvent =
+                                club.HarmonyCompetition.Events.Find(
+                                    e => e.Date == model.CurrentEvent.Date);
+
+                            string entryString =
+                                $"{club.Name}{ResultsPaths.separator}{foundEvent.Score}{ResultsPaths.separator}{foundEvent.TotalAthletePoints}";
+
+                            foreach (ICommonHarmonyPoints commonPoints in foundEvent.Points)
+                            {
+                                entryString = entryString + ResultsPaths.separator + commonPoints.Point;
+                            }
+
+                            writer.WriteLine(entryString);
+                        }
+                    }
                 }
             }
             catch (Exception ex)

@@ -70,6 +70,15 @@ namespace HandicapModel.Admin.IO {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ClubHyPointsCurrent.
+        /// </summary>
+        internal static string clubHarmonyTableCurrentEvent {
+            get {
+                return ResourceManager.GetString("clubHarmonyTableCurrentEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ClubPoints.
         /// </summary>
         internal static string clubPointsTable {

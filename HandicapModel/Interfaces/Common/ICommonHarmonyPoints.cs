@@ -1,7 +1,5 @@
 ﻿namespace HandicapModel.Interfaces.Common
 {
-    using CommonLib.Types;
-
     /// <summary>
     /// Interface which breaks down a point within the team harmony competition.
     /// </summary>
