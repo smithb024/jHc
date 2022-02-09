@@ -41,7 +41,8 @@
 
             try
             {
-                using (StreamWriter writer =
+                using (
+                    StreamWriter writer =
                     new StreamWriter(
                         Path.GetFullPath(folder) +
                         Path.DirectorySeparatorChar +
@@ -71,7 +72,7 @@
                             {
                                 if (club.ClubCompetition.Points.Exists(points => points.Date == eventDate))
                                 {
-                                    int eventPoints = club.HarmonyCompetition.Events.Find(points => points.Date == eventDate).TotalAthletePoints;
+                                    int eventPoints = club.HarmonyCompetition.Events.Find(points => points.Date == eventDate).Score;
 
                                     entryString = entryString + ResultsPaths.separator + eventPoints;
                                 }
