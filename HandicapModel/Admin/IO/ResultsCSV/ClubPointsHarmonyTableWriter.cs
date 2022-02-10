@@ -40,6 +40,7 @@
                 new HandicapProgressMessage(
                     "Saving club points (harmony) table"));
 
+            // Export the overall season table.
             try
             {
                 using (
@@ -99,6 +100,7 @@
                 success = false;
             }
 
+            // Export the table for the current event.
             try
             {
                 using (
@@ -111,13 +113,7 @@
                         ResultsPaths.clubHarmonyTableCurrentEvent +
                         ResultsPaths.csvExtension))
                 {
-                    string titleString = "Club" + ResultsPaths.separator + "TotalPoints";
-
-                    foreach (string eventName in model.CurrentSeason.Events)
-                    {
-                        titleString = titleString + ResultsPaths.separator + eventName;
-                        eventDates.Add(eventData.LoadEventData(model.CurrentSeason.Name, eventName).EventDate);
-                    }
+                    string titleString = "Club" + ResultsPaths.separator + "Score" + ResultsPaths.separator + "Points";
 
                     writer.WriteLine(titleString);
 
