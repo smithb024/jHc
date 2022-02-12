@@ -88,6 +88,15 @@ namespace HandicapModel.Admin.IO {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ClubPointsCurrent.
+        /// </summary>
+        internal static string clubPointsTableCurrentEvent {
+            get {
+                return ResourceManager.GetString("clubPointsTableCurrentEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .csv.
         /// </summary>
         internal static string csvExtension {

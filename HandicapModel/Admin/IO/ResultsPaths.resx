@@ -126,6 +126,9 @@
   <data name="clubPointsTable" xml:space="preserve">
     <value>ClubPoints</value>
   </data>
+  <data name="clubPointsTableCurrentEvent" xml:space="preserve">
+    <value>ClubPointsCurrent</value>
+  </data>
   <data name="csvExtension" xml:space="preserve">
     <value>.csv</value>
   </data>

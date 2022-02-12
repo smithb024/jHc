@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonLib.Types;
@@ -11,6 +10,7 @@
     using HandicapModel.Admin.IO;
     using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.Admin.IO;
+    using HandicapModel.Interfaces.Common;
     using HandicapModel.SeasonModel;
 
     public static class ClubPointsTableWriter
@@ -36,6 +36,7 @@
                 new HandicapProgressMessage(
                     "Saving club points table"));
 
+            // Export the overall season table.
             try
             {
                 using (StreamWriter writer = new StreamWriter(Path.GetFullPath(folder) +
@@ -79,8 +80,63 @@
                             writer.WriteLine(entryString);
                         }
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.WriteLog("Error, failed to print club points table: " + ex.ToString());
 
-                    success = true;
+                Messenger.Default.Send(
+                    new HandicapErrorMessage(
+                        "Failed to print club points table"));
+
+                success = false;
+            }
+
+            // Export the table for the current event.
+            try
+            {
+                using (
+                    StreamWriter writer =
+                    new StreamWriter(
+                        Path.GetFullPath(folder) +
+                        Path.DirectorySeparatorChar +
+                        model.CurrentSeason.Name +
+                        model.CurrentEvent.Name +
+                        ResultsPaths.clubPointsTableCurrentEvent +
+                        ResultsPaths.csvExtension))
+                {
+                    string titleString = 
+                        "Club" + ResultsPaths.separator +
+                        "Total Points" + ResultsPaths.separator + 
+                        "Finishing Points" + ResultsPaths.separator + 
+                        "Position Points" + ResultsPaths.separator + 
+                        "Season Best Points";
+
+                    writer.WriteLine(titleString);
+
+                    foreach (ClubSeasonDetails club in model.CurrentSeason.Clubs)
+                    {
+                        if (club.ClubCompetition.TotalPoints > 0)
+                        {
+                            ICommonPoints currentEventPoints =
+                                club.ClubCompetition.Points.Find(
+                                    e => e.Date == model.CurrentEvent.Date);
+
+                            if (currentEventPoints == null)
+                            {
+                                continue;
+                            }
+
+                            string entryString =
+                                club.Name + ResultsPaths.separator +
+                                currentEventPoints.TotalPoints + ResultsPaths.separator +
+                                currentEventPoints.FinishingPoints + ResultsPaths.separator +
+                                currentEventPoints.PositionPoints + ResultsPaths.separator +
+                                currentEventPoints.BestPoints;
+                            writer.WriteLine(entryString);
+                        }
+                    }
                 }
             }
             catch (Exception ex)
