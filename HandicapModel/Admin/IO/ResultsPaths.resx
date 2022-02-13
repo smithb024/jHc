@@ -120,8 +120,14 @@
   <data name="clubHarmonyTable" xml:space="preserve">
     <value>ClubHyPoints</value>
   </data>
+  <data name="clubHarmonyTableCurrentEvent" xml:space="preserve">
+    <value>ClubHyPointsCurrent</value>
+  </data>
   <data name="clubPointsTable" xml:space="preserve">
     <value>ClubPoints</value>
+  </data>
+  <data name="clubPointsTableCurrentEvent" xml:space="preserve">
+    <value>ClubPointsCurrent</value>
   </data>
   <data name="csvExtension" xml:space="preserve">
     <value>.csv</value>
