@@ -527,12 +527,24 @@
             // Apply the score for each team as defined by the configuration file.
             // To order the teams, they've needed to be pulled out from the dictionary into a list.
             orderedEvent = orderedEvent.OrderBy(e => e.TotalAthletePoints).ToList();
+
+            int lastPoints = -1;
+            int lastScoringIndex = 0;
+
             for (int index = 0; index < orderedEvent.Count; ++index)
             {
-                if (index < this.resultsConfiguration.ResultsConfigurationDetails.HarmonyPoints.Count)
+                if (orderedEvent[index].TotalAthletePoints == lastPoints)
+                {
+                    orderedEvent[index].Score =
+                        this.resultsConfiguration.ResultsConfigurationDetails.HarmonyPoints[lastScoringIndex];
+                }
+                else if (index < this.resultsConfiguration.ResultsConfigurationDetails.HarmonyPoints.Count)
                 {
                     orderedEvent[index].Score = this.resultsConfiguration.ResultsConfigurationDetails.HarmonyPoints[index];
+                    lastScoringIndex = index;
                 }
+
+                lastPoints = orderedEvent[index].TotalAthletePoints;
             }
 
             foreach (KeyValuePair<string, IHarmonyEvent> entry in eventDictionary)
