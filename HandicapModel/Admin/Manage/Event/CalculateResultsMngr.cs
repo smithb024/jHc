@@ -533,6 +533,11 @@
 
             for (int index = 0; index < orderedEvent.Count; ++index)
             {
+                if (orderedEvent[index].NumberOfAthletes == 0)
+                {
+                    break;
+                }
+
                 if (orderedEvent[index].TotalAthletePoints == lastPoints)
                 {
                     orderedEvent[index].Score =
