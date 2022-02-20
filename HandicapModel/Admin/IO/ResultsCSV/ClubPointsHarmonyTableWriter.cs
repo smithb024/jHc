@@ -125,6 +125,11 @@
                                 club.HarmonyCompetition.Events.Find(
                                     e => e.Date == model.CurrentEvent.Date);
 
+                            if (foundEvent == null)
+                            {
+                                continue;
+                            }
+
                             string entryString =
                                 $"{club.Name}{ResultsPaths.separator}{foundEvent.Score}{ResultsPaths.separator}{foundEvent.TotalAthletePoints}";
 
