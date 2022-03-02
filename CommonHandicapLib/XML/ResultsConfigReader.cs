@@ -156,9 +156,20 @@
                 int teamFinishingPoints = (int)ClubPoints.Attribute(teamFinishingPointsAttribute);
                 int teamSize = (int)ClubPoints.Attribute(teamSizeAttribute);
                 int teamSeasonBestPoints = (int)ClubPoints.Attribute(teamSeasonBestAttribute);
+                
+                int harmonyTeamSize;
+                string harmonyScoring;
 
-                int harmonyTeamSize = (int)HarmonyPoints.Attribute(harmonyTeamSizeAttribute);
-                string harmonyScoring = (string)HarmonyPoints.Attribute(harmonyScoringAttribute);
+                if (HarmonyPoints != null)
+                {
+                     harmonyTeamSize = (int)HarmonyPoints.Attribute(harmonyTeamSizeAttribute);
+                     harmonyScoring = (string)HarmonyPoints.Attribute(harmonyScoringAttribute);
+                }
+                else
+                {
+                    harmonyTeamSize = 0;
+                    harmonyScoring = string.Empty;
+                }
 
                 return new ResultsConfigType(
                   finishingPoints,
