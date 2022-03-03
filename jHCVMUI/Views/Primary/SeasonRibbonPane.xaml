@@ -56,13 +56,6 @@
                  Margin="10, 0, 0, 0"/>
         </DockPanel>
         <DockPanel Grid.Row="2" LastChildFill="False">
-            <Button Content="Register Athletes..."
-              Command="{Binding OpenAthleteSeasonNewRegCommand}"
-              DockPanel.Dock="Right"
-              Style="{StaticResource HeaderButtonStyle}"
-              Height="25"
-              Width="100"
-              Margin="5, 0, 0, 0"/>
             <Button Name="ShowRegistered"
               Content="Show Registered... "
               Command="{Binding OpenAthleteSeasonSummaryCommand}"

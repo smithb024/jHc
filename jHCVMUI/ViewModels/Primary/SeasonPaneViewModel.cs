@@ -42,10 +42,8 @@
         /// </summary>
         private readonly IJHcLogger logger;
 
-        private AthleteRegisterToSeasonDialog m_athleteSeasonRegDialog = null;
         private AthleteSeasonSummaryDialog m_athleteSeasonSummaryDialog = null;
 
-        private AthleteRegisterToSeasonViewModel m_athleteSeasonRegViewModel = null;
         private AthleteSeasonSummaryViewModel m_athleteSeasonSummaryViewModel = null;
 
         private ObservableCollection<string> m_seasons = new ObservableCollection<string>();
@@ -72,12 +70,7 @@
             this.model = model;
             this.businessLayerManager = businessLayerManager;
             this.generalIo = generalIo;
-            //model.SeasonsCallback = new SeasonsDelegate(PopulateSeasons);
 
-            OpenAthleteSeasonNewRegCommand =
-              new SimpleCommand(
-                this.OpenAthleteSeasonRegDialog,
-                () => false);
             OpenAthleteSeasonSummaryCommand =
               new SimpleCommand(
                 this.OpenAthleteSeasonSummaryDialog,
@@ -293,41 +286,6 @@
         public void ClearModelProgess()
         {
             this.businessLayerManager.SetProgressInformation(string.Empty);
-        }
-
-        /// <summary>
-        /// Opens the athlete registration dialog
-        /// </summary>
-        public void OpenAthleteSeasonRegDialog()
-        {
-            if (m_athleteSeasonRegDialog == null)
-            {
-                m_athleteSeasonRegDialog = new AthleteRegisterToSeasonDialog();
-            }
-
-            m_athleteSeasonRegDialog.Unloaded -= new RoutedEventHandler(CloseAthleteSeasonRegDialog);
-            m_athleteSeasonRegDialog.Unloaded += new RoutedEventHandler(CloseAthleteSeasonRegDialog);
-
-            m_athleteSeasonRegViewModel = new AthleteRegisterToSeasonViewModel(this.model);
-            m_athleteSeasonRegDialog.DataContext = m_athleteSeasonRegViewModel;
-
-            try
-            {
-                m_athleteSeasonRegDialog.Show();
-                m_athleteSeasonRegDialog.Activate();
-            }
-            catch (Exception ex)
-            {
-                this.logger.WriteLog(ex.ToString());
-            }
-        }
-
-        /// <summary>
-        /// Closes the athlete registration dialog
-        /// </summary>
-        public void CloseAthleteSeasonRegDialog(object sender, RoutedEventArgs e)
-        {
-            m_athleteSeasonRegDialog = null;
         }
 
         /// <summary>
