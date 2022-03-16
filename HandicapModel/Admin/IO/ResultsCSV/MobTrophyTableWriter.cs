@@ -43,7 +43,7 @@
                                                               Path.DirectorySeparatorChar +
                                                               model.CurrentSeason.Name +
                                                               model.CurrentEvent.Name +
-                                                              ResultsPaths.clubPointsTable +
+                                                              ResultsPaths.mobTrophyPointsTable +
                                                               ResultsPaths.csvExtension))
                 {
                     string titleString = "Club" + ResultsPaths.separator + "TotalPoints";
@@ -103,7 +103,7 @@
                         Path.DirectorySeparatorChar +
                         model.CurrentSeason.Name +
                         model.CurrentEvent.Name +
-                        ResultsPaths.clubPointsTableCurrentEvent +
+                        ResultsPaths.mobTrophyPointsTableCurrentEvent +
                         ResultsPaths.csvExtension))
                 {
                     string titleString = 

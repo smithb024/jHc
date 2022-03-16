@@ -123,17 +123,17 @@
   <data name="clubHarmonyTableCurrentEvent" xml:space="preserve">
     <value>ClubHyPointsCurrent</value>
   </data>
-  <data name="clubPointsTable" xml:space="preserve">
-    <value>ClubPoints</value>
-  </data>
-  <data name="clubPointsTableCurrentEvent" xml:space="preserve">
-    <value>ClubPointsCurrent</value>
-  </data>
   <data name="csvExtension" xml:space="preserve">
     <value>.csv</value>
   </data>
   <data name="handicapTable" xml:space="preserve">
     <value>Handicap</value>
+  </data>
+  <data name="mobTrophyPointsTable" xml:space="preserve">
+    <value>MobTrophyPoints</value>
+  </data>
+  <data name="mobTrophyPointsTableCurrentEvent" xml:space="preserve">
+    <value>MobTrophyPointsCurrent</value>
   </data>
   <data name="nextNewRunner" xml:space="preserve">
     <value>Next</value>
