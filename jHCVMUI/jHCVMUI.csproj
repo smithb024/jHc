@@ -203,8 +203,8 @@
     <Compile Include="Views\Labels\VestLabel.xaml.cs">
       <DependentUpon>VestLabel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PrimaryData\ClubPointsTable.xaml.cs">
-      <DependentUpon>ClubPointsTable.xaml</DependentUpon>
+    <Compile Include="Views\PrimaryData\MobTrophyPointsTable.xaml.cs">
+      <DependentUpon>MobTrophyPointsTable.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PrimaryData\PointsTable.xaml.cs">
       <DependentUpon>PointsTable.xaml</DependentUpon>
@@ -363,7 +363,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\PrimaryData\ClubPointsTable.xaml">
+    <Page Include="Views\PrimaryData\MobTrophyPointsTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

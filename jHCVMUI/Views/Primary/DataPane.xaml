@@ -13,7 +13,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
 
         <DataTemplate x:Name="MobTrophyPointsTableName" DataType="{x:Type viewModel:MobTrophyPointsTableViewModel}">
-            <dataView:ClubPointsTable DataContext="{Binding}"/>
+            <dataView:MobTrophyPointsTable DataContext="{Binding}"/>
         </DataTemplate>
         <DataTemplate x:Name="TeamHarmonyPointsTableName" DataType="{x:Type viewModel:TeamHarmonyPointsTableViewModel}">
             <dataView:TeamHarmonyPointsTable DataContext="{Binding}"/>
