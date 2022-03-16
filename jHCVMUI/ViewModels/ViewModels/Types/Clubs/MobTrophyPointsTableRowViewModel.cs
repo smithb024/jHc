@@ -4,9 +4,9 @@
     using jHCVMUI.ViewModels.ViewModels.Types;
 
     /// <summary>
-    /// View model which describes a single row on the Club Points table on the Data Pane
+    /// View model which describes a single row on the Mob Trophy Points table on the Data Pane
     /// </summary>
-    public class ClubPointsTableRowViewModel : ViewModelBase
+    public class MobTrophyPointsTableRowViewModel : ViewModelBase
     {
         /// <summary>
         /// Name of the club.
@@ -44,10 +44,10 @@
         private bool expandedData;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="ClubPointsTableRowViewModel"/> class.
+        /// Initialises a new instance of the <see cref="MobTrophyPointsTableRowViewModel"/> class.
         /// </summary>
         /// <param name="name"></param>
-        public ClubPointsTableRowViewModel(
+        public MobTrophyPointsTableRowViewModel(
             string name,
             int totalPoints,
             string finishingPoints,
@@ -146,16 +146,16 @@
         /// <summary>
         /// Gets or sets the club name
         /// </summary>
-        public ObservableCollection<PointsType> ClubPoints
+        public ObservableCollection<PointsType> MobTrophyPoints
         {
             get
             {
-                return points;
+                return this.points;
             }
             private set
             {
-                points = value;
-                RaisePropertyChangedEvent("ClubPoints");
+                this.points = value;
+                this.RaisePropertyChangedEvent(nameof(this.MobTrophyPoints));
             }
         }
 
@@ -178,7 +178,7 @@
         /// <param name="newPoints">points to add</param>
         public void AddPoints(PointsType newPoints)
         {
-            ClubPoints.Add(newPoints);
+            MobTrophyPoints.Add(newPoints);
         }
     }
 }

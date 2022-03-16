@@ -1,11 +1,8 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
-    using HandicapModel;
-    using HandicapModel.Admin.Manage;
     using HandicapModel.SeasonModel;
     using HandicapModel.Common;
     using jHCVMUI.ViewModels.ViewModels;
@@ -13,24 +10,23 @@
     using jHCVMUI.ViewModels.ViewModels.Types.Clubs;
 
     using NynaeveLib.Commands;
-    using HandicapModel.Interfaces;
     using System;
     using HandicapModel.Interfaces.SeasonModel;
 
     /// <summary>
-    /// View Model used by the Data Pane to display the club points table.
+    /// View Model used by the Data Pane to display the Mob Trophy points table.
     /// </summary>
-    public class ClubPointsTableViewModel : ViewModelBase
+    public class MobTrophyPointsTableViewModel : ViewModelBase
     {
         /// <summary>
-        /// The club points table.
+        /// The Mob Trophy points table.
         /// </summary>
-        private ObservableCollection<ClubPointsTableRowViewModel> clubPointsTable;
+        private ObservableCollection<MobTrophyPointsTableRowViewModel> mobTrophyPointsTable;
 
         /// <summary>
         /// Index of the currently selected item on the table.
         /// </summary>
-        private int currentClubPointsTableIndex;
+        private int currentMobTrophyPointsTableIndex;
 
         /// <summary>
         /// Indicates whether verbose or concise data is show.
@@ -43,18 +39,18 @@
         private ISeason model;
 
         /// <summary>
-        /// View model which suports the club points table.
+        /// View model which suports the mob trophy points table.
         /// </summary>
         /// <param name="model">season model</param>
-        public ClubPointsTableViewModel(ISeason model)
+        public MobTrophyPointsTableViewModel(ISeason model)
         {
             this.model = model;
-            this.clubPointsTable = new ObservableCollection<ClubPointsTableRowViewModel>();
-            this.currentClubPointsTableIndex = 0;
+            this.mobTrophyPointsTable = new ObservableCollection<MobTrophyPointsTableRowViewModel>();
+            this.currentMobTrophyPointsTableIndex = 0;
             this.expandedData = false;
 
-            this.model.ClubsChangedEvent += this.PopulateClubPointsData;
-            this.PopulateClubTable();
+            this.model.ClubsChangedEvent += this.PopulateMobTrophyPointsData;
+            this.PopulateMobTrophyTable();
 
             this.ExpandCommand =
               new SimpleCommand(
@@ -96,36 +92,36 @@
         }
 
         /// <summary>
-        /// Gets points sets the club points table.
+        /// Gets points sets the Mob Trophy points table.
         /// </summary>
-        public ObservableCollection<ClubPointsTableRowViewModel> ClubPointsTable
+        public ObservableCollection<MobTrophyPointsTableRowViewModel> MobTrophyPointsTable
         {
             get
             {
-                return clubPointsTable;
+                return this.mobTrophyPointsTable;
             }
 
             set
             {
-                clubPointsTable = value;
-                RaisePropertyChangedEvent("ClubPointsTable");
+                this.mobTrophyPointsTable = value;
+                this.RaisePropertyChangedEvent(nameof(this.MobTrophyPointsTable));
             }
         }
 
         /// <summary>
-        /// Gets or sets the index of the club points table
+        /// Gets or sets the index of the Mob Trophy points table
         /// </summary>
-        public int SelectedClubPointsTableIndex
+        public int SelectedMobTrophyPointsTableIndex
         {
             get
             {
-                return currentClubPointsTableIndex;
+                return this.currentMobTrophyPointsTableIndex;
             }
 
             set
             {
-                currentClubPointsTableIndex = value;
-                RaisePropertyChangedEvent("SelectedClubPointsTableIndex");
+                this.currentMobTrophyPointsTableIndex = value;
+                this.RaisePropertyChangedEvent(nameof(this.SelectedMobTrophyPointsTableIndex));
             }
         }
 
@@ -136,62 +132,34 @@
         {
             ExpandedData = !ExpandedData;
 
-            foreach (ClubPointsTableRowViewModel clubPoints in ClubPointsTable)
+            foreach (MobTrophyPointsTableRowViewModel mobTrophyPoints in MobTrophyPointsTable)
             {
-                clubPoints.ExpandedData = ExpandedData;
+                mobTrophyPoints.ExpandedData = ExpandedData;
             }
         }
 
         /// <summary>
-        /// Used to populate the club points table
+        /// Used to populate the Mob Trophy points table
         /// </summary>
         /// <param name="sender">sender object</param>
         /// <param name="e">event arguments</param>
-        public void PopulateClubPointsData(
+        public void PopulateMobTrophyPointsData(
             object sender,
             EventArgs e)
         {
-            ClubPointsTable.Clear();
-            this.PopulateClubTable();
-
-            //foreach (ClubSeasonDetails clubSeasonDetail in this.model.Clubs)
-            //{
-            //    ClubPointsTableRowViewModel clubPoints =
-            //        new ClubPointsTableRowViewModel(
-            //            clubSeasonDetail.Name,
-            //            clubSeasonDetail.ClubCompetition.TotalPoints,
-            //            clubSeasonDetail.ClubCompetition.TotalFinishingPoints.ToString(),
-            //            clubSeasonDetail.ClubCompetition.TotalPositionPoints.ToString(),
-            //            clubSeasonDetail.ClubCompetition.TotalBestPoints.ToString());
-
-            //    foreach (CommonPoints eventPoints in clubSeasonDetail.ClubCompetition.Points)
-            //    {
-            //        clubPoints.AddPoints(
-            //            new PointsType(
-            //                eventPoints.FinishingPoints,
-            //                eventPoints.PositionPoints,
-            //                eventPoints.BestPoints,
-            //                eventPoints.Date));
-            //    }
-
-            //    ClubPointsTable.Add(clubPoints);
-            //}
-
-            //ClubPointsTable =
-            //    new ObservableCollection<ClubPointsTableRowViewModel>(
-            //        ClubPointsTable.OrderByDescending(
-            //            order => order.TotalPoints));
+            MobTrophyPointsTable.Clear();
+            this.PopulateMobTrophyTable();
         }
 
         /// <summary>
-        /// Calculate and populate the club points table.
+        /// Calculate and populate the Mob Trophy points table.
         /// </summary>
-        private void PopulateClubTable()
+        private void PopulateMobTrophyTable()
         {
             foreach (ClubSeasonDetails clubSeasonDetail in this.model.Clubs)
             {
-                ClubPointsTableRowViewModel clubPoints =
-                    new ClubPointsTableRowViewModel(
+                MobTrophyPointsTableRowViewModel mobTrophyPoints =
+                    new MobTrophyPointsTableRowViewModel(
                         clubSeasonDetail.Name,
                         clubSeasonDetail.ClubCompetition.TotalPoints,
                         clubSeasonDetail.ClubCompetition.TotalFinishingPoints.ToString(),
@@ -200,7 +168,7 @@
 
                 foreach (CommonPoints eventPoints in clubSeasonDetail.ClubCompetition.Points)
                 {
-                    clubPoints.AddPoints(
+                    mobTrophyPoints.AddPoints(
                         new PointsType(
                             eventPoints.FinishingPoints,
                             eventPoints.PositionPoints,
@@ -208,12 +176,12 @@
                             eventPoints.Date));
                 }
 
-                ClubPointsTable.Add(clubPoints);
+                MobTrophyPointsTable.Add(mobTrophyPoints);
             }
 
-            ClubPointsTable =
-                new ObservableCollection<ClubPointsTableRowViewModel>(
-                    ClubPointsTable.OrderByDescending(
+            MobTrophyPointsTable =
+                new ObservableCollection<MobTrophyPointsTableRowViewModel>(
+                    MobTrophyPointsTable.OrderByDescending(
                         order => order.TotalPoints));
         }
     }

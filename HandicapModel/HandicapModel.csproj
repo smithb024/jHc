@@ -78,7 +78,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IOPaths.resx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\IO\ResultsCSV\ClubPointsTableWriter.cs" />
+    <Compile Include="Admin\IO\ResultsCSV\MobTrophyTableWriter.cs" />
     <Compile Include="Admin\IO\ResultsCSV\EventSummaryWriter.cs" />
     <Compile Include="Admin\IO\ResultsCSV\HandicapWriter.cs" />
     <Compile Include="Admin\IO\ResultsCSV\NextRunnerWriter.cs" />
@@ -118,7 +118,7 @@
     <Compile Include="Admin\Manage\SeriesConfigMngr.cs" />
     <Compile Include="Admin\Manage\NormalisationConfigMngr.cs" />
     <Compile Include="Admin\Manage\ResultsConfigMngr.cs" />
-    <Compile Include="Admin\Types\ClubPoints.cs" />
+    <Compile Include="Admin\Types\MobTrophyPoints.cs" />
     <Compile Include="AthletesModel\AthleteDetails.cs" />
     <Compile Include="AthletesModel\Athletes.cs" />
     <Compile Include="ClubsModel\Clubs.cs" />

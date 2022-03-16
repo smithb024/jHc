@@ -52,7 +52,7 @@
                 this.normalisationConfigMngr.ReadNormalisationConfiguration();
 
             // Remove points from all clubs for the known date.
-            this.RemoveClubPoints(currentDate);
+            this.RemoveMobTrophyPoints(currentDate);
 
             // In the athlete's season remove all points and times for the known date.
             // Remove the time from the athlete's data
@@ -221,7 +221,7 @@
         /// Remove points from the season club data set.
         /// </summary>
         /// <param name="currentDate"></param>
-        private void RemoveClubPoints(DateType currentDate)
+        private void RemoveMobTrophyPoints(DateType currentDate)
         {
             foreach (ClubSeasonDetails club in this.Model.CurrentSeason.Clubs)
             {

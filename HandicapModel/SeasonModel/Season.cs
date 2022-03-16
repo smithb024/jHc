@@ -427,7 +427,7 @@
         /// </summary>
         /// <param name="clubName">name of club</param>
         /// <param name="points">points to add</param>
-        public void AddNewClubPoints(
+        public void AddNewMobTrophyPoints(
             string clubName,
             ICommonPoints points)
         {

@@ -103,7 +103,7 @@
         public int NumberOfScoringPositions { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of people in a team, for purpose of scoring club points.
+        /// Gets or sets the number of people in a team, used in the Mob Trophy.
         /// </summary>
         public int NumberInTeam { get; set; }
 

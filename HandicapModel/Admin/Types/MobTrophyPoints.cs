@@ -3,18 +3,18 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Stores the club points whilst the results are being worked out.
+    /// Stores the Mob Trophy points whilst the results are being worked out.
     /// </summary>
-    public class ClubPoints
+    public class MobTrophyPoints
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="ClubPoints"/> class.
+        /// Initialises a new instance of the <see cref="MobTrophyPoints"/> class.
         /// </summary>
         /// <param name="clubName">Name of the club</param>
         /// <param name="teamSize">Team size</param>
         /// <param name="finishingPoints">points scored for finishing</param>
         /// <param name="SBPoints">points scored for a SB</param>
-        public ClubPoints(
+        public MobTrophyPoints(
             string clubName,
             int teamSize,
             int finishingPoints,

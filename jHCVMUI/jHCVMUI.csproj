@@ -93,7 +93,7 @@
     <Compile Include="ViewModels\Labels\LabelGenerationViewModel.cs" />
     <Compile Include="ViewModels\Labels\LabelImageGenerator.cs" />
     <Compile Include="ViewModels\Labels\LabelsSheetViewModel.cs" />
-    <Compile Include="ViewModels\Primary\DataPanes\ClubPointsTableViewModel.cs" />
+    <Compile Include="ViewModels\Primary\DataPanes\MobTrophyPointsTableViewModel.cs" />
     <Compile Include="ViewModels\Primary\DataPanes\PointsTableViewModel.cs" />
     <Compile Include="ViewModels\Primary\DataPanes\ResultsTableViewModel.cs" />
     <Compile Include="ViewModels\Primary\DataPanes\SummaryEventViewModel.cs" />
@@ -121,7 +121,7 @@
     <Compile Include="ViewModels\ViewModels\Types\Athletes\RawResults.cs" />
     <Compile Include="ViewModels\ViewModels\Types\Athletes\ResultsTableRowViewModel.cs" />
     <Compile Include="ViewModels\ViewModels\Types\AthleteType.cs" />
-    <Compile Include="ViewModels\ViewModels\Types\Clubs\ClubPointsTableRowViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Clubs\MobTrophyPointsTableRowViewModel.cs" />
     <Compile Include="ViewModels\ViewModels\Types\Clubs\ClubSummary.cs" />
     <Compile Include="ViewModels\ViewModels\Types\Clubs\HarmonyPointsTypeViewModel.cs" />
     <Compile Include="ViewModels\ViewModels\Types\Clubs\TeamHarmonyPointsTableRowViewModel.cs" />

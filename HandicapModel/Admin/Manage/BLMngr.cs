@@ -377,7 +377,7 @@
                     return;
                 }
 
-                if (!ClubPointsTableWriter.WriteClubPointsTable(this.model, folder, this.eventData, this.logger))
+                if (!MobTrophyTableWriter.WriteMobTrophyPointsTable(this.model, folder, this.eventData, this.logger))
                 {
                     return;
                 }

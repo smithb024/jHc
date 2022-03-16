@@ -89,7 +89,7 @@
         /// </summary>
         /// <param name="clubName">name of the club</param>
         /// <param name="newEvent">full details of the event</param>
-        void AddNewClubPoints(
+        void AddNewMobTrophyPoints(
             string clubName,
             ICommonPoints newEvent);
 
@@ -170,8 +170,5 @@
         /// <param name="date">date of the update</param>
         /// <param name="points">new points</param>
         void UpdatePositionPoints(int key, DateType date, int points);
-        //void ClubPointsUpdated();
-        //void PointsUpdated();
-        //void SummaryTableUpdated();
     }
 }

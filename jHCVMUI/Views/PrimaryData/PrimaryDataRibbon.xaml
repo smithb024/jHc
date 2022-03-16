@@ -34,13 +34,13 @@
               Width="100"/>
         </Border>
         <Border DockPanel.Dock="Right"
-            BorderBrush="{Binding ClubPointsTableVisible, Converter={StaticResource highlightConverter}}"
+            BorderBrush="{Binding MobTrophyPointsTableVisible, Converter={StaticResource highlightConverter}}"
             BorderThickness="0,0,0,3"
             Margin="5,0,0,0">
-            <Button Name="EventClubPointsTable"
+            <Button Name="EventMobTrophyPointsTable"
               Content="Mob Trophy"
               Style="{StaticResource BodyButtonStyle}"
-              Command="{Binding ShowClubPointsTableCommand}"
+              Command="{Binding ShowMobTrophyPointsTableCommand}"
               Height="25"
               Width="100"/>
         </Border>
