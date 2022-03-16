@@ -38,7 +38,7 @@
             BorderThickness="0,0,0,3"
             Margin="5,0,0,0">
             <Button Name="EventClubPointsTable"
-              Content="Club Points"
+              Content="Mob Trophy"
               Style="{StaticResource BodyButtonStyle}"
               Command="{Binding ShowClubPointsTableCommand}"
               Height="25"
