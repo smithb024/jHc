@@ -225,7 +225,7 @@
         {
             foreach (ClubSeasonDetails club in this.Model.CurrentSeason.Clubs)
             {
-                club.ClubCompetition.RemovePoints(currentDate);
+                club.MobTrophy.RemovePoints(currentDate);
             }
         }
 

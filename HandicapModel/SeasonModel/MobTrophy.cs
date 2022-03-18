@@ -8,15 +8,15 @@
     using CommonLib.Types;
 
     /// <summary>
-    /// The club competition. This is the original competition which involves a full team trying 
+    /// The Mob Trophy. This is the original competition which involves a full team trying 
     /// to score as many points as is possible.
     /// </summary>
-    public class ClubCompetition : IClubCompetition
+    public class MobTrophy : IMobTrophy
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="ClubCompetition"/> class.
+        /// Initialises a new instance of the <see cref="MobTrophy"/> class.
         /// </summary>
-        public ClubCompetition()
+        public MobTrophy()
         {
             this.Points = new List<ICommonPoints>();
         }

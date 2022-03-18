@@ -161,12 +161,12 @@
                 MobTrophyPointsTableRowViewModel mobTrophyPoints =
                     new MobTrophyPointsTableRowViewModel(
                         clubSeasonDetail.Name,
-                        clubSeasonDetail.ClubCompetition.TotalPoints,
-                        clubSeasonDetail.ClubCompetition.TotalFinishingPoints.ToString(),
-                        clubSeasonDetail.ClubCompetition.TotalPositionPoints.ToString(),
-                        clubSeasonDetail.ClubCompetition.TotalBestPoints.ToString());
+                        clubSeasonDetail.MobTrophy.TotalPoints,
+                        clubSeasonDetail.MobTrophy.TotalFinishingPoints.ToString(),
+                        clubSeasonDetail.MobTrophy.TotalPositionPoints.ToString(),
+                        clubSeasonDetail.MobTrophy.TotalBestPoints.ToString());
 
-                foreach (CommonPoints eventPoints in clubSeasonDetail.ClubCompetition.Points)
+                foreach (CommonPoints eventPoints in clubSeasonDetail.MobTrophy.Points)
                 {
                     mobTrophyPoints.AddPoints(
                         new PointsType(

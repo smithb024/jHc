@@ -65,16 +65,25 @@
 
                     foreach (ClubSeasonDetails club in model.CurrentSeason.Clubs)
                     {
-                        if (club.ClubCompetition.TotalPoints > 0)
+                        if (club.MobTrophy.TotalPoints > 0)
                         {
                             string entryString =
                                 $"{club.Name}{ResultsPaths.separator}{club.HarmonyCompetition.TotalScore}";
 
                             foreach (DateType eventDate in eventDates)
                             {
-                                if (club.ClubCompetition.Points.Exists(points => points.Date == eventDate))
+                                if (club.MobTrophy.Points.Exists(points => points.Date == eventDate))
                                 {
-                                    int eventPoints = club.HarmonyCompetition.Events.Find(points => points.Date == eventDate).Score;
+
+                                    IHarmonyEvent foundEvent =
+                                        club.HarmonyCompetition.Events.Find(
+                                            points =>
+                                            points.Date == eventDate);
+
+                                    int eventPoints =
+                                        foundEvent != null
+                                        ? foundEvent.Score
+                                        : 0;
 
                                     entryString = entryString + ResultsPaths.separator + eventPoints;
                                 }
@@ -119,7 +128,7 @@
 
                     foreach (ClubSeasonDetails club in model.CurrentSeason.Clubs)
                     {
-                        if (club.ClubCompetition.TotalPoints > 0)
+                        if (club.MobTrophy.TotalPoints > 0)
                         {
                             IHarmonyEvent foundEvent =
                                 club.HarmonyCompetition.Events.Find(
