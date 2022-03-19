@@ -17,7 +17,7 @@
         public ClubSeasonDetails(string clubName)
         {
             this.Name = clubName;
-            this.ClubCompetition = new ClubCompetition();
+            this.MobTrophy = new MobTrophy();
             this.HarmonyCompetition = new HarmonyCompetition();
         }
 
@@ -27,9 +27,9 @@
         public string Name { get; }
 
         /// <summary>
-        /// Gets the details of the club competition for this team.
+        /// Gets the details of the mob trophy for this team.
         /// </summary>
-        public IClubCompetition ClubCompetition { get; }
+        public IMobTrophy MobTrophy { get; }
 
         /// <summary>
         /// Gets the details of the team harmony competition for this team.
@@ -43,7 +43,7 @@
         public void AddNewEvent(
             ICommonPoints newPoints)
         {
-            this.ClubCompetition.AddNewEvent(newPoints);
+            this.MobTrophy.AddNewEvent(newPoints);
         }
 
         /// <summary>
@@ -61,11 +61,11 @@
         /// </summary>
         /// <param name="eventIndex">event index</param>
         /// <param name="updatedPoints">points received</param>
-        public void SetClubCompetitionPoints(
+        public void SetMobTrophyPoints(
             int eventIndex,
             ICommonPoints updatedPoints)
         {
-            this.ClubCompetition.SetPoints(
+            this.MobTrophy.SetPoints(
                 eventIndex,
                 updatedPoints);
         }
@@ -74,9 +74,9 @@
         /// Remove all points corresponding to the argument date. Do nothing if there are no points for the date.
         /// </summary>
         /// <param name="date"></param>
-        public void RemoveClubCompetitionPoints(DateType date)
+        public void RemoveMobTrophyPoints(DateType date)
         {
-            this.ClubCompetition.RemovePoints(date);
+            this.MobTrophy.RemovePoints(date);
         }
     }
 }

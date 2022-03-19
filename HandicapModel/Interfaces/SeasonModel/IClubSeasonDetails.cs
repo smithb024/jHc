@@ -14,9 +14,9 @@
         string Name { get; }
 
         /// <summary>
-        /// Gets the details of the club competition for this team.
+        /// Gets the details of the mob trophy for this team.
         /// </summary>
-        IClubCompetition ClubCompetition { get; }
+        IMobTrophy MobTrophy { get; }
 
         /// <summary>
         /// Gets the details of the team harmony competition for this team.
@@ -42,7 +42,7 @@
         /// </summary>
         /// <param name="eventIndex">event index</param>
         /// <param name="updatedPoints">points received</param>
-        void SetClubCompetitionPoints(
+        void SetMobTrophyPoints(
             int eventIndex,
             ICommonPoints updatedPoints);
 
@@ -50,6 +50,6 @@
         /// Remove all points corresponding to the argument date. Do nothing if there are no points for the date.
         /// </summary>
         /// <param name="date"></param>
-        void RemoveClubCompetitionPoints(DateType date);
+        void RemoveMobTrophyPoints(DateType date);
     }
 }

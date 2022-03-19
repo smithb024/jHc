@@ -5,10 +5,10 @@
     using Interfaces.Common;
 
     /// <summary>
-    /// Interface which describes the club competition. This is the original competition which 
+    /// Interface which describes the mob trophy. This is the original competition which 
     /// involves a full team trying to score as many points as is possible.
     /// </summary>
-    public interface IClubCompetition
+    public interface IMobTrophy
     {
         /// <summary>
         /// Gets the total points awarded to the club.

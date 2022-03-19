@@ -115,7 +115,7 @@
             List<IRaw> rawResults = this.Model.CurrentEvent.LoadRawResults();
 
             // Set up the array to work out the points table
-            List<ClubPoints> clubPoints = this.SetupClubPoints();
+            List<MobTrophyPoints> mobTrophyPoints = this.SetupMobTrophyPoints();
 
             // ensure that each athlete is registered for season.
             this.RegisterAllAthletesForTheCurrentSeason(rawResults);
@@ -131,14 +131,13 @@
             // Sort by time: Add position points, note first boy, first girl, second and third.
             this.AddPositionPoints(
               resultsTable,
-              this.Model.CurrentEvent.Date,
-              clubPoints);
+              this.Model.CurrentEvent.Date);
             resultsTable.OrderByFinishingTime();
             this.AddPlacings(resultsTable);
-            this.AssignClubPoints(
+            this.AssignMobTrophyPoints(
               resultsTable,
               this.Model.CurrentEvent.Date,
-              clubPoints);
+              mobTrophyPoints);
             this.CalculateTeamHarmonyPoints(
                 resultsTable,
                 this.Model.CurrentEvent.Date);
@@ -154,23 +153,23 @@
         }
 
         /// <summary>
-        /// Create a <see cref="ClubPoints"/> object for each registered club and then return them.
+        /// Create a <see cref="MobTrophyPoints"/> object for each registered club and then return them.
         /// </summary>
-        /// <returns>Collection of <see cref="ClubPoints"/> objects, one per club</returns>
-        private List<ClubPoints> SetupClubPoints()
+        /// <returns>Collection of <see cref="MobTrophyPoints"/> objects, one per club</returns>
+        private List<MobTrophyPoints> SetupMobTrophyPoints()
         {
-            List<ClubPoints> clubPoints = new List<ClubPoints>();
+            List<MobTrophyPoints> mobTrophyPoints = new List<MobTrophyPoints>();
             foreach (string club in this.Model.Clubs.ClubDetails)
             {
-                clubPoints.Add(
-                  new ClubPoints(
+                mobTrophyPoints.Add(
+                  new MobTrophyPoints(
                     club,
                     this.resultsConfiguration.ResultsConfigurationDetails.NumberInTeam,
                     this.resultsConfiguration.ResultsConfigurationDetails.TeamFinishingPoints,
                     this.resultsConfiguration.ResultsConfigurationDetails.TeamSeasonBestPoints));
             }
 
-            return clubPoints;
+            return mobTrophyPoints;
         }
 
         /// <summary>
@@ -298,22 +297,19 @@
 
         private void AddPositionPoints(
           EventResults resultsTable,
-          DateType currentDate,
-          List<ClubPoints> clubPointsWorking)
+          DateType currentDate)
         {
             if (this.resultsConfiguration.ResultsConfigurationDetails.ScoresAreDescending)
             {
                 this.AddPositionPointsDescending(
                   resultsTable,
-                  currentDate,
-                  clubPointsWorking);
+                  currentDate);
             }
             else
             {
                 this.AddPositionPointsAscending(
                   resultsTable,
-                  currentDate,
-                  clubPointsWorking);
+                  currentDate);
             }
         }
 
@@ -323,11 +319,9 @@
         /// </summary>
         /// <param name="resultsTable">reference to current results table</param>
         /// <param name="currentDate">date of current event</param>
-        /// <param name="scoringPositions">number of scoring positions</param>
         private void AddPositionPointsDescending(
           EventResults resultsTable,
-          DateType currentDate,
-          List<ClubPoints> clubPointsWorking)
+          DateType currentDate)
         {
             int positionPoint = this.resultsConfiguration.ResultsConfigurationDetails.NumberOfScoringPositions;
 
@@ -358,11 +352,9 @@
         /// </summary>
         /// <param name="resultsTable">reference to current results table</param>
         /// <param name="currentDate">date of current event</param>
-        /// <param name="scoringPositions">number of scoring positions</param>
         private void AddPositionPointsAscending(
           EventResults resultsTable,
-          DateType currentDate,
-          List<ClubPoints> clubPointsWorking)
+          DateType currentDate)
         {
             int positionPoint = 1;
 
@@ -389,10 +381,10 @@
         /// <param name="resultsTable">reference to current results table</param>
         /// <param name="currentDate">date of current event</param>
         /// <param name="scoringPositions">number of scoring positions</param>
-        private void AssignClubPoints(
+        private void AssignMobTrophyPoints(
           EventResults resultsTable,
           DateType currentDate,
-          List<ClubPoints> clubPointsWorking)
+          List<MobTrophyPoints> mobTrophyPointsWorking)
         {
             if (!this.resultsConfiguration.ResultsConfigurationDetails.UseTeams)
             {
@@ -408,7 +400,7 @@
                     continue;
                 }
 
-                ClubPoints club = clubPointsWorking.Find(clubName => clubName.ClubName.CompareTo(result.Club) == 0);
+                MobTrophyPoints club = mobTrophyPointsWorking.Find(clubName => clubName.ClubName.CompareTo(result.Club) == 0);
 
                 if (club != null)
                 {
@@ -419,8 +411,8 @@
                 }
             }
 
-            this.SaveClubPointsToModel(
-              clubPointsWorking,
+            this.SaveMobTrophyPointsToModel(
+              mobTrophyPointsWorking,
               currentDate);
         }
 
@@ -759,15 +751,15 @@
         /// <summary>
         /// Loop through all clubs and set the points in the mode.
         /// </summary>
-        /// <param name="clubPoints">points for all clubs</param>
+        /// <param name="mobTrophyPoints">points for all clubs</param>
         /// <param name="currentDate">current date</param>
-        private void SaveClubPointsToModel(
-          List<ClubPoints> clubPoints,
+        private void SaveMobTrophyPointsToModel(
+          List<MobTrophyPoints> mobTrophyPoints,
           DateType currentDate)
         {
-            foreach (ClubPoints club in clubPoints)
+            foreach (MobTrophyPoints club in mobTrophyPoints)
             {
-                this.Model.CurrentSeason.AddNewClubPoints(
+                this.Model.CurrentSeason.AddNewMobTrophyPoints(
                   club.ClubName,
                   new CommonPoints(
                     club.FinishingPoints,

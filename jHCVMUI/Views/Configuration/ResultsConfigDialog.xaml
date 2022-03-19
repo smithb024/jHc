@@ -152,27 +152,37 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="4"
+                       Margin="5"
+                       Content="Mob Trophy"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+
+                <Label Grid.Row="1"
                       Grid.Column="0"
                       Margin="5"
                       Content="Use Teams"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"/>
-                <CheckBox Grid.Row="0"
+                <CheckBox Grid.Row="1"
                           Grid.Column="2"
                           Margin="30, 0 10, 0"
                           VerticalAlignment="Center"
                           IsChecked="{Binding UseTeams, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Grid.Row="1"
+                <Label Grid.Row="2"
                        Grid.Column="0"
                        Margin="5"
                        Content="Team Size"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
-                <TextBox Grid.Row="1"
+                <TextBox Grid.Row="2"
                          Grid.Column="2"
                          Style="{StaticResource BodyTextBoxStyle}"
                          Text="{Binding NumberInTeam, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
@@ -181,13 +191,13 @@
                          Height="25"
                          HorizontalContentAlignment="Center"/>
 
-                <Label Grid.Row="2"
+                <Label Grid.Row="3"
                        Grid.Column="0"
                        Margin="5"
                        Content="Team Finishing Points"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
-                <TextBox Grid.Row="2"
+                <TextBox Grid.Row="3"
                          Grid.Column="2"
                          Style="{StaticResource BodyTextBoxStyle}"
                          Text="{Binding TeamFinishingPoints, UpdateSourceTrigger=PropertyChanged}"
@@ -196,13 +206,13 @@
                          Height="25"
                          HorizontalContentAlignment="Center"/>
 
-                <Label Grid.Row="3"
+                <Label Grid.Row="4"
                        Grid.Column="0"
                        Margin="5"
                        Content="Team Season Best Points"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
-                <TextBox Grid.Row="3"
+                <TextBox Grid.Row="4"
                          Grid.Column="2"
                          Style="{StaticResource BodyTextBoxStyle}"
                          Text="{Binding TeamSeasonBestPoints, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"

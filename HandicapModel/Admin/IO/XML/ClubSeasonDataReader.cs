@@ -88,7 +88,7 @@
                     XElement harmonyPointsElement = new XElement(HarmonyPointsElement);
                     athleteElement.Add(harmonyPointsElement);
 
-                    foreach (CommonPoints points in season.ClubCompetition.Points)
+                    foreach (CommonPoints points in season.MobTrophy.Points)
                     {
                         XElement pointElement =
                             new XElement(
@@ -216,7 +216,7 @@
                                     date);
 
 
-                            clubDetails.ClubCompetition.AddNewEvent(readPoints);
+                            clubDetails.MobTrophy.AddNewEvent(readPoints);
                             // TODO, should probably check that there are the correct number read from the xml file.
                             // i.e. there is one for each event in the currently loaded season.
                         }

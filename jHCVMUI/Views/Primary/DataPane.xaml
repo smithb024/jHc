@@ -12,8 +12,8 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
 
-        <DataTemplate x:Name="ClubPointsTableName" DataType="{x:Type viewModel:ClubPointsTableViewModel}">
-            <dataView:ClubPointsTable DataContext="{Binding}"/>
+        <DataTemplate x:Name="MobTrophyPointsTableName" DataType="{x:Type viewModel:MobTrophyPointsTableViewModel}">
+            <dataView:MobTrophyPointsTable DataContext="{Binding}"/>
         </DataTemplate>
         <DataTemplate x:Name="TeamHarmonyPointsTableName" DataType="{x:Type viewModel:TeamHarmonyPointsTableViewModel}">
             <dataView:TeamHarmonyPointsTable DataContext="{Binding}"/>

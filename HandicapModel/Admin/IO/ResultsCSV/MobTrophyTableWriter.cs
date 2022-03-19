@@ -13,17 +13,17 @@
     using HandicapModel.Interfaces.Common;
     using HandicapModel.SeasonModel;
 
-    public static class ClubPointsTableWriter
+    public static class MobTrophyTableWriter
     {
         /// <summary>
-        /// Write the club points table to a file
+        /// Write the Mob Trophy points table to a file
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="folder">output folder</param>
         /// <param name="eventData">event data wrapper</param>
         /// <param name="logger">application logger</param>
         /// <returns>success flag</returns>
-        public static bool WriteClubPointsTable(
+        public static bool WriteMobTrophyPointsTable(
             IModel model,
             string folder,
             IEventData eventData,
@@ -34,7 +34,7 @@
 
             Messenger.Default.Send(
                 new HandicapProgressMessage(
-                    "Saving club points table"));
+                    "Saving Mob Trophy points table"));
 
             // Export the overall season table.
             try
@@ -43,7 +43,7 @@
                                                               Path.DirectorySeparatorChar +
                                                               model.CurrentSeason.Name +
                                                               model.CurrentEvent.Name +
-                                                              ResultsPaths.clubPointsTable +
+                                                              ResultsPaths.mobTrophyPointsTable +
                                                               ResultsPaths.csvExtension))
                 {
                     string titleString = "Club" + ResultsPaths.separator + "TotalPoints";
@@ -58,16 +58,16 @@
 
                     foreach (ClubSeasonDetails club in model.CurrentSeason.Clubs)
                     {
-                        if (club.ClubCompetition.TotalPoints > 0)
+                        if (club.MobTrophy.TotalPoints > 0)
                         {
                             string entryString =
-                                $"{club.Name}{ResultsPaths.separator}{club.ClubCompetition.TotalPoints}";
+                                $"{club.Name}{ResultsPaths.separator}{club.MobTrophy.TotalPoints}";
 
                             foreach (DateType eventDate in eventDates)
                             {
-                                if (club.ClubCompetition.Points.Exists(points => points.Date == eventDate))
+                                if (club.MobTrophy.Points.Exists(points => points.Date == eventDate))
                                 {
-                                    int eventPoints = club.ClubCompetition.Points.Find(points => points.Date == eventDate).TotalPoints;
+                                    int eventPoints = club.MobTrophy.Points.Find(points => points.Date == eventDate).TotalPoints;
 
                                     entryString = entryString + ResultsPaths.separator + eventPoints;
                                 }
@@ -84,11 +84,11 @@
             }
             catch (Exception ex)
             {
-                logger.WriteLog("Error, failed to print club points table: " + ex.ToString());
+                logger.WriteLog("Error, failed to print mob trophy points table: " + ex.ToString());
 
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
-                        "Failed to print club points table"));
+                        "Failed to print mob trophy points table"));
 
                 success = false;
             }
@@ -103,7 +103,7 @@
                         Path.DirectorySeparatorChar +
                         model.CurrentSeason.Name +
                         model.CurrentEvent.Name +
-                        ResultsPaths.clubPointsTableCurrentEvent +
+                        ResultsPaths.mobTrophyPointsTableCurrentEvent +
                         ResultsPaths.csvExtension))
                 {
                     string titleString = 
@@ -117,10 +117,10 @@
 
                     foreach (ClubSeasonDetails club in model.CurrentSeason.Clubs)
                     {
-                        if (club.ClubCompetition.TotalPoints > 0)
+                        if (club.MobTrophy.TotalPoints > 0)
                         {
                             ICommonPoints currentEventPoints =
-                                club.ClubCompetition.Points.Find(
+                                club.MobTrophy.Points.Find(
                                     e => e.Date == model.CurrentEvent.Date);
 
                             if (currentEventPoints == null)
@@ -141,11 +141,11 @@
             }
             catch (Exception ex)
             {
-                logger.WriteLog("Error, failed to print club points table: " + ex.ToString());
+                logger.WriteLog("Error, failed to print mob trophy points table: " + ex.ToString());
 
                 Messenger.Default.Send(
                     new HandicapErrorMessage(
-                        "Failed to print club points table"));
+                        "Failed to print mob trophy points table"));
 
                 success = false;
             }
