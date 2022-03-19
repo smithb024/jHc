@@ -27,7 +27,7 @@
             BorderThickness="0,0,0,3"
             Margin="5,0,0,0">
             <Button Name="EventTeamHarmonyPointsTable"
-              Content="Club Points (2)"
+              Content="Team Trophy"
               Style="{StaticResource BodyButtonStyle}"
               Command="{Binding ShowTeamHarmonyPointsTableCommand}"
               Height="25"
