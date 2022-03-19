@@ -38,15 +38,25 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="4"
+                       Margin="5"
+                       Content="Individual"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+
+                <Label Grid.Row="1"
                        Grid.Column="0"
                        Margin="5"
                        Content="Finishing Points"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
-                <TextBox Grid.Row="0"
+                <TextBox Grid.Row="1"
                          Grid.Column="2"
                          Style="{StaticResource BodyTextBoxStyle}"
                          Text="{Binding FinishingPoints, UpdateSourceTrigger=PropertyChanged}"
@@ -55,13 +65,13 @@
                          Height="25"
                          HorizontalContentAlignment="Center"/>
 
-                <Label Grid.Row="1"
+                <Label Grid.Row="2"
                        Grid.Column="0"
                        Margin="5"
                        Content="Season Best Points"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
-                <TextBox Grid.Row="1"
+                <TextBox Grid.Row="2"
                          Grid.Column="2"
                          Style="{StaticResource BodyTextBoxStyle}"
                          Text="{Binding SeasonBestPoints, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
@@ -70,13 +80,13 @@
                          Height="25"
                          HorizontalContentAlignment="Center"/>
 
-                <Label Grid.Row="2"
+                <Label Grid.Row="3"
                        Grid.Column="0"
                        Margin="5"
                        Content="Scores to Count in a Season"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
-                <StackPanel Grid.Row="2"
+                <StackPanel Grid.Row="3"
                             Grid.Column="1"
                             Orientation="Horizontal">
                     <CheckBox Margin="5"
@@ -87,7 +97,7 @@
                            Grid.Row="1"
                            Content="All"/>
                 </StackPanel>
-                <TextBox Grid.Row="2"
+                <TextBox Grid.Row="3"
                          Grid.Column="2"
                          Style="{StaticResource BodyTextBoxStyle}"
                          Text="{Binding ScoresToCount, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
@@ -97,25 +107,25 @@
                          HorizontalContentAlignment="Center"
                          VerticalAlignment="Bottom"/>
     
-                <Label Grid.Row="3"
+                <Label Grid.Row="4"
                        Grid.Column="0"
                        Margin="5"
                        Content="Points Descending (1st - high)"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
-                <CheckBox Grid.Row="3"
+                <CheckBox Grid.Row="4"
                           Grid.Column="2"
                           Margin="30, 0 10, 0"
                           VerticalAlignment="Center"
                           IsChecked="{Binding ScoresAreDescending, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Grid.Row="4"
+                <Label Grid.Row="5"
                        Grid.Column="0"
                        Margin="5"
                        Content="Number Of Scoring Positions"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
-                <StackPanel Grid.Row="4"
+                <StackPanel Grid.Row="5"
                             Grid.Column="1"
                             Orientation="Horizontal">
                     <CheckBox Margin="5"
@@ -126,7 +136,7 @@
                            Grid.Row="1"
                            Content="Excl FT"/>
                 </StackPanel>
-                <TextBox Grid.Row="4"
+                <TextBox Grid.Row="5"
                          Grid.Column="2"
                          Style="{StaticResource BodyTextBoxStyle}"
                          Text="{Binding NumberOfScoringPositions, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
@@ -236,15 +246,25 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="4"
+                       Margin="5"
+                       Content="Team Trophy"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+
+                <Label Grid.Row="1"
                        Grid.Column="0"
                        Margin="5"
                        Content="Team Size"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
-                <TextBox Grid.Row="0"
+                <TextBox Grid.Row="1"
                          Grid.Column="2"
                          Style="{StaticResource BodyTextBoxStyle}"
                          Text="{Binding NumberInHarmonyTeam, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
@@ -253,13 +273,13 @@
                          Height="25"
                          HorizontalContentAlignment="Center"/>
 
-                <Label Grid.Row="1"
+                <Label Grid.Row="2"
                        Grid.Column="0"
                        Margin="5"
                        Content="Points Scoring"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
-                <TextBox Grid.Row="1"
+                <TextBox Grid.Row="2"
                          Grid.Column="2"
                          Style="{StaticResource BodyTextBoxStyle}"
                          Text="{Binding HarmonyPointsScoring, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
