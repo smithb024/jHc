@@ -38,7 +38,7 @@
               new AthleteSeasonPoints(
                 resultsConfigurationManager);
             this.Times = new List<Appearances>();
-            this.HarmonyPoints = new AthleteSeasonHarmonyPoints();
+            this.TeamTrophyPoints = new AthleteSeasonTeamTrophyPoints();
         }
 
         /// <summary>
@@ -78,9 +78,9 @@
         public AthleteSeasonPoints Points { get; set; }
 
         /// <summary>
-        /// Gets and sets the number of points assoicated with the harmnony competiion.
+        /// Gets and sets the number of points assoicated with the Team Trophy.
         /// </summary>
-        public IAthleteSeasonHarmonyPoints HarmonyPoints { get; set; }
+        public IAthleteSeasonTeamTrophyPoints TeamTrophyPoints { get; set; }
 
         /// <summary>
         /// Gets all the times run this season.

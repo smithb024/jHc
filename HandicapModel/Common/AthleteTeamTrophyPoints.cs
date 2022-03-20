@@ -4,16 +4,16 @@
     using Interfaces.Common;
 
     /// <summary>
-    /// A single points entry for an athlete within the harmony competition.
+    /// A single points entry for an athlete within the Team Trophy.
     /// </summary>
-    public class AthleteHarmonyPoints : IAthleteHarmonyPoints
+    public class AthleteTeamTrophyPoints : IAthleteTeamTrophyPoints
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="CommonHarmonyPoints"/> class.
+        /// Initialises a new instance of the <see cref="CommonTeamTrophyPoints"/> class.
         /// </summary>
         /// <param name="point">points scored</param>
         /// <param name="date">date the points were scored</param>
-        public AthleteHarmonyPoints(
+        public AthleteTeamTrophyPoints(
             int point,
             DateType date)
         {

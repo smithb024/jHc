@@ -31,26 +31,29 @@
         private string teamSeasonBestPointsOrig = string.Empty;
 
         /// <summary>
-        /// The number of members of a harmony team team.
+        /// The number of members of a Team Trophy team.
         /// </summary>
-        private string numberInHarmonyTeam;
+        private string numberInTeamTrophyTeam;
 
         /// <summary>
-        /// The number of members of a harmony team at the start up.
+        /// The number of members of a Team Trophy team at the start up.
         /// </summary>
-        private string numberInHarmonyTeamOrig;
+        private string numberInTeamTrophyTeamOrig;
 
         /// <summary>
-        /// A comma separated list detailing the points scored per position in the harmony team
+        /// A comma separated list detailing the points scored per position in the Team Trophy team
         /// competition.
         /// </summary>
-        private string harmonyPointsScoring;
+        private string teamTrophyPointsScoring;
 
         /// <summary>
-        /// The harmony competition scoring at start up.
+        /// The Team Trophy competition scoring at start up.
         /// </summary>
-        private string harmonyPointsScoringOrig;
+        private string teamTrophyPointsScoringOrig;
 
+        /// <summary>
+        /// The results configuration manager.
+        /// </summary>
         private IResultsConfigMngr resultsConfigurationManager;
 
         /// <summary>
@@ -82,10 +85,10 @@
             this.scoresAreDescending = resultsConfigurationManager.ResultsConfigurationDetails.ScoresAreDescending;
             this.exludeFirstTimers = resultsConfigurationManager.ResultsConfigurationDetails.ExcludeFirstTimers;
 
-            this.numberInHarmonyTeam = resultsConfigurationManager.ResultsConfigurationDetails.NumberInHarmonyTeam.ToString();
-            this.numberInHarmonyTeamOrig = this.numberInHarmonyTeam;
-            this.harmonyPointsScoring = resultsConfigurationManager.ResultsConfigurationDetails.HarmonyPointsScoring;
-            this.harmonyPointsScoringOrig = this.harmonyPointsScoring;
+            this.numberInTeamTrophyTeam = resultsConfigurationManager.ResultsConfigurationDetails.NumberInTeamTrophyTeam.ToString();
+            this.numberInTeamTrophyTeamOrig = this.numberInTeamTrophyTeam;
+            this.teamTrophyPointsScoring = resultsConfigurationManager.ResultsConfigurationDetails.TeamTrophyPointsScoring;
+            this.teamTrophyPointsScoringOrig = this.teamTrophyPointsScoring;
 
             this.finishingPointsOrig = finishingPoints;
             this.seasonBestPointsOrig = seasonBestPoints;
@@ -372,31 +375,31 @@
         }
 
         /// <summary>
-        /// Gets or sets the number of athletes in a harmony team competition team.
+        /// Gets or sets the number of athletes in a Team Trophy team.
         /// </summary>
-        public string NumberInHarmonyTeam
+        public string NumberInTeamTrophyTeam
         {
-            get => this.numberInHarmonyTeam;
+            get => this.numberInTeamTrophyTeam;
             set
             {
-                this.numberInHarmonyTeam = value;
-                RaisePropertyChangedEvent(nameof(this.NumberInHarmonyTeam));
-                RaisePropertyChangedEvent(nameof(this.HarmonyTeamSizeChanged));
+                this.numberInTeamTrophyTeam = value;
+                RaisePropertyChangedEvent(nameof(this.NumberInTeamTrophyTeam));
+                RaisePropertyChangedEvent(nameof(this.TeamTrophyTeamSizeChanged));
             }
         }
 
         /// <summary>
-        /// Gets a value indicating the changed state of the <see cref="NumberInHarmonyTeam"/> property.
+        /// Gets a value indicating the changed state of the <see cref="NumberInTeamTrophyTeam"/> property.
         /// </summary>
-        public FieldUpdatedType HarmonyTeamSizeChanged
+        public FieldUpdatedType TeamTrophyTeamSizeChanged
         {
             get
             {
-                if (!this.StringIsValidAsInt(this.NumberInHarmonyTeam))
+                if (!this.StringIsValidAsInt(this.NumberInTeamTrophyTeam))
                 {
                     return FieldUpdatedType.Invalid;
                 }
-                else if (string.Compare(this.NumberInHarmonyTeam, this.numberInHarmonyTeamOrig) != 0)
+                else if (string.Compare(this.NumberInTeamTrophyTeam, this.numberInTeamTrophyTeamOrig) != 0)
                 {
                     return FieldUpdatedType.Changed;
                 }
@@ -408,28 +411,28 @@
         }
 
         /// <summary>
-        /// Gets or sets the number of athletes in a harmony team competition team.
+        /// Gets or sets the number of athletes in a Team Trophy team.
         /// </summary>
-        public string HarmonyPointsScoring
+        public string TeamTrophyPointsScoring
         {
-            get => this.harmonyPointsScoring;
+            get => this.teamTrophyPointsScoring;
             set
             {
-                this.harmonyPointsScoring = value;
-                RaisePropertyChangedEvent(nameof(this.HarmonyPointsScoring));
-                RaisePropertyChangedEvent(nameof(this.HarmonyPointsScoringChanged));
+                this.teamTrophyPointsScoring = value;
+                RaisePropertyChangedEvent(nameof(this.TeamTrophyPointsScoring));
+                RaisePropertyChangedEvent(nameof(this.TeamTrophyPointsScoringChanged));
             }
         }
 
         /// <summary>
-        /// Gets a value indicating the changed state of the <see cref="HarmonyPointsScoring"/> 
+        /// Gets a value indicating the changed state of the <see cref="TeamTrophyPointsScoring"/> 
         /// property.
         /// </summary>
-        public FieldUpdatedType HarmonyPointsScoringChanged
+        public FieldUpdatedType TeamTrophyPointsScoringChanged
         {
             get
             {
-                if (string.Compare(this.HarmonyPointsScoring, this.harmonyPointsScoringOrig) != 0)
+                if (string.Compare(this.TeamTrophyPointsScoring, this.teamTrophyPointsScoringOrig) != 0)
                 {
                     return FieldUpdatedType.Changed;
                 }
@@ -492,7 +495,7 @@
               this.StringIsValidAsInt(this.NumberInTeam) &&
               this.StringIsValidAsInt(this.TeamSeasonBestPoints) &&
               this.StringIsValidAsInt(this.ScoresToCount) &&
-              this.StringIsValidAsInt(this.NumberInHarmonyTeam);
+              this.StringIsValidAsInt(this.NumberInTeamTrophyTeam);
         }
 
         /// <summary>
@@ -509,7 +512,7 @@
                 int saveTeamSize = 0;
                 int saveTeamSeasonBestPoints = 0;
                 int saveScoresToCount = 0;
-                int saveTeamHarmonySize = 0;
+                int saveTeamTrophySize = 0;
 
                 if (!int.TryParse(FinishingPoints, out saveFinishingPoints))
                 {
@@ -553,9 +556,9 @@
                     return;
                 }
 
-                if (!int.TryParse(this.NumberInHarmonyTeam, out saveTeamHarmonySize))
+                if (!int.TryParse(this.NumberInTeamTrophyTeam, out saveTeamTrophySize))
                 {
-                    this.logger.WriteLog("Can't save results config, invalid harmony team size");
+                    this.logger.WriteLog("Can't save results config, invalid Team Trophy team size");
                     return;
                 }
 
@@ -571,8 +574,8 @@
                   this.UseTeams,
                   this.ScoresAreDescending,
                   this.ExcludeFirstTimers,
-                  saveTeamHarmonySize,
-                  this.HarmonyPointsScoring);
+                  saveTeamTrophySize,
+                  this.TeamTrophyPointsScoring);
             }
             catch (Exception ex)
             {

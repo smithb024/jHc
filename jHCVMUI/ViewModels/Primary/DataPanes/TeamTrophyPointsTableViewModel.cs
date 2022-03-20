@@ -4,7 +4,6 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
-    using HandicapModel.Common;
     using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
     using jHCVMUI.ViewModels.ViewModels;
@@ -12,20 +11,19 @@
     using NynaeveLib.Commands;
 
     /// <summary>
-    /// View model which supports the points table for the team (harmony) trophy. This is the
-    /// trophy which behaves like a mob match with a maximum team size.
+    /// View model which supports the points table for the team trophy. 
     /// </summary>
-    public class TeamHarmonyPointsTableViewModel : ViewModelBase
+    public class TeamTrophyPointsTableViewModel : ViewModelBase
     {
         /// <summary>
         /// The points table.
         /// </summary>
-        private ObservableCollection<TeamHarmonyPointsTableRowViewModel> pointsTable;
+        private ObservableCollection<TeamTrophyPointsTableRowViewModel> pointsTable;
 
         /// <summary>
         /// Index of the currently selected item on the table.
         /// </summary>
-        private int currentTeamHarmonyPointsTableIndex;
+        private int currentTeamTrophyPointsTableIndex;
 
         /// <summary>
         /// Indicates whether verbose or concise data is show.
@@ -41,16 +39,12 @@
         /// Initialises a new instance of the <see cref="ISeason"/> class.
         /// </summary>
         /// <param name="model">season model</param>
-        public TeamHarmonyPointsTableViewModel(ISeason model)
+        public TeamTrophyPointsTableViewModel(ISeason model)
         {
             this.model = model;
-            this.pointsTable = new ObservableCollection<TeamHarmonyPointsTableRowViewModel>();
-            this.currentTeamHarmonyPointsTableIndex = 0;
+            this.pointsTable = new ObservableCollection<TeamTrophyPointsTableRowViewModel>();
+            this.currentTeamTrophyPointsTableIndex = 0;
             this.expandedData = false;
-
-            //Model.Instance.CurrentSeason.ClubsCallback =
-            //    new ClubSeasonDelegate(
-            //        PopulateClubPointsData);
 
             this.model.ClubsChangedEvent += this.PopulateClubPointsData;
             this.ExpandCommand =
@@ -99,9 +93,9 @@
         }
 
         /// <summary>
-        /// Gets points sets the team (harmony) points table.
+        /// Gets points sets the team trophy points table.
         /// </summary>
-        public ObservableCollection<TeamHarmonyPointsTableRowViewModel> PointsTable
+        public ObservableCollection<TeamTrophyPointsTableRowViewModel> PointsTable
         {
             get
             {
@@ -122,12 +116,12 @@
         {
             get
             {
-                return currentTeamHarmonyPointsTableIndex;
+                return currentTeamTrophyPointsTableIndex;
             }
 
             set
             {
-                currentTeamHarmonyPointsTableIndex = value;
+                currentTeamTrophyPointsTableIndex = value;
                 RaisePropertyChangedEvent(nameof(this.SelectedPointsTableIndex));
             }
         }
@@ -139,7 +133,7 @@
         {
             this.ExpandedData = !this.ExpandedData;
 
-            foreach (TeamHarmonyPointsTableRowViewModel row in this.PointsTable)
+            foreach (TeamTrophyPointsTableRowViewModel row in this.PointsTable)
             {
                 row.ExpandedData = this.ExpandedData;
             }
@@ -153,15 +147,15 @@
         {
             foreach (ClubSeasonDetails clubSeasonDetail in this.model.Clubs)
             {
-                TeamHarmonyPointsTableRowViewModel clubPoints =
-                    new TeamHarmonyPointsTableRowViewModel(
+                TeamTrophyPointsTableRowViewModel clubPoints =
+                    new TeamTrophyPointsTableRowViewModel(
                         clubSeasonDetail.Name,
-                        clubSeasonDetail.HarmonyCompetition.TotalScore);
+                        clubSeasonDetail.TeamTrophy.TotalScore);
 
-                foreach (IHarmonyEvent eventPoints in clubSeasonDetail.HarmonyCompetition.Events)
+                foreach (ITeamTrophyEvent eventPoints in clubSeasonDetail.TeamTrophy.Events)
                 {
-                    HarmonyPointsTypeViewModel points =
-                        new HarmonyPointsTypeViewModel(
+                    TeamTrophyPointsTypeViewModel points =
+                        new TeamTrophyPointsTypeViewModel(
                             eventPoints.Score,
                             eventPoints.TotalAthletePoints,
                             eventPoints.NumberOfAthletes,
@@ -174,7 +168,7 @@
             }
 
             this.PointsTable =
-                new ObservableCollection<TeamHarmonyPointsTableRowViewModel>(
+                new ObservableCollection<TeamTrophyPointsTableRowViewModel>(
                     this.PointsTable.OrderBy(
                         order => order.TotalPoints));
         }

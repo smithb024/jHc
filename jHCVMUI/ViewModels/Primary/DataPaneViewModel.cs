@@ -30,9 +30,9 @@
         private MobTrophyPointsTableViewModel mobTrophyPointsTableViewModel;
 
         /// <summary>
-        /// View model which supports the team harmony points table.
+        /// View model which supports the team trophy points table.
         /// </summary>
-        private TeamHarmonyPointsTableViewModel teamHarmonyPointsTableViewModel;
+        private TeamTrophyPointsTableViewModel teamTrophyPointsTableViewModel;
 
         /// <summary>
         /// View model which supports the athlete points table.
@@ -65,8 +65,8 @@
             this.mobTrophyPointsTableViewModel =
                 new MobTrophyPointsTableViewModel(
                     this.model.CurrentSeason);
-            this.teamHarmonyPointsTableViewModel =
-                new TeamHarmonyPointsTableViewModel(
+            this.teamTrophyPointsTableViewModel =
+                new TeamTrophyPointsTableViewModel(
                     this.model.CurrentSeason);
             this.pointsTableViewModel = 
                 new PointsTableViewModel(
@@ -84,7 +84,7 @@
             this.dataViewContents = this.seasonSummaryViewModel;
 
             this.ShowMobTrophyPointsTableCommand = new SimpleCommand(this.SelectMobTrophyPointsTable);
-            this.ShowTeamHarmonyPointsTableCommand = new SimpleCommand(this.SelectTeamHarmonyPointsTable);
+            this.ShowTeamTrophyPointsTableCommand = new SimpleCommand(this.SelectTeamTrophyPointsTable);
             this.ShowEventSummaryCommand = new SimpleCommand(this.SelectEventSummaryData);
             this.ShowPointsTableCommand = new SimpleCommand(this.SelectPointsTable);
             this.ShowResultsCommand = new SimpleCommand(this.SelectResultsTable);
@@ -107,9 +107,9 @@
         public ICommand ShowMobTrophyPointsTableCommand { get; private set; }
 
         /// <summary>
-        /// Gets the command used to show the team harmony points table.
+        /// Gets the command used to show the Team Trophy points table.
         /// </summary>
-        public ICommand ShowTeamHarmonyPointsTableCommand { get; private set; }
+        public ICommand ShowTeamTrophyPointsTableCommand { get; private set; }
 
         /// <summary>
         /// Gets the command used to show the event summary data.
@@ -139,7 +139,7 @@
                 this.RaisePropertyChangedEvent(nameof(this.PointsTableVisible));
                 this.RaisePropertyChangedEvent(nameof(this.EventSummaryVisible));
                 this.RaisePropertyChangedEvent(nameof(this.MobTrophyPointsTableVisible));
-                this.RaisePropertyChangedEvent(nameof(this.TeamHarmonyPointsTableVisible));
+                this.RaisePropertyChangedEvent(nameof(this.TeamTrophyPointsTableVisible));
                 this.RaisePropertyChangedEvent(nameof(this.ResultsTableVisible));
             }
         }
@@ -160,17 +160,17 @@
         public bool PointsTableVisible => this.DataViewContents.GetType() == typeof(PointsTableViewModel);
 
         /// <summary>
-        /// Gets a value indicating whether the season summary data is visible.
+        /// Gets a value indicating whether the Mob Trophy table is visible.
         /// </summary>
         public bool MobTrophyPointsTableVisible => this.DataViewContents.GetType() == typeof(MobTrophyPointsTableViewModel);
 
         /// <summary>
-        /// Gets a value indicating whether the season summary data is visible.
+        /// Gets a value indicating whether the Team Trophy table is visible.
         /// </summary>
-        public bool TeamHarmonyPointsTableVisible => this.DataViewContents.GetType() == typeof(TeamHarmonyPointsTableViewModel);
+        public bool TeamTrophyPointsTableVisible => this.DataViewContents.GetType() == typeof(TeamTrophyPointsTableViewModel);
 
         /// <summary>
-        /// Gets a value indicating whether the season summary data is visible.
+        /// Gets a value indicating whether the Results table is visible.
         /// </summary>
         public bool ResultsTableVisible => this.DataViewContents.GetType() == typeof(ResultsTableViewModel);
 
@@ -213,11 +213,11 @@
         }
 
         /// <summary>
-        /// Select the team harmony points table for display on the data pane.
+        /// Select the Team Trophy points table for display on the data pane.
         /// </summary>
-        private void SelectTeamHarmonyPointsTable()
+        private void SelectTeamTrophyPointsTable()
         {
-            this.DataViewContents = this.teamHarmonyPointsTableViewModel;
+            this.DataViewContents = this.teamTrophyPointsTableViewModel;
         }
 
         /// <summary>

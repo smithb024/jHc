@@ -4,12 +4,12 @@
     using Interfaces.Common;
 
     /// <summary>
-    /// Class used to store a point for an individual athlete in the Harmony team competition.
+    /// Class used to store a point for an individual athlete in the Team Trophy.
     /// </summary>
-    public class CommonHarmonyPoints : AthleteHarmonyPoints, ICommonHarmonyPoints
+    public class CommonTeamTrophyPoints : AthleteTeamTrophyPoints, ICommonTeamTrophyPoints
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="CommonHarmonyPoints"/> class.
+        /// Initialises a new instance of the <see cref="CommonTeamTrophyPoints"/> class.
         /// </summary>
         /// <param name="point">points scored</param>
         /// <param name="name">name of the points scorer</param>
@@ -17,7 +17,7 @@
         /// <param name="isReal">
         /// indicates whether the points scorer is real or artifically used to make up the numbers
         /// </param>
-        public CommonHarmonyPoints(
+        public CommonTeamTrophyPoints(
             int point,
             string name,
             int key,

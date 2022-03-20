@@ -8,20 +8,20 @@
     using Interfaces.SeasonModel;
 
     /// <summary>
-    /// A single event for a team within the harmony competition.
+    /// A single event for a team within the Team Trophy.
     /// </summary>
-    public class HarmonyEvent : IHarmonyEvent
+    public class TeamTrophyEvent : ITeamTrophyEvent
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="HarmonyEvent"/> class.
+        /// Initialises a new instance of the <see cref="TeamTrophyEvent"/> class.
         /// </summary>
         /// <param name="date">date of the event</param>
         /// <param name="points">event points</param>
-        /// <param name="teamSize">the size of a harmony team</param>
+        /// <param name="teamSize">the size of a Team Trophy team</param>
         /// <param name="score">the score of the team in the current event</param>
-        public HarmonyEvent(
+        public TeamTrophyEvent(
             DateType date,
-            List<ICommonHarmonyPoints> points,
+            List<ICommonTeamTrophyPoints> points,
             int teamSize,
             int score)
         {
@@ -33,17 +33,17 @@
         }
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="HarmonyEvent"/> class.
+        /// Initialises a new instance of the <see cref="TeamTrophyEvent"/> class.
         /// </summary>
         /// <param name="date">date of the event</param>
-        /// <param name="teamSize">the size of a harmony team</param>
-        public HarmonyEvent(
+        /// <param name="teamSize">the size of a Team Trophy team</param>
+        public TeamTrophyEvent(
             DateType date,
             int teamSize)
         {
             this.Date = date;
             this.TeamSize = teamSize;
-            this.Points = new List<ICommonHarmonyPoints>();
+            this.Points = new List<ICommonTeamTrophyPoints>();
             this.VirtualAthletePoints = 0;
             this.Score = 0;
         }
@@ -66,7 +66,7 @@
             {
                 int points = 0;
 
-                foreach(ICommonHarmonyPoints point in this.Points)
+                foreach(ICommonTeamTrophyPoints point in this.Points)
                 {
                     points += point.Point;
                 }
@@ -88,7 +88,7 @@
         /// <summary>
         /// Gets a collection containing the break down of points.
         /// </summary>
-        public List<ICommonHarmonyPoints> Points { get; }
+        public List<ICommonTeamTrophyPoints> Points { get; }
 
         /// <summary>
         /// Gets a value indicating whether the points collection is valid.
@@ -103,7 +103,7 @@
         public int VirtualAthletePoints { get; private set; }
 
         /// <summary>
-        /// Gets the size of a harmony team.
+        /// Gets the size of a Team Trophy team.
         /// </summary>
         public int TeamSize { get; }
 
@@ -113,9 +113,9 @@
         /// <remarks>
         /// The point is only added if there is space in the team.
         /// </remarks>
-        /// <param name="newPoint"><see cref="ICommonHarmonyPoints"/> to add</param>
+        /// <param name="newPoint"><see cref="ICommonTeamTrophyPoints"/> to add</param>
         /// <returns>success flag</returns>
-        public bool AddPoint(ICommonHarmonyPoints newPoint)
+        public bool AddPoint(ICommonTeamTrophyPoints newPoint)
         {
             bool success = false;
 
@@ -148,8 +148,8 @@
             {
                 while (this.Points.Count < teamSize)
                 {
-                    ICommonHarmonyPoints virtualPoint =
-                        new CommonHarmonyPoints(
+                    ICommonTeamTrophyPoints virtualPoint =
+                        new CommonTeamTrophyPoints(
                             pointsValue,
                             string.Empty,
                             -1,

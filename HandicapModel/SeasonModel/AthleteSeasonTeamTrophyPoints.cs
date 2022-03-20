@@ -3,24 +3,22 @@
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.Interfaces.SeasonModel;
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
 
-    public class AthleteSeasonHarmonyPoints : IAthleteSeasonHarmonyPoints
+    public class AthleteSeasonTeamTrophyPoints : IAthleteSeasonTeamTrophyPoints
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="AthleteSeasonHarmonyPointsq"/> class.
+        /// Initialises a new instance of the <see cref="AthleteSeasonTeamTrophyPoints"/> class.
         /// </summary>
-        public AthleteSeasonHarmonyPoints()
+        public AthleteSeasonTeamTrophyPoints()
         {
-            this.AllPoints = new List<IAthleteHarmonyPoints>();
+            this.AllPoints = new List<IAthleteTeamTrophyPoints>();
         }
 
         /// <summary>
         /// Gets a collection of all the points received.
         /// </summary>
-        public List<IAthleteHarmonyPoints> AllPoints { get; }
+        public List<IAthleteTeamTrophyPoints> AllPoints { get; }
 
         /// <summary>
         /// Gets the total number of points scored for the team.
@@ -31,7 +29,7 @@
             {
                 int points = 0;
 
-                foreach (CommonHarmonyPoints point in this.AllPoints)
+                foreach (CommonTeamTrophyPoints point in this.AllPoints)
                 {
                     if (point.Point > 0)
                     {
@@ -47,13 +45,13 @@
         /// <summary>
         /// Gets the number of results which were elegable for the team.
         /// </summary>
-        public int NumberOfScoringEvents 
+        public int NumberOfScoringEvents
         {
             get
             {
                 int counter = 0;
 
-                foreach (CommonHarmonyPoints point in this.AllPoints)
+                foreach (CommonTeamTrophyPoints point in this.AllPoints)
                 {
                     if (point.Point > 0)
                     {
@@ -73,9 +71,9 @@
         /// Will overwrite an existing points if one already exists.
         /// </remarks>
         /// <param name="date">Date of the event</param>
-        public void AddNewEvent(IAthleteHarmonyPoints newPoints)
+        public void AddNewEvent(IAthleteTeamTrophyPoints newPoints)
         {
-            IAthleteHarmonyPoints foundPoints =
+            IAthleteTeamTrophyPoints foundPoints =
                 this.AllPoints.Find(p => p.Date == newPoints.Date);
 
             if (foundPoints != null)
@@ -84,7 +82,6 @@
             }
 
             this.AllPoints.Add(newPoints);
-            //this.AllPoints.OrderBy(p => p.Date).ToList();
         }
     }
 }

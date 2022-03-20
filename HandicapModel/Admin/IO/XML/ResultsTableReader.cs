@@ -67,7 +67,7 @@
                             entry.PB,
                             entry.SB,
                             entry.Points.ToString(),
-                            entry.HarmonyPoints,
+                            entry.TeamTrophyPoints,
                             entry.RaceNumber,
                             entry.RunningOrder,
                             entry.Time.ToString(),
@@ -137,7 +137,7 @@
                         row.Handicap);
                 CommonPoints points =
                     new CommonPoints(
-                        row.Points,
+                        row.PMobTrophyoints,
                         date);
                 int position = resultsTable.Entries.Count + 1;
 
@@ -153,7 +153,7 @@
                             row.Sex,
                             row.Number,
                             points,
-                            row.HarmonyPoints,
+                            row.TeamTrophyPoints,
                             row.IsPersonalBest,
                             row.IsYearBest,
                             row.Notes,

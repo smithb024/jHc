@@ -61,24 +61,6 @@ namespace HandicapModel.Admin.IO {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ClubHyPoints.
-        /// </summary>
-        internal static string clubHarmonyTable {
-            get {
-                return ResourceManager.GetString("clubHarmonyTable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ClubHyPointsCurrent.
-        /// </summary>
-        internal static string clubHarmonyTableCurrentEvent {
-            get {
-                return ResourceManager.GetString("clubHarmonyTableCurrentEvent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to .csv.
         /// </summary>
         internal static string csvExtension {
@@ -156,6 +138,24 @@ namespace HandicapModel.Admin.IO {
         internal static string summaryTable {
             get {
                 return ResourceManager.GetString("summaryTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TeamTrophyPoints.
+        /// </summary>
+        internal static string teamTrophyPointsTable {
+            get {
+                return ResourceManager.GetString("teamTrophyPointsTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TeamTrophyPointsCurrent.
+        /// </summary>
+        internal static string teamTrophyPointsTableCurrentEvent {
+            get {
+                return ResourceManager.GetString("teamTrophyPointsTableCurrentEvent", resourceCulture);
             }
         }
     }

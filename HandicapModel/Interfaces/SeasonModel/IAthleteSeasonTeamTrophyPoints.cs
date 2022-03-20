@@ -6,14 +6,14 @@
 
     /// <summary>
     /// Interface which describes all the points scored by an athlete in a specific season.
-    /// This is for the harmony points competition
+    /// This is for the Team Trophy.
     /// </summary>
-    public interface IAthleteSeasonHarmonyPoints
+    public interface IAthleteSeasonTeamTrophyPoints
     {
         /// <summary>
         /// Gets a collection of all the points received.
         /// </summary>
-        List<IAthleteHarmonyPoints> AllPoints { get; }
+        List<IAthleteTeamTrophyPoints> AllPoints { get; }
 
         /// <summary>
         /// Gets the total number of points scored for the team.
@@ -32,6 +32,6 @@
         /// Will overwrite an existing points if one already exists.
         /// </remarks>
         /// <param name="date">Date of the event</param>
-        void AddNewEvent(IAthleteHarmonyPoints newPoints);
+        void AddNewEvent(IAthleteTeamTrophyPoints newPoints);
     }
 }

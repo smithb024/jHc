@@ -3,9 +3,9 @@
     using CommonLib.Types;
 
     /// <summary>
-    /// Interface which describes a single points entry for an athlete within the harmony competition.
+    /// Interface which describes a single points entry for an athlete within the Team Trophy.
     /// </summary>
-    public interface IAthleteHarmonyPoints
+    public interface IAthleteTeamTrophyPoints
     {
         /// <summary>
         /// Gets the number of points.

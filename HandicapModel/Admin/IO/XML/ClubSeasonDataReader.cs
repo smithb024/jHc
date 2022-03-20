@@ -22,19 +22,19 @@
         private const string c_rootElement = "CbSea";
         private const string c_clubElement = "club";
         private const string c_eventPointsElement = "pt";
-        private const string c_pointsElement = "pts";
-        private const string HarmonyPointsElement = "hPts";
+        private const string MobTrophyPointsElement = "pts";
+        private const string TeamTrophyPointsElement = "hPts";
         private const string EventElement = "event";
 
         private const string finishingPointsAttribute = "fPt";
         private const string positionPointsAttribute = "pPt";
         private const string bestPointsAttribute = "bPt";
         private const string eventDateAttribute = "evPt";
-        private const string HarmonyTeamSizeAttribute = "tm";
-        private const string HarmonyVirtualAthletePointAttribute = "vr";
-        private const string HarmonyEventDateAttribute = "dt";
-        private const string HarmonyScoreAttribute = "scr";
-        private const string HarmonyPointAttribute = "pt";
+        private const string TeamTrophyTeamSizeAttribute = "tm";
+        private const string TeamTrophyVirtualAthletePointAttribute = "vr";
+        private const string TeamTrophyEventDateAttribute = "dt";
+        private const string TeamTrophyScoreAttribute = "scr";
+        private const string TeamTrophyPointAttribute = "pt";
         private const string AthleteKeyAttribute = "key";
 
         private const string nameAttribute = "name";
@@ -82,11 +82,11 @@
                             c_clubElement,
                             new XAttribute(nameAttribute, season.Name));
 
-                    XElement pointsElement = new XElement(c_pointsElement);
-                    athleteElement.Add(pointsElement);
+                    XElement mobTophyPointsElement = new XElement(MobTrophyPointsElement);
+                    athleteElement.Add(mobTophyPointsElement);
 
-                    XElement harmonyPointsElement = new XElement(HarmonyPointsElement);
-                    athleteElement.Add(harmonyPointsElement);
+                    XElement teamTrophyPointsElement = new XElement(TeamTrophyPointsElement);
+                    athleteElement.Add(teamTrophyPointsElement);
 
                     foreach (CommonPoints points in season.MobTrophy.Points)
                     {
@@ -97,34 +97,34 @@
                                 new XAttribute(positionPointsAttribute, points.PositionPoints.ToString()),
                                 new XAttribute(bestPointsAttribute, points.BestPoints.ToString()),
                                 new XAttribute(eventDateAttribute, points.Date.ToString()));
-                        pointsElement.Add(pointElement);
+                        mobTophyPointsElement.Add(pointElement);
                     }
 
-                    foreach(IHarmonyEvent harmonyEvent in season.HarmonyCompetition.Events)
+                    foreach(ITeamTrophyEvent teamTrophyEvent in season.TeamTrophy.Events)
                     {
                         XElement eventElement =
                             new XElement(
                                 EventElement,
-                                new XAttribute(HarmonyTeamSizeAttribute, harmonyEvent.Points.Count),
-                                new XAttribute(HarmonyVirtualAthletePointAttribute, harmonyEvent.VirtualAthletePoints),
-                                new XAttribute(HarmonyEventDateAttribute, harmonyEvent.Date.ToString()),
-                                new XAttribute(HarmonyScoreAttribute, harmonyEvent.Score));
+                                new XAttribute(TeamTrophyTeamSizeAttribute, teamTrophyEvent.Points.Count),
+                                new XAttribute(TeamTrophyVirtualAthletePointAttribute, teamTrophyEvent.VirtualAthletePoints),
+                                new XAttribute(TeamTrophyEventDateAttribute, teamTrophyEvent.Date.ToString()),
+                                new XAttribute(TeamTrophyScoreAttribute, teamTrophyEvent.Score));
 
-                        foreach(ICommonHarmonyPoints point in harmonyEvent.Points)
+                        foreach(ICommonTeamTrophyPoints point in teamTrophyEvent.Points)
                         {
                             if (point.IsReal)
                             {
                                 XElement points =
                                     new XElement(
                                         c_eventPointsElement,
-                                        new XAttribute(HarmonyPointAttribute, point.Point),
+                                        new XAttribute(TeamTrophyPointAttribute, point.Point),
                                         new XAttribute(AthleteKeyAttribute, point.AthleteKey));
 
                                 eventElement.Add(points);
                             }
                         }
 
-                        harmonyPointsElement.Add(eventElement);
+                        teamTrophyPointsElement.Add(eventElement);
                     }
 
                     rootElement.Add(athleteElement);
@@ -165,10 +165,10 @@
                                select new
                                {
                                    name = (string)Club.Attribute(nameAttribute),
-                                   points = from Points in Club.Elements(c_pointsElement)
+                                   mobTrophyPoints = from MobTrophyPoints in Club.Elements(MobTrophyPointsElement)
                                             select new
                                             {
-                                                point = from Point in Points.Elements(c_eventPointsElement)
+                                                point = from Point in MobTrophyPoints.Elements(c_eventPointsElement)
                                                         select new
                                                         {
                                                             finishing = (int)Point.Attribute(finishingPointsAttribute),
@@ -177,20 +177,20 @@
                                                             date = (string)Point.Attribute(eventDateAttribute)
                                                         }
                                             },
-                                   harmonyPoints = from HarmonyPoints in Club.Elements(HarmonyPointsElement)
+                                   teamTrophyPoints = from TeamTrophyPoints in Club.Elements(TeamTrophyPointsElement)
                                                    select new
                                                    {
-                                                       events = from HarmonyEvent in HarmonyPoints.Elements(EventElement)
+                                                       events = from TeamTrophyEvent in TeamTrophyPoints.Elements(EventElement)
                                                                 select new
                                                                 {
-                                                                    size = (int)HarmonyEvent.Attribute(HarmonyTeamSizeAttribute),
-                                                                    virtualPoint = (int)HarmonyEvent.Attribute(HarmonyVirtualAthletePointAttribute),
-                                                                    date = (string)HarmonyEvent.Attribute(HarmonyEventDateAttribute),
-                                                                    score = (int)HarmonyEvent.Attribute(HarmonyScoreAttribute),
-                                                                    points = from Point in HarmonyEvent.Elements(c_eventPointsElement)
+                                                                    size = (int)TeamTrophyEvent.Attribute(TeamTrophyTeamSizeAttribute),
+                                                                    virtualPoint = (int)TeamTrophyEvent.Attribute(TeamTrophyVirtualAthletePointAttribute),
+                                                                    date = (string)TeamTrophyEvent.Attribute(TeamTrophyEventDateAttribute),
+                                                                    score = (int)TeamTrophyEvent.Attribute(TeamTrophyScoreAttribute),
+                                                                    points = from Point in TeamTrophyEvent.Elements(c_eventPointsElement)
                                                                             select new
                                                                             {
-                                                                                value = (int)Point.Attribute(HarmonyPointAttribute),
+                                                                                value = (int)Point.Attribute(TeamTrophyPointAttribute),
                                                                                 key = (int)Point.Attribute(AthleteKeyAttribute)
                                                                             }
                                                                 }
@@ -201,7 +201,7 @@
                 {
                     ClubSeasonDetails clubDetails = new ClubSeasonDetails(club.name);
 
-                    foreach (var points in club.points)
+                    foreach (var points in club.mobTrophyPoints)
                     {
                         foreach (var point in points.point)
                         {
@@ -222,20 +222,20 @@
                         }
                     }
 
-                    foreach (var harmonyPoints in club.harmonyPoints)
+                    foreach (var teamTrophyPoints in club.teamTrophyPoints)
                     {
 
-                        foreach (var harmonyEvent in harmonyPoints.events)
+                        foreach (var teamTrophyEvent in teamTrophyPoints.events)
                         {
-                            List<ICommonHarmonyPoints> pointsList = new List<ICommonHarmonyPoints>();
+                            List<ICommonTeamTrophyPoints> pointsList = new List<ICommonTeamTrophyPoints>();
                             DateType date =
                                 new DateType(
-                                    harmonyEvent.date);
+                                    teamTrophyEvent.date);
 
-                            foreach (var point in harmonyEvent.points)
+                            foreach (var point in teamTrophyEvent.points)
                             {
-                                CommonHarmonyPoints readPoints =
-                                    new CommonHarmonyPoints(
+                                CommonTeamTrophyPoints readPoints =
+                                    new CommonTeamTrophyPoints(
                                         point.value,
                                         string.Empty,
                                         point.key,
@@ -245,17 +245,17 @@
                                 pointsList.Add(readPoints);
                             }
 
-                            IHarmonyEvent readEvent =
-                                new HarmonyEvent(
+                            ITeamTrophyEvent readEvent =
+                                new TeamTrophyEvent(
                                     date,
                                     pointsList,
-                                    harmonyEvent.size,
-                                    harmonyEvent.score);
+                                    teamTrophyEvent.size,
+                                    teamTrophyEvent.score);
                             readEvent.Complete(
-                                harmonyEvent.size,
-                                harmonyEvent.virtualPoint);
+                                teamTrophyEvent.size,
+                                teamTrophyEvent.virtualPoint);
 
-                            clubDetails.HarmonyCompetition.AddEvent(readEvent);
+                            clubDetails.TeamTrophy.AddEvent(readEvent);
                         }
                     }
 

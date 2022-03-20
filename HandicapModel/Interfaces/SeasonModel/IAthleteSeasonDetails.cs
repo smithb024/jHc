@@ -34,7 +34,7 @@ namespace HandicapModel.Interfaces.SeasonModel
         /// <summary>
         /// Gets and sets the number of points assoicated with the harmnony competiion.
         /// </summary>
-        IAthleteSeasonHarmonyPoints HarmonyPoints { get; set; }
+        IAthleteSeasonTeamTrophyPoints TeamTrophyPoints { get; set; }
 
         /// <summary>
         /// Gets all the times run this season.

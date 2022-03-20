@@ -68,9 +68,9 @@
         private int bestPoints;
 
         /// <summary>
-        /// Total number of points scored in the harmony competition.
+        /// Total number of points scored in the Team Trophy competition.
         /// </summary>
-        private string harmonyPoints;
+        private string teamTrophyPoints;
 
         /// <summary>
         /// Athlete's race number.
@@ -119,7 +119,7 @@
         /// <param name="finishingPoints">finishing points</param>
         /// <param name="positionPoints">position points</param>
         /// <param name="bestPoints">best points</param>
-        /// <param name="harmonyPoints">harmony competition points</param>
+        /// <param name="teamTrophyPoints">Team Trophy points</param>
         /// <param name="raceNumber">race number</param>
         /// <param name="totalTime">total time</param>
         /// <param name="runningTime">running time</param>
@@ -140,7 +140,7 @@
           int finishingPoints,
           int positionPoints,
           int bestPoints,
-          int harmonyPoints,
+          int teamTrophyPoints,
           string raceNumber,
           string totalTime,
           string runningTime,
@@ -159,7 +159,7 @@
             this.position = position;
             this.positionPoints = positionPoints;
             this.bestPoints = bestPoints;
-            this.harmonyPoints = harmonyPoints > 0 ? $"{harmonyPoints}" : string.Empty;
+            this.teamTrophyPoints = teamTrophyPoints > 0 ? $"{teamTrophyPoints}" : string.Empty;
             this.pb = pb ? "Y" : string.Empty;
             this.raceNumber = raceNumber;
             this.totalTime = totalTime;
@@ -375,9 +375,9 @@
         }
 
         /// <summary>
-        /// Gets the points scored in the harmony competition.
+        /// Gets the points scored in the Team Trophy.
         /// </summary>
-        public string HarmonyPoints => this.harmonyPoints;
+        public string TeamTrophyPoints => this.teamTrophyPoints;
 
         /// <summary>
         /// Gets or sets the atlete's race number.

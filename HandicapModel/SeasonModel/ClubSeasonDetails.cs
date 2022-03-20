@@ -18,7 +18,7 @@
         {
             this.Name = clubName;
             this.MobTrophy = new MobTrophy();
-            this.HarmonyCompetition = new HarmonyCompetition();
+            this.TeamTrophy = new TeamTrophyCompetition();
         }
 
         /// <summary>
@@ -32,9 +32,9 @@
         public IMobTrophy MobTrophy { get; }
 
         /// <summary>
-        /// Gets the details of the team harmony competition for this team.
+        /// Gets the details of the Team Trophy for this team.
         /// </summary>
-        public IHarmonyCompetition HarmonyCompetition { get; }
+        public ITeamTrophyCompetition TeamTrophy { get; }
 
         /// <summary>
         /// Add a new event.
@@ -49,11 +49,11 @@
         /// <summary>
         /// Add a new event.
         /// </summary>
-        /// <param name="newPoints">points harmony received</param>
+        /// <param name="newPoints">Team Trophy points received</param>
         public void AddNewEvent(
-            IHarmonyEvent newEvent)
+            ITeamTrophyEvent newEvent)
         {
-            this.HarmonyCompetition.AddEvent(newEvent);
+            this.TeamTrophy.AddEvent(newEvent);
         }
 
         /// <summary>

@@ -1,18 +1,17 @@
 ﻿namespace jHCVMUI.ViewModels.ViewModels.Types.Clubs
 {
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using CommonLib.Types;
     using HandicapModel.Interfaces.Common;
 
     /// <summary>
     /// View model which is used to show all the points scored by a team for a specific event 
-    /// within the harmony team event.
+    /// within the Team Trophy event.
     /// </summary>
-    public class HarmonyPointsTypeViewModel : ViewModelBase
+    public class TeamTrophyPointsTypeViewModel : ViewModelBase
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="HarmonyPointsTypeViewModel"/> class.
+        /// Initialises a new instance of the <see cref="TeamTrophyPointsTypeViewModel"/> class.
         /// </summary>
         /// <param name="score">The score for this team in this event</param>
         /// <param name="aggregatePoints">
@@ -21,11 +20,11 @@
         /// <param name="contributingSize">number of members of the team</param>
         /// <param name="inputPoints">collection of all points in the event</param>
         /// <param name="date">event date</param>
-        public HarmonyPointsTypeViewModel(
+        public TeamTrophyPointsTypeViewModel(
             int score,
             int aggregatePoints,
             int contributingSize,
-            List<ICommonHarmonyPoints> inputPoints,
+            List<ICommonTeamTrophyPoints> inputPoints,
             DateType date)
         {
             this.Score = score;

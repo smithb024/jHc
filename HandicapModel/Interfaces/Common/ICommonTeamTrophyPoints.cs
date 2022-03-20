@@ -1,9 +1,9 @@
 ﻿namespace HandicapModel.Interfaces.Common
 {
     /// <summary>
-    /// Interface which breaks down a point within the team harmony competition.
+    /// Interface which breaks down a point within the team trophy competition.
     /// </summary>
-    public interface ICommonHarmonyPoints : IAthleteHarmonyPoints 
+    public interface ICommonTeamTrophyPoints : IAthleteTeamTrophyPoints 
     {
         /// <summary>
         /// Gets a value indicated whether this is a real athlete, or just filler.

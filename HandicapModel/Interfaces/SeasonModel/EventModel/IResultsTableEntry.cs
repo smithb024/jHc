@@ -60,9 +60,9 @@
         ICommonPoints Points { get; set; }
 
         /// <summary>
-        /// Gets or sets the points associated with the harmony competition.
+        /// Gets or sets the points associated with the Team Trophy.
         /// </summary>
-        int HarmonyPoints { get; set; }
+        int TeamTrophyPoints { get; set; }
 
         /// <summary>
         /// Gets the finishing position.

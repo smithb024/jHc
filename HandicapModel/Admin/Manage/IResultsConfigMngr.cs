@@ -24,7 +24,7 @@
         /// <param name="seasonBestPoints">points for running a season best</param>
         /// <param name="scoringPositions">number of positional scoring places</param>
         /// <param name="teamFinishingPoints">team points for finishing</param>
-        /// <param name="teamSize">size of a team</param>
+        /// <param name="mobTrophyTeamSize">size of a team</param>
         /// <param name="teamSeasonBestPoints">team points for running a season best</param>
         /// <param name="scoresToCount">
         /// Number of scores in a season to count towards the final points table
@@ -45,27 +45,26 @@
         /// A value which indicates whether first timers should be excluded from scoring position 
         /// points.
         /// </param>
-        /// <param name="teamHarmonySize">
-        /// The number of members of a Harmony Team team.
+        /// <param name="teamTrophyTeamSize">
+        /// The number of members of a Team Trophy team.
         /// </param>
-        /// <param name="harmonyPointsScoring">
-        /// A comma separated list detailing the points scored per position in the harmony team
-        /// competition. 
+        /// <param name="teamTrophyPointsScoring">
+        /// A comma separated list detailing the points scored per position in the Team Trophy
         /// </param>
         void SaveResultsConfiguration(
           int finishingPoints,
           int seasonBestPoints,
           int scoringPositions,
           int teamFinishingPoints,
-          int teamSize,
+          int mobTrophyTeamSize,
           int teamSeasonBestPoints,
           int scoresToCount,
           bool allResults,
           bool useTeams,
           bool scoresAreDescending,
           bool excludeFirstTimers,
-          int teamHarmonySize,
-          string harmonyPointsScoring);
+          int teamTrophyTeamSize,
+          string teamTrophyPointsScoring);
 
         /// <summary>
         /// Creates and saves a default results configuration file.

@@ -26,7 +26,7 @@
         /// <param name="club">athlete's club</param>
         /// <param name="raceNumber">athlete's race number</param>
         /// <param name="points">athlete's points</param>
-        /// <param name="harmonyPoints">points associated with the harmony competition</param>
+        /// <param name="teamTrophyPoints">points associated with the Team Trophy</param>
         /// <param name="pb">athlete's pb</param>
         /// <param name="yb">athlete's yb</param>
         /// <param name="notes">athlete's notes</param>
@@ -42,7 +42,7 @@
           SexType sex,
           string raceNumber,
           CommonPoints points,
-          int harmonyPoints,
+          int teamTrophyPoints,
           bool pb,
           bool yb,
           string notes,
@@ -57,7 +57,7 @@
             this.Order = order;
             this.PB = pb;
             this.Points = points;
-            this.HarmonyPoints = harmonyPoints;
+            this.TeamTrophyPoints = teamTrophyPoints;
             this.RaceNumber = raceNumber;
             this.RunningOrder = runningOrder;
             this.Time = time;
@@ -82,7 +82,7 @@
         /// <param name="date">event date</param>
         /// <param name="age">age of the athlete</param>
         /// <param name="position">the position of the current entry</param>
-        /// <param name="harmonyPoints">points associated with the harmony competition</param>
+        /// <param name="teamTrophyPoints">points associated with the Team Trophy</param>
         public ResultsTableEntry(
           int key,
           string name,
@@ -95,7 +95,7 @@
           DateType date,
           int? age,
           int position,
-          int harmonyPoints)
+          int teamTrophyPoints)
         {
             this.Key = key;
             this.Club = club;
@@ -103,7 +103,7 @@
             this.Name = name;
             this.Order = order;
             this.Points = new CommonPoints(date);
-            this.HarmonyPoints = harmonyPoints;
+            this.TeamTrophyPoints = teamTrophyPoints;
             this.RaceNumber = raceNumber;
             this.Sex = sex;
             this.Time = time;
@@ -191,9 +191,9 @@
         public ICommonPoints Points { get; set; }
 
         /// <summary>
-        /// Gets or sets the points associated with the harmony competition.
+        /// Gets or sets the points associated with the Team Trophy.
         /// </summary>
-        public int HarmonyPoints { get; set; }
+        public int TeamTrophyPoints { get; set; }
 
         /// <summary>
         /// Gets the race number.

@@ -13,8 +13,8 @@
     {
         private const string rootElement = "ResultsConfiguration";
         private const string racePointsElement = "RacePoints";
-        private const string clubPointsElement = "ClubPoints";
-        private const string harmonyPointsElement = "HmClubPoints";
+        private const string mobTrophyPointsElement = "ClubPoints";
+        private const string teamTrophyPointsElement = "HmClubPoints";
 
         private const string finishingPointsAttribute = "Finishing";
         private const string seasonBestAttribute = "SB";
@@ -29,8 +29,8 @@
         private const string teamSizeAttribute = "NumberCount";
         private const string teamSeasonBestAttribute = "SB";
 
-        private const string harmonyTeamSizeAttribute = "NumberCount";
-        private const string harmonyScoringAttribute = "Scr";
+        private const string teamTrophyTeamSizeAttribute = "NumberCount";
+        private const string teamTrophyScoringAttribute = "Scr";
 
         /// <summary>
         /// The application logger.
@@ -76,22 +76,22 @@
                     new XAttribute(allResultsAttribute, configData.AllResults),
                     new XAttribute(scoresToCountAttribute, configData.ScoresToCount),
                     new XAttribute(scoresDescendingAttribute, configData.ScoresAreDescending));
-                XElement clubPoints =
+                XElement mobTrophyPoints =
                   new XElement(
-                    clubPointsElement,
+                    mobTrophyPointsElement,
                     new XAttribute(useTeamsAttribute, configData.UseTeams),
                     new XAttribute(teamFinishingPointsAttribute, configData.TeamFinishingPoints),
                     new XAttribute(teamSizeAttribute, configData.NumberInTeam),
                     new XAttribute(teamSeasonBestAttribute, configData.TeamSeasonBestPoints));
-                XElement harmonyPoints =
+                XElement teamTrophyPoints =
                   new XElement(
-                    harmonyPointsElement,
-                    new XAttribute(harmonyTeamSizeAttribute, configData.NumberInHarmonyTeam),
-                    new XAttribute(harmonyScoringAttribute, configData.HarmonyPointsScoring));
+                    teamTrophyPointsElement,
+                    new XAttribute(teamTrophyTeamSizeAttribute, configData.NumberInTeamTrophyTeam),
+                    new XAttribute(teamTrophyScoringAttribute, configData.TeamTrophyPointsScoring));
 
                 root.Add(racePoints);
-                root.Add(clubPoints);
-                root.Add(harmonyPoints);
+                root.Add(mobTrophyPoints);
+                root.Add(teamTrophyPoints);
 
                 writer.Add(root);
                 writer.Save(fileName);
@@ -117,8 +117,8 @@
                 XElement root = reader.Root;
 
                 XElement RacePoints = root.Element(racePointsElement);
-                XElement ClubPoints = root.Element(clubPointsElement);
-                XElement HarmonyPoints = root.Element(harmonyPointsElement);
+                XElement MobTrophyPoints = root.Element(mobTrophyPointsElement);
+                XElement TeamTrophyPoints = root.Element(teamTrophyPointsElement);
 
                 int finishingPoints = (int)RacePoints.Attribute(finishingPointsAttribute);
                 int seasonBestPoints = (int)RacePoints.Attribute(seasonBestAttribute);
@@ -149,26 +149,26 @@
 
                 bool useTeams =
                   this.ReadBoolAttribute(
-                    ClubPoints,
+                    MobTrophyPoints,
                     useTeamsAttribute,
                     true,
                     fileName);
-                int teamFinishingPoints = (int)ClubPoints.Attribute(teamFinishingPointsAttribute);
-                int teamSize = (int)ClubPoints.Attribute(teamSizeAttribute);
-                int teamSeasonBestPoints = (int)ClubPoints.Attribute(teamSeasonBestAttribute);
+                int teamFinishingPoints = (int)MobTrophyPoints.Attribute(teamFinishingPointsAttribute);
+                int mobTrophyTeamSize = (int)MobTrophyPoints.Attribute(teamSizeAttribute);
+                int teamSeasonBestPoints = (int)MobTrophyPoints.Attribute(teamSeasonBestAttribute);
                 
-                int harmonyTeamSize;
-                string harmonyScoring;
+                int teamTrophyTeamSize;
+                string teamTrophyScoring;
 
-                if (HarmonyPoints != null)
+                if (TeamTrophyPoints != null)
                 {
-                     harmonyTeamSize = (int)HarmonyPoints.Attribute(harmonyTeamSizeAttribute);
-                     harmonyScoring = (string)HarmonyPoints.Attribute(harmonyScoringAttribute);
+                     teamTrophyTeamSize = (int)TeamTrophyPoints.Attribute(teamTrophyTeamSizeAttribute);
+                     teamTrophyScoring = (string)TeamTrophyPoints.Attribute(teamTrophyScoringAttribute);
                 }
                 else
                 {
-                    harmonyTeamSize = 0;
-                    harmonyScoring = string.Empty;
+                    teamTrophyTeamSize = 0;
+                    teamTrophyScoring = string.Empty;
                 }
 
                 return new ResultsConfigType(
@@ -176,15 +176,15 @@
                   seasonBestPoints,
                   scoringPositions,
                   teamFinishingPoints,
-                  teamSize,
+                  mobTrophyTeamSize,
                   teamSeasonBestPoints,
                   scoresToCount,
                   allResults,
                   useTeams,
                   scoresAreDescending,
                   excludeFirstTimers,
-                  harmonyTeamSize,
-                  harmonyScoring);
+                  teamTrophyTeamSize,
+                  teamTrophyScoring);
             }
             catch (Exception ex)
             {

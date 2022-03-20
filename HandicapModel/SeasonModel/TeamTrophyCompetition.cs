@@ -12,20 +12,20 @@
     /// The team size will be hardcoded to be 10, if there are not enough runners then points will
     /// be appended for missing runners, otherwise it works like a mob match. Lowest points win.
     /// </remarks>
-    public class HarmonyCompetition : IHarmonyCompetition
+    public class TeamTrophyCompetition : ITeamTrophyCompetition
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="HarmonyCompetition"/> class.
+        /// Initialises a new instance of the <see cref="TeamTrophyCompetition"/> class.
         /// </summary>
-        public HarmonyCompetition()
+        public TeamTrophyCompetition()
         {
-            this.Events = new List<IHarmonyEvent>();
+            this.Events = new List<ITeamTrophyEvent>();
         }
 
         /// <summary>
         /// Gets a collection of all the events this team has entered.
         /// </summary>
-        public List<IHarmonyEvent> Events { get; }
+        public List<ITeamTrophyEvent> Events { get; }
 
         /// <summary>
         /// Gets the total score for this team.
@@ -36,7 +36,7 @@
             {
                 int points = 0;
 
-                foreach (IHarmonyEvent race in this.Events)
+                foreach (ITeamTrophyEvent race in this.Events)
                 {
                     points += race.Score;
                 }
@@ -54,7 +54,7 @@
         /// </remarks>
         /// <param name="newEvent">new event</param>
         public void AddEvent(
-            IHarmonyEvent newEvent)
+            ITeamTrophyEvent newEvent)
         {
             if (this.Events.Count > 0)
             {
