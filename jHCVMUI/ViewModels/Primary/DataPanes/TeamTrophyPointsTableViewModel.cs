@@ -169,7 +169,7 @@
 
             this.PointsTable =
                 new ObservableCollection<TeamTrophyPointsTableRowViewModel>(
-                    this.PointsTable.OrderBy(
+                    this.PointsTable.OrderByDescending(
                         order => order.TotalPoints));
         }
 
