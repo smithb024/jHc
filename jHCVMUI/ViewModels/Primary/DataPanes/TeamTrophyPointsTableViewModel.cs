@@ -161,7 +161,7 @@
                             eventPoints.NumberOfAthletes,
                             eventPoints.Points,
                             eventPoints.Date);
-                    clubPoints.Points.Add(points);
+                    clubPoints.AddPoints(points);
                 }
 
                 PointsTable.Add(clubPoints);
