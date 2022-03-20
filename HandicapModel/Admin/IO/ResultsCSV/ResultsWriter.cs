@@ -58,7 +58,7 @@
                                              ResultsPaths.separator +
                                              entry.Points.TotalPoints +
                                              ResultsPaths.separator +
-                                             entry.HarmonyPoints +
+                                             entry.TeamTrophyPoints +
                                              ResultsPaths.separator +
                                              entry.Notes +
                                              ResultsPaths.separator +

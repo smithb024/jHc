@@ -67,10 +67,10 @@
         {
             if (!File.Exists(this.generalIo.ResultsConfigurationFile) || overrideExisting)
             {
-                string harmonyPoints = "6,5,4,3,2,1";
+                string teamTrophyPoints = "6,5,4,3,2,1";
 
                 this.SaveResultsConfiguration(
-                  new ResultsConfigType(4, 2, 10, 4, 5, 2, 0, true, true, true, false, 8, harmonyPoints));
+                  new ResultsConfigType(4, 2, 10, 4, 5, 2, 0, true, true, true, false, 8, teamTrophyPoints));
                 this.logger.WriteLog("Couldn't find results config file. Created a new default one");
             }
         }
@@ -103,12 +103,11 @@
         /// A value which indicates whether first timers should be excluded from scoring position 
         /// points.
         /// </param>
-        /// <param name="teamHarmonySize">
-        /// The number of members of a Harmony Team team.
+        /// <param name="teamTrophyTeamSize">
+        /// The number of members of a Team Trophy team.
         /// </param>
-        /// <param name="harmonyPointsScoring">
-        /// A comma separated list detailing the points scored per position in the harmony team
-        /// competition. 
+        /// <param name="teamTrophyPointsScoring">
+        /// A comma separated list detailing the points scored per position in the Team Trophy. 
         /// </param>
         public void SaveResultsConfiguration(
           int finishingPoints,
@@ -122,8 +121,8 @@
           bool useTeams,
           bool scoresAreDescending,
           bool excludeFirstTimers,
-          int teamHarmonySize,
-          string harmonyPointsScoring)
+          int teamTrophyTeamSize,
+          string teamTrophyPointsScoring)
         {
             this.SaveResultsConfiguration(
                 new ResultsConfigType(
@@ -138,8 +137,8 @@
                   useTeams,
                   scoresAreDescending,
                   excludeFirstTimers,
-                  teamHarmonySize,
-                  harmonyPointsScoring));
+                  teamTrophyTeamSize,
+                  teamTrophyPointsScoring));
         }
 
         /// <summary>

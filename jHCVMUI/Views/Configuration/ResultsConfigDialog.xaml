@@ -267,8 +267,8 @@
                 <TextBox Grid.Row="1"
                          Grid.Column="2"
                          Style="{StaticResource BodyTextBoxStyle}"
-                         Text="{Binding NumberInHarmonyTeam, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                         Foreground="{Binding HarmonyTeamSizeChanged, Converter={StaticResource fieldToColourConverter}}"
+                         Text="{Binding NumberInTeamTrophyTeam, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Foreground="{Binding TeamTrophyTeamSizeChanged, Converter={StaticResource fieldToColourConverter}}"
                          Margin="5"
                          Height="25"
                          HorizontalContentAlignment="Center"/>
@@ -282,8 +282,8 @@
                 <TextBox Grid.Row="2"
                          Grid.Column="2"
                          Style="{StaticResource BodyTextBoxStyle}"
-                         Text="{Binding HarmonyPointsScoring, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                         Foreground="{Binding HarmonyPointsScoringChanged, Converter={StaticResource fieldToColourConverter}}"
+                         Text="{Binding TeamTrophyPointsScoring, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Foreground="{Binding TeamTrophyPointsScoringChanged, Converter={StaticResource fieldToColourConverter}}"
                          Margin="5"
                          Height="25"
                          HorizontalContentAlignment="Center"/>

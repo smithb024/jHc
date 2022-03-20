@@ -50,14 +50,14 @@
         private bool personalBest;
 
         /// <summary>
-        /// The points scored in the normal competition.
+        /// The points scored in the mob trophy.
         /// </summary>
-        private string points;
+        private string mobTrophypoints;
 
         /// <summary>
-        /// The points scored in the harmony competition.
+        /// The points scored in the team trophy.
         /// </summary>
-        private int harmonyPoints;
+        private int teamTrophyPoints;
 
         /// <summary>
         /// The athlete's number.
@@ -97,8 +97,8 @@
             this.extraInformation = string.Empty;
             this.order = 0;
             this.personalBest = false;
-            this.points = string.Empty;
-            this.harmonyPoints = 0;
+            this.mobTrophypoints = string.Empty;
+            this.teamTrophyPoints = 0;
             this.number = string.Empty;
             this.runningOrder = 0;
             this.time = string.Empty;
@@ -118,8 +118,8 @@
         /// <param name="order">finishing order</param>
         /// <param name="isPersonalBest">indicates whether this is the athlete's personal best</param>
         /// <param name="isYearBest">indicates whether this is the athlete's year best</param>
-        /// <param name="points">the athlete's points in the normal competition</param>
-        /// <param name="harmonyPoints">the athlete's points in the harmony competition</param>
+        /// <param name="mobTrophyPoints">the athlete's points in the Mob Trophy</param>
+        /// <param name="teamTrophyPoints">the athlete's points in the Team Trpophy</param>
         /// <param name="number">the athlete's number</param>
         /// <param name="runningOrder">identifies the postion when sharing times</param>
         /// <param name="time">the athlete's time</param>
@@ -134,8 +134,8 @@
             int order,
             bool isPersonalBest,
             bool isYearBest,
-            string points,
-            int harmonyPoints,
+            string mobTrophyPoints,
+            int teamTrophyPoints,
             string number,
             int runningOrder,
             string time,
@@ -150,8 +150,8 @@
             this.order = order;
             this.personalBest = isPersonalBest;
             this.yearBest = isYearBest;
-            this.points = points;
-            this.harmonyPoints = harmonyPoints;
+            this.mobTrophypoints = mobTrophyPoints;
+            this.teamTrophyPoints = teamTrophyPoints;
             this.number = number;
             this.runningOrder = runningOrder;
             this.time = time;
@@ -299,22 +299,22 @@
         /// Gets or sets the points of the athlete in the row.
         /// </summary>
         [XmlAttribute("pts")]
-        public string Points
+        public string PMobTrophyoints
         {
             get
             {
-                return this.points;
+                return this.mobTrophypoints;
             }
 
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    this.points = string.Empty;
+                    this.mobTrophypoints = string.Empty;
                 }
                 else
                 {
-                    this.points = value;
+                    this.mobTrophypoints = value;
                 }
             }
         }
@@ -409,19 +409,19 @@
         }
 
         /// <summary>
-        /// Gets or sets the harmony points of the athlete in the row.
+        /// Gets or sets the Team Trophy points of the athlete in the row.
         /// </summary>
         [XmlAttribute("HPts")]
-        public int HarmonyPoints
+        public int TeamTrophyPoints
         {
             get
             {
-                return this.harmonyPoints;
+                return this.teamTrophyPoints;
             }
 
             set
             {
-                this.harmonyPoints = value;
+                this.teamTrophyPoints = value;
             }
         }
 

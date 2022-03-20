@@ -5,9 +5,9 @@
     using Interfaces.Common;
 
     /// <summary>
-    /// Interface which details a single event for a team within the harmony competition.
+    /// Interface which details a single event for a team within the Team Trophy.
     /// </summary>
-    public interface IHarmonyEvent
+    public interface ITeamTrophyEvent
     {
         /// <summary>
         /// Gets the date of the event.
@@ -36,7 +36,7 @@
         /// <summary>
         /// Gets a collection containing the break down of points.
         /// </summary>
-        List<ICommonHarmonyPoints> Points { get; }
+        List<ICommonTeamTrophyPoints> Points { get; }
 
         /// <summary>
         /// Gets a value indicating whether the points collection is valid.
@@ -51,7 +51,7 @@
         int VirtualAthletePoints { get; }
 
         /// <summary>
-        /// Gets the size of a harmony team.
+        /// Gets the size of a Team Trophy team.
         /// </summary>
         int TeamSize { get; }
 
@@ -61,9 +61,9 @@
         /// <remarks>
         /// The point is only added if there is space in the team.
         /// </remarks>
-        /// <param name="newPoint"><see cref="ICommonHarmonyPoints"/> to add</param>
+        /// <param name="newPoint"><see cref="ICommonTeamTrophyPoints"/> to add</param>
         /// <returns>success flag</returns>
-        bool AddPoint(ICommonHarmonyPoints newPoint);
+        bool AddPoint(ICommonTeamTrophyPoints newPoint);
 
         /// <summary>
         /// Complete the <see cref="Points"/> collection with dummy values with the <paramref name="pointsValue"/>

@@ -15,12 +15,12 @@
     using HandicapModel.SeasonModel;
 
     /// <summary>
-    /// Static class used to write the harmony table to a file.
+    /// Static class used to write the Team Trophy table to a file.
     /// </summary>
-    public static class ClubPointsHarmonyTableWriter
+    public static class ClubPointsTeamTrophyTableWriter
     {
         /// <summary>
-        /// Write the club points (harmony) table to a file
+        /// Write the Team Trophy table to a file
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="folder">output folder</param>
@@ -38,7 +38,7 @@
 
             Messenger.Default.Send(
                 new HandicapProgressMessage(
-                    "Saving club points (harmony) table"));
+                    "Saving Team Trophy points table"));
 
             // Export the overall season table.
             try
@@ -50,7 +50,7 @@
                         Path.DirectorySeparatorChar +
                         model.CurrentSeason.Name +
                         model.CurrentEvent.Name +
-                        ResultsPaths.clubHarmonyTable +
+                        ResultsPaths.teamTrophyPointsTable +
                         ResultsPaths.csvExtension))
                 {
                     string titleString = "Club" + ResultsPaths.separator + "TotalPoints";
@@ -68,15 +68,15 @@
                         if (club.MobTrophy.TotalPoints > 0)
                         {
                             string entryString =
-                                $"{club.Name}{ResultsPaths.separator}{club.HarmonyCompetition.TotalScore}";
+                                $"{club.Name}{ResultsPaths.separator}{club.TeamTrophy.TotalScore}";
 
                             foreach (DateType eventDate in eventDates)
                             {
                                 if (club.MobTrophy.Points.Exists(points => points.Date == eventDate))
                                 {
 
-                                    IHarmonyEvent foundEvent =
-                                        club.HarmonyCompetition.Events.Find(
+                                    ITeamTrophyEvent foundEvent =
+                                        club.TeamTrophy.Events.Find(
                                             points =>
                                             points.Date == eventDate);
 
@@ -119,7 +119,7 @@
                         Path.DirectorySeparatorChar +
                         model.CurrentSeason.Name +
                         model.CurrentEvent.Name +
-                        ResultsPaths.clubHarmonyTableCurrentEvent +
+                        ResultsPaths.teamTrophyPointsTableCurrentEvent +
                         ResultsPaths.csvExtension))
                 {
                     string titleString = "Club" + ResultsPaths.separator + "Score" + ResultsPaths.separator + "Points";
@@ -130,8 +130,8 @@
                     {
                         if (club.MobTrophy.TotalPoints > 0)
                         {
-                            IHarmonyEvent foundEvent =
-                                club.HarmonyCompetition.Events.Find(
+                            ITeamTrophyEvent foundEvent =
+                                club.TeamTrophy.Events.Find(
                                     e => e.Date == model.CurrentEvent.Date);
 
                             if (foundEvent == null)
@@ -142,7 +142,7 @@
                             string entryString =
                                 $"{club.Name}{ResultsPaths.separator}{foundEvent.Score}{ResultsPaths.separator}{foundEvent.TotalAthletePoints}";
 
-                            foreach (ICommonHarmonyPoints commonPoints in foundEvent.Points)
+                            foreach (ICommonTeamTrophyPoints commonPoints in foundEvent.Points)
                             {
                                 entryString = entryString + ResultsPaths.separator + commonPoints.Point;
                             }

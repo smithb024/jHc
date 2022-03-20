@@ -19,9 +19,9 @@
         IMobTrophy MobTrophy { get; }
 
         /// <summary>
-        /// Gets the details of the team harmony competition for this team.
+        /// Gets the details of the team Trophy for this team.
         /// </summary>
-        IHarmonyCompetition HarmonyCompetition { get; }
+        ITeamTrophyCompetition TeamTrophy { get; }
 
         /// <summary>
         /// Add a new event.
@@ -35,7 +35,7 @@
         /// </summary>
         /// <param name="newEvent">new event</param>
         void AddNewEvent(
-            IHarmonyEvent newEvent);
+            ITeamTrophyEvent newEvent);
 
         /// <summary>
         /// Set points to an existing entry

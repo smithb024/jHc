@@ -24,12 +24,11 @@
         /// <param name="excludeFirstTimers">
         /// First timers are excluded from scoring points for finishing position
         /// </param>
-        /// <param name="teamHarmonySize">
-        /// The number of members of a Harmony Team team.
+        /// <param name="teamTrophyTeamSize">
+        /// The number of members of a Team Trophy team.
         /// </param>
-        /// <param name="harmonyPointsScoring">
-        /// A comma separated list detailing the points scored per position in the harmony team
-        /// competition. 
+        /// <param name="teamTrophyPointsScoring">
+        /// A comma separated list detailing the points scored per position in the Team Trophy team
         /// </param>
         public ResultsConfigType(
           int finishingPoints,
@@ -43,8 +42,8 @@
           bool useTeams,
           bool scoresAreDescending,
           bool excludeFirstTimers,
-          int teamHarmonySize,
-          string harmonyPointsScoring)
+          int teamTrophyTeamSize,
+          string teamTrophyPointsScoring)
         {
             this.FinishingPoints = finishingPoints;
             this.SeasonBestPoints = seasonBestPoints;
@@ -57,25 +56,25 @@
             this.UseTeams = useTeams;
             this.ScoresAreDescending = scoresAreDescending;
             this.ExcludeFirstTimers = excludeFirstTimers;
-            this.NumberInHarmonyTeam = teamHarmonySize;
-            this.HarmonyPointsScoring = harmonyPointsScoring;
+            this.NumberInTeamTrophyTeam = teamTrophyTeamSize;
+            this.TeamTrophyPointsScoring = teamTrophyPointsScoring;
 
-            // Decode the harmony points from the input values into a collection of integers
-            this.HarmonyPoints = new List<int>();
-            List<string> harmonyPointStrings =
-                this.HarmonyPointsScoring.Split(',').ToList();
+            // Decode the Team Trophy points from the input values into a collection of integers
+            this.TeamTrophyPoints = new List<int>();
+            List<string> teamTrophyPointStrings =
+                this.TeamTrophyPointsScoring.Split(',').ToList();
 
-            foreach(string pointString in harmonyPointStrings)
+            foreach(string pointString in teamTrophyPointStrings)
             {
                 int point;
 
                 if(!int.TryParse(pointString, out point))
                 {
-                    this.HarmonyPoints = null;
+                    this.TeamTrophyPoints = null;
                     break;
                 }
 
-                this.HarmonyPoints.Add(point);
+                this.TeamTrophyPoints.Add(point);
             }
         }
 
@@ -147,19 +146,19 @@
         public int MissingScore => 1000;
 
         /// <summary>
-        /// Gets or sets the number of members of a Harmony Team team.
+        /// Gets or sets the number of members of a Team Trophy team.
         /// </summary>
-        public int NumberInHarmonyTeam { get; set; }
+        public int NumberInTeamTrophyTeam { get; set; }
 
         /// <summary>
         /// Gets or sets a comma separated list detailing the points scored per position in the
-        /// harmony team competition. 
+        /// Team Trophy team competition. 
         /// </summary>
-        public string HarmonyPointsScoring { get; set; }
+        public string TeamTrophyPointsScoring { get; set; }
 
         /// <summary>
-        /// Gets a collection of the harmony club points.
+        /// Gets a collection of the Team Trophy club points.
         /// </summary>
-        public List<int> HarmonyPoints { get; }
+        public List<int> TeamTrophyPoints { get; }
     }
 }

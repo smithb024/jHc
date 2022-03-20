@@ -94,13 +94,13 @@
             ICommonPoints newEvent);
 
         /// <summary>
-        /// Add harmony points to the named club.
+        /// Add Team Trophy points to the named club.
         /// </summary>
         /// <param name="clubName">name of the club</param>
         /// <param name="newEvent">full details of the event</param>
         void AddNewClubPoints(
             string clubName,
-            IHarmonyEvent newEvent);
+            ITeamTrophyEvent newEvent);
 
         /// <summary>
         /// Add points to the indicated athlete

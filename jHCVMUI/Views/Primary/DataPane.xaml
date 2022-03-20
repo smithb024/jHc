@@ -15,8 +15,8 @@
         <DataTemplate x:Name="MobTrophyPointsTableName" DataType="{x:Type viewModel:MobTrophyPointsTableViewModel}">
             <dataView:MobTrophyPointsTable DataContext="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Name="TeamHarmonyPointsTableName" DataType="{x:Type viewModel:TeamHarmonyPointsTableViewModel}">
-            <dataView:TeamHarmonyPointsTable DataContext="{Binding}"/>
+        <DataTemplate x:Name="TeamTrophyPointsTableName" DataType="{x:Type viewModel:TeamTrophyPointsTableViewModel}">
+            <dataView:TeamTrophyPointsTable DataContext="{Binding}"/>
         </DataTemplate>
         <DataTemplate x:Name="ResultsTableName" DataType="{x:Type viewModel:ResultsTableViewModel}">
             <dataView:ResultsTable DataContext="{Binding}"/>

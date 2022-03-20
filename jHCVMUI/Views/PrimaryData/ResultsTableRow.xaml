@@ -73,7 +73,7 @@
                                 <Label Grid.Column="0" Content="{Binding FinishingPoints}"/>
                                 <Label Grid.Column="1" Content="{Binding PositionPoints}"/>
                                 <Label Grid.Column="2" Content="{Binding BestPoints}"/>
-                                <Label Grid.Column="3" Content="{Binding HarmonyPoints}"/>
+                                <Label Grid.Column="3" Content="{Binding TeamTrophyPoints}"/>
                                 <Label Grid.Column="4" Content="{Binding ExtraInfo}"/>
                                 <Label Grid.Column="5" Content="{Binding FirstTimer}"/>
                                 <Label Grid.Column="6" Content="{Binding Sex}"/>

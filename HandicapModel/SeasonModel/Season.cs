@@ -452,10 +452,10 @@
         /// Add points to the named club
         /// </summary>
         /// <param name="clubName">name of club</param>
-        /// <param name="points">harmony points to add</param>
+        /// <param name="points">Team Trophy points to add</param>
         public void AddNewClubPoints(
             string clubName,
-            IHarmonyEvent points)
+            ITeamTrophyEvent points)
         {
             IClubSeasonDetails clubDetails = Clubs.Find(club => club.Name.CompareTo(clubName) == 0);
 

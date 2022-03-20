@@ -232,7 +232,7 @@
                     entry.Points.FinishingPoints,
                     entry.Points.PositionPoints,
                     entry.Points.BestPoints,
-                    entry.HarmonyPoints,
+                    entry.TeamTrophyPoints,
                     entry.RaceNumber,
                     entry.Time.ToString(),
                     entry.RunningTime.ToString(),

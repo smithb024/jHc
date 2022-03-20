@@ -99,7 +99,7 @@
     <Compile Include="ViewModels\Primary\DataPanes\SummaryEventViewModel.cs" />
     <Compile Include="ViewModels\Primary\DataPanes\SummaryTotalViewModel.cs" />
     <Compile Include="ViewModels\Primary\DataPanes\SummaryViewModel.cs" />
-    <Compile Include="ViewModels\Primary\DataPanes\TeamHarmonyPointsTableViewModel.cs" />
+    <Compile Include="ViewModels\Primary\DataPanes\TeamTrophyPointsTableViewModel.cs" />
     <Compile Include="ViewModels\Primary\DataPaneViewModel.cs" />
     <Compile Include="ViewModels\Primary\EventPaneViewModel.cs" />
     <Compile Include="ViewModels\Primary\ResultsOrder.cs" />
@@ -123,8 +123,8 @@
     <Compile Include="ViewModels\ViewModels\Types\AthleteType.cs" />
     <Compile Include="ViewModels\ViewModels\Types\Clubs\MobTrophyPointsTableRowViewModel.cs" />
     <Compile Include="ViewModels\ViewModels\Types\Clubs\ClubSummary.cs" />
-    <Compile Include="ViewModels\ViewModels\Types\Clubs\HarmonyPointsTypeViewModel.cs" />
-    <Compile Include="ViewModels\ViewModels\Types\Clubs\TeamHarmonyPointsTableRowViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Clubs\TeamTrophyPointsTypeViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\Types\Clubs\TeamTrophyPointsTableRowViewModel.cs" />
     <Compile Include="ViewModels\ViewModels\Types\ClubType.cs" />
     <Compile Include="ViewModels\ViewModels\Types\Misc\AppearancesViewModel.cs" />
     <Compile Include="ViewModels\ViewModels\Types\Misc\ImportedRawPositionResults.cs" />
@@ -224,8 +224,8 @@
     <Compile Include="Views\PrimaryData\SummaryTable.xaml.cs">
       <DependentUpon>SummaryTable.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PrimaryData\TeamHarmonyPointsTable.xaml.cs">
-      <DependentUpon>TeamHarmonyPointsTable.xaml</DependentUpon>
+    <Compile Include="Views\PrimaryData\TeamTrophyPointsTable.xaml.cs">
+      <DependentUpon>TeamTrophyPointsTable.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Primary\DataPane.xaml.cs">
       <DependentUpon>DataPane.xaml</DependentUpon>
@@ -391,7 +391,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\PrimaryData\TeamHarmonyPointsTable.xaml">
+    <Page Include="Views\PrimaryData\TeamTrophyPointsTable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

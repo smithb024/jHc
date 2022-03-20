@@ -23,13 +23,13 @@
               Width="100"/>
         </Border>
         <Border DockPanel.Dock="Right"
-            BorderBrush="{Binding TeamHarmonyPointsTableVisible, Converter={StaticResource highlightConverter}}"
+            BorderBrush="{Binding TeamTrophyPointsTableVisible, Converter={StaticResource highlightConverter}}"
             BorderThickness="0,0,0,3"
             Margin="5,0,0,0">
-            <Button Name="EventTeamHarmonyPointsTable"
+            <Button Name="EventTeamTrophyPointsTable"
               Content="Team Trophy"
               Style="{StaticResource BodyButtonStyle}"
-              Command="{Binding ShowTeamHarmonyPointsTableCommand}"
+              Command="{Binding ShowTeamTrophyPointsTableCommand}"
               Height="25"
               Width="100"/>
         </Border>

@@ -23,9 +23,9 @@
     public class CalculateResultsMngr : EventResultsMngr
     {
         /// <summary>
-        /// Value used to indicate a no score in the harmony competition.
+        /// Value used to indicate a no score in the Team Trophy.
         /// </summary>
-        private const int HarmonyNoScore = -1;
+        private const int TeamTrophyNoScore = -1;
 
         /// <summary>
         /// Results Input/Output
@@ -98,9 +98,9 @@
                 return;
             }
 
-            if (this.resultsConfiguration.ResultsConfigurationDetails.HarmonyPoints == null)
+            if (this.resultsConfiguration.ResultsConfigurationDetails.TeamTrophyPoints == null)
             {
-                this.logger.WriteLog("Can't calculate results, Harmony points are invalid");
+                this.logger.WriteLog("Can't calculate results, Team Trophy points are invalid");
 
                 HandicapErrorMessage faultMessage =
                     new HandicapErrorMessage(
@@ -138,7 +138,7 @@
               resultsTable,
               this.Model.CurrentEvent.Date,
               mobTrophyPoints);
-            this.CalculateTeamHarmonyPoints(
+            this.CalculateTeamTrophyPoints(
                 resultsTable,
                 this.Model.CurrentEvent.Date);
 
@@ -417,28 +417,28 @@
         }
 
         /// <summary>
-        /// Loop through the results and work out all the points for the harmony competition.
+        /// Loop through the results and work out all the points for the Team Trophy.
         /// </summary>
         /// <param name="resultsTable">results table</param>
         /// <param name="currentDate">date of the event</param>
-        private void CalculateTeamHarmonyPoints(
+        private void CalculateTeamTrophyPoints(
           EventResults resultsTable,
           DateType currentDate)
         {
-            // Next score is used to complete the harmony competion by filling in any blank spots.
-            // The position is used to assign points to an athlete in the harmony competion.
-            int harmonyCompetitionPosition = 0;
+            // Next score is used to complete the Team Trophy by filling in any blank spots.
+            // The position is used to assign points to an athlete in the Team Trophy.
+            int teamTrophyCompetitionPosition = 0;
             int nextScore = 1;
  
             resultsTable.OrderByFinishingTime();
-            Dictionary<string, IHarmonyEvent> eventDictionary = new Dictionary<string, IHarmonyEvent>();
+            Dictionary<string, ITeamTrophyEvent> eventDictionary = new Dictionary<string, ITeamTrophyEvent>();
 
             foreach(IClubSeasonDetails club in this.Model.CurrentSeason.Clubs)
             {
-                IHarmonyEvent newEvent =
-                    new HarmonyEvent(
+                ITeamTrophyEvent newEvent =
+                    new TeamTrophyEvent(
                         currentDate,
-                        this.resultsConfiguration.ResultsConfigurationDetails.NumberInHarmonyTeam);
+                        this.resultsConfiguration.ResultsConfigurationDetails.NumberInTeamTrophyTeam);
                 eventDictionary.Add(
                     club.Name,
                     newEvent);
@@ -446,7 +446,7 @@
 
             foreach (ResultsTableEntry result in resultsTable.Entries)
             {
-                IAthleteHarmonyPoints athletePoints;
+                IAthleteTeamTrophyPoints athletePoints;
                 AthleteSeasonDetails athlete =
                     this.Model.CurrentSeason.Athletes.Find(
                         a => a.Key == result.Key);
@@ -461,25 +461,25 @@
                 if (result.Club == string.Empty ||
                     result.FirstTimer)
                 {
-                    result.HarmonyPoints = HarmonyNoScore;
+                    result.TeamTrophyPoints = TeamTrophyNoScore;
 
                     athletePoints =
-                        new AthleteHarmonyPoints(
-                            HarmonyNoScore, 
+                        new AthleteTeamTrophyPoints(
+                            TeamTrophyNoScore, 
                             currentDate);
 
-                    athlete.HarmonyPoints.AddNewEvent(athletePoints);
+                    athlete.TeamTrophyPoints.AddNewEvent(athletePoints);
 
-                    // Not part of the harmony competition, move onto the next loop.
+                    // Not part of the Team Trophy, move onto the next loop.
                     continue;
                 }
 
-                ++harmonyCompetitionPosition;
-                IHarmonyEvent clubEvent = eventDictionary[result.Club];
+                ++teamTrophyCompetitionPosition;
+                ITeamTrophyEvent clubEvent = eventDictionary[result.Club];
 
-                ICommonHarmonyPoints clubPoint =
-                    new CommonHarmonyPoints(
-                        harmonyCompetitionPosition,
+                ICommonTeamTrophyPoints clubPoint =
+                    new CommonTeamTrophyPoints(
+                        teamTrophyCompetitionPosition,
                         result.Name,
                         result.Key,
                         true,
@@ -490,28 +490,28 @@
 
                 if (success)
                 {
-                    nextScore = harmonyCompetitionPosition + 1;
-                    result.HarmonyPoints = harmonyCompetitionPosition;
+                    nextScore = teamTrophyCompetitionPosition + 1;
+                    result.TeamTrophyPoints = teamTrophyCompetitionPosition;
                 }
                 else
                 {
-                    // Add points failed, rever the harmony competition position.
-                    --harmonyCompetitionPosition;
-                    result.HarmonyPoints = HarmonyNoScore;
+                    // Add points failed, revert the Team Trophy position.
+                    --teamTrophyCompetitionPosition;
+                    result.TeamTrophyPoints = TeamTrophyNoScore;
                 }
 
                 athletePoints =
-                   new AthleteHarmonyPoints(
-                       result.HarmonyPoints,
+                   new AthleteTeamTrophyPoints(
+                       result.TeamTrophyPoints,
                        currentDate);
-                athlete.HarmonyPoints.AddNewEvent(athletePoints);
+                athlete.TeamTrophyPoints.AddNewEvent(athletePoints);
             }
 
-            List<IHarmonyEvent> orderedEvent = new List<IHarmonyEvent>();
-            foreach (KeyValuePair<string, IHarmonyEvent> entry in eventDictionary)
+            List<ITeamTrophyEvent> orderedEvent = new List<ITeamTrophyEvent>();
+            foreach (KeyValuePair<string, ITeamTrophyEvent> entry in eventDictionary)
             {
                 entry.Value.Complete(
-                    this.resultsConfiguration.ResultsConfigurationDetails.NumberInHarmonyTeam,
+                    this.resultsConfiguration.ResultsConfigurationDetails.NumberInTeamTrophyTeam,
                     nextScore);
                 orderedEvent.Add(entry.Value);
             }
@@ -533,18 +533,18 @@
                 if (orderedEvent[index].TotalAthletePoints == lastPoints)
                 {
                     orderedEvent[index].Score =
-                        this.resultsConfiguration.ResultsConfigurationDetails.HarmonyPoints[lastScoringIndex];
+                        this.resultsConfiguration.ResultsConfigurationDetails.TeamTrophyPoints[lastScoringIndex];
                 }
-                else if (index < this.resultsConfiguration.ResultsConfigurationDetails.HarmonyPoints.Count)
+                else if (index < this.resultsConfiguration.ResultsConfigurationDetails.TeamTrophyPoints.Count)
                 {
-                    orderedEvent[index].Score = this.resultsConfiguration.ResultsConfigurationDetails.HarmonyPoints[index];
+                    orderedEvent[index].Score = this.resultsConfiguration.ResultsConfigurationDetails.TeamTrophyPoints[index];
                     lastScoringIndex = index;
                 }
 
                 lastPoints = orderedEvent[index].TotalAthletePoints;
             }
 
-            foreach (KeyValuePair<string, IHarmonyEvent> entry in eventDictionary)
+            foreach (KeyValuePair<string, ITeamTrophyEvent> entry in eventDictionary)
             {
                 this.Model.CurrentSeason.AddNewClubPoints(entry.Key, entry.Value);
             }

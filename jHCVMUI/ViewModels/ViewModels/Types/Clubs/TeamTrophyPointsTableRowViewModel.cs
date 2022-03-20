@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using jHCVMUI.ViewModels.ViewModels;
 
-    public class TeamHarmonyPointsTableRowViewModel : ViewModelBase
+    public class TeamTrophyPointsTableRowViewModel : ViewModelBase
     {
         /// <summary>
         /// Indicates whether the row has been expanded.
@@ -11,18 +11,18 @@
         private bool expandedData;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="TeamHarmonyPointsTableRowViewModel"/> class.
+        /// Initialises a new instance of the <see cref="TeamTrophyPointsTableRowViewModel"/> class.
         /// </summary>
         /// <param name="name">team name</param>
         /// <param name="points">total team points.</param>
-        public TeamHarmonyPointsTableRowViewModel(
+        public TeamTrophyPointsTableRowViewModel(
             string name,
             int points)
         {
             this.expandedData = false;
             this.ClubName = name;
             this.TotalPoints = points;
-            this.Points = new List<HarmonyPointsTypeViewModel>();
+            this.Points = new List<TeamTrophyPointsTypeViewModel>();
         }
 
         /// <summary>
@@ -36,9 +36,9 @@
         public int TotalPoints { get; }
 
         /// <summary>
-        /// Gets the collection of harmony points
+        /// Gets the collection of Team Trophy points
         /// </summary>
-        public List<HarmonyPointsTypeViewModel> Points { get; }
+        public List<TeamTrophyPointsTypeViewModel> Points { get; }
 
         /// <summary>
         /// Gets and sets the expanded data flag.

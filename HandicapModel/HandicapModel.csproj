@@ -67,7 +67,7 @@
     <Compile Include="Admin\IO\RawResults\Import610PFactory.cs" />
     <Compile Include="Admin\IO\RawResults\ImportManualTimesFactory.cs" />
     <Compile Include="Admin\IO\RawResults\ImportOpn200TimesFactory.cs" />
-    <Compile Include="Admin\IO\ResultsCSV\ClubPointsHarmonyTableWriter.cs" />
+    <Compile Include="Admin\IO\ResultsCSV\ClubPointsTeamTrophyTableWriter.cs" />
     <Compile Include="Admin\IO\ResultsPaths.Designer.cs">
       <DependentUpon>ResultsPaths.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -123,8 +123,8 @@
     <Compile Include="AthletesModel\Athletes.cs" />
     <Compile Include="ClubsModel\Clubs.cs" />
     <Compile Include="Common\Appearances.cs" />
-    <Compile Include="Common\AthleteHarmonyPoints.cs" />
-    <Compile Include="Common\CommonHarmonyPoints.cs" />
+    <Compile Include="Common\AthleteTeamTrophyPoints.cs" />
+    <Compile Include="Common\CommonTeamTrophyPoints.cs" />
     <Compile Include="Common\CommonPoints.cs" />
     <Compile Include="Common\AthleteTime.cs" />
     <Compile Include="Interfaces\Admin\IO\XML\IAthleteDataReader.cs" />
@@ -134,24 +134,24 @@
     <Compile Include="Interfaces\Admin\IO\XML\IEventDataReader.cs" />
     <Compile Include="Interfaces\Admin\IO\XML\IResultsTableReader.cs" />
     <Compile Include="Interfaces\Admin\IO\XML\ISummaryDataReader.cs" />
-    <Compile Include="Interfaces\Common\IAthleteHarmonyPoints.cs" />
+    <Compile Include="Interfaces\Common\IAthleteTeamTrophyPoints.cs" />
     <Compile Include="Interfaces\Common\IAthleteTime.cs" />
-    <Compile Include="Interfaces\Common\ICommonHarmonyPoints.cs" />
+    <Compile Include="Interfaces\Common\ICommonTeamTrophyPoints.cs" />
     <Compile Include="Interfaces\Common\ICommonPoints.cs" />
     <Compile Include="Interfaces\Common\ISummary.cs" />
     <Compile Include="Interfaces\IModel.cs" />
     <Compile Include="Interfaces\SeasonModel\IAthleteSeasonDetails.cs" />
-    <Compile Include="Interfaces\SeasonModel\IAthleteSeasonHarmonyPoints.cs" />
+    <Compile Include="Interfaces\SeasonModel\IAthleteSeasonTeamTrophyPoints.cs" />
     <Compile Include="Interfaces\SeasonModel\IAthleteSeasonPoints.cs" />
     <Compile Include="Interfaces\SeasonModel\IMobTrophy.cs" />
     <Compile Include="Interfaces\SeasonModel\IClubSeasonDetails.cs" />
-    <Compile Include="Interfaces\SeasonModel\IHarmonyCompetition.cs" />
-    <Compile Include="Interfaces\SeasonModel\IHarmonyEvent.cs" />
+    <Compile Include="Interfaces\SeasonModel\ITeamTrophyCompetition.cs" />
+    <Compile Include="Interfaces\SeasonModel\ITeamTrophyEvent.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\Summary.cs" />
     <Compile Include="SeasonModel\AthleteSeasonDetails.cs" />
-    <Compile Include="SeasonModel\AthleteSeasonHarmonyPoints.cs" />
+    <Compile Include="SeasonModel\AthleteSeasonTeamTrophyPoints.cs" />
     <Compile Include="SeasonModel\AthleteSeasonPoints.cs" />
     <Compile Include="SeasonModel\MobTrophy.cs" />
     <Compile Include="SeasonModel\ClubSeasonDetails.cs" />
@@ -163,11 +163,11 @@
     <Compile Include="Interfaces\SeasonModel\EventModel\IResultsTableEntry.cs" />
     <Compile Include="SeasonModel\EventModel\Raw.cs" />
     <Compile Include="SeasonModel\EventModel\ResultsTableEntry.cs" />
-    <Compile Include="SeasonModel\HarmonyEvent.cs" />
+    <Compile Include="SeasonModel\TeamTrophyEvent.cs" />
     <Compile Include="SeasonModel\Helpers\PointsControl.cs" />
     <Compile Include="Interfaces\SeasonModel\ISeason.cs" />
     <Compile Include="SeasonModel\Season.cs" />
-    <Compile Include="SeasonModel\HarmonyCompetition.cs" />
+    <Compile Include="SeasonModel\TeamTrophyCompetition.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Admin\IO\ResultsPaths.resx">

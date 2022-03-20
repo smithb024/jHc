@@ -24,8 +24,8 @@
         private const string c_rootElement = "AtlSea";
         private const string c_athleteElement = "entrant";
         private const string c_eventPointsElement = "pt";
-        private const string c_pointsElement = "pts";
-        private const string HarmonyPointsElement = "hPts";
+        private const string MobTrophyPointsElement = "pts";
+        private const string TeamTrophyPointsElement = "hPts";
         private const string c_runningNumbersElement = "runningNumbers";
         private const string c_timesElement = "tms";
         private const string c_numberElement = "number";
@@ -39,7 +39,7 @@
         private const string c_nameAttribute = "name";
         private const string c_numberAttribute = "no";
         private const string c_positionPoints = "ppts";
-        private const string HarmonyPointsAttribute = "pts";
+        private const string TeamTrophyPointsAttribute = "pts";
 
         /// <summary>
         /// The instance of the logger.
@@ -89,10 +89,10 @@
                     athleteElement.Add(runningNumberElement);
                     XElement timesElement = new XElement(c_timesElement);
                     athleteElement.Add(timesElement);
-                    XElement pointsElement = new XElement(c_pointsElement);
-                    athleteElement.Add(pointsElement);
-                    XElement harmonyPointsElement = new XElement(HarmonyPointsElement);
-                    athleteElement.Add(harmonyPointsElement);
+                    XElement mobTrophyPointsElement = new XElement(MobTrophyPointsElement);
+                    athleteElement.Add(mobTrophyPointsElement);
+                    XElement teamTrophyPointsElement = new XElement(TeamTrophyPointsElement);
+                    athleteElement.Add(teamTrophyPointsElement);
 
                     foreach (Appearances time in season.Times)
                     {
@@ -109,18 +109,18 @@
                                                              new XAttribute(c_positionPoints, points.PositionPoints.ToString()),
                                                              new XAttribute(c_bestPoints, points.BestPoints.ToString()),
                                                              new XAttribute(c_eventDateAttribute, points.Date.ToString()));
-                        pointsElement.Add(pointElement);
+                        mobTrophyPointsElement.Add(pointElement);
                     }
 
-                    foreach (IAthleteHarmonyPoints point in season.HarmonyPoints.AllPoints)
+                    foreach (IAthleteTeamTrophyPoints point in season.TeamTrophyPoints.AllPoints)
                     {
                         XElement pointElement =
                             new XElement(
                                 c_eventPointsElement,
-                                new XAttribute(HarmonyPointsAttribute, point.Point.ToString()),
+                                new XAttribute(TeamTrophyPointsAttribute, point.Point.ToString()),
                                 new XAttribute(c_eventDateAttribute, point.Date.ToString()));
 
-                        harmonyPointsElement.Add(pointElement);
+                        teamTrophyPointsElement.Add(pointElement);
                     }
 
                     rootElement.Add(athleteElement);
@@ -183,7 +183,7 @@
                                                                     date = (string)Times.Attribute(c_eventDateAttribute)
                                                                 }
                                                    },
-                                      points = from Points in Athlete.Elements(c_pointsElement)
+                                      mobTrophyPoints = from Points in Athlete.Elements(MobTrophyPointsElement)
                                                select new
                                                {
                                                    point = from Point in Points.Elements(c_eventPointsElement)
@@ -195,13 +195,13 @@
                                                                date = (string)Point.Attribute(c_eventDateAttribute)
                                                            }
                                                },
-                                      harmonyPoints = from Points in Athlete.Elements(HarmonyPointsElement)
+                                      teamTrophyPoints = from Points in Athlete.Elements(TeamTrophyPointsElement)
                                                select new
                                                {
                                                    point = from Point in Points.Elements(c_eventPointsElement)
                                                            select new
                                                            {
-                                                               harmonyPoint = (int)Point.Attribute(HarmonyPointsAttribute),
+                                                               teamTrophyPoint = (int)Point.Attribute(TeamTrophyPointsAttribute),
                                                                date = (string)Point.Attribute(c_eventDateAttribute)
                                                            }
                                                }
@@ -224,7 +224,7 @@
                         }
                     }
 
-                    foreach (var points in athlete.points)
+                    foreach (var points in athlete.mobTrophyPoints)
                     {
                         foreach (var point in points.point)
                         {
@@ -246,17 +246,17 @@
                         }
                     }
 
-                    foreach(var points in athlete.harmonyPoints)
+                    foreach(var points in athlete.teamTrophyPoints)
                     {
                         foreach(var point in points.point)
                         {
                             DateType date = new DateType(point.date);
-                            IAthleteHarmonyPoints newEvent =
-                                new AthleteHarmonyPoints(
-                                    point.harmonyPoint,
+                            IAthleteTeamTrophyPoints newEvent =
+                                new AthleteTeamTrophyPoints(
+                                    point.teamTrophyPoint,
                                     date);
 
-                            athleteDetails.HarmonyPoints.AddNewEvent(newEvent);
+                            athleteDetails.TeamTrophyPoints.AddNewEvent(newEvent);
                         }
                     }
 
