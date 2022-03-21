@@ -17,10 +17,10 @@
     /// <summary>
     /// Static class used to write the Team Trophy table to a file.
     /// </summary>
-    public static class ClubPointsTeamTrophyTableWriter
+    public static class TeamTrophyTableWriter
     {
         /// <summary>
-        /// Write the Team Trophy table to a file
+        /// Write the Team Trophy table to a file.
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="folder">output folder</param>

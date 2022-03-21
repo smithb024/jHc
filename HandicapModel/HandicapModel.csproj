@@ -67,7 +67,7 @@
     <Compile Include="Admin\IO\RawResults\Import610PFactory.cs" />
     <Compile Include="Admin\IO\RawResults\ImportManualTimesFactory.cs" />
     <Compile Include="Admin\IO\RawResults\ImportOpn200TimesFactory.cs" />
-    <Compile Include="Admin\IO\ResultsCSV\ClubPointsTeamTrophyTableWriter.cs" />
+    <Compile Include="Admin\IO\ResultsCSV\TeamTrophyTableWriter.cs" />
     <Compile Include="Admin\IO\ResultsPaths.Designer.cs">
       <DependentUpon>ResultsPaths.resx</DependentUpon>
       <AutoGen>True</AutoGen>
