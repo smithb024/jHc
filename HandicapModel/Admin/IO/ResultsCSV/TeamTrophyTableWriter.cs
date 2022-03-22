@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonLib.Types;
@@ -19,6 +20,11 @@
     /// </summary>
     public static class TeamTrophyTableWriter
     {
+        /// <summary>
+        /// The number of results which
+        /// </summary>
+        private const int NumberOfResultsWhichCount = 3;
+
         /// <summary>
         /// Write the Team Trophy table to a file.
         /// </summary>
@@ -98,10 +104,14 @@
 
                     foreach (ClubSeasonDetails club in model.CurrentSeason.Clubs)
                     {
-                        if (club.MobTrophy.TotalPoints > 0)
+                        int totalScore =
+                            TeamTrophyTableWriter.CalculateTotalScore(
+                                club.TeamTrophy.Events);
+
+                        if (totalScore > 0)
                         {
                             string entryString =
-                                $"{club.Name}{ResultsPaths.separator}{club.TeamTrophy.TotalScore}";
+                                $"{club.Name}{ResultsPaths.separator}{totalScore}";
 
                             foreach (DateType eventDate in eventDates)
                             {
@@ -211,6 +221,35 @@
             }
 
             return success;
+        }
+
+        /// <summary>
+        /// Calculate the score of the team, from all valid scores.
+        /// </summary>
+        /// <param name="events">All events the team has been involved in</param>
+        /// <returns>total score</returns>
+        private static int CalculateTotalScore(
+            List<ITeamTrophyEvent> events)
+        {
+            int totalScore = 0;
+            List<int> scores = new List<int>();
+
+            foreach(ITeamTrophyEvent teamtrophyEvent in events)
+            {
+                scores.Add(teamtrophyEvent.Score);
+            }
+
+            scores = scores.OrderByDescending(s => s).ToList();
+
+            for (int index = 0; index < NumberOfResultsWhichCount; ++index)
+            {
+                if (index < scores.Count)
+                {
+                    totalScore += scores[index];
+                }
+            }
+
+            return totalScore;
         }
     }
 }
