@@ -382,7 +382,7 @@
                     return;
                 }
 
-                if (!ClubPointsTeamTrophyTableWriter.Write(this.model, folder, this.eventData, this.logger))
+                if (!TeamTrophyTableWriter.Write(this.model, folder, this.eventData, this.logger))
                 {
                     return;
                 }

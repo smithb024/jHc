@@ -161,7 +161,7 @@
                             eventPoints.NumberOfAthletes,
                             eventPoints.Points,
                             eventPoints.Date);
-                    clubPoints.Points.Add(points);
+                    clubPoints.AddPoints(points);
                 }
 
                 PointsTable.Add(clubPoints);
@@ -169,7 +169,7 @@
 
             this.PointsTable =
                 new ObservableCollection<TeamTrophyPointsTableRowViewModel>(
-                    this.PointsTable.OrderBy(
+                    this.PointsTable.OrderByDescending(
                         order => order.TotalPoints));
         }
 

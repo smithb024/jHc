@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
 
-    using HandicapModel.Common;
     using Interfaces.Common;
     using Interfaces.SeasonModel;
     using CommonLib.Types;

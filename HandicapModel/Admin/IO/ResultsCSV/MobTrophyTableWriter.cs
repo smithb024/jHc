@@ -13,6 +13,9 @@
     using HandicapModel.Interfaces.Common;
     using HandicapModel.SeasonModel;
 
+    /// <summary>
+    /// Factory class which is used to write the Mob Trophy information to a file.
+    /// </summary>
     public static class MobTrophyTableWriter
     {
         /// <summary>
@@ -39,12 +42,15 @@
             // Export the overall season table.
             try
             {
-                using (StreamWriter writer = new StreamWriter(Path.GetFullPath(folder) +
-                                                              Path.DirectorySeparatorChar +
-                                                              model.CurrentSeason.Name +
-                                                              model.CurrentEvent.Name +
-                                                              ResultsPaths.mobTrophyPointsTable +
-                                                              ResultsPaths.csvExtension))
+                string outPath =
+                    Path.GetFullPath(folder) +
+                    Path.DirectorySeparatorChar +
+                    model.CurrentSeason.Name +
+                    model.CurrentEvent.Name +
+                    ResultsPaths.mobTrophyPointsTable +
+                    ResultsPaths.csvExtension;
+
+                using (StreamWriter writer = new StreamWriter(outPath))
                 {
                     string titleString = "Club" + ResultsPaths.separator + "TotalPoints";
 

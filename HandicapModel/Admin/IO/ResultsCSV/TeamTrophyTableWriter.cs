@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonLib.Types;
@@ -17,10 +18,15 @@
     /// <summary>
     /// Static class used to write the Team Trophy table to a file.
     /// </summary>
-    public static class ClubPointsTeamTrophyTableWriter
+    public static class TeamTrophyTableWriter
     {
         /// <summary>
-        /// Write the Team Trophy table to a file
+        /// The number of results which
+        /// </summary>
+        private const int NumberOfResultsWhichCount = 3;
+
+        /// <summary>
+        /// Write the Team Trophy table to a file.
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="folder">output folder</param>
@@ -33,25 +39,58 @@
             IEventData eventData,
             IJHcLogger logger)
         {
-            bool success = true;
-            List<DateType> eventDates = new List<DateType>();
-
             Messenger.Default.Send(
                 new HandicapProgressMessage(
                     "Saving Team Trophy points table"));
 
-            // Export the overall season table.
+            string folderPath =
+                Path.GetFullPath(folder) +
+                Path.DirectorySeparatorChar +
+                model.CurrentSeason.Name +
+                model.CurrentEvent.Name;
+
+            bool overallSuccess =
+                TeamTrophyTableWriter.WriteOverallSeasonTable(
+                    model,
+                    folderPath,
+                    eventData,
+                    logger);
+
+            bool currentSuccess =
+                TeamTrophyTableWriter.WriteCurrentEventTable(
+                    model,
+                    folderPath,
+                    logger);
+
+            return overallSuccess && currentSuccess;
+        }
+
+        /// <summary>
+        /// Save the Team Trophy to the file.
+        /// </summary>
+        /// <param name="model">junior handicap model</param>
+        /// <param name="folderPath">path of the folder to save the table to</param>
+        /// <param name="eventData">event data wrapper</param>
+        /// <param name="logger">application logger</param>
+        /// <returns>success flag</returns>
+        private static bool WriteOverallSeasonTable(
+            IModel model,
+            string folderPath,
+            IEventData eventData,
+            IJHcLogger logger)
+        {
+            bool success = true;
+            List<DateType> eventDates = new List<DateType>();
+
             try
             {
+                string outPath =
+                    $"{folderPath}{ResultsPaths.teamTrophyPointsTable}{ResultsPaths.csvExtension}";
+
                 using (
                     StreamWriter writer =
                     new StreamWriter(
-                        Path.GetFullPath(folder) +
-                        Path.DirectorySeparatorChar +
-                        model.CurrentSeason.Name +
-                        model.CurrentEvent.Name +
-                        ResultsPaths.teamTrophyPointsTable +
-                        ResultsPaths.csvExtension))
+                        outPath))
                 {
                     string titleString = "Club" + ResultsPaths.separator + "TotalPoints";
 
@@ -65,10 +104,14 @@
 
                     foreach (ClubSeasonDetails club in model.CurrentSeason.Clubs)
                     {
-                        if (club.MobTrophy.TotalPoints > 0)
+                        int totalScore =
+                            TeamTrophyTableWriter.CalculateTotalScore(
+                                club.TeamTrophy.Events);
+
+                        if (totalScore > 0)
                         {
                             string entryString =
-                                $"{club.Name}{ResultsPaths.separator}{club.TeamTrophy.TotalScore}";
+                                $"{club.Name}{ResultsPaths.separator}{totalScore}";
 
                             foreach (DateType eventDate in eventDates)
                             {
@@ -109,18 +152,32 @@
                 success = false;
             }
 
-            // Export the table for the current event.
+            return success;
+        }
+
+        /// <summary>
+        /// Save the Team Trophy current event table.
+        /// </summary>
+        /// <param name="model">junior handicap model</param>
+        /// <param name="folderPath">path of the folder to save the table to</param>
+        /// <param name="logger">application logger</param>
+        /// <returns>success flag</returns>
+        private static bool WriteCurrentEventTable(
+            IModel model,
+            string folderPath,
+            IJHcLogger logger)
+        {
+            bool success = true;
+
             try
             {
+                string outPath =
+                    $"{folderPath}{ResultsPaths.teamTrophyPointsTableCurrentEvent}{ResultsPaths.csvExtension}";
+
                 using (
                     StreamWriter writer =
                     new StreamWriter(
-                        Path.GetFullPath(folder) +
-                        Path.DirectorySeparatorChar +
-                        model.CurrentSeason.Name +
-                        model.CurrentEvent.Name +
-                        ResultsPaths.teamTrophyPointsTableCurrentEvent +
-                        ResultsPaths.csvExtension))
+                        outPath))
                 {
                     string titleString = "Club" + ResultsPaths.separator + "Score" + ResultsPaths.separator + "Points";
 
@@ -164,6 +221,35 @@
             }
 
             return success;
+        }
+
+        /// <summary>
+        /// Calculate the score of the team, from all valid scores.
+        /// </summary>
+        /// <param name="events">All events the team has been involved in</param>
+        /// <returns>total score</returns>
+        private static int CalculateTotalScore(
+            List<ITeamTrophyEvent> events)
+        {
+            int totalScore = 0;
+            List<int> scores = new List<int>();
+
+            foreach(ITeamTrophyEvent teamtrophyEvent in events)
+            {
+                scores.Add(teamtrophyEvent.Score);
+            }
+
+            scores = scores.OrderByDescending(s => s).ToList();
+
+            for (int index = 0; index < NumberOfResultsWhichCount; ++index)
+            {
+                if (index < scores.Count)
+                {
+                    totalScore += scores[index];
+                }
+            }
+
+            return totalScore;
         }
     }
 }
