@@ -104,7 +104,13 @@
             <!-- Warning -->
             <Grid Grid.Row="2"
                   Grid.Column="0">
-                
+                <TextBlock
+                    Padding="20,5"
+                    Visibility="{Binding Path=IsPossibleDuplicate, Converter={StaticResource visibilityConverter}}"
+                    Text="Possible Duplicate"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="DarkGoldenrod"/>
             </Grid>
 
             <!-- Sex -->
