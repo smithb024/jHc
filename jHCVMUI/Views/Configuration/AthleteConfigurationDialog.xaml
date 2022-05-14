@@ -21,114 +21,145 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <DockPanel LastChildFill="True"
-               Grid.Column="0"
-               Grid.Row="0">
-                <Label Content="Name"
-               Margin="5"
-               Width="60"
-               Foreground="{StaticResource HeaderControlForeground}"
-               HorizontalAlignment="Right"
-               DockPanel.Dock="Left"/>
-                <TextBox Name="AthleteNameTextBox"
-               TabIndex="0"
-               Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-               Style="{StaticResource HeaderTextBoxStyle}"
-               Margin="5"/>
+            
+            <!-- Name -->
+            <DockPanel 
+                LastChildFill="True"
+                Grid.Column="0"
+                Grid.Row="0">
+                <Label 
+                    Content="Name"
+                    Margin="5"
+                    Width="60"
+                    Foreground="{StaticResource HeaderControlForeground}"
+                    HorizontalAlignment="Right"
+                    DockPanel.Dock="Left"/>
+                <TextBox 
+                    Name="AthleteNameTextBox"
+                    TabIndex="0"
+                    Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                    Style="{StaticResource HeaderTextBoxStyle}"
+                    Margin="5"/>
             </DockPanel>
 
-            <DockPanel LastChildFill="True"
-                 Grid.Column="1"
-                 Grid.Row="0">
-                <Label Content="Number"
-               Margin="5"
-               Width="60"
-               Foreground="{StaticResource HeaderControlForeground}"
-               HorizontalAlignment="Right"
-               DockPanel.Dock="Left"/>
-                <TextBox Name="RaceNumberTextBox"
-                 TabIndex="2"
-                 Text="{Binding NewRaceNumber, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                 Style="{StaticResource HeaderTextBoxStyle}"
-                 Margin="5"/>
+            <!-- Race Number -->
+            <DockPanel 
+                LastChildFill="True"
+                Grid.Column="1"
+                Grid.Row="0">
+                <Label 
+                    Content="Number"
+                    Margin="5"
+                    Width="60"
+                    Foreground="{StaticResource HeaderControlForeground}"
+                    HorizontalAlignment="Right"
+                    DockPanel.Dock="Left"/>
+                <TextBox 
+                    Name="RaceNumberTextBox"
+                    TabIndex="2"
+                    Text="{Binding NewRaceNumber, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                    Style="{StaticResource HeaderTextBoxStyle}"
+                    Margin="5"/>
             </DockPanel>
 
-            <Grid Grid.Row="1"
-            Grid.Column="0">
+            <!-- Initial Time/Age -->
+            <Grid 
+                Grid.Row="1"
+                Grid.Column="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="Time"
-             Grid.Column="0"
-             Margin="5"
-             Foreground="{StaticResource HeaderControlForeground}"
-             HorizontalAlignment="Right"
-             ToolTip="minutes or minutes:seconds"/>
-                <TextBox Name="InitialHandicapTextBox"
-               Grid.Column="1"
-               TabIndex="3"
-               Text="{Binding NewInitialHandicap, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-               Style="{StaticResource HeaderTextBoxStyle}"
-               Margin="5"/>
-                <Label Content="Age"
-             Grid.Column="2"
-             Margin="5"
-             Foreground="{StaticResource HeaderControlForeground}"/>
-                <TextBox Name="AgeTextBox"
-               Grid.Column="3"
-               TabIndex="4"
-               Text="{Binding NewAge, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-               Style="{StaticResource HeaderTextBoxStyle}"
-               Margin="5" FontStyle="Italic"/>
+                <Label 
+                    Content="Time"
+                    Grid.Column="0"
+                    Margin="5"
+                    Foreground="{StaticResource HeaderControlForeground}"
+                    HorizontalAlignment="Right"
+                    ToolTip="minutes or minutes:seconds"/>
+                <TextBox 
+                    Name="InitialHandicapTextBox"
+                    Grid.Column="1"
+                    TabIndex="3"
+                    Text="{Binding NewInitialHandicap, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                    Style="{StaticResource HeaderTextBoxStyle}"
+                    Margin="5"/>
+                <Label 
+                    Content="Age"
+                    Grid.Column="2"
+                    Margin="5"
+                    Foreground="{StaticResource HeaderControlForeground}"/>
+                <TextBox 
+                    Name="AgeTextBox"
+                    Grid.Column="3"
+                    TabIndex="4"
+                    Text="{Binding NewAge, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                    Style="{StaticResource HeaderTextBoxStyle}"
+                    Margin="5"
+                    FontStyle="Italic"/>
             </Grid>
 
-            <DockPanel LastChildFill="True"
+            <!-- Warning -->
+            <Grid Grid.Row="2"
+                  Grid.Column="0">
+                
+            </Grid>
+
+            <!-- Sex -->
+            <DockPanel 
+                LastChildFill="True"
                 Grid.Column="1"
                 Grid.Row="1">
-                <Label Content="Sex"
-               Margin="5"
-               Width="60"
-               Foreground="{StaticResource HeaderControlForeground}"
-               HorizontalAlignment="Right"
-               DockPanel.Dock="Left"/>
-                <ComboBox Name="InitialSexComboBox"
-                TabIndex="5"
-                ItemsSource="{Binding SexSource}"
-                Text="{Binding NewSex}"
-                Style="{StaticResource HeaderComboBoxStyle}"
-                Margin="5"/>
+                <Label 
+                    Content="Sex"
+                    Margin="5"
+                    Width="60"
+                    Foreground="{StaticResource HeaderControlForeground}"
+                    HorizontalAlignment="Right"
+                    DockPanel.Dock="Left"/>
+                <ComboBox 
+                    Name="InitialSexComboBox"
+                    TabIndex="5"
+                    ItemsSource="{Binding SexSource}"
+                    Text="{Binding NewSex}"
+                    Style="{StaticResource HeaderComboBoxStyle}"
+                    Margin="5"/>
             </DockPanel>
 
-            <DockPanel LastChildFill="True"
-                 Grid.Column="1"
-                 Grid.Row="2">
-                <Label Content="Club"
-               Width="60"
-               Margin="5"
-               Foreground="{StaticResource HeaderControlForeground}"
-               HorizontalAlignment="Right"
-               DockPanel.Dock="Left"/>
-                <ComboBox Name="NewClubComboBox"
-                TabIndex="9"
-                ItemsSource="{Binding Path=ClubCollection}"
-                DisplayMemberPath="Club"
-                Text="{Binding NewClub}"
-                Style="{StaticResource HeaderComboBoxStyle}"
-                Margin="5"/>
+            <!-- Club -->
+            <DockPanel
+                LastChildFill="True"
+                Grid.Column="1"
+                Grid.Row="2">
+                <Label 
+                    Content="Club"
+                    Width="60"
+                    Margin="5"
+                    Foreground="{StaticResource HeaderControlForeground}"
+                    HorizontalAlignment="Right"
+                    DockPanel.Dock="Left"/>
+                <ComboBox 
+                    Name="NewClubComboBox"
+                    TabIndex="9"
+                    ItemsSource="{Binding Path=ClubCollection}"
+                    DisplayMemberPath="Club"
+                    Text="{Binding NewClub}"
+                    Style="{StaticResource HeaderComboBoxStyle}"
+                    Margin="5"/>
             </DockPanel>
 
-            <Button Name="NewAthleteButton"
-              Content="Add"
-              Grid.Column="2"
-              Grid.Row="0"
-              Grid.RowSpan="3"
-              TabIndex="10"
-              Command="{Binding AthleteNewCommand}"
-              Style="{StaticResource HeaderButtonStyle}"
-              Margin="5"/>
+            <Button 
+                Name="NewAthleteButton"
+                Content="Add"
+                Grid.Column="2"
+                Grid.Row="0"
+                Grid.RowSpan="3"
+                TabIndex="10"
+                Command="{Binding AthleteNewCommand}"
+                Style="{StaticResource HeaderButtonStyle}"
+                Margin="5"/>
         </Grid>
 
         <Grid Name="ControlsGrid" DockPanel.Dock="Bottom">
@@ -136,20 +167,22 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Name="DeleteButton"
-              Content="Delete"
-              Grid.Column="0"
-              Command="{Binding AthleteDeleteCommand}"
-              Style="{StaticResource BodyButtonStyle}"
-              Height="25"
-              Margin="5"/>
-            <Button Name="SaveButton"
-              Content="Save"
-              Grid.Column="1"
-              Command="{Binding AthleteSaveCommand}"
-              Style="{StaticResource BodyButtonStyle}"
-              Height="25"
-              Margin="5"/>
+            <Button 
+                Name="DeleteButton"
+                Content="Delete"
+                Grid.Column="0"
+                Command="{Binding AthleteDeleteCommand}"
+                Style="{StaticResource BodyButtonStyle}"
+                Height="25"
+                Margin="5"/>
+            <Button 
+                Name="SaveButton"
+                Content="Save"
+                Grid.Column="1"
+                Command="{Binding AthleteSaveCommand}"
+                Style="{StaticResource BodyButtonStyle}"
+                Height="25"
+                Margin="5"/>
         </Grid>
 
         <local:AthleteConfigurationChangePanel 
@@ -157,13 +190,15 @@
             DockPanel.Dock="Bottom"
             Visibility="{Binding CanBeUpdated, Converter={StaticResource visibilityConverter}}"/>
 
-        <DockPanel DockPanel.Dock="Top"
-               LastChildFill="False">
-            <TextBox DockPanel.Dock="Right"
-               Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}"
-               Style="{StaticResource BodyTextBoxStyle}"
-               MinWidth="250"
-               Margin="5"/>
+        <DockPanel 
+            DockPanel.Dock="Top"
+            LastChildFill="False">
+            <TextBox 
+                DockPanel.Dock="Right"
+                Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}"
+                Style="{StaticResource BodyTextBoxStyle}"
+                MinWidth="250"
+                Margin="5"/>
 
             <Label DockPanel.Dock="Right" Content="Search"/>
 
@@ -177,12 +212,15 @@
             <Label DockPanel.Dock="Right" Content="Surname"/>
         </DockPanel>
 
-        <ScrollViewer Background="Transparent"
-                  Name="AthleteScroll">
-            <ListBox ItemsSource="{Binding Path=FilteredAthleteCollection}" 
-               Name="AthleteCollectionList"
-               SelectedIndex="{Binding SelectedAthleteIndex}"
-               HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False">
+        <ScrollViewer 
+            Background="Transparent"
+            Name="AthleteScroll">
+            <ListBox 
+                ItemsSource="{Binding Path=FilteredAthleteCollection}" 
+                Name="AthleteCollectionList"
+                SelectedIndex="{Binding SelectedAthleteIndex}"
+                HorizontalContentAlignment="Stretch" 
+                ScrollViewer.CanContentScroll="False">
                 <ListBox.Resources>
                     <converter:StatusToColourConverter x:Key="statusToColourConverter"/>
                 </ListBox.Resources>
