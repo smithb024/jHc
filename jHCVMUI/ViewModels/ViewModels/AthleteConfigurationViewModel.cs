@@ -39,12 +39,12 @@
         private bool changeActive = true;
         private string changePredeclaredHandicap;
         private string addRaceNumber = string.Empty;
-        private string m_newName = string.Empty;
+        private string newName = string.Empty;
         private string m_newClub = string.Empty;
         private string newRaceNumber = string.Empty;
         private SexType m_newSex = SexType.Male;
         private string m_newInitialHandicap = string.Empty;
-        private string m_newAge = string.Empty;
+        private string newAge = string.Empty;
         private string birthDay = string.Empty;
         private string birthMonth = string.Empty;
         private string birthYear = string.Empty;
@@ -96,12 +96,10 @@
             this.surnameSelectorIndex = 0;
 
             AthleteAddNumberCommand = new AthleteConfigAddNumberCmd(this);
-            //AthleteChangeCommand    = new AthleteConfigChangeCmd(this);
             this.AthleteChangeCommand =
               new SimpleCommand(
                 this.ChangeAthlete,
                 this.CanChange);
-            //AthleteDeleteCommand    = new AthleteConfigDeleteCmd(this);
             this.AthleteDeleteCommand =
               new SimpleCommand(
                 this.DeleteAthlete,
@@ -110,8 +108,6 @@
               new SimpleCommand(
                 this.AddNewAthlete,
                 this.CanAdd);
-            //AthleteNewCommand       = new AthleteConfigNewCmd(this);
-            //AthleteSaveCommand      = new AthleteConfigSaveCmd(this);
             this.AthleteSaveCommand =
               new SimpleCommand(
                 this.SaveAthletes,
@@ -253,20 +249,26 @@
             }
         }
 
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>NewName</name>
-        /// <date>09/03/15</date>
         /// <summary>
         /// Gets and sets the new athlete's name
         /// </summary>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public string NewName
         {
-            get { return m_newName; }
+            get
+            {
+                return this.newName;
+            }
+
             set
             {
-                m_newName = value;
-                RaisePropertyChangedEvent("NewName");
+                if (this.newName == value)
+                {
+                    return;
+                }
+
+                this.newName = value;
+                this.RaisePropertyChangedEvent(nameof(this.NewName));
+                this.DetermineWhetherIsPossibleDuplicate();
             }
         }
 
@@ -416,23 +418,32 @@
             }
         }
 
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>NewInitialHandicap</name>
-        /// <date>09/03/15</date>
         /// <summary>
         /// Gets and sets the new athlete's initial handicap.
         /// </summary>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public string NewAge
         {
-            get { return m_newAge; }
+            get
+            {
+                return this.newAge;
+            }
+
             set
             {
-                m_newAge = value;
-                NewInitialHandicap = HandicapConverter.ConvertAgeToHandicap(m_newAge);
-                RaisePropertyChangedEvent("NewAge");
+                this.newAge = value;
+                this.NewInitialHandicap = HandicapConverter.ConvertAgeToHandicap(this.newAge);
+                this.RaisePropertyChangedEvent(nameof(this.NewAge));
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the name which has been entered is already present.
+        /// </summary>
+        /// <remarks>
+        /// As names are not unique, this won't stop the athlete from being created, but it should 
+        /// be flagged.
+        /// </remarks>
+        public bool IsPossibleDuplicate { get; private set; }
 
         /// <summary>
         /// Gets a value indicating if the athlete can be updated.
@@ -1009,6 +1020,29 @@
             this.RaisePropertyChangedEvent(nameof(this.SurnameSelectorIndex));
             this.RaisePropertyChangedEvent(nameof(this.AthleteCollection));
             this.RaisePropertyChangedEvent(nameof(this.FilteredAthleteCollection));
+        }
+
+        /// <summary>
+        /// Determine whther the current <see cref="NewName"/> already exists.
+        /// </summary>
+        private void DetermineWhetherIsPossibleDuplicate()
+        {
+            bool isPossibleDuplicate = false;
+
+            foreach(AthleteType athleteType in this.athleteCollection)
+            {
+                if (string.Equals(this.NewName, athleteType.Name))
+                {
+                    isPossibleDuplicate = true;
+                    break;
+                }
+            }
+
+            if (this.IsPossibleDuplicate != isPossibleDuplicate)
+            {
+                this.IsPossibleDuplicate = isPossibleDuplicate;
+                this.RaisePropertyChangedEvent(nameof(this.IsPossibleDuplicate));
+            }
         }
     }
 }
