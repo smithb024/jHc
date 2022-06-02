@@ -81,7 +81,12 @@
         /// </summary>
         private int timeInputSourceIndex = 0;
 
-        private List<ImportedRawPositionResults> rawImportedPostions = new List<ImportedRawPositionResults>();
+        /// <summary>
+        /// Index used to select a input source from the <see cref="PositionInputSources"/> collection.
+        /// </summary>
+        private int positionInputSourceIndex = 0;
+
+        private List<RawPositionResults> rawImportedPostions = new List<RawPositionResults>();
         private List<RaceTimeType> rawImportedTimes = new List<RaceTimeType>();
         private bool canSaveImported;
         private string importedState;
@@ -287,7 +292,7 @@
         /// <summary>
         /// Gets or sets the raw position data.
         /// </summary>
-        public List<ImportedRawPositionResults> RawImportedPostions
+        public List<RawPositionResults> RawImportedPostions
         {
             get
             {
@@ -341,20 +346,10 @@
         /// <summary>
         /// Gets the currently selected time input source.
         /// </summary>
-        public TimeSources CurrentInputSource
-        {
-            get
-            {
-                if (this.TimeInputSourceIndex < 0 || this.TimeInputSourceIndex > this.TimeInputSources.Count)
-                {
-                    return TimeSources.Manual;
-                }
-                else
-                {
-                    return (TimeSources)this.TimeInputSourceIndex;
-                }
-            }
-        }
+        public TimeSources CurrentTimeInputSource =>
+                this.timeInputSourceIndex < 0 || this.timeInputSourceIndex > this.TimeInputSources.Count
+                    ? TimeSources.Manual
+                    : (TimeSources)this.timeInputSourceIndex;
 
         /// <summary>
         /// Gets or sets the current index of the currently selected time input source.
@@ -377,9 +372,48 @@
                     this.timeInputSourceIndex = value;
                 }
 
-                RaisePropertyChangedEvent(nameof(this.TimeInputSourceIndex));
+                this.RaisePropertyChangedEvent(nameof(this.TimeInputSourceIndex));
             }
         }
+
+        /// <summary>
+        /// Gets all the possible position input sources as a collection of strings.
+        /// </summary>
+        public List<string> PositionInputSources => Enum.GetNames(typeof(PositionSources)).ToList();
+
+        /// <summary>
+        /// Gets the currently selected position input source.
+        /// </summary>
+        public PositionSources CurrentPositionInputSource =>
+            (this.positionInputSourceIndex < 0 || this.positionInputSourceIndex > this.PositionInputSources.Count)
+                ? PositionSources.OPN200
+                :(PositionSources)this.positionInputSourceIndex;
+
+        /// <summary>
+        /// Gets or sets the current index of the currently selected position input source.
+        /// </summary>
+        public int PositionInputSourceIndex
+        {
+            get
+            {
+                return this.positionInputSourceIndex;
+            }
+
+            set
+            {
+                if (value < 0 || value > this.PositionInputSources.Count)
+                {
+                    this.positionInputSourceIndex = 0;
+                }
+                else
+                {
+                    this.positionInputSourceIndex = value;
+                }
+
+                this.RaisePropertyChangedEvent(nameof(this.PositionInputSourceIndex));
+            }
+        }
+
         public ICommand SaveCommand
         {
             get;
@@ -495,48 +529,64 @@
         /// </summary>
         public void ImportPositionsData(string fileName)
         {
-            RawImportedPostions = new List<ImportedRawPositionResults>();
-            List<List<string>> rawPositions = this.commonIo.ReadPairedStringListFomFile(fileName);
-
-            foreach (List<string> positionAthleteData in rawPositions)
+            switch (this.CurrentPositionInputSource)
             {
-                // Ensure 2 results present
-                if (positionAthleteData.Count == 2)
-                {
-                    int? position = null;
-                    string raceNumber = null;
+                case PositionSources.OPN200:
+                    this.RawImportedPostions =
+                      ImportOpn200PositionFactory.Import(
+                        fileName,
+                        this.commonIo,
+                        this.logger);
+                    break;
 
-                    string result1 = ResultsDecoder.OpnScannerResultsBarcode(positionAthleteData[0]);
-                    string result2 = ResultsDecoder.OpnScannerResultsBarcode(positionAthleteData[1]);
-
-                    this.UpdatePositionAthleteData(result1, ref position, ref raceNumber);
-                    this.UpdatePositionAthleteData(result2, ref position, ref raceNumber);
-
-                    if (position != null && raceNumber != null)
-                    {
-                        RawImportedPostions.Add(new ImportedRawPositionResults(raceNumber, (int)position));
-                    }
-                    else
-                    {
-                        string errorString = string.Format("Can't decode {0}/{1}", positionAthleteData[0], positionAthleteData[1]);
-                        Messenger.Default.Send(
-                            new HandicapProgressMessage(
-                                errorString));
-                        this.logger.WriteLog(errorString);
-                    }
-                }
-                else
-                {
-                    string errorString = "Please check results, result/barcode pair invalid";
-                    Messenger.Default.Send(
-                        new HandicapProgressMessage(
-                            errorString));
-                    this.logger.WriteLog(errorString);
-                }
+                case PositionSources.Parkrun:
+                    break;
+                default:
+                    break;
             }
 
-            RawImportedPostions = RawImportedPostions.OrderBy(position => position.Position).ToList();
-            RaisePropertyChangedEvent("RawImportedPostions");
+            //        this.RawImportedPostions = new List<RawPositionResults>();
+            //List<List<string>> rawPositions = this.commonIo.ReadPairedStringListFomFile(fileName);
+
+            //foreach (List<string> positionAthleteData in rawPositions)
+            //{
+            //    // Ensure 2 results present
+            //    if (positionAthleteData.Count == 2)
+            //    {
+            //        int? position = null;
+            //        string raceNumber = null;
+
+            //string result1 = ResultsDecoder.OpnScannerResultsBarcode(positionAthleteData[0]);
+            //        string result2 = ResultsDecoder.OpnScannerResultsBarcode(positionAthleteData[1]);
+
+            //        this.UpdatePositionAthleteData(result1, ref position, ref raceNumber);
+            //        this.UpdatePositionAthleteData(result2, ref position, ref raceNumber);
+
+            //        if (position != null && raceNumber != null)
+            //        {
+            //            RawImportedPostions.Add(new RawPositionResults(raceNumber, (int)position));
+            //        }
+            //        else
+            //        {
+            //            string errorString = string.Format("Can't decode {0}/{1}", positionAthleteData[0], positionAthleteData[1]);
+            //Messenger.Default.Send(
+            //    new HandicapProgressMessage(
+            //        errorString));
+            //this.logger.WriteLog(errorString);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        string errorString = "Please check results, result/barcode pair invalid";
+            //        Messenger.Default.Send(
+            //            new HandicapProgressMessage(
+            //                errorString));
+            //        this.logger.WriteLog(errorString);
+            //    }
+            //}
+
+            //RawImportedPostions = RawImportedPostions.OrderBy(position => position.Position).ToList();
+            this.RaisePropertyChangedEvent(nameof(this.RawImportedPostions));
             this.DetermineImportedState();
         }
 
@@ -545,7 +595,7 @@
         /// </summary>
         public void ImportTimesData(string fileName)
         {
-            switch (this.CurrentInputSource)
+            switch (this.CurrentTimeInputSource)
             {
                 case TimeSources.Manual:
                     this.RawImportedTimes =
@@ -577,8 +627,8 @@
             }
 
             this.DetermineImportedState();
-            RaisePropertyChangedEvent("RawImportedTimes");
-            RaisePropertyChangedEvent(nameof(this.importedState));
+            this.RaisePropertyChangedEvent(nameof(this.RawImportedTimes));
+            this.RaisePropertyChangedEvent(nameof(this.ImportedState));
         }
 
         /// <summary>
@@ -676,7 +726,7 @@
         /// <returns>string indicating any problems</returns>
         private bool TestForDuplicateNumbersAndPositions()
         {
-            foreach (ImportedRawPositionResults raw in RawImportedPostions)
+            foreach (RawPositionResults raw in this.RawImportedPostions)
             {
                 if (RawImportedPostions.FindAll(raceNumber => raceNumber.RaceNumber == raw.RaceNumber).Count > 1)
                 {
@@ -705,7 +755,7 @@
         {
             List<string> invalidValues = new List<string>();
 
-            foreach (ImportedRawPositionResults raw in RawImportedPostions)
+            foreach (RawPositionResults raw in this.RawImportedPostions)
             {
                 if (!this.RaceNumberPresent(AllAthletes, raw.RaceNumber))
                 {
@@ -814,25 +864,25 @@
             return null;
         }
 
-        /// <summary>
-        /// Takes a result and populate the position or race number depending on what it is.
-        /// </summary>
-        /// <param name="result">position / athlete result</param>
-        /// <param name="position">position of result</param>
-        /// <param name="raceNumber">race number of result</param>
-        private void UpdatePositionAthleteData(string result,
-                                               ref int? position,
-                                               ref string raceNumber)
-        {
-            if (ResultsDecoder.IsPositionValue(result))
-            {
-                position = ResultsDecoder.ConvertPositionValue(result);
-            }
-            else
-            {
-                raceNumber = result;
-            }
-        }
+        ///// <summary>
+        ///// Takes a result and populate the position or race number depending on what it is.
+        ///// </summary>
+        ///// <param name="result">position / athlete result</param>
+        ///// <param name="position">position of result</param>
+        ///// <param name="raceNumber">race number of result</param>
+        //private void UpdatePositionAthleteData(string result,
+        //                                       ref int? position,
+        //                                       ref string raceNumber)
+        //{
+        //    if (ResultsDecoder.IsPositionValue(result))
+        //    {
+        //        position = ResultsDecoder.ConvertPositionValue(result);
+        //    }
+        //    else
+        //    {
+        //        raceNumber = result;
+        //    }
+        //}
 
         private void DetermineImportedState()
         {

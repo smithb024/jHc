@@ -63,6 +63,7 @@
     <Compile Include="Admin\IO\ClubData.cs" />
     <Compile Include="Admin\IO\EventData.cs" />
     <Compile Include="Admin\IO\GeneralIO.cs" />
+    <Compile Include="Admin\IO\RawResults\ImportOpn200PositionFactory.cs" />
     <Compile Include="Admin\IO\RawResults\ImportParkrunTimerFactory.cs" />
     <Compile Include="Admin\IO\RawResults\Import610PFactory.cs" />
     <Compile Include="Admin\IO\RawResults\ImportManualTimesFactory.cs" />

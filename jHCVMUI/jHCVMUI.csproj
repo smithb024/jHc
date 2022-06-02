@@ -127,7 +127,6 @@
     <Compile Include="ViewModels\ViewModels\Types\Clubs\TeamTrophyPointsTableRowViewModel.cs" />
     <Compile Include="ViewModels\ViewModels\Types\ClubType.cs" />
     <Compile Include="ViewModels\ViewModels\Types\Misc\AppearancesViewModel.cs" />
-    <Compile Include="ViewModels\ViewModels\Types\Misc\ImportedRawPositionResults.cs" />
     <Compile Include="ViewModels\ViewModels\Types\PointsType.cs" />
     <Compile Include="ViewModels\ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\Components\AppearanceDetail.xaml.cs">

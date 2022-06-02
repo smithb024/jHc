@@ -63,7 +63,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\DateOfBirth.cs" />
     <Compile Include="Types\EventMiscData.cs" />
+    <Compile Include="Types\RawPositionResults.cs" />
     <Compile Include="Types\PositionEditorFaults.cs" />
+    <Compile Include="Types\PositionSources.cs" />
     <Compile Include="Types\TimeSources.cs" />
     <Compile Include="Types\SeriesConfigType.cs" />
     <Compile Include="Types\NormalisationConfigType.cs" />
