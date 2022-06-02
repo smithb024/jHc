@@ -28,7 +28,7 @@
                 </Grid.ColumnDefinitions>
                 <ListBox 
                     Grid.Column="0"
-                    ItemsSource="{Binding Path=RawImportedPostions}"
+                    ItemsSource="{Binding Path=RawImportedPositions}"
                     HorizontalContentAlignment="Stretch">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">

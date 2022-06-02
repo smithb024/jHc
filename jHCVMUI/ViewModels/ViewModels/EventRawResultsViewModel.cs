@@ -292,7 +292,7 @@
         /// <summary>
         /// Gets or sets the raw position data.
         /// </summary>
-        public List<RawPositionResults> RawImportedPostions
+        public List<RawPositionResults> RawImportedPositions
         {
             get
             {
@@ -491,10 +491,10 @@
             {
                 LoadRegisteredInformation(this.athletesModel.AthleteDetails);
 
-                for (int index = 0; index < RawImportedPostions.Count; ++index)
+                for (int index = 0; index < RawImportedPositions.Count; ++index)
                 {
                     // Should have already checked that these two arrays are the same size.
-                    RegisterNewResult(RawImportedPostions[index].RaceNumber, RawImportedTimes[index]);
+                    RegisterNewResult(RawImportedPositions[index].RaceNumber, RawImportedTimes[index]);
                 }
             }
             catch (Exception ex)
@@ -532,7 +532,7 @@
             switch (this.CurrentPositionInputSource)
             {
                 case PositionSources.OPN200:
-                    this.RawImportedPostions =
+                    this.RawImportedPositions =
                       ImportOpn200PositionFactory.Import(
                         fileName,
                         this.commonIo,
@@ -586,7 +586,7 @@
             //}
 
             //RawImportedPostions = RawImportedPostions.OrderBy(position => position.Position).ToList();
-            this.RaisePropertyChangedEvent(nameof(this.RawImportedPostions));
+            this.RaisePropertyChangedEvent(nameof(this.RawImportedPositions));
             this.DetermineImportedState();
         }
 
@@ -726,15 +726,15 @@
         /// <returns>string indicating any problems</returns>
         private bool TestForDuplicateNumbersAndPositions()
         {
-            foreach (RawPositionResults raw in this.RawImportedPostions)
+            foreach (RawPositionResults raw in this.RawImportedPositions)
             {
-                if (RawImportedPostions.FindAll(raceNumber => raceNumber.RaceNumber == raw.RaceNumber).Count > 1)
+                if (RawImportedPositions.FindAll(raceNumber => raceNumber.RaceNumber == raw.RaceNumber).Count > 1)
                 {
                     this.ImportedState = string.Format("Error: Duplicate number {0}", raw.RaceNumber);
                     return true;
                 }
 
-                if (RawImportedPostions.FindAll(racePosition => racePosition.Position == raw.Position).Count > 1)
+                if (RawImportedPositions.FindAll(racePosition => racePosition.Position == raw.Position).Count > 1)
                 {
                     this.ImportedState = string.Format("Error: Duplicate position {0}", raw.Position);
                     return true;
@@ -755,7 +755,7 @@
         {
             List<string> invalidValues = new List<string>();
 
-            foreach (RawPositionResults raw in this.RawImportedPostions)
+            foreach (RawPositionResults raw in this.RawImportedPositions)
             {
                 if (!this.RaceNumberPresent(AllAthletes, raw.RaceNumber))
                 {
@@ -908,7 +908,7 @@
         /// <returns>true if there is a problem</returns>
         private bool TestForImportedCounts()
         {
-            if (RawImportedPostions.Count == 0)
+            if (RawImportedPositions.Count == 0)
             {
                 this.ImportedState = "Please import position data";
                 return true;
@@ -918,12 +918,12 @@
                 this.ImportedState = "Please import time data";
                 return true;
             }
-            else if (RawImportedPostions.Count < RawImportedTimes.Count)
+            else if (RawImportedPositions.Count < RawImportedTimes.Count)
             {
                 this.ImportedState = "More times than finishers.";
                 return true;
             }
-            else if (RawImportedPostions.Count > RawImportedTimes.Count)
+            else if (RawImportedPositions.Count > RawImportedTimes.Count)
             {
                 this.ImportedState = "More finishers than times.";
                 return true;

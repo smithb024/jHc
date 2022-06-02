@@ -27,7 +27,7 @@
             ICommonIo commonIo,
             IJHcLogger logger)
         {
-            List<RawPositionResults> rawImportedPostions = new List<RawPositionResults>();
+            List<RawPositionResults> rawImportedPositions = new List<RawPositionResults>();
             List<List<string>> rawPositions = commonIo.ReadPairedStringListFomFile(fileName);
 
             foreach (List<string> positionAthleteData in rawPositions)
@@ -56,7 +56,7 @@
                             new RawPositionResults(
                                 raceNumber,
                                 (int)position);
-                        rawImportedPostions.Add(results);
+                        rawImportedPositions.Add(results);
                     }
                     else
                     {
@@ -82,12 +82,12 @@
                 }
             }
 
-            rawImportedPostions =
-                rawImportedPostions
+            rawImportedPositions =
+                rawImportedPositions
                 .OrderBy(position => position.Position)
                 .ToList();
 
-            return rawImportedPostions;
+            return rawImportedPositions;
         }
 
         /// <summary>
