@@ -540,7 +540,13 @@
                     break;
 
                 case PositionSources.Parkrun:
+                    this.RawImportedPositions =
+                      ImportParkrunPositionFactory.Import(
+                        fileName,
+                        this.commonIo,
+                        this.logger);
                     break;
+
                 default:
                     break;
             }
