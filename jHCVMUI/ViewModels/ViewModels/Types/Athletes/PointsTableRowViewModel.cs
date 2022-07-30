@@ -99,7 +99,7 @@
             set
             {
                 this.personalBest = value;
-                RaisePropertyChangedEvent("PB");
+                this.RaisePropertyChangedEvent("PB");
             }
         }
 
@@ -116,7 +116,7 @@
             set
             {
                 this.points = value;
-                RaisePropertyChangedEvent("Points");
+                this.RaisePropertyChangedEvent("Points");
             }
         }
 
@@ -133,7 +133,7 @@
             set
             {
                 this.finishingPoints = value;
-                RaisePropertyChangedEvent("FinishingPoints");
+                this.RaisePropertyChangedEvent("FinishingPoints");
             }
         }
 
@@ -150,7 +150,7 @@
             set
             {
                 this.positionPoints = value;
-                RaisePropertyChangedEvent("PositionPoints");
+                this.RaisePropertyChangedEvent("PositionPoints");
             }
         }
 
@@ -167,7 +167,7 @@
             set
             {
                 this.bestPoints = value;
-                RaisePropertyChangedEvent("BestPoints");
+                this.RaisePropertyChangedEvent("BestPoints");
             }
         }
 
@@ -189,7 +189,7 @@
             set
             {
                 this.numberOfRuns = value;
-                RaisePropertyChangedEvent("NumberOfRuns");
+                this.RaisePropertyChangedEvent("NumberOfRuns");
             }
         }
 
@@ -206,7 +206,7 @@
             set
             {
                 this.averagePoints = value;
-                RaisePropertyChangedEvent("AveragePoints");
+                this.RaisePropertyChangedEvent("AveragePoints");
             }
         }
 
@@ -223,7 +223,7 @@
             set
             {
                 this.seasonBest = value;
-                RaisePropertyChangedEvent("SB");
+                this.RaisePropertyChangedEvent("SB");
             }
         }
     }
