@@ -151,7 +151,7 @@
 
             this.PointsTable =
                 new ObservableCollection<PointsTableRowViewModel>(
-                    PointsTable.OrderByDescending(
+                    this.PointsTable.OrderByDescending(
                         order => order.Points));
         }
     }

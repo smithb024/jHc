@@ -67,7 +67,21 @@
         /// <summary>
         /// Returns all the position points the athlete has earnt.
         /// </summary>
-        public int PositionPoints { get; set; }
+        //public int PositionPoints { get; set; }
+        public int PositionPoints
+        {
+            get
+            {
+                int positionPoints = 0;
+
+                foreach (CommonPoints points in this.AllPoints)
+                {
+                    positionPoints += points.PositionPoints;
+                }
+
+                return positionPoints;
+            }
+        }
 
         /// <summary>
         /// Returns all the best points the athlete has earnt.
@@ -95,7 +109,7 @@
         {
             AllPoints.Add(newPoints);
 
-            this.PositionPoints = this.CalculatePositionPoints();
+            //this.PositionPoints = this.CalculatePositionPoints();
         }
 
         /// <summary>
@@ -118,7 +132,7 @@
                 AllPoints[eventIndex].BestPoints = bestPoints;
             }
 
-            this.PositionPoints = this.CalculatePositionPoints();
+            //this.PositionPoints = this.CalculatePositionPoints();
         }
 
         /// <summary>
@@ -129,7 +143,7 @@
         public void UpdatePositionPoints(DateType date, int points)
         {
             AllPoints.Find(allPoints => allPoints.Date == date).PositionPoints = points;
-            this.PositionPoints = this.CalculatePositionPoints();
+            //this.PositionPoints = this.CalculatePositionPoints();
         }
 
         /// <summary>
@@ -144,7 +158,7 @@
                 AllPoints.Remove(AllPoints.Find(dateCheck => dateCheck.Date == date));
             }
 
-            this.PositionPoints = this.CalculatePositionPoints();
+            //this.PositionPoints = this.CalculatePositionPoints();
         }
 
         /// <summary>

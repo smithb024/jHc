@@ -28,7 +28,7 @@
         /// <summary>
         /// Returns all the position points the athlete has earnt.
         /// </summary>
-        int PositionPoints { get; set; }
+        int PositionPoints { get; }
 
         /// <summary>
         /// Returns all the best points the athlete has earnt.
