@@ -29,7 +29,7 @@ namespace HandicapModel.Interfaces.SeasonModel
         /// <summary>
         /// Gets and sets the number of points
         /// </summary>
-        AthleteSeasonPoints Points { get; set; }
+        IAthleteSeasonPoints Points { get; set; }
 
         /// <summary>
         /// Gets and sets the number of points assoicated with the harmnony competiion.

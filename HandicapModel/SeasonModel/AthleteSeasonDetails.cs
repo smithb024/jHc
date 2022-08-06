@@ -75,7 +75,7 @@
         /// <summary>
         /// Gets and sets the number of points
         /// </summary>
-        public AthleteSeasonPoints Points { get; set; }
+        public IAthleteSeasonPoints Points { get; set; }
 
         /// <summary>
         /// Gets and sets the number of points assoicated with the Team Trophy.
