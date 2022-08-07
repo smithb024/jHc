@@ -1,11 +1,10 @@
-﻿using CommonHandicapLib.Types;
-using CommonLib.Types;
-using HandicapModel.Common;
-using HandicapModel.SeasonModel;
-using System.Collections.Generic;
-
-namespace HandicapModel.Interfaces.SeasonModel
+﻿namespace HandicapModel.Interfaces.SeasonModel
 {
+    using CommonHandicapLib.Types;
+    using CommonLib.Types;
+    using HandicapModel.Common;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Interface which describes the athletes details for a single season
     /// </summary>

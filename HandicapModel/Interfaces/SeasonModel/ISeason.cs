@@ -48,7 +48,7 @@
         /// <summary>
         /// Gets the season specific details for each athlete present in the current season.
         /// </summary>
-        List<AthleteSeasonDetails> Athletes { get; }
+        List<IAthleteSeasonDetails> Athletes { get; }
 
         /// <summary>
         /// Gets the club specific details for each club present in the current season.

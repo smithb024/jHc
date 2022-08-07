@@ -136,6 +136,16 @@
         }
 
         /// <summary>
+        /// Get the <see cref="AthleteDetails"/> with the unique id specified by <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The unique identifier</param>
+        /// <returns></returns>
+        public AthleteDetails GetAthlete(int key)
+        {
+            return this.AthleteDetails.Find(athlete => athlete.Key == key);
+        }
+
+        /// <summary>
         /// Use the key to get the name of the athlete.
         /// </summary>
         /// <param name="key">unique key</param>

@@ -1,51 +1,33 @@
 ﻿namespace jHCVMUI.ViewModels.ViewModels.Types.Athletes
 {
-    using CommonLib.Types;
+    using HandicapModel.AthletesModel;
+    using HandicapModel.Interfaces.SeasonModel;
+    using System;
 
     /// <summary>
     /// Class describing a single entry of the points table
     /// </summary>
-    public class PointsTableRowViewModel : AthleteBase
+    public class PointsTableRowViewModel : AthleteBase, IDisposable
     {
         /// <summary>
-        /// Personal best
+        /// The athlete details model object for the current season.
         /// </summary>
-        private string personalBest;
+        private readonly IAthleteSeasonDetails athleteSeasonDetails;
 
         /// <summary>
-        /// Total number of points scored.
+        /// Get the athlete points model object for the current season.
         /// </summary>
-        private int points;
+        private readonly IAthleteSeasonPoints athleteSeasonPoints;
 
         /// <summary>
-        /// Number of points scored by finishing an event.
+        /// Gets the global athlete model object;
         /// </summary>
-        private int finishingPoints;
+        private readonly AthleteDetails athleteDetails;
 
         /// <summary>
-        /// Number of points scored by finishing position.
+        /// Value which indicates whether this object has been disposed.
         /// </summary>
-        private int positionPoints;
-
-        /// <summary>
-        /// Number of point score by improving a time.
-        /// </summary>
-        private int bestPoints;
-
-        /// <summary>
-        /// Number of event started.
-        /// </summary>
-        private int numberOfRuns;
-
-        /// <summary>
-        /// Average number of points scored per event.
-        /// </summary>
-        private string averagePoints;
-
-        /// <summary>
-        /// Season best.
-        /// </summary>
-        private string seasonBest;
+        private bool disposedValue;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="PointsTableRowViewModel"/> class.
@@ -62,114 +44,48 @@
         /// <param name="averagePoints">average number of points scored per event</param>
         /// <param name="sb">athlete's season best</param>
         public PointsTableRowViewModel(
-          int key,
-          string name,
-          TimeType pb,
-          int points,
-          int finishingPoints,
-          int positionPoints,
-          int bestPoints,
-          string raceNumber,
-          int numberOfRuns,
-          string averagePoints,
-          TimeType sb)
-          : base(key, name)
+            IAthleteSeasonDetails athleteSeasonDetails,
+            AthleteDetails athleteDetails)
+          : base(athleteDetails.Key, athleteDetails.Name)
         {
-            this.personalBest = pb.ToString();
-            this.points = points;
-            this.finishingPoints = finishingPoints;
-            this.positionPoints = positionPoints;
-            this.bestPoints = bestPoints;
-            this.RaceNumber = raceNumber;
-            this.numberOfRuns = numberOfRuns;
-            this.averagePoints = averagePoints;
-            this.seasonBest = sb.ToString();
+            this.athleteSeasonDetails = athleteSeasonDetails;
+            this.athleteSeasonPoints = athleteSeasonDetails.Points;
+            this.athleteDetails = athleteDetails;
+
+            this.PB = this.athleteDetails.PB.ToString();
+            this.Points = this.athleteSeasonPoints.TotalPoints;
+            this.FinishingPoints = this.athleteSeasonPoints.FinishingPoints;
+            this.PositionPoints = this.athleteSeasonPoints.PositionPoints;
+            this.BestPoints = this.athleteSeasonPoints.BestPoints;
+            this.RaceNumber = this.athleteDetails.PrimaryNumber;
+            this.NumberOfRuns = this.athleteSeasonDetails.NumberOfAppearances;
+            this.SB = this.athleteSeasonDetails.SB.ToString();
         }
 
         /// <summary>
         /// Gets or sets the PB.
         /// </summary>
-        public string PB
-        {
-            get
-            {
-                return this.personalBest;
-            }
-
-            set
-            {
-                this.personalBest = value;
-                this.RaisePropertyChangedEvent("PB");
-            }
-        }
+        public string PB { get; private set; }
 
         /// <summary>
         /// Gets or sets the points.
         /// </summary>
-        public int Points
-        {
-            get
-            {
-                return this.points;
-            }
-
-            set
-            {
-                this.points = value;
-                this.RaisePropertyChangedEvent("Points");
-            }
-        }
+        public int Points { get; private set; }
 
         /// <summary>
         /// Gets or sets the finishing points.
         /// </summary>
-        public int FinishingPoints
-        {
-            get
-            {
-                return this.finishingPoints;
-            }
-
-            set
-            {
-                this.finishingPoints = value;
-                this.RaisePropertyChangedEvent("FinishingPoints");
-            }
-        }
+        public int FinishingPoints { get; private set; }
 
         /// <summary>
         /// Gets or sets the position points.
         /// </summary>
-        public int PositionPoints
-        {
-            get
-            {
-                return this.positionPoints;
-            }
-
-            set
-            {
-                this.positionPoints = value;
-                this.RaisePropertyChangedEvent("PositionPoints");
-            }
-        }
+        public int PositionPoints { get; private set; }
 
         /// <summary>
         /// Gets or sets the best points.
         /// </summary>
-        public int BestPoints
-        {
-            get
-            {
-                return this.bestPoints;
-            }
-
-            set
-            {
-                this.bestPoints = value;
-                this.RaisePropertyChangedEvent("BestPoints");
-            }
-        }
+        public int BestPoints { get; private set; }
 
         /// <summary>
         /// Gets or sets the race number.
@@ -179,19 +95,7 @@
         /// <summary>
         /// Gets or sets the number of runs.
         /// </summary>
-        public int NumberOfRuns
-        {
-            get
-            {
-                return this.numberOfRuns;
-            }
-
-            set
-            {
-                this.numberOfRuns = value;
-                this.RaisePropertyChangedEvent("NumberOfRuns");
-            }
-        }
+        public int NumberOfRuns { get; private set; }
 
         /// <summary>
         /// Gets or sets the average points.
@@ -200,30 +104,43 @@
         {
             get
             {
-                return this.averagePoints;
-            }
+                double averagePoints = 0;
+                if (this.NumberOfRuns > 0)
+                {
+                    averagePoints = (double)this.Points / this.NumberOfRuns;
+                }
 
-            set
-            {
-                this.averagePoints = value;
-                this.RaisePropertyChangedEvent("AveragePoints");
+
+                return averagePoints.ToString("0.##");
             }
         }
 
         /// <summary>
         /// Gets or sets the SB.
         /// </summary>
-        public string SB
-        {
-            get
-            {
-                return this.seasonBest;
-            }
+        public string SB { get; private set; }
 
-            set
+        /// <summary>
+        /// Dispose this object.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
             {
-                this.seasonBest = value;
-                this.RaisePropertyChangedEvent("SB");
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                this.disposedValue = true;
             }
         }
     }

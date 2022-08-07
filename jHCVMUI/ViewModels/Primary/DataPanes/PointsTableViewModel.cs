@@ -73,43 +73,7 @@
         {
             this.PointsTable.Clear();
             this.PopulatePointsTable();
-
-            //foreach (AthleteSeasonDetails athlete in this.seasonModel.Athletes)
-            //{
-            //    if (athlete.Points.TotalPoints > 0)
-            //    {
-            //        double averagePoints = 0;
-            //        if (athlete.NumberOfAppearances > 0)
-            //        {
-            //            averagePoints = (double)athlete.Points.TotalPoints / (double)athlete.NumberOfAppearances;
-            //        }
-
-            //        TimeType pb = this.athletesModel.GetPB(athlete.Key);
-            //        string runningNumber =
-            //            this.athletesModel.GetAthleteRunningNumber(
-            //                athlete.Key);
-
-            //        this.PointsTable.Add(
-            //          new PointsTableRowViewModel(
-            //            athlete.Key,
-            //            athlete.Name,
-            //            pb,
-            //            athlete.Points.TotalPoints,
-            //            athlete.Points.FinishingPoints,
-            //            athlete.Points.PositionPoints,
-            //            athlete.Points.BestPoints,
-            //            runningNumber,
-            //            athlete.NumberOfAppearances,
-            //            averagePoints.ToString("0.##"),
-            //            athlete.SB));
-            //    }
-            //}
-
-            //this.PointsTable =
-            //    new ObservableCollection<PointsTableRowViewModel>(
-            //        PointsTable.OrderByDescending(
-            //            order => order.Points));
-        }
+       }
 
         /// <summary>
         /// Calculate and populate the athletes points table.
@@ -118,7 +82,7 @@
         {
             Athletes athletesModel = this.model.Athletes;
 
-            foreach (AthleteSeasonDetails athlete in this.seasonModel.Athletes)
+            foreach (IAthleteSeasonDetails athlete in this.seasonModel.Athletes)
             {
                 if (athlete.Points.TotalPoints > 0)
                 {
@@ -133,19 +97,22 @@
                         athletesModel.GetAthleteRunningNumber(
                             athlete.Key);
 
-                    this.PointsTable.Add(
-                      new PointsTableRowViewModel(
-                        athlete.Key,
-                        athlete.Name,
-                        pb,
-                        athlete.Points.TotalPoints,
-                        athlete.Points.FinishingPoints,
-                        athlete.Points.PositionPoints,
-                        athlete.Points.BestPoints,
-                        runningNumber,
-                        athlete.NumberOfAppearances,
-                        averagePoints.ToString("0.##"),
-                        athlete.SB));
+                    AthleteDetails athleteModel =
+                        athletesModel.GetAthlete(
+                            athlete.Key);
+
+                    if (athleteModel == null)
+                    {
+                        // TODO: Unexpected, it should be logged.
+                        continue;
+                    }
+
+                    PointsTableRowViewModel newRow =
+                        new PointsTableRowViewModel(
+                            athlete,
+                            athleteModel);
+
+                    this.PointsTable.Add(newRow);
                 }
             }
 

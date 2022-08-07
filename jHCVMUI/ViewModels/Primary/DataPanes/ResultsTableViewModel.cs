@@ -192,7 +192,7 @@
 
         /// <summary>
         /// Task a list of <see cref="ResultsTableViewModel"/> objects and convert to 
-        /// an observabole collection and set as results.
+        /// an observable collection and set as results.
         /// </summary>
         /// <param name="listResults"></param>
         private void SetResults(List<ResultsTableRowViewModel> listResults)

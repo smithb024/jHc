@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using HandicapModel.Admin.Manage;
     using HandicapModel.AthletesModel;
+    using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
 
     /// <summary>
@@ -31,14 +32,14 @@
         /// <returns>success flag</returns>
         bool SaveAthleteSeasonData(
             string seasonName,
-            List<AthleteSeasonDetails> seasons);
+            List<IAthleteSeasonDetails> seasons);
 
         /// <summary>
         /// Loads the season athlete details.
         /// </summary>
         /// <param name="seasonName">season name</param>
         /// <returns>season athlete details</returns>
-        List<AthleteSeasonDetails> LoadAthleteSeasonData(
+        List<IAthleteSeasonDetails> LoadAthleteSeasonData(
           string seasonName,
           IResultsConfigMngr resultsConfigurationManager);
     }

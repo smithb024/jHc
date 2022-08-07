@@ -198,7 +198,7 @@
                 this.model.AddNewSeason(seasonName);
 
                 ISummary summary = new Summary();
-                List<AthleteSeasonDetails> athletes = new List<AthleteSeasonDetails>();
+                List<IAthleteSeasonDetails> athletes = new List<IAthleteSeasonDetails>();
                 List<IClubSeasonDetails> clubs = new List<IClubSeasonDetails>();
 
                 success = this.summaryData.SaveSummaryData(seasonName, summary);

@@ -57,7 +57,7 @@
         /// <summary>
         /// A list of season specific details for all athletes present in the current season.
         /// </summary>
-        private List<AthleteSeasonDetails> athletes;
+        private List<IAthleteSeasonDetails> athletes;
 
         /// <summary>
         /// A list of club specific details for all clubs present in the current season.
@@ -95,7 +95,7 @@
             this.eventIo = eventIo;
             this.logger = logger;
 
-            this.athletes = new List<AthleteSeasonDetails>();
+            this.athletes = new List<IAthleteSeasonDetails>();
             this.clubs = new List<IClubSeasonDetails>();
             this.summary = new Summary();
             this.events = new List<string>();
@@ -135,7 +135,7 @@
         /// <summary>
         /// Gets the athletes lists.
         /// </summary>
-        public List<AthleteSeasonDetails> Athletes
+        public List<IAthleteSeasonDetails> Athletes
         {
             get
             {
@@ -226,7 +226,7 @@
                 if (string.IsNullOrEmpty(this.Name))
                 {
                     this.Summary = new Summary();
-                    this.Athletes = new List<AthleteSeasonDetails>();
+                    this.Athletes = new List<IAthleteSeasonDetails>();
                     this.Clubs = new List<IClubSeasonDetails>();
                     this.Events = new List<string>();
                 }
@@ -374,7 +374,7 @@
         /// <param name="newTime">new time to add</param>
         public void AddNewTime(int key, Appearances newTime)
         {
-            AthleteSeasonDetails athlete = Athletes.Find(a => a.Key == key);
+            IAthleteSeasonDetails athlete = Athletes.Find(a => a.Key == key);
 
             if (athlete == null)
             {
@@ -392,7 +392,7 @@
         /// <param name="points">earned points</param>
         public void UpdatePositionPoints(int key, DateType date, int points)
         {
-            AthleteSeasonDetails athlete = Athletes.Find(a => a.Key == key);
+            IAthleteSeasonDetails athlete = Athletes.Find(a => a.Key == key);
 
             if (athlete == null)
             {
@@ -411,7 +411,7 @@
             int key,
             CommonPoints points)
         {
-            AthleteSeasonDetails athlete = Athletes.Find(a => a.Key == key);
+            IAthleteSeasonDetails athlete = Athletes.Find(a => a.Key == key);
 
             if (athlete == null)
             {
