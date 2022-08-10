@@ -61,7 +61,9 @@
             this.NumberOfRuns = this.athleteSeasonDetails.NumberOfAppearances;
             this.SB = this.athleteSeasonDetails.SB.ToString();
 
+            this.athleteSeasonDetails.ModelUpdateEvent += this.AthleteSeasonDetailsModelUpdateEvent;
             this.athleteSeasonPoints.ModelUpdateEvent += this.AthleteSeasonPointsModelUpdateEvent;
+            this.athleteDetails.ModelUpdateEvent += this.AthleteDetailsModelUpdateEvent;
         }
 
         /// <summary>
@@ -137,13 +139,29 @@
             {
                 if (disposing)
                 {
+                    this.athleteSeasonDetails.ModelUpdateEvent -= this.AthleteSeasonDetailsModelUpdateEvent;
                     this.athleteSeasonPoints.ModelUpdateEvent -= this.AthleteSeasonPointsModelUpdateEvent;
+                    this.athleteDetails.ModelUpdateEvent -= this.AthleteDetailsModelUpdateEvent;
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
                 this.disposedValue = true;
             }
+        }
+
+        /// <summary>
+        /// The <see cref="IAthleteSeasonPoints"/> model has changed. Update the view model with 
+        /// the latest information.
+        /// </summary>
+        /// <param name="sender">the <see cref="IAthleteSeasonPoints"/> object</param>
+        /// <param name="e">the evnet arguaments</param>
+        private void AthleteSeasonDetailsModelUpdateEvent(object sender, EventArgs e)
+        {
+            this.NumberOfRuns = this.athleteSeasonDetails.NumberOfAppearances;
+            this.SB = this.athleteSeasonDetails.SB.ToString();
+
+            this.RaisePropertyChangedEvent(nameof(this.NumberOfRuns));
+            this.RaisePropertyChangedEvent(nameof(this.SB));
+            this.RaisePropertyChangedEvent(nameof(this.AveragePoints));
         }
 
         /// <summary>
@@ -163,6 +181,20 @@
             this.RaisePropertyChangedEvent(nameof(this.FinishingPoints));
             this.RaisePropertyChangedEvent(nameof(this.PositionPoints));
             this.RaisePropertyChangedEvent(nameof(this.BestPoints));
+            this.RaisePropertyChangedEvent(nameof(this.AveragePoints));
+        }
+
+        /// <summary>
+        /// The <see cref="AthleteDetails"/> model has changed. Update the view model with 
+        /// the latest information.
+        /// </summary>
+        /// <param name="sender">the <see cref="AthleteDetails"/> object</param>
+        /// <param name="e">the evnet arguaments</param>
+        private void AthleteDetailsModelUpdateEvent(object sender, EventArgs e)
+        {
+            this.PB = this.athleteDetails.PB.ToString();
+
+            this.RaisePropertyChangedEvent(nameof(this.PB));
         }
     }
 }

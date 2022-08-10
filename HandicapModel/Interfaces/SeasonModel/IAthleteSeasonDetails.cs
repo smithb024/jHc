@@ -1,5 +1,6 @@
 ﻿namespace HandicapModel.Interfaces.SeasonModel
 {
+    using System;
     using CommonHandicapLib.Types;
     using CommonLib.Types;
     using HandicapModel.Common;
@@ -10,6 +11,11 @@
     /// </summary>
     public interface IAthleteSeasonDetails
     {
+        /// <summary>
+        /// Event which is used to inform interested parties that there has been a change to this model.
+        /// </summary>
+        event EventHandler ModelUpdateEvent;
+
         /// <summary>
         /// Gets the unique key.
         /// </summary>

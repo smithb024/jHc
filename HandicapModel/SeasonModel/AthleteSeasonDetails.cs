@@ -1,7 +1,7 @@
 ﻿namespace HandicapModel.SeasonModel
 {
+    using System;
     using System.Collections.Generic;
-    using Admin.Manage;
     using CommonHandicapLib.Helpers;
     using CommonHandicapLib.Types;
     using HandicapModel.Common;
@@ -37,6 +37,11 @@
             this.Times = new List<Appearances>();
             this.TeamTrophyPoints = new AthleteSeasonTeamTrophyPoints();
         }
+
+        /// <summary>
+        /// Event which is used to inform interested parties that there has been a change to this model.
+        /// </summary>
+        public event EventHandler ModelUpdateEvent;
 
         /// <summary>
         /// Gets and sets the unique key.
