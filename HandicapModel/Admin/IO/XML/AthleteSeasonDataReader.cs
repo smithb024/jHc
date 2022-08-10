@@ -212,8 +212,7 @@
                     AthleteSeasonDetails athleteDetails =
                       new AthleteSeasonDetails(
                         athlete.key,
-                        athlete.name,
-                        resultsConfigurationManager);
+                        athlete.name);
 
                     foreach (var eventTms in athlete.eventTimes)
                     {

@@ -29,14 +29,11 @@
         /// <param name="key">new key</param>
         public AthleteSeasonDetails(
           int key,
-          string name,
-          IResultsConfigMngr resultsConfigurationManager)
+          string name)
         {
-            Key = key;
+            this.Key = key;
             this.Name = name;
-            Points =
-              new AthleteSeasonPoints(
-                resultsConfigurationManager);
+            this.Points = new AthleteSeasonPoints();
             this.Times = new List<Appearances>();
             this.TeamTrophyPoints = new AthleteSeasonTeamTrophyPoints();
         }

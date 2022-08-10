@@ -1,5 +1,6 @@
 ﻿namespace HandicapModel.Interfaces.SeasonModel
 {
+    using System;
     using CommonLib.Types;
     using HandicapModel.Common;
     using System.Collections.Generic;
@@ -10,6 +11,11 @@
     /// </summary>
     public interface IAthleteSeasonPoints
     {
+        /// <summary>
+        /// Event which is used to inform interested parties that there has been a change to this model.
+        /// </summary>
+        event EventHandler ModelUpdateEvent;
+
         /// <summary>
         /// Gets a collection of all the points received.
         /// </summary>

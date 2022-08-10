@@ -60,6 +60,8 @@
             this.RaceNumber = this.athleteDetails.PrimaryNumber;
             this.NumberOfRuns = this.athleteSeasonDetails.NumberOfAppearances;
             this.SB = this.athleteSeasonDetails.SB.ToString();
+
+            this.athleteSeasonPoints.ModelUpdateEvent += this.AthleteSeasonPointsModelUpdateEvent;
         }
 
         /// <summary>
@@ -135,13 +137,32 @@
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
+                    this.athleteSeasonPoints.ModelUpdateEvent -= this.AthleteSeasonPointsModelUpdateEvent;
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 this.disposedValue = true;
             }
+        }
+
+        /// <summary>
+        /// The <see cref="IAthleteSeasonPoints"/> model has changed. Update the view model with 
+        /// the latest information.
+        /// </summary>
+        /// <param name="sender">the <see cref="IAthleteSeasonPoints"/> object</param>
+        /// <param name="e">the evnet arguaments</param>
+        private void AthleteSeasonPointsModelUpdateEvent(object sender, EventArgs e)
+        {
+            this.Points = this.athleteSeasonPoints.TotalPoints;
+            this.FinishingPoints = this.athleteSeasonPoints.FinishingPoints;
+            this.PositionPoints = this.athleteSeasonPoints.PositionPoints;
+            this.BestPoints = this.athleteSeasonPoints.BestPoints;
+
+            this.RaisePropertyChangedEvent(nameof(this.Points));
+            this.RaisePropertyChangedEvent(nameof(this.FinishingPoints));
+            this.RaisePropertyChangedEvent(nameof(this.PositionPoints));
+            this.RaisePropertyChangedEvent(nameof(this.BestPoints));
         }
     }
 }

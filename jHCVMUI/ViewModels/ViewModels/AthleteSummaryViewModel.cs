@@ -273,8 +273,7 @@
                     athleteCurrentSeason =
                       new AthleteSeasonDetails(
                         athlete.Key,
-                        athlete.Name,
-                        this.resultsConfigurationManager);
+                        athlete.Name);
                 }
 
                 string handicap = athleteCurrentSeason.GetRoundedHandicap(hcConfiguration)?.ToString() ?? athlete.RoundedHandicap.ToString();

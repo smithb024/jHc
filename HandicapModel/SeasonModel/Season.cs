@@ -319,8 +319,7 @@
             AthleteSeasonDetails newAthlete =
               new AthleteSeasonDetails(
                 key,
-                name,
-                this.resultsConfigurationManager);
+                name);
 
             Athletes.Add(newAthlete);
 
