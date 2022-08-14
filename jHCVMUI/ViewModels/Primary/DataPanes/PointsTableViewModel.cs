@@ -71,6 +71,11 @@
             object sender,
             EventArgs e)
         {
+            foreach (PointsTableRowViewModel row in this.PointsTable)
+            {
+                row.Dispose();
+            }
+
             this.PointsTable.Clear();
             this.PopulatePointsTable();
        }

@@ -133,6 +133,10 @@
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Dispose the <see cref="PointsTableRowViewModel"/> class.
+        /// </summary>
+        /// <param name="disposing">is disposing flag</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!this.disposedValue)
