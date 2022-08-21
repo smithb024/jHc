@@ -115,12 +115,24 @@
                     PointsTableRowViewModel newRow =
                         new PointsTableRowViewModel(
                             athlete,
-                            athleteModel);
+                            athleteModel,
+                            this.OrderTable);
 
                     this.PointsTable.Add(newRow);
                 }
             }
 
+            this.PointsTable =
+                new ObservableCollection<PointsTableRowViewModel>(
+                    this.PointsTable.OrderByDescending(
+                        order => order.Points));
+        }
+
+        /// <summary>
+        /// Reorder the table based on the points scored.
+        /// </summary>
+        private void OrderTable()
+        {
             this.PointsTable =
                 new ObservableCollection<PointsTableRowViewModel>(
                     this.PointsTable.OrderByDescending(

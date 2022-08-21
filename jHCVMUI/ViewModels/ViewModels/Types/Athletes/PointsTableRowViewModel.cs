@@ -25,6 +25,11 @@
         private readonly AthleteDetails athleteDetails;
 
         /// <summary>
+        /// Callback to invoke when the points change. It will reorder the rows in the parent view model.
+        /// </summary>
+        private Action pointsChangedCallback;
+
+        /// <summary>
         /// Value which indicates whether this object has been disposed.
         /// </summary>
         private bool disposedValue;
@@ -32,20 +37,20 @@
         /// <summary>
         /// Initialises a new instance of the <see cref="PointsTableRowViewModel"/> class.
         /// </summary>
-        /// <param name="key">entry key</param>
-        /// <param name="name">name of the athlete</param>
-        /// <param name="pb">athlete's personal best</param>
-        /// <param name="points">total number of points scored</param>
-        /// <param name="finishingPoints">number of points scored by finishing an event</param>
-        /// <param name="positionPoints">number of points scored through event position</param>
-        /// <param name="bestPoints">number of points scored by improving on the season best time</param>
-        /// <param name="raceNumber">athlete's number</param>
-        /// <param name="numberOfRuns">number of runs started</param>
-        /// <param name="averagePoints">average number of points scored per event</param>
-        /// <param name="sb">athlete's season best</param>
+        /// <param name="athleteSeasonDetails">
+        /// The model object for an athlete in the current season.
+        /// </param>
+        /// <param name="athleteDetails">
+        /// The model object for an athlete. 
+        /// </param>
+        /// <param name="pointsChanged">
+        /// Callback method. This is intended to be called when the points change, to allow the 
+        /// parent view model to reorder the rows.
+        /// </param>
         public PointsTableRowViewModel(
             IAthleteSeasonDetails athleteSeasonDetails,
-            AthleteDetails athleteDetails)
+            AthleteDetails athleteDetails,
+            Action pointsChanged)
           : base(athleteDetails.Key, athleteDetails.Name)
         {
             this.athleteSeasonDetails = athleteSeasonDetails;
@@ -64,6 +69,7 @@
             this.athleteSeasonDetails.ModelUpdateEvent += this.AthleteSeasonDetailsModelUpdateEvent;
             this.athleteSeasonPoints.ModelUpdateEvent += this.AthleteSeasonPointsModelUpdateEvent;
             this.athleteDetails.ModelUpdateEvent += this.AthleteDetailsModelUpdateEvent;
+            this.pointsChangedCallback = pointsChanged;
         }
 
         /// <summary>
@@ -146,6 +152,7 @@
                     this.athleteSeasonDetails.ModelUpdateEvent -= this.AthleteSeasonDetailsModelUpdateEvent;
                     this.athleteSeasonPoints.ModelUpdateEvent -= this.AthleteSeasonPointsModelUpdateEvent;
                     this.athleteDetails.ModelUpdateEvent -= this.AthleteDetailsModelUpdateEvent;
+                    this.pointsChangedCallback = null;
                 }
 
                 this.disposedValue = true;
@@ -186,6 +193,8 @@
             this.RaisePropertyChangedEvent(nameof(this.PositionPoints));
             this.RaisePropertyChangedEvent(nameof(this.BestPoints));
             this.RaisePropertyChangedEvent(nameof(this.AveragePoints));
+
+            this.pointsChangedCallback.Invoke();
         }
 
         /// <summary>
