@@ -40,6 +40,12 @@
         event EventHandler AthletesChangedEvent;
 
         /// <summary>
+        /// Event which is used to inform interested parties that there has been a change to the
+        /// number of athletes registered this season.
+        /// </summary>
+        event EventHandler AthleteCollectionChangedEvent;
+
+        /// <summary>
         /// Event which is used to inform interested parties that there has been a change to this
         /// season's summary.
         /// </summary>

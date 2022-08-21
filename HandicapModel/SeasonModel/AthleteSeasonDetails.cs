@@ -104,6 +104,7 @@
         public void AddNewTime(Appearances time)
         {
             this.Times.Add(time);
+            this.ModelUpdateEvent?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -114,7 +115,7 @@
         /// <param name="points">earned points</param>
         public void UpdatePositionPoints(DateType date, int points)
         {
-            Points.UpdatePositionPoints(date, points);
+            this.Points.UpdatePositionPoints(date, points);
         }
 
         /// <summary>
@@ -123,7 +124,7 @@
         /// <param name="points">points to add</param>
         public void AddNewPoints(CommonPoints points)
         {
-            Points.AddNewEvent(points);
+            this.Points.AddNewEvent(points);
         }
 
         /// <summary>
@@ -187,7 +188,7 @@
         /// <param name="date">date to remove</param>
         public void RemovePoints(DateType date)
         {
-            Points.RemovePoints(date);
+            this.Points.RemovePoints(date);
         }
     }
 }

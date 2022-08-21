@@ -7,7 +7,6 @@
     using HandicapModel.AthletesModel;
     using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.SeasonModel;
-    using HandicapModel.SeasonModel;
     using jHCVMUI.ViewModels.ViewModels;
     using jHCVMUI.ViewModels.ViewModels.Types.Athletes;
 
@@ -42,7 +41,7 @@
             this.seasonModel = this.model.CurrentSeason;
             this.pointsTable = new ObservableCollection<PointsTableRowViewModel>();
 
-            this.seasonModel.AthletesChangedEvent += this.PopulateAthleteCurrentSeasonData;
+            this.seasonModel.AthleteCollectionChangedEvent += this.RegenerateThePointsTable;
             this.PopulatePointsTable();
         }
 
@@ -59,15 +58,16 @@
             set
             {
                 this.pointsTable = value;
-                RaisePropertyChangedEvent(nameof(this.PointsTable));
+                this.RaisePropertyChangedEvent(nameof(this.PointsTable));
             }
         }
 
         /// <summary>
-        /// Populate the points table.
+        /// Clear all existing entries on the points table and generate from scratch.
         /// </summary>
-        /// <param name="athletes">athletes collection from the model</param>
-        public void PopulateAthleteCurrentSeasonData(
+        /// <param name="sender">The season model</param>
+        /// <param name="e">event arguments</param>
+        public void RegenerateThePointsTable(
             object sender,
             EventArgs e)
         {

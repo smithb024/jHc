@@ -122,6 +122,12 @@
         public event EventHandler AthletesChangedEvent;
 
         /// <summary>
+        /// Event which is used to inform interested parties that there has been a change to the
+        /// number of athletes registered this season.
+        /// </summary>
+        public event EventHandler AthleteCollectionChangedEvent;
+
+        /// <summary>
         /// Event which is used to inform interested parties that there has been a change to this
         /// season's summary.
         /// </summary>
@@ -259,6 +265,8 @@
 
                 this.logger.WriteLog($"Season, loaded {this.Name}");
             }
+
+            this.AthleteCollectionChangedEvent?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -326,6 +334,7 @@
             this.athleteData.SaveAthleteSeasonData(Name, Athletes);
 
             this.AthletesChangedEvent?.Invoke(this, new EventArgs());
+            this.AthleteCollectionChangedEvent?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
