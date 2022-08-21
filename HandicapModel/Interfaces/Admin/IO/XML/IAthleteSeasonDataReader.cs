@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using HandicapModel.Admin.Manage;
-    using HandicapModel.SeasonModel;
+    using HandicapModel.Interfaces.SeasonModel;
 
     /// <summary>
     /// The athlete season data reader
@@ -16,14 +16,14 @@
         /// <param name="table">points table</param>
         bool SaveAthleteSeasonData(
             string fileName,
-            List<AthleteSeasonDetails> seasons);
+            List<IAthleteSeasonDetails> seasons);
 
         /// <summary>
         /// Reads the athlete season details xml from file and decodes it.
         /// </summary>
         /// <param name="fileName">name of xml file</param>
         /// <returns>decoded athlete's details</returns>
-        List<AthleteSeasonDetails> LoadAthleteSeasonData(
+        List<IAthleteSeasonDetails> LoadAthleteSeasonData(
             string fileName,
             IResultsConfigMngr resultsConfigurationManager);
     }

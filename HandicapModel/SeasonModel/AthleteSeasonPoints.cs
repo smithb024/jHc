@@ -1,8 +1,8 @@
 ﻿namespace HandicapModel.SeasonModel
 {
+    using System;
     using System.Collections.Generic;
     using Admin.Manage;
-    using CommonHandicapLib.Types;
     using CommonLib.Types;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.SeasonModel;
@@ -22,19 +22,17 @@
     public class AthleteSeasonPoints : IAthleteSeasonPoints
     {
         /// <summary>
-        /// The configuration manager
-        /// </summary>
-        private readonly IResultsConfigMngr resultsConfigurationManager;
-
-        /// <summary>
         /// Initialise a new instance of the <see cref="AthleteSeasonPoints"/> class.
         /// </summary>
-        /// <param name="config">Instructions on how to read the scores</param>
-        public AthleteSeasonPoints(IResultsConfigMngr resultsConfigurationManager)
+        public AthleteSeasonPoints()
         {
-            this.resultsConfigurationManager = resultsConfigurationManager;
             this.AllPoints = new List<CommonPoints>();
         }
+
+        /// <summary>
+        /// Event which is used to inform interested parties that there has been a change to this model.
+        /// </summary>
+        public event EventHandler ModelUpdateEvent;
 
         /// <summary>
         /// Gets all the points received.
@@ -67,7 +65,21 @@
         /// <summary>
         /// Returns all the position points the athlete has earnt.
         /// </summary>
-        public int PositionPoints { get; set; }
+        //public int PositionPoints { get; set; }
+        public int PositionPoints
+        {
+            get
+            {
+                int positionPoints = 0;
+
+                foreach (CommonPoints points in this.AllPoints)
+                {
+                    positionPoints += points.PositionPoints;
+                }
+
+                return positionPoints;
+            }
+        }
 
         /// <summary>
         /// Returns all the best points the athlete has earnt.
@@ -93,9 +105,8 @@
         /// <param name="date">Date of the event</param>
         public void AddNewEvent(CommonPoints newPoints)
         {
-            AllPoints.Add(newPoints);
-
-            this.PositionPoints = this.CalculatePositionPoints();
+            this.AllPoints.Add(newPoints);
+            this.ModelUpdateEvent?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -111,14 +122,13 @@
             int positionPoints,
             int bestPoints)
         {
-            if (eventIndex < AllPoints.Count)
+            if (eventIndex < this.AllPoints.Count)
             {
-                AllPoints[eventIndex].FinishingPoints = finishingPoints;
-                AllPoints[eventIndex].PositionPoints = positionPoints;
-                AllPoints[eventIndex].BestPoints = bestPoints;
+                this.AllPoints[eventIndex].FinishingPoints = finishingPoints;
+                this.AllPoints[eventIndex].PositionPoints = positionPoints;
+                this.AllPoints[eventIndex].BestPoints = bestPoints;
+                this.ModelUpdateEvent?.Invoke(this, EventArgs.Empty);
             }
-
-            this.PositionPoints = this.CalculatePositionPoints();
         }
 
         /// <summary>
@@ -128,8 +138,8 @@
         /// <param name="points">earned points</param>
         public void UpdatePositionPoints(DateType date, int points)
         {
-            AllPoints.Find(allPoints => allPoints.Date == date).PositionPoints = points;
-            this.PositionPoints = this.CalculatePositionPoints();
+            this.AllPoints.Find(allPoints => allPoints.Date == date).PositionPoints = points;
+            this.ModelUpdateEvent?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -139,76 +149,12 @@
         /// <param name="date">date to remove.</param>
         public void RemovePoints(DateType date)
         {
-            if (AllPoints.Exists(dateCheck => dateCheck.Date == date))
+            if (this.AllPoints.Exists(dateCheck => dateCheck.Date == date))
             {
-                AllPoints.Remove(AllPoints.Find(dateCheck => dateCheck.Date == date));
+                this.AllPoints.Remove(AllPoints.Find(dateCheck => dateCheck.Date == date));
             }
 
-            this.PositionPoints = this.CalculatePositionPoints();
-        }
-
-        /// <summary>
-        /// Determine the new position points
-        /// </summary>
-        /// <returns></returns>
-        private int CalculatePositionPoints()
-        {
-            // Get working set.
-            List<int> points = new List<int>();
-            foreach (CommonPoints common in this.AllPoints)
-            {
-                points.Add(common.PositionPoints);
-            }
-
-            // If all scores used, just return.
-            ResultsConfigType resultsConfigurationDetails =
-                this.resultsConfigurationManager.ResultsConfigurationDetails;
-
-            if (resultsConfigurationDetails.AllResults)
-            {
-                return this.SumCollection(points);
-            }
-
-            // Order scores to make analysis easier.
-            points.Sort();
-
-            if (this.resultsConfigurationManager.ResultsConfigurationDetails.ScoresAreDescending)
-            {
-                points.Reverse();
-            }
-            else
-            {
-                // Make up for shortfall in scores.
-                while (points.Count < this.resultsConfigurationManager.ResultsConfigurationDetails.ScoresToCount)
-                {
-                    points.Add(this.resultsConfigurationManager.ResultsConfigurationDetails.MissingScore);
-                }
-            }
-
-            // Get rid of non counting scores
-            while (points.Count > this.resultsConfigurationManager.ResultsConfigurationDetails.ScoresToCount)
-            {
-                points.RemoveAt(points.Count);
-            }
-
-            return this.SumCollection(points);
-        }
-
-        /// <summary>
-        /// Sum all the values in an integer enumerable collection.
-        /// </summary>
-        /// <param name="collection"></param>
-        /// <returns></returns>
-        private int SumCollection(IEnumerable<int> collection)
-        {
-            int sum = 0;
-
-            foreach (int value in collection)
-            {
-                sum += value;
-            }
-
-            return sum;
+            this.ModelUpdateEvent?.Invoke(this, EventArgs.Empty);
         }
     }
 }

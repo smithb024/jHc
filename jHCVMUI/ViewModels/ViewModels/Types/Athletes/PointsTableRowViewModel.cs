@@ -1,175 +1,101 @@
 ﻿namespace jHCVMUI.ViewModels.ViewModels.Types.Athletes
 {
-    using CommonLib.Types;
+    using HandicapModel.AthletesModel;
+    using HandicapModel.Interfaces.SeasonModel;
+    using System;
 
     /// <summary>
     /// Class describing a single entry of the points table
     /// </summary>
-    public class PointsTableRowViewModel : AthleteBase
+    public class PointsTableRowViewModel : AthleteBase, IDisposable
     {
         /// <summary>
-        /// Personal best
+        /// The athlete details model object for the current season.
         /// </summary>
-        private string personalBest;
+        private readonly IAthleteSeasonDetails athleteSeasonDetails;
 
         /// <summary>
-        /// Total number of points scored.
+        /// Get the athlete points model object for the current season.
         /// </summary>
-        private int points;
+        private readonly IAthleteSeasonPoints athleteSeasonPoints;
 
         /// <summary>
-        /// Number of points scored by finishing an event.
+        /// Gets the global athlete model object;
         /// </summary>
-        private int finishingPoints;
+        private readonly AthleteDetails athleteDetails;
 
         /// <summary>
-        /// Number of points scored by finishing position.
+        /// Callback to invoke when the points change. It will reorder the rows in the parent view model.
         /// </summary>
-        private int positionPoints;
+        private Action pointsChangedCallback;
 
         /// <summary>
-        /// Number of point score by improving a time.
+        /// Value which indicates whether this object has been disposed.
         /// </summary>
-        private int bestPoints;
-
-        /// <summary>
-        /// Number of event started.
-        /// </summary>
-        private int numberOfRuns;
-
-        /// <summary>
-        /// Average number of points scored per event.
-        /// </summary>
-        private string averagePoints;
-
-        /// <summary>
-        /// Season best.
-        /// </summary>
-        private string seasonBest;
+        private bool disposedValue;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="PointsTableRowViewModel"/> class.
         /// </summary>
-        /// <param name="key">entry key</param>
-        /// <param name="name">name of the athlete</param>
-        /// <param name="pb">athlete's personal best</param>
-        /// <param name="points">total number of points scored</param>
-        /// <param name="finishingPoints">number of points scored by finishing an event</param>
-        /// <param name="positionPoints">number of points scored through event position</param>
-        /// <param name="bestPoints">number of points scored by improving on the season best time</param>
-        /// <param name="raceNumber">athlete's number</param>
-        /// <param name="numberOfRuns">number of runs started</param>
-        /// <param name="averagePoints">average number of points scored per event</param>
-        /// <param name="sb">athlete's season best</param>
+        /// <param name="athleteSeasonDetails">
+        /// The model object for an athlete in the current season.
+        /// </param>
+        /// <param name="athleteDetails">
+        /// The model object for an athlete. 
+        /// </param>
+        /// <param name="pointsChanged">
+        /// Callback method. This is intended to be called when the points change, to allow the 
+        /// parent view model to reorder the rows.
+        /// </param>
         public PointsTableRowViewModel(
-          int key,
-          string name,
-          TimeType pb,
-          int points,
-          int finishingPoints,
-          int positionPoints,
-          int bestPoints,
-          string raceNumber,
-          int numberOfRuns,
-          string averagePoints,
-          TimeType sb)
-          : base(key, name)
+            IAthleteSeasonDetails athleteSeasonDetails,
+            AthleteDetails athleteDetails,
+            Action pointsChanged)
+          : base(athleteDetails.Key, athleteDetails.Name)
         {
-            this.personalBest = pb.ToString();
-            this.points = points;
-            this.finishingPoints = finishingPoints;
-            this.positionPoints = positionPoints;
-            this.bestPoints = bestPoints;
-            this.RaceNumber = raceNumber;
-            this.numberOfRuns = numberOfRuns;
-            this.averagePoints = averagePoints;
-            this.seasonBest = sb.ToString();
+            this.athleteSeasonDetails = athleteSeasonDetails;
+            this.athleteSeasonPoints = athleteSeasonDetails.Points;
+            this.athleteDetails = athleteDetails;
+
+            this.PB = this.athleteDetails.PB.ToString();
+            this.Points = this.athleteSeasonPoints.TotalPoints;
+            this.FinishingPoints = this.athleteSeasonPoints.FinishingPoints;
+            this.PositionPoints = this.athleteSeasonPoints.PositionPoints;
+            this.BestPoints = this.athleteSeasonPoints.BestPoints;
+            this.RaceNumber = this.athleteDetails.PrimaryNumber;
+            this.NumberOfRuns = this.athleteSeasonDetails.NumberOfAppearances;
+            this.SB = this.athleteSeasonDetails.SB.ToString();
+
+            this.athleteSeasonDetails.ModelUpdateEvent += this.AthleteSeasonDetailsModelUpdateEvent;
+            this.athleteSeasonPoints.ModelUpdateEvent += this.AthleteSeasonPointsModelUpdateEvent;
+            this.athleteDetails.ModelUpdateEvent += this.AthleteDetailsModelUpdateEvent;
+            this.pointsChangedCallback = pointsChanged;
         }
 
         /// <summary>
         /// Gets or sets the PB.
         /// </summary>
-        public string PB
-        {
-            get
-            {
-                return this.personalBest;
-            }
-
-            set
-            {
-                this.personalBest = value;
-                RaisePropertyChangedEvent("PB");
-            }
-        }
+        public string PB { get; private set; }
 
         /// <summary>
         /// Gets or sets the points.
         /// </summary>
-        public int Points
-        {
-            get
-            {
-                return this.points;
-            }
-
-            set
-            {
-                this.points = value;
-                RaisePropertyChangedEvent("Points");
-            }
-        }
+        public int Points { get; private set; }
 
         /// <summary>
         /// Gets or sets the finishing points.
         /// </summary>
-        public int FinishingPoints
-        {
-            get
-            {
-                return this.finishingPoints;
-            }
-
-            set
-            {
-                this.finishingPoints = value;
-                RaisePropertyChangedEvent("FinishingPoints");
-            }
-        }
+        public int FinishingPoints { get; private set; }
 
         /// <summary>
         /// Gets or sets the position points.
         /// </summary>
-        public int PositionPoints
-        {
-            get
-            {
-                return this.positionPoints;
-            }
-
-            set
-            {
-                this.positionPoints = value;
-                RaisePropertyChangedEvent("PositionPoints");
-            }
-        }
+        public int PositionPoints { get; private set; }
 
         /// <summary>
         /// Gets or sets the best points.
         /// </summary>
-        public int BestPoints
-        {
-            get
-            {
-                return this.bestPoints;
-            }
-
-            set
-            {
-                this.bestPoints = value;
-                RaisePropertyChangedEvent("BestPoints");
-            }
-        }
+        public int BestPoints { get; private set; }
 
         /// <summary>
         /// Gets or sets the race number.
@@ -179,19 +105,7 @@
         /// <summary>
         /// Gets or sets the number of runs.
         /// </summary>
-        public int NumberOfRuns
-        {
-            get
-            {
-                return this.numberOfRuns;
-            }
-
-            set
-            {
-                this.numberOfRuns = value;
-                RaisePropertyChangedEvent("NumberOfRuns");
-            }
-        }
+        public int NumberOfRuns { get; private set; }
 
         /// <summary>
         /// Gets or sets the average points.
@@ -200,31 +114,100 @@
         {
             get
             {
-                return this.averagePoints;
-            }
+                double averagePoints = 0;
+                if (this.NumberOfRuns > 0)
+                {
+                    averagePoints = (double)this.Points / this.NumberOfRuns;
+                }
 
-            set
-            {
-                this.averagePoints = value;
-                RaisePropertyChangedEvent("AveragePoints");
+
+                return averagePoints.ToString("0.##");
             }
         }
 
         /// <summary>
         /// Gets or sets the SB.
         /// </summary>
-        public string SB
-        {
-            get
-            {
-                return this.seasonBest;
-            }
+        public string SB { get; private set; }
 
-            set
+        /// <summary>
+        /// Dispose this object.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Dispose the <see cref="PointsTableRowViewModel"/> class.
+        /// </summary>
+        /// <param name="disposing">is disposing flag</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
             {
-                this.seasonBest = value;
-                RaisePropertyChangedEvent("SB");
+                if (disposing)
+                {
+                    this.athleteSeasonDetails.ModelUpdateEvent -= this.AthleteSeasonDetailsModelUpdateEvent;
+                    this.athleteSeasonPoints.ModelUpdateEvent -= this.AthleteSeasonPointsModelUpdateEvent;
+                    this.athleteDetails.ModelUpdateEvent -= this.AthleteDetailsModelUpdateEvent;
+                    this.pointsChangedCallback = null;
+                }
+
+                this.disposedValue = true;
             }
+        }
+
+        /// <summary>
+        /// The <see cref="IAthleteSeasonPoints"/> model has changed. Update the view model with 
+        /// the latest information.
+        /// </summary>
+        /// <param name="sender">the <see cref="IAthleteSeasonPoints"/> object</param>
+        /// <param name="e">the evnet arguaments</param>
+        private void AthleteSeasonDetailsModelUpdateEvent(object sender, EventArgs e)
+        {
+            this.NumberOfRuns = this.athleteSeasonDetails.NumberOfAppearances;
+            this.SB = this.athleteSeasonDetails.SB.ToString();
+
+            this.RaisePropertyChangedEvent(nameof(this.NumberOfRuns));
+            this.RaisePropertyChangedEvent(nameof(this.SB));
+            this.RaisePropertyChangedEvent(nameof(this.AveragePoints));
+        }
+
+        /// <summary>
+        /// The <see cref="IAthleteSeasonPoints"/> model has changed. Update the view model with 
+        /// the latest information.
+        /// </summary>
+        /// <param name="sender">the <see cref="IAthleteSeasonPoints"/> object</param>
+        /// <param name="e">the evnet arguaments</param>
+        private void AthleteSeasonPointsModelUpdateEvent(object sender, EventArgs e)
+        {
+            this.Points = this.athleteSeasonPoints.TotalPoints;
+            this.FinishingPoints = this.athleteSeasonPoints.FinishingPoints;
+            this.PositionPoints = this.athleteSeasonPoints.PositionPoints;
+            this.BestPoints = this.athleteSeasonPoints.BestPoints;
+
+            this.RaisePropertyChangedEvent(nameof(this.Points));
+            this.RaisePropertyChangedEvent(nameof(this.FinishingPoints));
+            this.RaisePropertyChangedEvent(nameof(this.PositionPoints));
+            this.RaisePropertyChangedEvent(nameof(this.BestPoints));
+            this.RaisePropertyChangedEvent(nameof(this.AveragePoints));
+
+            this.pointsChangedCallback.Invoke();
+        }
+
+        /// <summary>
+        /// The <see cref="AthleteDetails"/> model has changed. Update the view model with 
+        /// the latest information.
+        /// </summary>
+        /// <param name="sender">the <see cref="AthleteDetails"/> object</param>
+        /// <param name="e">the evnet arguaments</param>
+        private void AthleteDetailsModelUpdateEvent(object sender, EventArgs e)
+        {
+            this.PB = this.athleteDetails.PB.ToString();
+
+            this.RaisePropertyChangedEvent(nameof(this.PB));
         }
     }
 }

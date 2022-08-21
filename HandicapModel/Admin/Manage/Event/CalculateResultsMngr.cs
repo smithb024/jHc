@@ -447,7 +447,7 @@
             foreach (ResultsTableEntry result in resultsTable.Entries)
             {
                 IAthleteTeamTrophyPoints athletePoints;
-                AthleteSeasonDetails athlete =
+                IAthleteSeasonDetails athlete =
                     this.Model.CurrentSeason.Athletes.Find(
                         a => a.Key == result.Key);
 

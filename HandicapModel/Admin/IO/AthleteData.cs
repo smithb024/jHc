@@ -10,6 +10,7 @@
     using HandicapModel.AthletesModel;
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO.XML;
+    using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
     using GalaSoft.MvvmLight.Messaging;
 
@@ -113,7 +114,7 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public bool SaveAthleteSeasonData(
             string seasonName,
-            List<AthleteSeasonDetails> seasons)
+            List<IAthleteSeasonDetails> seasons)
         {
             return this.athleteSeasonDataReader.SaveAthleteSeasonData(
               this.dataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.athleteDataFile,
@@ -129,7 +130,7 @@
         /// <param name="seasonName">season name</param>
         /// <returns>season athlete details</returns>
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public List<AthleteSeasonDetails> LoadAthleteSeasonData(
+        public List<IAthleteSeasonDetails> LoadAthleteSeasonData(
           string seasonName,
           IResultsConfigMngr resultsConfigurationManager)
         {

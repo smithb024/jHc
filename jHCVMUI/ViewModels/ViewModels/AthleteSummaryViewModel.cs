@@ -7,11 +7,11 @@
     using CommonHandicapLib.Types;
     using CommonLib.Helpers;
 
-    using HandicapModel;
     using HandicapModel.Admin.Manage;
     using HandicapModel.AthletesModel;
     using HandicapModel.Common;
     using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
 
     using jHCVMUI.ViewModels.ViewModels.Types.Misc;
@@ -265,7 +265,7 @@
             this.AthleteCollection = new ObservableCollection<AthleteCompleteViewModel>();
             foreach (AthleteDetails athlete in orderedList)
             {
-                AthleteSeasonDetails athleteCurrentSeason =
+                IAthleteSeasonDetails athleteCurrentSeason =
                  this.model.CurrentSeason.Athletes.Find(a => a.Key == athlete.Key);
 
                 if (athleteCurrentSeason == null)
@@ -273,8 +273,7 @@
                     athleteCurrentSeason =
                       new AthleteSeasonDetails(
                         athlete.Key,
-                        athlete.Name,
-                        this.resultsConfigurationManager);
+                        athlete.Name);
                 }
 
                 string handicap = athleteCurrentSeason.GetRoundedHandicap(hcConfiguration)?.ToString() ?? athlete.RoundedHandicap.ToString();

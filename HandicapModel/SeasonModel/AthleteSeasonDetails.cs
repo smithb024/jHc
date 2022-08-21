@@ -1,7 +1,7 @@
 ﻿namespace HandicapModel.SeasonModel
 {
+    using System;
     using System.Collections.Generic;
-    using Admin.Manage;
     using CommonHandicapLib.Helpers;
     using CommonHandicapLib.Types;
     using HandicapModel.Common;
@@ -29,17 +29,19 @@
         /// <param name="key">new key</param>
         public AthleteSeasonDetails(
           int key,
-          string name,
-          IResultsConfigMngr resultsConfigurationManager)
+          string name)
         {
-            Key = key;
+            this.Key = key;
             this.Name = name;
-            Points =
-              new AthleteSeasonPoints(
-                resultsConfigurationManager);
+            this.Points = new AthleteSeasonPoints();
             this.Times = new List<Appearances>();
             this.TeamTrophyPoints = new AthleteSeasonTeamTrophyPoints();
         }
+
+        /// <summary>
+        /// Event which is used to inform interested parties that there has been a change to this model.
+        /// </summary>
+        public event EventHandler ModelUpdateEvent;
 
         /// <summary>
         /// Gets and sets the unique key.
@@ -75,7 +77,7 @@
         /// <summary>
         /// Gets and sets the number of points
         /// </summary>
-        public AthleteSeasonPoints Points { get; set; }
+        public IAthleteSeasonPoints Points { get; set; }
 
         /// <summary>
         /// Gets and sets the number of points assoicated with the Team Trophy.
@@ -102,6 +104,7 @@
         public void AddNewTime(Appearances time)
         {
             this.Times.Add(time);
+            this.ModelUpdateEvent?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -112,7 +115,7 @@
         /// <param name="points">earned points</param>
         public void UpdatePositionPoints(DateType date, int points)
         {
-            Points.UpdatePositionPoints(date, points);
+            this.Points.UpdatePositionPoints(date, points);
         }
 
         /// <summary>
@@ -121,7 +124,7 @@
         /// <param name="points">points to add</param>
         public void AddNewPoints(CommonPoints points)
         {
-            Points.AddNewEvent(points);
+            this.Points.AddNewEvent(points);
         }
 
         /// <summary>
@@ -185,7 +188,7 @@
         /// <param name="date">date to remove</param>
         public void RemovePoints(DateType date)
         {
-            Points.RemovePoints(date);
+            this.Points.RemovePoints(date);
         }
     }
 }

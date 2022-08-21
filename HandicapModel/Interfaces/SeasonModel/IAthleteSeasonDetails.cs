@@ -1,16 +1,21 @@
-﻿using CommonHandicapLib.Types;
-using CommonLib.Types;
-using HandicapModel.Common;
-using HandicapModel.SeasonModel;
-using System.Collections.Generic;
-
-namespace HandicapModel.Interfaces.SeasonModel
+﻿namespace HandicapModel.Interfaces.SeasonModel
 {
+    using System;
+    using CommonHandicapLib.Types;
+    using CommonLib.Types;
+    using HandicapModel.Common;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Interface which describes the athletes details for a single season
     /// </summary>
     public interface IAthleteSeasonDetails
     {
+        /// <summary>
+        /// Event which is used to inform interested parties that there has been a change to this model.
+        /// </summary>
+        event EventHandler ModelUpdateEvent;
+
         /// <summary>
         /// Gets the unique key.
         /// </summary>
@@ -29,7 +34,7 @@ namespace HandicapModel.Interfaces.SeasonModel
         /// <summary>
         /// Gets and sets the number of points
         /// </summary>
-        AthleteSeasonPoints Points { get; set; }
+        IAthleteSeasonPoints Points { get; set; }
 
         /// <summary>
         /// Gets and sets the number of points assoicated with the harmnony competiion.

@@ -1,5 +1,6 @@
 ﻿namespace HandicapModel.AthletesModel
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using CommonHandicapLib.Helpers;
@@ -144,6 +145,11 @@
         }
 
         /// <summary>
+        /// Event which is used to inform interested parties that there has been a change to this model.
+        /// </summary>
+        public event EventHandler ModelUpdateEvent;
+
+        /// <summary>
         /// Gets or sets the key.
         /// </summary>
         public int Key { get; set; }
@@ -211,7 +217,7 @@
             {
                 TimeType pb = new TimeType();
 
-                foreach (Appearances appearance in Times)
+                foreach (Appearances appearance in this.Times)
                 {
                     if (appearance.Time < pb)
                     {
@@ -268,7 +274,7 @@
                     return this.PredeclaredHandicap;
                 }
 
-                TimeType calculatedHandicap = new TimeType(normalisationConfig.HandicapTime, 0) - Times[Times.Count - 1].Time;
+                TimeType calculatedHandicap = new TimeType(normalisationConfig.HandicapTime, 0) - this.Times[this.Times.Count - 1].Time;
 
                 return HandicapHelper.RoundHandicap(
                   normalisationConfig,
@@ -339,7 +345,8 @@
         /// <param name="newTime">new time to add</param>
         public void AddRaceTime(Appearances newTime)
         {
-            Times.Add(newTime);
+            this.Times.Add(newTime);
+            this.ModelUpdateEvent?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -349,9 +356,10 @@
         /// <param name="date"><date of the appearance/param>
         public void RemoveAppearances(DateType date)
         {
-            if (Times.Exists(dateCheck => dateCheck.Date == date))
+            if (this.Times.Exists(dateCheck => dateCheck.Date == date))
             {
-                Times.Remove(Times.Find(dateCheck => dateCheck.Date == date));
+                this.Times.Remove(Times.Find(dateCheck => dateCheck.Date == date));
+                this.ModelUpdateEvent?.Invoke(this, EventArgs.Empty);
             }
         }
 

@@ -66,7 +66,7 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public bool SaveAthleteSeasonData(
             string fileName,
-            List<AthleteSeasonDetails> seasons)
+            List<IAthleteSeasonDetails> seasons)
         {
             bool success = true;
 
@@ -148,11 +148,11 @@
         /// <param name="fileName">name of xml file</param>
         /// <returns>decoded athlete's details</returns>
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public List<AthleteSeasonDetails> LoadAthleteSeasonData(
+        public List<IAthleteSeasonDetails> LoadAthleteSeasonData(
           string fileName,
           IResultsConfigMngr resultsConfigurationManager)
         {
-            List<AthleteSeasonDetails> seasonDetails = new List<AthleteSeasonDetails>();
+            List<IAthleteSeasonDetails> seasonDetails = new List<IAthleteSeasonDetails>();
 
             try
             {
@@ -212,8 +212,7 @@
                     AthleteSeasonDetails athleteDetails =
                       new AthleteSeasonDetails(
                         athlete.key,
-                        athlete.name,
-                        resultsConfigurationManager);
+                        athlete.name);
 
                     foreach (var eventTms in athlete.eventTimes)
                     {
@@ -267,7 +266,7 @@
             {
                 this.logger.WriteLog("Error reading athlete data: " + ex.ToString());
 
-                seasonDetails = new List<AthleteSeasonDetails>();
+                seasonDetails = new List<IAthleteSeasonDetails>();
             }
 
             return seasonDetails;
