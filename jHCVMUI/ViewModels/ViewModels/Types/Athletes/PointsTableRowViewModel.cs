@@ -1,5 +1,6 @@
 ﻿namespace jHCVMUI.ViewModels.ViewModels.Types.Athletes
 {
+    using CommonLib.Enumerations;
     using HandicapModel.AthletesModel;
     using HandicapModel.Interfaces.SeasonModel;
     using System;
@@ -65,6 +66,7 @@
             this.RaceNumber = this.athleteDetails.PrimaryNumber;
             this.NumberOfRuns = this.athleteSeasonDetails.NumberOfAppearances;
             this.SB = this.athleteSeasonDetails.SB.ToString();
+            this.Sex = this.athleteDetails.Sex.ToString();
 
             this.athleteSeasonDetails.ModelUpdateEvent += this.AthleteSeasonDetailsModelUpdateEvent;
             this.athleteSeasonPoints.ModelUpdateEvent += this.AthleteSeasonPointsModelUpdateEvent;
@@ -129,6 +131,11 @@
         /// Gets or sets the SB.
         /// </summary>
         public string SB { get; private set; }
+
+        /// <summary>
+        /// Gets the Sex of the athlete.
+        /// </summary>
+        public string Sex { get; }
 
         /// <summary>
         /// Dispose this object.

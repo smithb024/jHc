@@ -7,11 +7,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+
     <UserControl.Resources>
         <converterConfig:BoolToVisCollapsedVisibilityConverter x:Key="visibilityConverter"></converterConfig:BoolToVisCollapsedVisibilityConverter>
         <converterPrimaryData:BestToColourConverter x:Key="bestToColourConverter"></converterPrimaryData:BestToColourConverter>
         <converterPrimaryData:SexStringToColourConverter x:Key="sexStringToColourConverter"></converterPrimaryData:SexStringToColourConverter>
     </UserControl.Resources>
+
     <Grid>
         <ListBox ItemsSource="{Binding Path=ResultsTable}"
              HorizontalContentAlignment="Stretch">
@@ -41,7 +43,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0" Content="{Binding Position}" HorizontalContentAlignment="Center"/>
                                 <Grid Grid.Column="1"
-                      Background="{Binding Sex, Converter={StaticResource sexStringToColourConverter}}">
+                                      Background="{Binding Sex, Converter={StaticResource sexStringToColourConverter}}">
                                     <Label  Content="{Binding Name}"/>
                                 </Grid>
                                 <Label Grid.Column="2" Content="{Binding TotalTime}" HorizontalContentAlignment="Center"/>
