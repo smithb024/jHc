@@ -3,80 +3,94 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converterPrimaryData="clr-namespace:jHCVMUI.Views.Converters.PrimaryData"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-  <Grid Visibility="Visible">
-    <Grid>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="*"/>
-      </Grid.RowDefinitions>
-      <Grid Grid.Row="0">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Label Grid.Column="0" Content="Name"/>
-        <Label Grid.Column="1" Content="Number"/>
-        <Label Grid.Column="2" Content="Points"/>
-        <Label Grid.Column="3" Content="PB"/>
-        <Label Grid.Column="4" Content="SB"/>
-        <Label Grid.Column="5" Content="Runs"/>
-        <Label Grid.Column="6" Content="Pts Ave"/>
-        <Label Grid.Column="7" Content="Entered"/>
-        <Label Grid.Column="8" Content="Position"/>
-        <Label Grid.Column="9" Content="Best"/>
-      </Grid>
-      <ListBox ItemsSource="{Binding Path=PointsTable}"
+
+    <UserControl.Resources>
+        <converterPrimaryData:SexStringToColourConverter x:Key="sexStringToColourConverter"></converterPrimaryData:SexStringToColourConverter>
+    </UserControl.Resources>
+
+    <Grid Visibility="Visible">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Name"/>
+                <Label Grid.Column="1" Content="Number"/>
+                <Label Grid.Column="2" Content="Points"/>
+                <Label Grid.Column="3" Content="PB"/>
+                <Label Grid.Column="4" Content="SB"/>
+                <Label Grid.Column="5" Content="Runs"/>
+                <Label Grid.Column="6" Content="Pts Ave"/>
+                <Label Grid.Column="7" Content="Entered"/>
+                <Label Grid.Column="8" Content="Position"/>
+                <Label Grid.Column="9" Content="Best"/>
+            </Grid>
+            <ListBox ItemsSource="{Binding Path=PointsTable}"
                HorizontalContentAlignment="Stretch"
                Grid.Row="1">
-        <ListBox.ItemTemplate>
-          <DataTemplate>
-            <Border Style="{StaticResource ItemBorder}">
-              <Grid>
-                <Grid.RowDefinitions>
-                  <RowDefinition Height="*"/>
-                  <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                  </Grid.ColumnDefinitions>
-                  <Label Grid.Column="0" Content="{Binding Name}"/>
-                  <Border Grid.Column="1" Style="{StaticResource RunningNumberBorderStyle}" HorizontalAlignment="Center">
-                    <TextBlock Text="{Binding RaceNumber}" Style="{StaticResource RunningNumberStyle}"/>
-                  </Border>
-                  <Label Grid.Column="2" Content="{Binding Points}"/>
-                  <Label Grid.Column="3" Content="{Binding PB}"/>
-                  <Label Grid.Column="4" Content="{Binding SB}"/>
-                  <Label Grid.Column="5" Content="{Binding NumberOfRuns}"/>
-                  <Label Grid.Column="6" Content="{Binding AveragePoints}"/>
-                  <Label Grid.Column="7" Content="{Binding FinishingPoints}"/>
-                  <Label Grid.Column="8" Content="{Binding PositionPoints}"/>
-                  <Label Grid.Column="9" Content="{Binding BestPoints}"/>
-                </Grid>
-              </Grid>
-            </Border>
-          </DataTemplate>
-        </ListBox.ItemTemplate>
-      </ListBox>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource ItemBorder}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label 
+                                        Grid.Column="0"
+                                        Content="{Binding Name}"
+                                        Background="{Binding Path=Sex, Converter={StaticResource sexStringToColourConverter}}">
+                                    </Label>
+                                    <Border Grid.Column="1"
+                                            Style="{StaticResource RunningNumberBorderStyle}"
+                                            HorizontalAlignment="Center">
+                                        <TextBlock 
+                                            Text="{Binding RaceNumber}" 
+                                            Style="{StaticResource RunningNumberStyle}"/>
+                                    </Border>
+                                    <Label Grid.Column="2" Content="{Binding Points}"/>
+                                    <Label Grid.Column="3" Content="{Binding PB}"/>
+                                    <Label Grid.Column="4" Content="{Binding SB}"/>
+                                    <Label Grid.Column="5" Content="{Binding NumberOfRuns}"/>
+                                    <Label Grid.Column="6" Content="{Binding AveragePoints}"/>
+                                    <Label Grid.Column="7" Content="{Binding FinishingPoints}"/>
+                                    <Label Grid.Column="8" Content="{Binding PositionPoints}"/>
+                                    <Label Grid.Column="9" Content="{Binding BestPoints}"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
     </Grid>
-  </Grid>
 </UserControl>
