@@ -49,6 +49,16 @@
         private const string c_nameLabel = "Name";
 
         /// <summary>
+        /// Athlete forename element label.
+        /// </summary>
+        private const string ForenameLabel = "Forename";
+
+        /// <summary>
+        /// Athlete family name element label.
+        /// </summary>
+        private const string FamilyNameLabel = "FamilyName";
+
+        /// <summary>
         /// Athlete club element label
         /// </summary>
         private const string c_clubLabel = "Club";
