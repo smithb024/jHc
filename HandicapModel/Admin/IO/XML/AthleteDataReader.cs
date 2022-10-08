@@ -9,6 +9,7 @@
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
+    using CommonHandicapLib.XML.AthleteData;
     using CommonLib.Converters;
     using CommonLib.Enumerations;
     using CommonLib.Types;
@@ -17,6 +18,7 @@
     using HandicapModel.AthletesModel;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO.XML;
+    using NynaeveLib.XML;
 
     /// <summary>
     /// IO Class for the Athlete data XML file.
@@ -239,6 +241,51 @@
         public Athletes ReadAthleteData(string fileName)
         {
             Athletes athleteData = new Athletes(this.seriesConfigManager);
+            AthleteDetailsRoot deserialisedAthleteDetails;
+
+            Athlete a1 =
+                new Athlete()
+                {
+                    Key = 1,
+                    Name = "1",
+                    Forename = "forename",
+                    FamilyName = "Family name",
+                    Club = "club",
+                    PredeclaredHandicap = "01:01",
+                    Sex = SexType.Female,
+                    Active = true,
+                    SignedConsent = false,
+                    BirthDay = "4",
+                    BirthMonth = "8",
+                    BirthYear = "2001",
+                    Appearances = new AthleteDataTimes()
+                    {
+                        new AthleteDataTime(){Date="1-1-2000", Time="12:00"},
+                        new AthleteDataTime(){Date="22-2-2002", Time="11:45"}
+                    }
+                };
+            Athlete a2 = new Athlete() { Key = 2, Name = "2" };
+            AthleteList myList = new AthleteList();
+            myList.AllAthletes.Add(a1);
+            myList.AllAthletes.Add(a2);
+            AthleteDetailsRoot root = new AthleteDetailsRoot();
+            root.Add(myList);
+            XmlFileIo.WriteXml(root, "C:\\jHcTest\\Test.xml");
+
+            try
+            {
+                deserialisedAthleteDetails =
+                    XmlFileIo.ReadXml<AthleteDetailsRoot>(
+                        fileName);
+                //XmlFileIo.WriteXml(deserialisedAthleteDetails, "C:\\jHcTest\\Test.xml");
+                int i = 0;
+                ++i;
+            }
+            catch (XmlException ex)
+            {
+                this.logger.WriteLog(
+                    $"Error reading the results table; {ex.XmlMessage}");
+            }
 
             if (!File.Exists(fileName))
             {

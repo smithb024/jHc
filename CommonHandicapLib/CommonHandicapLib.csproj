@@ -74,6 +74,15 @@
     <Compile Include="Types\ResultsState.cs" />
     <Compile Include="Types\StatusType.cs" />
     <Compile Include="Interfaces\XML\IResultsConfigReader.cs" />
+    <Compile Include="XML\AthleteData\AthleteCollection.cs" />
+    <Compile Include="XML\AthleteData\AthleteDataNumber.cs" />
+    <Compile Include="XML\AthleteData\AthleteDataNumbers.cs" />
+    <Compile Include="XML\AthleteData\AthleteDataRunningNumbers.cs" />
+    <Compile Include="XML\AthleteData\AthleteDataTime.cs" />
+    <Compile Include="XML\AthleteData\AthleteDetailsRoot.cs" />
+    <Compile Include="XML\AthleteData\AthleteList.cs" />
+    <Compile Include="XML\AthleteData\Athlete.cs" />
+    <Compile Include="XML\AthleteData\AthleteDataTimes.cs" />
     <Compile Include="XML\ResultsTable\ResultsTableRoot.cs" />
     <Compile Include="XML\ResultsTable\Row.cs" />
     <Compile Include="XML\SeriesConfigReader.cs" />
@@ -86,6 +95,7 @@
       <Name>CommonLib</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
