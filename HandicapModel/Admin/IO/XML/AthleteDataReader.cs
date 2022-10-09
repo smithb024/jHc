@@ -258,10 +258,13 @@
                     BirthDay = "4",
                     BirthMonth = "8",
                     BirthYear = "2001",
-                    Appearances = new AthleteDataTimes()
+                    Appearances = new AthleteDataAppearances()
                     {
-                        new AthleteDataTime(){Date="1-1-2000", Time="12:00"},
-                        new AthleteDataTime(){Date="22-2-2002", Time="11:45"}
+                        Appearances = new AthleteDataTimes()
+                        {
+                            new AthleteDataTime(){Date="1-1-2000", Time="12:00"},
+                            new AthleteDataTime(){Date="22-2-2002", Time="11:45"}
+                        }
                     }
                 };
             Athlete a2 = new Athlete() { Key = 2, Name = "2" };
@@ -342,7 +345,7 @@
                     bool signedConsent = this.ConvertBool(athlete.signedConsent);
                     bool isActive = this.ConvertBool(athlete.active);
 
-                    int athleteKey = 
+                    int athleteKey =
                         (int)StringToIntConverter.ConvertStringToInt(
                           athlete.key);
                     TimeType athleteTime =
@@ -351,7 +354,7 @@
                     SexType athleteSex = StringToSexType.ConvertStringToSexType(athlete.sex);
                     List<Appearances> athleteAppearances = new List<Appearances>();
 
-                    AthleteDetails athleteDetails = 
+                    AthleteDetails athleteDetails =
                       new AthleteDetails(
                           athleteKey,
                           athlete.name,

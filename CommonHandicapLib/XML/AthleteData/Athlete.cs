@@ -71,7 +71,7 @@
         /// <summary>
         /// All appearances for the athlete.
         /// </summary>
-        private AthleteDataTimes appearances;
+        private AthleteDataAppearances appearances;
 
         /// <summary>
         /// Gets or sets the Key of the athlete in the row.
@@ -337,8 +337,8 @@
         /// <summary>
         /// All appearances.
         /// </summary>
-        [XmlElement("Apn")]
-        public AthleteDataTimes Appearances
+        [XmlElement("apn")]
+        public AthleteDataAppearances Appearances
         {
             get
             {

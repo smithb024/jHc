@@ -75,6 +75,7 @@
     <Compile Include="Types\StatusType.cs" />
     <Compile Include="Interfaces\XML\IResultsConfigReader.cs" />
     <Compile Include="XML\AthleteData\AthleteCollection.cs" />
+    <Compile Include="XML\AthleteData\AthleteDataAppearances.cs" />
     <Compile Include="XML\AthleteData\AthleteDataNumber.cs" />
     <Compile Include="XML\AthleteData\AthleteDataNumbers.cs" />
     <Compile Include="XML\AthleteData\AthleteDataRunningNumbers.cs" />
