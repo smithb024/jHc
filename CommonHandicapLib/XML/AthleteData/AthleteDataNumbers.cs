@@ -1,12 +1,11 @@
 ﻿namespace CommonHandicapLib.XML.AthleteData
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    class AthleteDataNumbers
+    /// <summary>
+    /// A list of all numbers.
+    /// </summary>
+    public class AthleteDataNumbers : List<AthleteDataNumber>
     {
     }
 }

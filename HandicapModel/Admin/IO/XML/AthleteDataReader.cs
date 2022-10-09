@@ -265,6 +265,15 @@
                             new AthleteDataTime(){Date="1-1-2000", Time="12:00"},
                             new AthleteDataTime(){Date="22-2-2002", Time="11:45"}
                         }
+                    },
+                    RunningNumbers = new AthleteDataRunningNumbers()
+                    {
+                        Numbers = new AthleteDataNumbers()
+                        {
+                            new AthleteDataNumber(){Number="SRJ2"},
+                            new AthleteDataNumber(){Number="SRJ6"},
+                            new AthleteDataNumber(){Number="SRJ32"}
+                        }
                     }
                 };
             Athlete a2 = new Athlete() { Key = 2, Name = "2" };

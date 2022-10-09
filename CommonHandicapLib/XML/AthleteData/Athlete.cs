@@ -74,6 +74,11 @@
         private AthleteDataAppearances appearances;
 
         /// <summary>
+        /// All the numbers associated with the athlete.
+        /// </summary>
+        private AthleteDataRunningNumbers runningNumbers;
+
+        /// <summary>
         /// Gets or sets the Key of the athlete in the row.
         /// </summary>
         [XmlAttribute("Key")]
@@ -335,7 +340,7 @@
         }
 
         /// <summary>
-        /// All appearances.
+        /// Gets or setss all appearances.
         /// </summary>
         [XmlElement("apn")]
         public AthleteDataAppearances Appearances
@@ -347,6 +352,22 @@
             set
             {
                 this.appearances = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets all the running numbers associated with an athlete.
+        /// </summary>
+        [XmlElement("runningNumbers")]
+        public AthleteDataRunningNumbers RunningNumbers
+        {
+            get
+            {
+                return this.runningNumbers;
+            }
+            set
+            {
+                this.runningNumbers = value;
             }
         }
     }
