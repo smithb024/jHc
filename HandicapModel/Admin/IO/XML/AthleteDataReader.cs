@@ -9,6 +9,7 @@
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
+    using CommonHandicapLib.XML.AthleteData;
     using CommonLib.Converters;
     using CommonLib.Enumerations;
     using CommonLib.Types;
@@ -17,6 +18,7 @@
     using HandicapModel.AthletesModel;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO.XML;
+    using NynaeveLib.XML;
 
     /// <summary>
     /// IO Class for the Athlete data XML file.
@@ -47,6 +49,16 @@
         /// Athlete name element label.
         /// </summary>
         private const string c_nameLabel = "Name";
+
+        /// <summary>
+        /// Athlete forename element label.
+        /// </summary>
+        private const string ForenameLabel = "Forename";
+
+        /// <summary>
+        /// Athlete family name element label.
+        /// </summary>
+        private const string FamilyNameLabel = "FamilyName";
 
         /// <summary>
         /// Athlete club element label
@@ -229,6 +241,63 @@
         public Athletes ReadAthleteData(string fileName)
         {
             Athletes athleteData = new Athletes(this.seriesConfigManager);
+            AthleteDetailsRoot deserialisedAthleteDetails;
+
+            Athlete a1 =
+                new Athlete()
+                {
+                    Key = 1,
+                    Name = "1",
+                    Forename = "forename",
+                    FamilyName = "Family name",
+                    Club = "club",
+                    PredeclaredHandicap = "01:01",
+                    Sex = SexType.Female,
+                    Active = true,
+                    SignedConsent = false,
+                    BirthDay = "4",
+                    BirthMonth = "8",
+                    BirthYear = "2001",
+                    Appearances = new AthleteDataAppearances()
+                    {
+                        Appearances = new AthleteDataTimes()
+                        {
+                            new AthleteDataTime(){Date="1-1-2000", Time="12:00"},
+                            new AthleteDataTime(){Date="22-2-2002", Time="11:45"}
+                        }
+                    },
+                    RunningNumbers = new AthleteDataRunningNumbers()
+                    {
+                        Numbers = new AthleteDataNumbers()
+                        {
+                            new AthleteDataNumber(){Number="SRJ2"},
+                            new AthleteDataNumber(){Number="SRJ6"},
+                            new AthleteDataNumber(){Number="SRJ32"}
+                        }
+                    }
+                };
+            Athlete a2 = new Athlete() { Key = 2, Name = "2" };
+            AthleteList myList = new AthleteList();
+            myList.AllAthletes.Add(a1);
+            myList.AllAthletes.Add(a2);
+            AthleteDetailsRoot root = new AthleteDetailsRoot();
+            root.Add(myList);
+            XmlFileIo.WriteXml(root, "C:\\jHcTest\\Test.xml");
+
+            try
+            {
+                deserialisedAthleteDetails =
+                    XmlFileIo.ReadXml<AthleteDetailsRoot>(
+                        fileName);
+                //XmlFileIo.WriteXml(deserialisedAthleteDetails, "C:\\jHcTest\\Test.xml");
+                int i = 0;
+                ++i;
+            }
+            catch (XmlException ex)
+            {
+                this.logger.WriteLog(
+                    $"Error reading the results table; {ex.XmlMessage}");
+            }
 
             if (!File.Exists(fileName))
             {
@@ -285,7 +354,7 @@
                     bool signedConsent = this.ConvertBool(athlete.signedConsent);
                     bool isActive = this.ConvertBool(athlete.active);
 
-                    int athleteKey = 
+                    int athleteKey =
                         (int)StringToIntConverter.ConvertStringToInt(
                           athlete.key);
                     TimeType athleteTime =
@@ -294,7 +363,7 @@
                     SexType athleteSex = StringToSexType.ConvertStringToSexType(athlete.sex);
                     List<Appearances> athleteAppearances = new List<Appearances>();
 
-                    AthleteDetails athleteDetails = 
+                    AthleteDetails athleteDetails =
                       new AthleteDetails(
                           athleteKey,
                           athlete.name,
