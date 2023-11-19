@@ -274,13 +274,15 @@
                         }
                     }
 
-                    this.CheckForFastestTime(this.Model.Athletes.GetAthleteSex(key),
-                                        key,
-                                        this.Model.Athletes.GetAthleteName(key),
-                                        raw.TotalTime - athleteHandicap,
-                                        eventDate);
-                    this.UpdateNumberStatistics(this.Model.Athletes.GetAthleteSex(key),
-                                           singleResult.FirstTimer);
+                    this.CheckForFastestTime(
+                        this.Model.Athletes.GetAthleteSex(key),
+                        key,
+                        this.Model.Athletes.GetAthleteName(key),
+                        raw.TotalTime - athleteHandicap,
+                        eventDate);
+                    this.UpdateNumberStatistics(
+                        this.Model.Athletes.GetAthleteSex(key),
+                        singleResult.FirstTimer);
 
                 }
 
