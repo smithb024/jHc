@@ -191,14 +191,13 @@
                     {
                         // TODO, last two arguments don't seem to be used.
                         this.Model.CurrentSeason.AddNewAthlete(
-                          athleteKeyInt,
-                          this.Model.Athletes.GetAthleteName(athleteKeyInt),
-                          string.Empty,
-                          this.Model.Athletes.IsFirstTimer(athleteKeyInt));
+                            athleteKeyInt,
+                            this.Model.Athletes.GetAthleteName(athleteKeyInt),
+                            string.Empty,
+                            this.Model.Athletes.IsFirstTimer(athleteKeyInt));
                     }
                 }
             }
-
         }
 
         /// <summary>

@@ -200,7 +200,7 @@
                 return false;
             }
 
-            return athlete.Appearances == 0;
+            return athlete.IsFirstTimer();
         }
 
         /// <summary>
