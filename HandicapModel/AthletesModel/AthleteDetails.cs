@@ -381,5 +381,33 @@
 
             return false;
         }
+
+        /// <summary>
+        /// Indicates whether this <see cref="AthleteDetails"/> is currently a first timer.
+        /// </summary>
+        /// <remarks>
+        /// If there are no appearances, then they are a first timer.
+        /// If any of the times are not DNF then they can't be a first timer.
+        /// </remarks>
+        /// <returns>
+        /// Is a first timer.
+        /// </returns>
+        public bool IsFirstTimer()
+        {
+            if (this.Appearances == 0)
+            {
+                return true;
+            }
+
+            foreach (Appearances time in this.Times)
+            {
+                if (time.IsTimeValid())
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

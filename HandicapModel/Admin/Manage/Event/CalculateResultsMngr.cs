@@ -191,14 +191,13 @@
                     {
                         // TODO, last two arguments don't seem to be used.
                         this.Model.CurrentSeason.AddNewAthlete(
-                          athleteKeyInt,
-                          this.Model.Athletes.GetAthleteName(athleteKeyInt),
-                          string.Empty,
-                          this.Model.Athletes.IsFirstTimer(athleteKeyInt));
+                            athleteKeyInt,
+                            this.Model.Athletes.GetAthleteName(athleteKeyInt),
+                            string.Empty,
+                            this.Model.Athletes.IsFirstTimer(athleteKeyInt));
                     }
                 }
             }
-
         }
 
         /// <summary>
@@ -274,13 +273,15 @@
                         }
                     }
 
-                    this.CheckForFastestTime(this.Model.Athletes.GetAthleteSex(key),
-                                        key,
-                                        this.Model.Athletes.GetAthleteName(key),
-                                        raw.TotalTime - athleteHandicap,
-                                        eventDate);
-                    this.UpdateNumberStatistics(this.Model.Athletes.GetAthleteSex(key),
-                                           singleResult.FirstTimer);
+                    this.CheckForFastestTime(
+                        this.Model.Athletes.GetAthleteSex(key),
+                        key,
+                        this.Model.Athletes.GetAthleteName(key),
+                        raw.TotalTime - athleteHandicap,
+                        eventDate);
+                    this.UpdateNumberStatistics(
+                        this.Model.Athletes.GetAthleteSex(key),
+                        singleResult.FirstTimer);
 
                 }
 

@@ -21,9 +21,6 @@
         /// </summary>
         private const string unknownDescription = "UNK";
 
-        private bool dnf = false;
-        private bool unknown = false;
-
         /// <summary>
         /// Initialises a new instance of <see cref="RaceTimeType"/> type.
         /// </summary>
@@ -83,20 +80,12 @@
         /// <summary>
         /// Gets or sets a flag indicating if the athlete finished or not.
         /// </summary>
-        public bool DNF
-        {
-            get { return dnf; }
-            set { dnf = value; }
-        }
+        public bool DNF { get; set; }
 
         /// <summary>
         /// Gets or sets a flag indicating if the time is known or not.
         /// </summary>
-        public bool Unknown
-        {
-            get { return unknown; }
-            set { unknown = value; }
-        }
+        public bool Unknown { get; set; }
 
         /// <summary>
         /// Add time, if seconds role over to the next  minute increase minute by one and reset seconds.
