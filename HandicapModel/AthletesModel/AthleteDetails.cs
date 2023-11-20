@@ -401,7 +401,7 @@
 
             foreach (Appearances time in this.Times)
             {
-                if (string.Compare(time.TimeString, "DNF") != 0)
+                if (time.IsTimeValid())
                 {
                     return false;
                 }

@@ -58,5 +58,23 @@
         /// Gets the appearance date as a string.
         /// </summary>
         public string DateString => this.date.ToString();
+
+        /// <summary>
+        /// Is the time valid.
+        /// </summary>
+        /// <remarks>
+        /// Checks to see if the time is not null. 
+        /// Then it checks to see if the time is not DNF or unknown.
+        /// </remarks>
+        /// <returns>Time valid flag</returns>
+        public bool IsTimeValid()
+        {
+            if (time == null)
+            {
+                return false;
+            }
+
+            return !time.DNF && !time.Unknown;
+        }
     }
 }
