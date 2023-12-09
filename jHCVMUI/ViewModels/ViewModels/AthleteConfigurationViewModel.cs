@@ -410,11 +410,11 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public string NewInitialHandicap
         {
-            get { return m_newInitialHandicap; }
+            get => m_newInitialHandicap; 
             set
             {
                 m_newInitialHandicap = value;
-                RaisePropertyChangedEvent("NewInitialHandicap");
+                RaisePropertyChangedEvent(nameof(this.NewInitialHandicap));
             }
         }
 
@@ -423,10 +423,7 @@
         /// </summary>
         public string NewAge
         {
-            get
-            {
-                return this.newAge;
-            }
+            get => this.newAge;
 
             set
             {

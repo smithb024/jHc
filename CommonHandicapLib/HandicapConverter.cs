@@ -1,47 +1,45 @@
 ﻿namespace CommonHandicapLib
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
-  using System.Text;
-
-  public static class HandicapConverter
-  {
     /// <summary>
-    /// 
+    /// Factory class which is used to guess a handicap based on a given age.
     /// </summary>
-    /// <param name="athleteAge"></param>
-    /// <returns></returns>
-    public static string ConvertAgeToHandicap(string athleteAge)
+    public static class HandicapConverter
     {
-      int age = 0;
-      int handicap = 0;
+        /// <summary>
+        /// Convert an age to a handicap.
+        /// </summary>
+        /// <param name="athleteAge">The age to convert</param>
+        /// <returns>The estimated handicap</returns>
+        public static string ConvertAgeToHandicap(string athleteAge)
+        {
+            int age;
+            int handicap = 0;
 
-      if (int.TryParse(athleteAge, out age))
-      {
-        if (age < 6)
-        {
-          handicap = 0;
-        }
-        else if (age < 9)
-        {
-          handicap = 5;
-        }
-        else if (age < 12)
-        {
-          handicap = 8;
-        }
-        else if (age < 15)
-        {
-          handicap = 10;
-        }
-        else
-        {
-          handicap = 12;
-        }
-      }
+            if (int.TryParse(athleteAge, out age))
+            {
+                if (age < 6)
+                {
+                    handicap = 0;
+                }
+                else if (age < 9)
+                {
+                    handicap = 0;
+                }
+                else if (age < 12)
+                {
+                    handicap = 3;
+                }
+                else if (age < 15)
+                {
+                    handicap = 5;
+                }
+                else
+                {
+                    handicap = 7;
+                }
+            }
 
-      return handicap.ToString();
+            return handicap.ToString();
+        }
     }
-  }
 }
