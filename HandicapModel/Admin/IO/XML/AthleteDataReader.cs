@@ -243,62 +243,6 @@
             Athletes athleteData = new Athletes(this.seriesConfigManager);
             AthleteDetailsRoot deserialisedAthleteDetails;
 
-            Athlete a1 =
-                new Athlete()
-                {
-                    Key = 1,
-                    Name = "1",
-                    Forename = "forename",
-                    FamilyName = "Family name",
-                    Club = "club",
-                    PredeclaredHandicap = "01:01",
-                    Sex = SexType.Female,
-                    Active = true,
-                    SignedConsent = false,
-                    BirthDay = "4",
-                    BirthMonth = "8",
-                    BirthYear = "2001",
-                    Appearances = new AthleteDataAppearances()
-                    {
-                        Appearances = new AthleteDataTimes()
-                        {
-                            new AthleteDataTime(){Date="1-1-2000", Time="12:00"},
-                            new AthleteDataTime(){Date="22-2-2002", Time="11:45"}
-                        }
-                    },
-                    RunningNumbers = new AthleteDataRunningNumbers()
-                    {
-                        Numbers = new AthleteDataNumbers()
-                        {
-                            new AthleteDataNumber(){Number="SRJ2"},
-                            new AthleteDataNumber(){Number="SRJ6"},
-                            new AthleteDataNumber(){Number="SRJ32"}
-                        }
-                    }
-                };
-            Athlete a2 = new Athlete() { Key = 2, Name = "2" };
-            AthleteList myList = new AthleteList();
-            myList.AllAthletes.Add(a1);
-            myList.AllAthletes.Add(a2);
-            AthleteDetailsRoot root = new AthleteDetailsRoot();
-            root.Add(myList);
-            XmlFileIo.WriteXml(root, "C:\\jHcTest\\Test.xml");
-
-            try
-            {
-                deserialisedAthleteDetails =
-                    XmlFileIo.ReadXml<AthleteDetailsRoot>(
-                        fileName);
-                //XmlFileIo.WriteXml(deserialisedAthleteDetails, "C:\\jHcTest\\Test.xml");
-                int i = 0;
-                ++i;
-            }
-            catch (XmlException ex)
-            {
-                this.logger.WriteLog(
-                    $"Error reading the results table; {ex.XmlMessage}");
-            }
-
             if (!File.Exists(fileName))
             {
                 string error = string.Format("Athlete Data file missing, one created - {0}", fileName);
@@ -307,6 +251,19 @@
                         error));
                 this.logger.WriteLog(error);
                 SaveAthleteData(fileName, new Athletes(this.seriesConfigManager));
+            }
+
+            try
+            {
+                deserialisedAthleteDetails =
+                    XmlFileIo.ReadXml<AthleteDetailsRoot>(
+                        fileName);
+            }
+            catch (XmlException ex)
+            {
+                deserialisedAthleteDetails = new AthleteDetailsRoot();
+                this.logger.WriteLog(
+                    $"Error reading the results table: {ex.XmlMessage}");
             }
 
             try
