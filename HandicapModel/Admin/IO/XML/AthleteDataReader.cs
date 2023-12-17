@@ -268,10 +268,10 @@
             {
                 deserialisedAthleteDetails = new AthleteDetailsRoot();
                 this.logger.WriteLog(
-                    $"Error reading the results table: {ex.XmlMessage}");
+                    $"Error reading the Athletes Data file: {ex.XmlMessage}");
             }
 
-
+            // Convert the deserialised objects into a model object.
             foreach (Athlete deserialisedAthlete in deserialisedAthleteDetails[0].AllAthletes)
             {
                 List<Appearances> athleteAppearances = new List<Appearances>();
@@ -318,103 +318,7 @@
                 deserialisedAthletes.SetNewAthlete(athleteDetails);
             }
 
-            try
-            {
-                XDocument reader = XDocument.Load(fileName);
-                XElement rootElement = reader.Root;
-                XElement athleteListElement = rootElement.Element(c_athleteListLabel);
-
-                var athleteList = from Athlete in athleteListElement.Elements(c_athleteLabel)
-                                  select new
-                                  {
-                                      key = (string)Athlete.Attribute(c_keyLabel),
-                                      name = (string)Athlete.Attribute(c_nameLabel),
-                                      club = (string)Athlete.Attribute(c_clubLabel),
-                                      predeclaredHandicap = (string)Athlete.Attribute(predeclaredHandicapLabel),
-                                      sex = (string)Athlete.Attribute(c_sexLabel),
-                                      signedConsent = (string)Athlete.Attribute(SignedConsentAttribute),
-                                      active = (string)Athlete.Attribute(activeLabel),
-                                      birthYear = (string)Athlete.Attribute(birthYearAttribute),
-                                      birthMonth = (string)Athlete.Attribute(birthMonthAttribute),
-                                      birthDay = (string)Athlete.Attribute(birthDayAttribute),
-                                      runningNumbers = from RunningNumbers in Athlete.Elements(c_runningNumbersElement)
-                                                       select new
-                                                       {
-                                                           numbers = from Numbers in RunningNumbers.Elements(c_numberElement)
-                                                                     select new
-                                                                     {
-                                                                         number = (string)Numbers.Attribute(c_numberAttribute)
-                                                                     }
-                                                       },
-                                      timeList = from TimeList in Athlete.Elements(c_appearancesLabel)
-                                                 select new
-                                                 {
-                                                     time = from Time in TimeList.Elements(c_timeLabel)
-                                                            select new
-                                                            {
-                                                                time = (string)Time.Attribute(c_raceTimeLabel),
-                                                                date = (string)Time.Attribute(c_raceDateLabel)
-                                                            }
-                                                 }
-                                  };
-
-                foreach (var athlete in athleteList)
-                {
-                    bool signedConsent = this.ConvertBool(athlete.signedConsent);
-                    bool isActive = this.ConvertBool(athlete.active);
-
-                    int athleteKey =
-                        (int)StringToIntConverter.ConvertStringToInt(
-                          athlete.key);
-                    TimeType athleteTime =
-                        new TimeType(
-                            athlete.predeclaredHandicap);
-                    SexType athleteSex = StringToSexType.ConvertStringToSexType(athlete.sex);
-                    List<Appearances> athleteAppearances = new List<Appearances>();
-
-                    AthleteDetails athleteDetails =
-                      new AthleteDetails(
-                          athleteKey,
-                          athlete.name,
-                          athlete.club,
-                          athleteTime,
-                          athleteSex,
-                          signedConsent,
-                          isActive,
-                          athleteAppearances,
-                          athlete.birthYear,
-                          athlete.birthMonth,
-                          athlete.birthDay,
-                          this.normalisationConfigManager);
-
-                    foreach (var runningNumbers in athlete.runningNumbers)
-                    {
-                        foreach (var number in runningNumbers.numbers)
-                        {
-                            athleteDetails.AddNewNumber(number.number);
-                        }
-                    }
-
-                    foreach (var raceTimeList in athlete.timeList)
-                    {
-                        foreach (var raceTime in raceTimeList.time)
-                        {
-                            athleteDetails.AddRaceTime(new Appearances(new RaceTimeType(raceTime.time),
-                                                                       new DateType(raceTime.date)));
-                        }
-                    }
-
-                    athleteData.SetNewAthlete(athleteDetails);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.logger.WriteLog("Error reading athlete data: " + ex.ToString());
-
-                athleteData = new Athletes(this.seriesConfigManager);
-            }
-
-            return athleteData;
+            return deserialisedAthletes;
         }
 
         /// <summary>
