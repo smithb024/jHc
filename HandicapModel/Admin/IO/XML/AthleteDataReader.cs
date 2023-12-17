@@ -240,9 +240,6 @@
         /// <returns>decoded athlete's details</returns>
         public Athletes ReadAthleteData(string fileName)
         {
-            Athletes athleteData = 
-                new Athletes(
-                    this.seriesConfigManager);
             AthleteDetailsRoot deserialisedAthleteDetails;
             Athletes deserialisedAthletes =
                 new Athletes(
