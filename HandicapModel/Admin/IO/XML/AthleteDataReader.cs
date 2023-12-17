@@ -240,8 +240,13 @@
         /// <returns>decoded athlete's details</returns>
         public Athletes ReadAthleteData(string fileName)
         {
-            Athletes athleteData = new Athletes(this.seriesConfigManager);
+            Athletes athleteData = 
+                new Athletes(
+                    this.seriesConfigManager);
             AthleteDetailsRoot deserialisedAthleteDetails;
+            Athletes deserialisedAthletes =
+                new Athletes(
+                    this.seriesConfigManager);
 
             if (!File.Exists(fileName))
             {
@@ -264,6 +269,53 @@
                 deserialisedAthleteDetails = new AthleteDetailsRoot();
                 this.logger.WriteLog(
                     $"Error reading the results table: {ex.XmlMessage}");
+            }
+
+
+            foreach (Athlete deserialisedAthlete in deserialisedAthleteDetails[0].AllAthletes)
+            {
+                List<Appearances> athleteAppearances = new List<Appearances>();
+                TimeType predeclaredTime =
+                        new TimeType(
+                            deserialisedAthlete.PredeclaredHandicap);
+
+                AthleteDetails athleteDetails =
+                    new AthleteDetails(
+                        deserialisedAthlete.Key,
+                        deserialisedAthlete.Name,
+                        deserialisedAthlete.Club,
+                        predeclaredTime,
+                        deserialisedAthlete.Sex,
+                        deserialisedAthlete.SignedConsent,
+                        deserialisedAthlete.Active,
+                        athleteAppearances,
+                        string.Empty,
+                        string.Empty,
+                        string.Empty,
+                        this.normalisationConfigManager);
+
+                foreach (AthleteDataNumber runningNumbers in deserialisedAthlete.RunningNumbers.Numbers)
+                {
+                    athleteDetails.AddNewNumber(runningNumbers.Number);
+                }
+
+                foreach (AthleteDataTime raceTimeList in deserialisedAthlete.Appearances.Appearances)
+                {
+                    RaceTimeType time = 
+                        new RaceTimeType(
+                            raceTimeList.Time);
+                    DateType date = 
+                        new DateType(
+                            raceTimeList.Date);
+                    Appearances appearance =
+                        new Appearances(
+                            time,
+                            date);
+
+                    athleteDetails.AddRaceTime(appearance);
+                }
+
+                deserialisedAthletes.SetNewAthlete(athleteDetails);
             }
 
             try
