@@ -14,6 +14,7 @@
     using CommonLib.Enumerations;
     using CommonLib.Types;
     using GalaSoft.MvvmLight.Messaging;
+    using HandicapModel.Admin.IO.TXT;
     using HandicapModel.Admin.Manage;
     using HandicapModel.AthletesModel;
     using HandicapModel.Common;
@@ -174,6 +175,19 @@
             Athletes athleteDetailsList)
         {
             bool success = true;
+
+            try
+            {
+                AthleteDetailsRoot athleteDetailsRoot = new AthleteDetailsRoot();
+                XmlFileIo.WriteXml(
+                    athleteDetailsRoot,
+                    $"{RootIO.LoadRootFile()}{Path.DirectorySeparatorChar}{IOPaths.configurationPath}{Path.DirectorySeparatorChar}testAthletesDetailsFile.xml");
+            }
+            catch (XmlException ex)
+            {
+                this.logger.WriteLog(
+                    $"Error writing the Athletes Data file: {ex.XmlMessage}");
+            }
 
             try
             {
