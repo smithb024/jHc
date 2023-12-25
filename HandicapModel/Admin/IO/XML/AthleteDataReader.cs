@@ -178,8 +178,72 @@
 
             try
             {
-                AthleteDetailsRoot athleteDetailsRoot = new AthleteDetailsRoot();
-                XmlFileIo.WriteXml(
+                AthleteCollection saveCollection = new AthleteCollection();
+                foreach (AthleteDetails athletesDetails in athleteDetailsList.AthleteDetails)
+                {
+                    AthleteDataNumbers saveAthleteDataNumbers =
+                        new AthleteDataNumbers();
+                    foreach (string runningNumber in athletesDetails.RunningNumbers)
+                    {
+                        AthleteDataNumber saveAthleteDataNumber =
+                            new AthleteDataNumber()
+                            {
+                                Number = runningNumber
+                            };
+                        saveAthleteDataNumbers.Add(saveAthleteDataNumber);
+                    }
+
+                    AthleteDataRunningNumbers saveAthleteDataRunningNumbers =
+                        new AthleteDataRunningNumbers()
+                        {
+                            Numbers = saveAthleteDataNumbers,
+                        };
+
+                    AthleteDataTimes saveAthleteDataTimes = new AthleteDataTimes();
+                    foreach (Appearances appearance in athletesDetails.Times) 
+                    {
+                        AthleteDataTime saveAthleteDataTime =
+                            new AthleteDataTime()
+                            {
+                                Date = appearance.DateString,
+                                Time = appearance.TimeString
+                            };
+                        saveAthleteDataTimes.Add(saveAthleteDataTime);
+                    }
+
+                    AthleteDataAppearances saveAthleteDataAppearances =
+                        new AthleteDataAppearances()
+                        {
+                            Appearances = saveAthleteDataTimes
+                        };
+
+                    Athlete saveAthlete = 
+                        new Athlete()
+                        {
+                           Key = athletesDetails.Key,
+                           Name = athletesDetails.Name,
+                           Club = athletesDetails.Club,
+                           Sex = athletesDetails.Sex,
+                           SignedConsent = athletesDetails.SignedConsent,
+                           Active = athletesDetails.Active,
+                           PredeclaredHandicap = athletesDetails.PredeclaredHandicap.ToString(),
+                           Appearances = saveAthleteDataAppearances,
+                           RunningNumbers = saveAthleteDataRunningNumbers
+                        };
+                    saveCollection.Add(saveAthlete);
+                }
+
+                AthleteList saveList =
+                    new AthleteList()
+                    {
+                        AllAthletes = saveCollection
+                    };
+                AthleteDetailsRoot athleteDetailsRoot =
+                    new AthleteDetailsRoot()
+                    {
+                        saveList
+                    };
+               XmlFileIo.WriteXml(
                     athleteDetailsRoot,
                     $"{RootIO.LoadRootFile()}{Path.DirectorySeparatorChar}{IOPaths.configurationPath}{Path.DirectorySeparatorChar}testAthletesDetailsFile.xml");
             }
@@ -216,16 +280,20 @@
 
                     foreach (string number in athletesDetails.RunningNumbers)
                     {
-                        XElement numberElement = new XElement(c_numberElement,
-                                                              new XAttribute(c_numberAttribute, number));
+                        XElement numberElement = 
+                            new XElement(
+                                c_numberElement,
+                                new XAttribute(c_numberAttribute, number));
                         runningNumberElement.Add(numberElement);
                     }
 
                     foreach (Appearances time in athletesDetails.Times)
                     {
-                        XElement timeElement = new XElement(c_timeLabel,
-                                                            new XAttribute(c_raceTimeLabel, time.Time.ToString()),
-                                                            new XAttribute(c_raceDateLabel, time.Date.ToString()));
+                        XElement timeElement =
+                            new XElement(
+                                c_timeLabel,
+                                new XAttribute(c_raceTimeLabel, time.Time.ToString()),
+                                new XAttribute(c_raceDateLabel, time.Date.ToString()));
                         timesListElement.Add(timeElement);
                     }
 
