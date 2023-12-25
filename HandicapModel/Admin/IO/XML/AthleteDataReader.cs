@@ -243,74 +243,19 @@
                     {
                         saveList
                     };
-               XmlFileIo.WriteXml(
-                    athleteDetailsRoot,
-                    $"{RootIO.LoadRootFile()}{Path.DirectorySeparatorChar}{IOPaths.configurationPath}{Path.DirectorySeparatorChar}testAthletesDetailsFile.xml");
+                XmlFileIo.WriteXml(
+                     athleteDetailsRoot,
+                     fileName);
+
+                this.logger.WriteLog(
+                    $"Writen the Athletes Data file: {fileName}");
+
             }
             catch (XmlException ex)
             {
                 this.logger.WriteLog(
                     $"Error writing the Athletes Data file: {ex.XmlMessage}");
             }
-
-            try
-            {
-                XDocument writer = new XDocument(
-                 new XDeclaration("1.0", "uft-8", "yes"),
-                 new XComment("Athlete's data XML"));
-                XElement rootElement = new XElement(c_rootLabel);
-                XElement athleteListElement = new XElement(c_athleteListLabel);
-
-                foreach (AthleteDetails athletesDetails in athleteDetailsList.AthleteDetails)
-                {
-                    XElement athleteElement = new XElement(c_athleteLabel,
-                                                           new XAttribute(c_keyLabel, athletesDetails.Key),
-                                                           new XAttribute(c_nameLabel, athletesDetails.Name),
-                                                           new XAttribute(c_clubLabel, athletesDetails.Club),
-                                                           new XAttribute(predeclaredHandicapLabel, athletesDetails.PredeclaredHandicap.ToString()),
-                                                           new XAttribute(c_sexLabel, athletesDetails.Sex),
-                                                           new XAttribute(birthYearAttribute, athletesDetails.BirthDate.BirthYear),
-                                                           new XAttribute(birthMonthAttribute, athletesDetails.BirthDate.BirthMonth),
-                                                           new XAttribute(birthDayAttribute, athletesDetails.BirthDate.BirthDay),
-                                                           new XAttribute(SignedConsentAttribute, athletesDetails.SignedConsent),
-                                                           new XAttribute(activeLabel, athletesDetails.Active));
-
-                    XElement runningNumberElement = new XElement(c_runningNumbersElement);
-                    XElement timesListElement = new XElement(c_appearancesLabel);
-
-                    foreach (string number in athletesDetails.RunningNumbers)
-                    {
-                        XElement numberElement = 
-                            new XElement(
-                                c_numberElement,
-                                new XAttribute(c_numberAttribute, number));
-                        runningNumberElement.Add(numberElement);
-                    }
-
-                    foreach (Appearances time in athletesDetails.Times)
-                    {
-                        XElement timeElement =
-                            new XElement(
-                                c_timeLabel,
-                                new XAttribute(c_raceTimeLabel, time.Time.ToString()),
-                                new XAttribute(c_raceDateLabel, time.Date.ToString()));
-                        timesListElement.Add(timeElement);
-                    }
-
-                    athleteElement.Add(runningNumberElement);
-                    athleteElement.Add(timesListElement);
-                    athleteListElement.Add(athleteElement);
-                }
-
-                rootElement.Add(athleteListElement);
-                writer.Add(rootElement);
-                writer.Save(fileName);
-            }
-            catch (Exception ex)
-            {
-                this.logger.WriteLog("Error writing Athlete data " + ex.ToString());
-            }
-
 
             return success;
         }
