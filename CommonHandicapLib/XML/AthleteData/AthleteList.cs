@@ -1,48 +1,33 @@
 ﻿namespace CommonHandicapLib.XML.AthleteData
 {
-    using System;
-    using System.Collections.Generic;
     using System.Xml.Serialization;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Simple object which represents a collection of athletes.
     /// </summary>
     public class AthleteList
     {
-        private AthleteCollection colours;
+        /// <summary>
+        /// All known athletes.
+        /// </summary>
+        private AthleteCollection allAthletes;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AthleteList"/> class.
+        /// </summary>
         public AthleteList()
         {
             this.AllAthletes = new AthleteCollection();
         }
 
-        [XmlAttribute("Model")]
-        public string Model
-        {
-            get
-            {
-                return "my string";
-            }
-            set
-            {
-
-            }
-        }
-
+        /// <summary>
+        /// Gets or sets a collection of all known athletes.
+        /// </summary>
         [XmlElement("Athlete")]
         public AthleteCollection AllAthletes
         {
-            get
-            {
-                return this.colours;
-            }
-            set
-            {
-                this.colours = value;
-            }
+            get => this.allAthletes;
+            set => this.allAthletes = value;
         }
     }
 }
