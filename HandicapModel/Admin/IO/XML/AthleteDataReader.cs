@@ -1,20 +1,14 @@
 ﻿namespace HandicapModel.Admin.IO.XML
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-    using System.Xml.Linq;
 
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using CommonHandicapLib.XML.AthleteData;
-    using CommonLib.Converters;
-    using CommonLib.Enumerations;
     using CommonLib.Types;
     using GalaSoft.MvvmLight.Messaging;
-    using HandicapModel.Admin.IO.TXT;
     using HandicapModel.Admin.Manage;
     using HandicapModel.AthletesModel;
     using HandicapModel.Common;
@@ -290,9 +284,9 @@
             }
             catch (XmlException ex)
             {
-                deserialisedAthleteDetails = new AthleteDetailsRoot();
                 this.logger.WriteLog(
                     $"Error reading the Athletes Data file: {ex.XmlMessage}");
+                return new Athletes(this.seriesConfigManager);
             }
 
             // Convert the deserialised objects into a model object.

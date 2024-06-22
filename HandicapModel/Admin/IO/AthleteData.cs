@@ -1,5 +1,6 @@
 ﻿namespace HandicapModel.Admin.IO
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using CommonHandicapLib.Interfaces;
@@ -11,7 +12,6 @@
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.SeasonModel;
-    using HandicapModel.SeasonModel;
     using GalaSoft.MvvmLight.Messaging;
 
     /// <summary>
@@ -40,6 +40,11 @@
         private IAthleteSeasonDataReader athleteSeasonDataReader;
 
         /// <summary>
+        /// The athlete configuration manager.
+        /// </summary>
+        private ISeriesConfigMngr seriesConfigManager;
+
+        /// <summary>
         /// The path to all the season data.
         /// </summary>
         private string dataPath;
@@ -57,6 +62,7 @@
         {
             this.generalIo = generalIo;
             this.logger = logger;
+            this.seriesConfigManager = seriesConfigManager;
 
             this.athleteDataReader =
                 new AthleteDataReader(
@@ -98,8 +104,22 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public Athletes ReadAthleteData()
         {
-            return this.athleteDataReader.ReadAthleteData(
-                this.generalIo.AthletesGlobalDataFile);
+            try
+            {
+                Athletes athletes =
+                this.athleteDataReader.ReadAthleteData(
+                    this.generalIo.AthletesGlobalDataFile);
+                return athletes;
+            }
+            catch (Exception ex)
+            {
+                this.logger.WriteLog(
+                    $"Error getting the Athletes Data: {ex}");
+                Athletes athletes =
+                    new Athletes(
+                        this.seriesConfigManager);
+                return athletes;
+            }
         }
 
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------

@@ -77,6 +77,7 @@
     <Compile Include="PrimaryDisplay.xaml.cs">
       <DependentUpon>PrimaryDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\IMainViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="PrimaryDisplay.xaml">

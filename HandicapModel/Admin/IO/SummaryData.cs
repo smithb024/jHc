@@ -91,7 +91,11 @@
         /// <returns>decoded summary data</returns>
         public ISummary LoadSummaryData()
         {
-            return this.summaryDataReader.ReadCompleteSummaryData(RootPath.DataPath + IOPaths.globalSummaryFile);
+            string path = $"{RootPath.DataPath}{IOPaths.globalSummaryFile}";
+            ISummary summary =
+                this.summaryDataReader.ReadCompleteSummaryData(
+                    path);
+            return summary;
         }
 
         /// <summary>
