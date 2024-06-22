@@ -83,7 +83,6 @@
         /// <param name="seasonIo">season IO Manager</param>
         /// <param name="eventIo">event IO manager</param>
         /// <param name="rawEventIo">raw event IO manager</param>
-        /// <param name="generalIo">general IO manager</param>
         /// <param name="logger">application logger</param>
         public Model(
             INormalisationConfigMngr normalisationConfigMngr,
@@ -96,7 +95,6 @@
             ISeasonIO seasonIo,
             IEventIo eventIo,
             IRawEventIo rawEventIo,
-            IGeneralIo generalIo,
             IJHcLogger logger)
         {
             this.normalisationConfigurationManager = normalisationConfigMngr;
@@ -117,17 +115,25 @@
                     this.summaryData,
                     this.eventIo,
                     this.logger);
-            this.CurrentEvent = 
+            this.CurrentEvent =
                 new EventHC(
                     eventData,
                     this.summaryData,
                     resultsTableReader,
                     rawEventIo,
                     this.logger);
-            this.Seasons = seasonIo.GetSeasons();
-            this.Athletes = this.athleteData.ReadAthleteData();
-            this.Clubs = this.clubData.LoadClubData();
-            this.GlobalSummary = this.summaryData.LoadSummaryData();
+            try
+            {
+                this.Seasons = seasonIo.GetSeasons();
+                this.Athletes = this.athleteData.ReadAthleteData();
+                this.Clubs = this.clubData.LoadClubData();
+                this.GlobalSummary = this.summaryData.LoadSummaryData();
+            }
+            catch (Exception ex)
+            {
+                this.logger.WriteLog(
+                    $"Error setting up the model: {ex}");
+            }
 
             Messenger.Default.Register<LoadNewSeriesMessage>(this, this.LoadNewSeries);
         }

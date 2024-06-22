@@ -7,44 +7,44 @@
              DataContext="{Binding PrimaryDisplayViewModel, Source={StaticResource ViewModelLocator}}"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="1000">
-  <UserControl.Resources>
-    <BooleanToVisibilityConverter x:Key="BoolToVis" />
-    <!--<converter:BoolToVisCollapsedVisibilityConverter x:Key="visibilityConverter"></converter:BoolToVisCollapsedVisibilityConverter>-->
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <!--<converter:BoolToVisCollapsedVisibilityConverter x:Key="visibilityConverter"></converter:BoolToVisCollapsedVisibilityConverter>-->
 
-    <Style TargetType="MenuItem">
-      <Setter Property="Header" Value="{Binding Path=DisplayName}" />
-      <Setter Property="ItemsSource" Value="{Binding Path=Children}" />
-    </Style>
+        <Style TargetType="MenuItem">
+            <Setter Property="Header" Value="{Binding Path=DisplayName}" />
+            <Setter Property="ItemsSource" Value="{Binding Path=Children}" />
+        </Style>
 
-    <MenuItem x:Key="FileMenuTemplate" Header="File">
-      <MenuItem Header="Load..." Command="{Binding LoadNewSeriesCommand}"/>
-      <MenuItem Header="New" Command="{Binding CreateNewSeriesCommand}"/>
-      <Separator/>
-      <MenuItem Header="Print All..." Command="{Binding PrintAllCommand}"/>
-      <MenuItem Header="Print Race Labels..." Command="{Binding PrintRaceLabelsCommand}"/>
-      <Separator/>
-      <MenuItem Header="Time Entry Editor..." Command="{Binding OpenTimeEntryEditorComamnd}"/>
-      <MenuItem Header="Position Editor..." Command="{Binding OpenPositionEditorCommand}"/>
-      <MenuItem Header="Stopwatch 610P Editor..." Command="{Binding OpenStopwatchP610EEditorCommand}"/>
-    </MenuItem>
+        <MenuItem x:Key="FileMenuTemplate" Header="File">
+            <MenuItem Header="Load..." Command="{Binding LoadNewSeriesCommand}"/>
+            <MenuItem Header="New" Command="{Binding CreateNewSeriesCommand}"/>
+            <Separator/>
+            <MenuItem Header="Print All..." Command="{Binding PrintAllCommand}"/>
+            <MenuItem Header="Print Race Labels..." Command="{Binding PrintRaceLabelsCommand}"/>
+            <Separator/>
+            <MenuItem Header="Time Entry Editor..." Command="{Binding OpenTimeEntryEditorComamnd}"/>
+            <MenuItem Header="Position Editor..." Command="{Binding OpenPositionEditorCommand}"/>
+            <MenuItem Header="Stopwatch 610P Editor..." Command="{Binding OpenStopwatchP610EEditorCommand}"/>
+        </MenuItem>
 
-    <MenuItem x:Key="ConfigMenuTemplate" Header="Configuration">
-      <MenuItem Header="Athlete Registration..." Command="{Binding OpenAthleteCommand}"/>
-      <MenuItem Header="Club Registration..." Command="{Binding OpenClubCommand}"/>
-      <Separator/>
-      <MenuItem Header="Series Configuration..." Command="{Binding OpenSeriesConfigCommand}"/>
-      <MenuItem Header="Normalisation Configuration..." Command="{Binding OpenNormalisationConfigCommand}"/>
-      <MenuItem Header="Results Configuration..." Command="{Binding OpenResultConfigCommand}"/>
-    </MenuItem>
+        <MenuItem x:Key="ConfigMenuTemplate" Header="Configuration">
+            <MenuItem Header="Athlete Registration..." Command="{Binding OpenAthleteCommand}"/>
+            <MenuItem Header="Club Registration..." Command="{Binding OpenClubCommand}"/>
+            <Separator/>
+            <MenuItem Header="Series Configuration..." Command="{Binding OpenSeriesConfigCommand}"/>
+            <MenuItem Header="Normalisation Configuration..." Command="{Binding OpenNormalisationConfigCommand}"/>
+            <MenuItem Header="Results Configuration..." Command="{Binding OpenResultConfigCommand}"/>
+        </MenuItem>
 
-    <MenuItem x:Key="DataMenuTemplate" Header="Data">
-      <MenuItem Header="Athletes" Command="{Binding OpenAthleteSummaryCommand}"/>
-      <MenuItem Header="Clubs" Command="{Binding OpenClubSummaryCommand}"/>
-      <MenuItem Header="Summary" Command="{Binding OpenSummaryCommand}"/>
-    </MenuItem>
+        <MenuItem x:Key="DataMenuTemplate" Header="Data">
+            <MenuItem Header="Athletes" Command="{Binding OpenAthleteSummaryCommand}"/>
+            <MenuItem Header="Clubs" Command="{Binding OpenClubSummaryCommand}"/>
+            <MenuItem Header="Summary" Command="{Binding OpenSummaryCommand}"/>
+        </MenuItem>
 
-    <MenuItem x:Key="HelpMenuTemplate" Header="Help">
-      <!--<ItemsControl x:Name="AppsItemsControl" ItemsSource="{Binding OpenAppCommands}">
+        <MenuItem x:Key="HelpMenuTemplate" Header="Help">
+            <!--<ItemsControl x:Name="AppsItemsControl" ItemsSource="{Binding OpenAppCommands}">
         <ItemsControl.ItemContainerStyle>
           <Style TargetType="MenuItem">
             <Setter Property="Header" Value="{Binding DisplayName}"/>
@@ -52,61 +52,63 @@
           </Style>
         </ItemsControl.ItemContainerStyle>
 
-        --><!--<ItemsControl.ItemTemplate>
+        -->
+            <!--<ItemsControl.ItemTemplate>
           <DataTemplate>
             <MenuItem Header="{Binding ElementName=AppsItemControl, Path=DataContext.DisplayName}" Command="{Binding ElementName=AppsItemControl, Path=DataContext.RunCommand}" />
           </DataTemplate>
-        </ItemsControl.ItemTemplate>--><!--
+        </ItemsControl.ItemTemplate>-->
+            <!--
       </ItemsControl>-->
-        <MenuItem Header="OPN 200x" Command="{Binding OpenOPN200Command}"/>
-        <MenuItem Header="Parkrun Timer" Command="{Binding OpenParkrunTimerCommand}"/>
-        <MenuItem Header="Stopwatch 610P" Command="{Binding OpenStopwatch610Command}"/>
-        <Separator/>
-      <MenuItem Header="About"/>
-    </MenuItem>
-  </UserControl.Resources>
+            <MenuItem Header="OPN 200x" Command="{Binding OpenOPN200Command}"/>
+            <MenuItem Header="Parkrun Timer" Command="{Binding OpenParkrunTimerCommand}"/>
+            <MenuItem Header="Stopwatch 610P" Command="{Binding OpenStopwatch610Command}"/>
+            <Separator/>
+            <MenuItem Header="About"/>
+        </MenuItem>
+    </UserControl.Resources>
 
-  <DockPanel LastChildFill="True">
-    <Menu IsMainMenu="True" DockPanel.Dock="Top">
-      <StaticResourceExtension ResourceKey="FileMenuTemplate"/>
-      <StaticResourceExtension ResourceKey="ConfigMenuTemplate"/>
-      <StaticResourceExtension ResourceKey="DataMenuTemplate"/>
-      <StaticResourceExtension ResourceKey="HelpMenuTemplate"/>
-    </Menu>
+    <DockPanel LastChildFill="True">
+        <Menu IsMainMenu="True" DockPanel.Dock="Top">
+            <StaticResourceExtension ResourceKey="FileMenuTemplate"/>
+            <StaticResourceExtension ResourceKey="ConfigMenuTemplate"/>
+            <StaticResourceExtension ResourceKey="DataMenuTemplate"/>
+            <StaticResourceExtension ResourceKey="HelpMenuTemplate"/>
+        </Menu>
 
-    <StatusBar DockPanel.Dock="Bottom">
-      <StatusBar.ItemsPanel>
-        <ItemsPanelTemplate>
-          <Grid>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+            <StatusBarItem Grid.Column="0">
+                <Label Content="{Binding ProgressInformation, UpdateSourceTrigger=PropertyChanged}"/>
+            </StatusBarItem>
+            <Separator Grid.Column="1"/>
+            <StatusBarItem Grid.Column="2">
+                <Label Content="{Binding ErrorInformation, UpdateSourceTrigger=PropertyChanged}"/>
+            </StatusBarItem>
+        </StatusBar>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="115"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="Auto"/>
-              <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-          </Grid>
-        </ItemsPanelTemplate>
-      </StatusBar.ItemsPanel>
-      <StatusBarItem Grid.Column="0">
-        <Label Content="{Binding ProgressInformation, UpdateSourceTrigger=PropertyChanged}"/>
-      </StatusBarItem>
-      <Separator Grid.Column="1"/>
-      <StatusBarItem Grid.Column="2">
-        <Label Content="{Binding ErrorInformation, UpdateSourceTrigger=PropertyChanged}"/>
-      </StatusBarItem>
-    </StatusBar>
-
-    <Grid>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="115"/>
-        <RowDefinition Height="*"/>
-      </Grid.RowDefinitions>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
-      <view:SeasonRibbonPane Grid.Row="0" Grid.Column="0" />
-      <view:EventRibbonPane Grid.Row="0" Grid.Column="1" />
-      <view:DataPane Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
-    </Grid>
-  </DockPanel>
+            <view:SeasonRibbonPane Grid.Row="0" Grid.Column="0" />
+            <view:EventRibbonPane Grid.Row="0" Grid.Column="1" />
+            <view:DataPane Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
+        </Grid>
+    </DockPanel>
 </UserControl>

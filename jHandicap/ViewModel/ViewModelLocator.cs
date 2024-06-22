@@ -96,29 +96,35 @@ namespace jHandicap.ViewModel
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<MainViewModel>();
+                return SimpleIoc.Default.GetInstance<MainViewModel>();
             }
         }
 
         /// <summary>
         /// Gets the primary display view model.
         /// </summary>
-        public PrimaryDisplayViewModel PrimaryDisplayViewModel => ServiceLocator.Current.GetInstance<PrimaryDisplayViewModel>();
+        public PrimaryDisplayViewModel PrimaryDisplayViewModel
+        {
+            get
+            {
+                return       SimpleIoc.Default.GetInstance<PrimaryDisplayViewModel>();
+            }
+        }
 
         /// <summary>
         /// Gets the season display view model.
         /// </summary>
-        public SeasonPaneViewModel SeasonPaneViewModel => ServiceLocator.Current.GetInstance<SeasonPaneViewModel>();
+        public SeasonPaneViewModel SeasonPaneViewModel => SimpleIoc.Default.GetInstance<SeasonPaneViewModel>();
 
         /// <summary>
         /// Gets the event display view model.
         /// </summary>
-        public EventPaneViewModel EventPaneViewModel => ServiceLocator.Current.GetInstance<EventPaneViewModel>();
+        public EventPaneViewModel EventPaneViewModel => SimpleIoc.Default.GetInstance<EventPaneViewModel>();
 
         /// <summary>
         /// Gets the data display view model.
         /// </summary>
-        public DataPaneViewModel DataPaneViewModel => ServiceLocator.Current.GetInstance<DataPaneViewModel>();
+        public DataPaneViewModel DataPaneViewModel => SimpleIoc.Default.GetInstance<DataPaneViewModel>();
 
         public static void Cleanup()
         {

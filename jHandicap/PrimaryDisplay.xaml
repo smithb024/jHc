@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:jHCVMUI.Views.Primary;assembly=jHCVMUI"
         Title="Stragglers/Ranelagh Harriers Juniors"
+        DataContext="{Binding Main, Source={StaticResource ViewModelLocator}}"
         Height="700"
         Width="1024">
 
