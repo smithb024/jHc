@@ -7,19 +7,16 @@
     using System.Windows.Forms;
     using System.Windows.Input;
     using CommonHandicapLib.Interfaces;
-    using CommonHandicapLib.Helpers.EventRawResults;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.IO.RawResults;
     using HandicapModel.AthletesModel;
     using HandicapModel.Interfaces.Admin.IO.TXT;
     using HandicapModel.Interfaces.SeasonModel.EventModel;
     using HandicapModel.SeasonModel.EventModel;
     using jHCVMUI.ViewModels.ViewModels.Types.Athletes;
-    using jHCVMUI.ViewModels.ViewModels.Types.Misc;
-
     using NynaeveLib.Commands;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     // Need to know all athletes who are registered for the current season.
     // Put together a list results:
@@ -477,7 +474,7 @@
         {
             SaveRawEventResults();
 
-            Messenger.Default.Send(
+            CommonMessenger.Default.Send(
                 new HandicapProgressMessage(
                     "Raw results saved"));
         }
@@ -499,7 +496,7 @@
             }
             catch (Exception ex)
             {
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapProgressMessage(
                         "Results inport failed"));
                 this.logger.WriteLog("Failed on import of results: " + ex.ToString());
@@ -512,13 +509,13 @@
 
             if (saveSuccess)
             {
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapProgressMessage(
                         "Results inport completed"));
             }
             else
             {
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapProgressMessage(
                         "Results inport failed"));
             }

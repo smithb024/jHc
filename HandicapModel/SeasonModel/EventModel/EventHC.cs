@@ -6,13 +6,13 @@
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using CommonLib.Types;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO.TXT;
     using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.Interfaces.SeasonModel.EventModel;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// A single model event.
@@ -86,8 +86,8 @@
             this.summary = new Summary();
             this.resultsTable = new EventResults();
 
-            Messenger.Default.Register<LoadNewSeasonMessage>(this, this.NewSeasonSelected);
-            Messenger.Default.Register<LoadNewEventMessage>(this, this.LoadNewEvent);
+            CommonMessenger.Default.Register<LoadNewSeasonMessage>(this, this.NewSeasonSelected);
+            CommonMessenger.Default.Register<LoadNewEventMessage>(this, this.LoadNewEvent);
         }
 
         /// <summary>
@@ -195,7 +195,7 @@
 
             if (success)
             {
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                  new HandicapProgressMessage(
                      $"New Event Loaded - {this.Name}"));
 

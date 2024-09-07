@@ -1,0 +1,120 @@
+15:14:32 07/09/2024|--------------------------------------
+15:14:32 07/09/2024|jHandicapLog Log File
+15:14:32 07/09/2024|--------------------------------------
+15:14:32 07/09/2024|Error reading Results Configuration data System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\cf\rescfg.xml'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   at System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   at System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   at System.Xml.XmlTextReaderImpl.FinishInitUriString()
+   at System.Xml.XmlTextReaderImpl..ctor(String uriStr, XmlReaderSettings settings, XmlParserContext context, XmlResolver uriResolver)
+   at System.Xml.XmlReaderSettings.CreateReader(String inputUri, XmlParserContext inputContext)
+   at System.Xml.XmlReader.Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
+   at System.Xml.Linq.XDocument.Load(String uri, LoadOptions options)
+   at CommonHandicapLib.XML.ResultsConfigReader.LoadResultsConfigData(String fileName) in C:\_MyDocs\Bert\Repos\JHc03\CommonHandicapLib\XML\ResultsConfigReader.cs:line 116
+15:14:32 07/09/2024|Can't read seasons data: System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\dt'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   at System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   at System.IO.Directory.GetDirectories(String path)
+   at HandicapModel.Admin.IO.TXT.SeasonIO.GetSeasons() in C:\_MyDocs\Bert\Repos\JHc03\HandicapModel\Admin\IO\TXT\SeasonIO.cs:line 59
+15:14:32 07/09/2024|Athlete Data file missing, one created - \.\cf\alst.xml
+15:14:32 07/09/2024|Error writing the Athletes Data file: XML Serialisation: Directory not found: System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\cf\alst.xml'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   at NynaeveLib.XML.XmlFileIo.WriteXml[T](T root, String filename)
+15:14:32 07/09/2024|Error reading the Athletes Data file: XML Serialisation: Directory not found: System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\cf\alst.xml'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share)
+   at NynaeveLib.XML.XmlFileIo.ReadXml[T](String filename)
+15:14:32 07/09/2024|Club data file missing, one created - \.\cf\clst.xml
+15:14:32 07/09/2024|Error saving club data System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\cf\clst.xml'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, Boolean useAsync)
+   at System.Xml.XmlWriterSettings.CreateWriter(String outputFileName)
+   at System.Xml.XmlWriter.Create(String outputFileName, XmlWriterSettings settings)
+   at System.Xml.Linq.XDocument.Save(String fileName, SaveOptions options)
+   at HandicapModel.Admin.IO.XML.ClubDataReader.SaveClubData(String fileName, Clubs clubList) in C:\_MyDocs\Bert\Repos\JHc03\HandicapModel\Admin\IO\XML\ClubDataReader.cs:line 65
+15:14:32 07/09/2024|Error reading club data System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\cf\clst.xml'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   at System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   at System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   at System.Xml.XmlTextReaderImpl.FinishInitUriString()
+   at System.Xml.XmlTextReaderImpl..ctor(String uriStr, XmlReaderSettings settings, XmlParserContext context, XmlResolver uriResolver)
+   at System.Xml.XmlReaderSettings.CreateReader(String inputUri, XmlParserContext inputContext)
+   at System.Xml.XmlReader.Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
+   at System.Xml.Linq.XDocument.Load(String uri, LoadOptions options)
+   at HandicapModel.Admin.IO.XML.ClubDataReader.LoadClubData(String fileName) in C:\_MyDocs\Bert\Repos\JHc03\HandicapModel\Admin\IO\XML\ClubDataReader.cs:line 94
+15:14:32 07/09/2024|Summary file missing, one created - \dt\gbl.xml
+15:14:32 07/09/2024|Error writing Athlete data System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\dt\gbl.xml'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, Boolean useAsync)
+   at System.Xml.XmlWriterSettings.CreateWriter(String outputFileName)
+   at System.Xml.XmlWriter.Create(String outputFileName, XmlWriterSettings settings)
+   at System.Xml.Linq.XDocument.Save(String fileName, SaveOptions options)
+   at HandicapModel.Admin.IO.XML.SummaryDataReader.SaveSummaryData(String fileName, ISummary summaryDetails) in C:\_MyDocs\Bert\Repos\JHc03\HandicapModel\Admin\IO\XML\SummaryDataReader.cs:line 122
+15:14:32 07/09/2024|Error reading summary data: System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\dt\gbl.xml'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   at System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   at System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   at System.Xml.XmlTextReaderImpl.FinishInitUriString()
+   at System.Xml.XmlTextReaderImpl..ctor(String uriStr, XmlReaderSettings settings, XmlParserContext context, XmlResolver uriResolver)
+   at System.Xml.XmlReaderSettings.CreateReader(String inputUri, XmlParserContext inputContext)
+   at System.Xml.XmlReader.Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
+   at System.Xml.Linq.XDocument.Load(String uri, LoadOptions options)
+   at HandicapModel.Admin.IO.XML.SummaryDataReader.ReadCompleteSummaryData(String fileName) in C:\_MyDocs\Bert\Repos\JHc03\HandicapModel\Admin\IO\XML\SummaryDataReader.cs:line 152
+15:14:32 07/09/2024|Error reading Normalisation Configuration data System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\cf\nmcfg.xml'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   at System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   at System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   at System.Xml.XmlTextReaderImpl.FinishInitUriString()
+   at System.Xml.XmlTextReaderImpl..ctor(String uriStr, XmlReaderSettings settings, XmlParserContext context, XmlResolver uriResolver)
+   at System.Xml.XmlReaderSettings.CreateReader(String inputUri, XmlParserContext inputContext)
+   at System.Xml.XmlReader.Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
+   at System.Xml.Linq.XDocument.Load(String uri, LoadOptions options)
+   at CommonHandicapLib.XML.NormalisationConfigReader.LoadNormalisationConfigData(String fileName) in C:\_MyDocs\Bert\Repos\JHc03\CommonHandicapLib\XML\NormalisationConfigReader.cs:line 99
+15:14:32 07/09/2024|Athlete Data file missing, one created - \.\cf\srcfg.xml
+15:14:32 07/09/2024|Error writing Series Configuration data System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\cf\srcfg.xml'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, Boolean useAsync)
+   at System.Xml.XmlWriterSettings.CreateWriter(String outputFileName)
+   at System.Xml.XmlWriter.Create(String outputFileName, XmlWriterSettings settings)
+   at System.Xml.Linq.XDocument.Save(String fileName, SaveOptions options)
+   at CommonHandicapLib.XML.SeriesConfigReader.SaveSeriesConfigData(String fileName, SeriesConfigType configData) in C:\_MyDocs\Bert\Repos\JHc03\CommonHandicapLib\XML\SeriesConfigReader.cs:line 67
+15:14:32 07/09/2024|Error reading Series Configuration data System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\cf\srcfg.xml'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   at System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   at System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   at System.Xml.XmlTextReaderImpl.FinishInitUriString()
+   at System.Xml.XmlTextReaderImpl..ctor(String uriStr, XmlReaderSettings settings, XmlParserContext context, XmlResolver uriResolver)
+   at System.Xml.XmlReaderSettings.CreateReader(String inputUri, XmlParserContext inputContext)
+   at System.Xml.XmlReader.Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
+   at System.Xml.Linq.XDocument.Load(String uri, LoadOptions options)
+   at CommonHandicapLib.XML.SeriesConfigReader.LoadSeriesConfigData(String fileName) in C:\_MyDocs\Bert\Repos\JHc03\CommonHandicapLib\XML\SeriesConfigReader.cs:line 96
+15:14:32 07/09/2024|Load event 
+15:14:32 07/09/2024|Event, loaded 
+15:14:32 07/09/2024|Error, failed to save current season: System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\dt\event.txt'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.StreamWriter.CreateFile(String path, Boolean append, Boolean checkHost)
+   at System.IO.StreamWriter..ctor(String path, Boolean append, Encoding encoding, Int32 bufferSize, Boolean checkHost)
+   at System.IO.StreamWriter..ctor(String path, Boolean append)
+   at HandicapModel.Admin.IO.TXT.EventIO.SaveCurrentEvent(String seasonName, String eventName) in C:\_MyDocs\Bert\Repos\JHc03\HandicapModel\Admin\IO\TXT\EventIO.cs:line 129

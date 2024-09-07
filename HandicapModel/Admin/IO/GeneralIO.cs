@@ -5,7 +5,7 @@
     using CommonHandicapLib.Messages;
     using HandicapModel.Admin.IO.TXT;
     using HandicapModel.Interfaces.Admin.IO;
-    using GalaSoft.MvvmLight.Messaging;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Provides any global io methods.
@@ -45,7 +45,7 @@
             this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
             this.configurationPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.configurationPath}{Path.DirectorySeparatorChar}";
 
-            Messenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
+            CommonMessenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
         }
 
         /// <summary>

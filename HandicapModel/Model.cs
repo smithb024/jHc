@@ -6,7 +6,6 @@
     using CommonHandicapLib.Messages;
     using CommonLib.Enumerations;
     using CommonLib.Types;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.Manage;
     using HandicapModel.AthletesModel;
     using HandicapModel.ClubsModel;
@@ -19,6 +18,7 @@
     using HandicapModel.Interfaces.SeasonModel.EventModel;
     using HandicapModel.SeasonModel;
     using HandicapModel.SeasonModel.EventModel;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Junior Handicap model.
@@ -135,7 +135,7 @@
                     $"Error setting up the model: {ex}");
             }
 
-            Messenger.Default.Register<LoadNewSeriesMessage>(this, this.LoadNewSeries);
+            CommonMessenger.Default.Register<LoadNewSeriesMessage>(this, this.LoadNewSeries);
         }
 
         /// <summary>

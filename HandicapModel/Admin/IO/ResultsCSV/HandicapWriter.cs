@@ -4,15 +4,14 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using CommonLib.Types;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.Manage;
     using HandicapModel.AthletesModel;
     using HandicapModel.Interfaces;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     public static class HandicapWriter
     {
@@ -32,7 +31,7 @@
         {
             bool success = true;
 
-            Messenger.Default.Send(
+            CommonMessenger.Default.Send(
                new HandicapProgressMessage(
                    "Printing handicap."));
 
@@ -96,7 +95,7 @@
             {
                 logger.WriteLog("Error, failed to print handicap: " + ex.ToString());
 
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                   new HandicapErrorMessage(
                       "Failed to print handicap"));
 

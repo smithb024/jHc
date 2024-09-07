@@ -7,13 +7,13 @@
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonLib.Types;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.IO;
     using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Static class used to write the Team Trophy table to a file.
@@ -39,7 +39,7 @@
             IEventData eventData,
             IJHcLogger logger)
         {
-            Messenger.Default.Send(
+            CommonMessenger.Default.Send(
                 new HandicapProgressMessage(
                     "Saving Team Trophy points table"));
 
@@ -145,7 +145,7 @@
             {
                 logger.WriteLog("Error, failed to print club points table: " + ex.ToString());
 
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         "Failed to print club points table"));
 
@@ -213,7 +213,7 @@
             {
                 logger.WriteLog("Error, failed to print club points table: " + ex.ToString());
 
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         "Failed to print club points table"));
 

@@ -2,12 +2,11 @@
 {
     using System;
     using System.IO;
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Interfaces;
     using HandicapModel.SeasonModel;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     public static class PointsTableWriter
     {
@@ -25,7 +24,7 @@
         {
             bool success = false;
 
-            Messenger.Default.Send(
+            CommonMessenger.Default.Send(
                 new HandicapProgressMessage(
                     "Saving results."));
 
@@ -71,7 +70,7 @@
             {
                 logger.WriteLog("Error, failed to print points table: " + ex.ToString());
 
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         "Failed to print points table"));
 

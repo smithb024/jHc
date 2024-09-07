@@ -1,11 +1,8 @@
 ﻿namespace jHandicap.ViewModel
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
+    /// <summary>
+    /// Interface for the main window view model.
+    /// </summary>
     public interface IMainViewModel
     {
     }

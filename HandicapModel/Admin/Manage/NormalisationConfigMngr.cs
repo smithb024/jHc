@@ -6,8 +6,8 @@
     using CommonHandicapLib.Interfaces.XML;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Interfaces.Admin.IO;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Normalisation configuration manager.
@@ -67,7 +67,7 @@
             catch (Exception ex)
             {
                 this.logger.WriteLog("Failed to save default normalisation config file: " + ex.ToString());
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         "Error creating default normalisation config file"));
             }
@@ -99,7 +99,7 @@
             catch (Exception ex)
             {
                 this.logger.WriteLog("Failed to save normalisation config file: " + ex.ToString());
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         "Error saving normalisation config file"));
             }
@@ -121,7 +121,7 @@
             catch (Exception ex)
             {
                 this.logger.WriteLog("Failed to save normalisation config file: " + ex.ToString());
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         "Error creating normalisation config file"));
             }

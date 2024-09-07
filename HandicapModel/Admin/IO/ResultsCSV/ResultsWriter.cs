@@ -4,9 +4,9 @@
     using System.IO;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Interfaces;
     using HandicapModel.SeasonModel.EventModel;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     public static class ResultsWriter
     {
@@ -24,7 +24,7 @@
         {
             bool success = false;
 
-            Messenger.Default.Send(
+            CommonMessenger.Default.Send(
                 new HandicapProgressMessage(
                     "Printing results."));
 
@@ -75,7 +75,7 @@
             {
                 logger.WriteLog("Error, failed to print results: " + ex.ToString());
 
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         "Failed to print results"));
 

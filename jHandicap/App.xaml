@@ -20,8 +20,6 @@
                 <ResourceDictionary Source="/jHCVMUI;component/Views/WPFResources/Styles/TableStyles.xaml"/>
                 <ResourceDictionary Source="/jHCVMUI;component/Views/WPFResources/Styles/SummaryStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-        
-            <viewModel:ViewModelLocator x:Key="ViewModelLocator"  />
         </ResourceDictionary>
   </Application.Resources>
 </Application>

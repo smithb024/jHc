@@ -4,12 +4,10 @@
     using System.Linq;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Helpers.EventRawResults;
-    using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using HandicapModel.Interfaces.Admin.IO.TXT;
-    using GalaSoft.MvvmLight.Messaging;
 
-    
+
     /// <summary>
     /// Factory class used to import the positions from a file created by the OPN200 barcode reader.
     /// </summary>

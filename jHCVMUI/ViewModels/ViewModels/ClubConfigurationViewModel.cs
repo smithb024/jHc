@@ -1,20 +1,13 @@
 ﻿namespace jHCVMUI.ViewModels.ViewModels
 {
-    using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.ComponentModel;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Windows.Input;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
-    using GalaSoft.MvvmLight.Messaging;
-    using HandicapModel;
     using HandicapModel.Interfaces;
     using jHCVMUI.ViewModels.Commands.Configuration;
     using jHCVMUI.ViewModels.ViewModels.Types;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// View model which supports club configuration.
@@ -143,7 +136,7 @@
             ResetSelectedIndex();
             LoadClubInformation();
 
-            Messenger.Default.Send(
+            CommonMessenger.Default.Send(
                 new HandicapProgressMessage(
                     "Clubs Saved"));
             saved = true;

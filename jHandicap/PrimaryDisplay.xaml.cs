@@ -1,44 +1,21 @@
 ﻿namespace jHandicap
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
-  using System.Text;
-  using System.Threading.Tasks;
-  using System.Windows;
-  using System.Windows.Controls;
-  using System.Windows.Data;
-  using System.Windows.Documents;
-  using System.Windows.Input;
-  using System.Windows.Media;
-  using System.Windows.Media.Imaging;
-  using System.Windows.Shapes;
-  using HandicapModel.Admin.Manage;
-  using jHCVMUI.ViewModels.ViewModels;
+    using System.Windows;
+    using CommunityToolkit.Mvvm.DependencyInjection;
+    using jHandicap.ViewModel;
 
-  /// <summary>
-  /// Interaction logic for PrimaryDisplay.xaml
-  /// </summary>
-  public partial class PrimaryDisplay : Window
-  {
-    public PrimaryDisplay()
+    /// <summary>
+    /// Interaction logic for PrimaryDisplay.xaml
+    /// </summary>
+    public partial class PrimaryDisplay : Window
     {
-      InitializeComponent();
-
-      //IResultsConfigMngr resultsConfigurationManager =
-      //  new ResultsConfigMngr();
-
-      //IBLMngr businessLayerManager =
-      //  new BLMngr(
-      //    resultsConfigurationManager);
-
-      //PrimaryDisplayViewModel displayContext =
-      //  new PrimaryDisplayViewModel(
-      //    businessLayerManager,
-      //    resultsConfigurationManager);
-
-      //this.DataContext =
-      //  displayContext;
+        /// <summary>
+        /// Initialises a new instance of the <see cref="PrimaryDisplay"/> class.
+        /// </summary>
+        public PrimaryDisplay()
+        {
+            this.InitializeComponent();
+            this.DataContext = Ioc.Default.GetService<IMainViewModel>();
+        }
     }
-  }
 }
