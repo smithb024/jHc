@@ -6,7 +6,7 @@
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using Interfaces.Admin.IO.TXT;
-    using GalaSoft.MvvmLight.Messaging;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Class responsible to managing all the season specific data.
@@ -39,7 +39,7 @@
             this.rootDirectory = RootIO.LoadRootFile();
             this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}";
 
-            Messenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
+            CommonMessenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
         }
 
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
@@ -66,7 +66,7 @@
             {
                 this.logger.WriteLog("Can't read seasons data: " + ex.ToString());
 
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         "Can't read Seasons"));
             }

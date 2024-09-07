@@ -2,26 +2,20 @@
 {
     using System.Collections.Generic;
     using System.IO;
-
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
-
     using CommonLib.Types;
-
     using Event;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.IO.ResultsCSV;
     using HandicapModel.Admin.IO.TXT;
-
     using HandicapModel.Common;
     using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO.TXT;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.Interfaces.SeasonModel;
-    using HandicapModel.SeasonModel;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Class which manages the business layer.
@@ -153,11 +147,11 @@
             this.IsValid =
                 this.generalIo.DataFolderExists && this.generalIo.ConfigurationFolderExists;
 
-            Messenger.Default.Register<LoadNewSeasonMessage>(this, this.NewCurrentSeason);
-            Messenger.Default.Register<LoadNewEventMessage>(this, this.NewCurrentEvent);
-            Messenger.Default.Register<LoadNewSeriesMessage>(this, this.LoadNewSeries);
-            Messenger.Default.Register<CreateNewSeriesMessage>(this, this.CreateNewSeries);
-            Messenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
+            CommonMessenger.Default.Register<LoadNewSeasonMessage>(this, this.NewCurrentSeason);
+            CommonMessenger.Default.Register<LoadNewEventMessage>(this, this.NewCurrentEvent);
+            CommonMessenger.Default.Register<LoadNewSeriesMessage>(this, this.LoadNewSeries);
+            CommonMessenger.Default.Register<CreateNewSeriesMessage>(this, this.CreateNewSeries);
+            CommonMessenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
         }
 
         /// <summary>
@@ -187,7 +181,7 @@
         {
             bool success = true;
             this.logger.WriteLog(string.Format("Create new season {0}", seasonName));
-            Messenger.Default.Send(
+            CommonMessenger.Default.Send(
                 new HandicapErrorMessage(
                     string.Empty));
 
@@ -222,7 +216,7 @@
             else
             {
                 this.logger.WriteLog("Failed to Create New Season");
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         "Season creation failed"));
             }
@@ -271,7 +265,7 @@
             else
             {
                 this.logger.WriteLog("Failed to Create New Event");
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         "Event creation failed"));
             }
@@ -345,7 +339,7 @@
             RootIO.SaveRootFile(rootDirectory);
 
             ReinitialiseRoot message = new ReinitialiseRoot();
-            Messenger.Default.Send(message);
+            CommonMessenger.Default.Send(message);
         }
 
         /// <summary>
@@ -354,7 +348,7 @@
         /// <param name="progress">string to add</param>
         public void SetProgressInformation(string progress)
         {
-            Messenger.Default.Send(
+            CommonMessenger.Default.Send(
                 new HandicapProgressMessage(
                     progress));
         }
@@ -439,7 +433,7 @@
             ValidLocationMessage locationMessage =
                 new ValidLocationMessage(this.IsValid);
 
-            Messenger.Default.Send(locationMessage);
+            CommonMessenger.Default.Send(locationMessage);
 
         }
 

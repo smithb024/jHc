@@ -1,18 +1,14 @@
 ﻿namespace HandicapModel.Admin.IO.XML
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Xml.Linq;
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.ClubsModel;
     using HandicapModel.Interfaces.Admin.IO.XML;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     internal class ClubDataReader : IClubDataReader
     {
@@ -87,7 +83,7 @@
             if (!File.Exists(fileName))
             {
                 string error = string.Format("Club data file missing, one created - {0}", fileName);
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         error));
                 this.logger.WriteLog(error);

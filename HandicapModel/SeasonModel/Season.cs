@@ -6,13 +6,13 @@
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using CommonLib.Types;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.Manage;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO.TXT;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.Interfaces.SeasonModel;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Model which holds all information pertaining to the current season.
@@ -100,7 +100,7 @@
             this.summary = new Summary();
             this.events = new List<string>();
 
-            Messenger.Default.Register<LoadNewSeasonMessage>(this, this.LoadNewSeason);
+            CommonMessenger.Default.Register<LoadNewSeasonMessage>(this, this.LoadNewSeason);
         }
 
         /// <summary>
@@ -259,7 +259,7 @@
 
             if (success)
             {
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                 new HandicapProgressMessage(
                     $"New Season Loaded - {this.Name}"));
 

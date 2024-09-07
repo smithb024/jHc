@@ -1,6 +1,5 @@
 ﻿namespace jHCVMUI.ViewModels.Primary
 {
-    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -9,16 +8,13 @@
 
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.Manage;
     using HandicapModel.Interfaces.Admin.IO;
     using jHCVMUI.ViewModels.ViewModels;
-    using jHCVMUI.ViewModels.Commands.Main;
-    using jHCVMUI.Views.Configuration;
     using jHCVMUI.Views.Windows;
-
     using NynaeveLib.Commands;
     using HandicapModel.Interfaces;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     public delegate void CallDelegate();
 
@@ -91,7 +87,7 @@
 
             this.LoadSeason();
 
-            Messenger.Default.Register<NewSeriesLoadedMessage>(this, this.NewSeriesLoaded);
+            CommonMessenger.Default.Register<NewSeriesLoadedMessage>(this, this.NewSeriesLoaded);
         }
 
         /// <summary>
@@ -276,7 +272,7 @@
                     new LoadNewSeasonMessage(
                         seasonName);
 
-                Messenger.Default.Send(message);
+                CommonMessenger.Default.Send(message);
             }
         }
 

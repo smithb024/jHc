@@ -2,15 +2,13 @@
 {
     using System;
     using System.IO;
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Interfaces.XML;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using CommonHandicapLib.XML;
-    using GalaSoft.MvvmLight.Messaging;
-    using HandicapModel.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Results configuration manager.
@@ -51,7 +49,7 @@
               this.configurationReader.LoadResultsConfigData(
                 this.generalIo.ResultsConfigurationFile);
 
-            Messenger.Default.Register<LoadNewSeriesMessage>(this, this.LoadNewSeries);
+            CommonMessenger.Default.Register<LoadNewSeriesMessage>(this, this.LoadNewSeries);
         }
 
         /// <summary>

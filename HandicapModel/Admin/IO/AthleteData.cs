@@ -12,7 +12,7 @@
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.SeasonModel;
-    using GalaSoft.MvvmLight.Messaging;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Athlete data
@@ -75,7 +75,7 @@
 
             string rootDirectory = RootIO.LoadRootFile();
             this.dataPath = $"{rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
-            Messenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
+            CommonMessenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
         }
 
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------

@@ -1,21 +1,17 @@
 ﻿namespace HandicapModel.Admin.IO.XML
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Xml.Linq;
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonLib.Converters;
     using CommonLib.Types;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.Common;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Summary data reader
@@ -145,7 +141,7 @@
             if (!File.Exists(fileName))
             {
                 string error = $"Summary file missing, one created - {fileName}";
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         error));
                 this.logger.WriteLog(error);

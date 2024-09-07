@@ -15,7 +15,7 @@
     using HandicapModel.Interfaces.SeasonModel.EventModel;
     using HandicapModel.SeasonModel;
     using HandicapModel.SeasonModel.EventModel;
-    using GalaSoft.MvvmLight.Messaging;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Manager class for calculating results.
@@ -82,7 +82,7 @@
         {
             this.logger.WriteLog("Calculate results");
             HandicapProgressMessage startMessage = new HandicapProgressMessage("Calculate Results");
-            Messenger.Default.Send(startMessage);
+            CommonMessenger.Default.Send(startMessage);
 
             if (this.resultsConfiguration == null)
             {
@@ -91,9 +91,9 @@
                 HandicapErrorMessage faultMessage =
                     new HandicapErrorMessage(
                         "Can't calculate results - invalid config");
-                Messenger.Default.Send(faultMessage);
+                CommonMessenger.Default.Send(faultMessage);
                 HandicapProgressMessage terminateMessage = new HandicapProgressMessage("Calculate Results - Terminated");
-                Messenger.Default.Send(terminateMessage);
+                CommonMessenger.Default.Send(terminateMessage);
 
                 return;
             }
@@ -105,9 +105,9 @@
                 HandicapErrorMessage faultMessage =
                     new HandicapErrorMessage(
                         "Can't calculate results - check config");
-                Messenger.Default.Send(faultMessage);
+                CommonMessenger.Default.Send(faultMessage);
                 HandicapProgressMessage terminateMessage = new HandicapProgressMessage("Calculate Results - Terminated");
-                Messenger.Default.Send(terminateMessage);
+                CommonMessenger.Default.Send(terminateMessage);
 
                 return;
             }
@@ -148,7 +148,7 @@
 
             this.logger.WriteLog("Calculate results completed.");
             HandicapProgressMessage finishedMessage = new HandicapProgressMessage("Calculate Results - Completed");
-            Messenger.Default.Send(finishedMessage);
+            CommonMessenger.Default.Send(finishedMessage);
 
         }
 

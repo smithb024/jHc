@@ -7,9 +7,9 @@
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using HandicapModel.Interfaces.Admin.IO.TXT;
-    using GalaSoft.MvvmLight.Messaging;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
-    
+
     /// <summary>
     /// Factory class used to import the positions from a file created by the OPN200 barcode reader.
     /// </summary>
@@ -65,7 +65,7 @@
                             new HandicapProgressMessage(
                                 errorString);
 
-                        Messenger.Default.Send(
+                        CommonMessenger.Default.Send(
                             new HandicapProgressMessage(
                                 errorString));
 
@@ -75,7 +75,7 @@
                 else
                 {
                     string errorString = "Please check results, result/barcode pair invalid";
-                    Messenger.Default.Send(
+                    CommonMessenger.Default.Send(
                         new HandicapProgressMessage(
                             errorString));
                     logger.WriteLog(errorString);

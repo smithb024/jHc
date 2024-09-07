@@ -1,14 +1,6 @@
 ﻿namespace HandicapModel.Admin.Manage
 {
-    using System;
-    using System.IO;
-
-    using CommonHandicapLib;
-    using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
-    using CommonHandicapLib.XML;
-    using GalaSoft.MvvmLight.Messaging;
-    using HandicapModel.Admin.IO;
 
     public interface ISeriesConfigMngr
     {/// <summary>

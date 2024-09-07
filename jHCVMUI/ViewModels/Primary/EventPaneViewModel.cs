@@ -10,15 +10,14 @@
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonLib.Types;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.Manage;
     using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO.TXT;
     using jHCVMUI.ViewModels.ViewModels;
     using jHCVMUI.Views.Windows.Results;
-
     using NynaeveLib.Commands;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     public class EventPaneViewModel : ViewModelBase
     {
@@ -123,7 +122,7 @@
 
             this.InitialiseEventPane();
 
-            Messenger.Default.Register<LoadNewSeasonMessage>(this, this.NewSeasonSelected);
+            CommonMessenger.Default.Register<LoadNewSeasonMessage>(this, this.NewSeasonSelected);
         }
 
         /// <summary>
@@ -323,7 +322,7 @@
                     new LoadNewEventMessage(
                         eventName);
 
-                Messenger.Default.Send(message);
+                CommonMessenger.Default.Send(message);
             }
         }
 

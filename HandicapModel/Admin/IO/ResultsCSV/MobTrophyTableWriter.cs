@@ -6,12 +6,12 @@
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonLib.Types;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.IO;
     using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.SeasonModel;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Factory class which is used to write the Mob Trophy information to a file.
@@ -35,7 +35,7 @@
             bool success = true;
             List<DateType> eventDates = new List<DateType>();
 
-            Messenger.Default.Send(
+            CommonMessenger.Default.Send(
                 new HandicapProgressMessage(
                     "Saving Mob Trophy points table"));
 
@@ -92,7 +92,7 @@
             {
                 logger.WriteLog("Error, failed to print mob trophy points table: " + ex.ToString());
 
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         "Failed to print mob trophy points table"));
 
@@ -149,7 +149,7 @@
             {
                 logger.WriteLog("Error, failed to print mob trophy points table: " + ex.ToString());
 
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         "Failed to print mob trophy points table"));
 

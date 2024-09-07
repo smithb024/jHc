@@ -6,7 +6,7 @@
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using HandicapModel.Interfaces.Admin.IO.TXT;
-    using GalaSoft.MvvmLight.Messaging;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Event specific IO.
@@ -38,7 +38,7 @@
             this.rootDirectory = RootIO.LoadRootFile();
             this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
 
-            Messenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
+            CommonMessenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
         }
 
         /// <summary>

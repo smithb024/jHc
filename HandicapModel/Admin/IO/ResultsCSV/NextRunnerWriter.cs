@@ -2,14 +2,12 @@
 {
     using System;
     using System.IO;
-
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.Manage;
     using HandicapModel.Interfaces;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     public static class NextRunnerWriter
     {
@@ -29,7 +27,7 @@
         {
             bool success = true;
 
-            Messenger.Default.Send(
+            CommonMessenger.Default.Send(
                new HandicapProgressMessage(
                    "Printing next runner."));
 
@@ -52,7 +50,7 @@
             {
                 logger.WriteLog("Error, failed to print next runner: " + ex.ToString());
 
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                   new HandicapErrorMessage(
                       "Failed to print next runner"));
 

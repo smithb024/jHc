@@ -12,8 +12,6 @@
     using CommonLib.Enumerations;
     using CommonLib.Helpers;
     using CommonLib.Types;
-    using GalaSoft.MvvmLight.Messaging;
-    using HandicapModel;
     using HandicapModel.Admin.Manage;
     using HandicapModel.AthletesModel;
     using HandicapModel.Interfaces;
@@ -21,6 +19,7 @@
     using jHCVMUI.ViewModels.Commands.Configuration;
     using jHCVMUI.ViewModels.ViewModels.Types;
     using NynaeveLib.Commands;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     public class AthleteConfigurationViewModel : ViewModelBase
     {
@@ -629,7 +628,7 @@
             ResetSelectedIndex();
             LoadAthleteInformation();
 
-            Messenger.Default.Send(
+            CommonMessenger.Default.Send(
                 new HandicapProgressMessage(
                     "Athletes Saved"));
         }

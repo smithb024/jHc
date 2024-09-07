@@ -2,11 +2,10 @@
 {
     using System;
     using System.IO;
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Interfaces;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     public class EventSummaryWriter
     {
@@ -24,7 +23,7 @@
         {
             bool success = true;
 
-            Messenger.Default.Send(
+            CommonMessenger.Default.Send(
                 new HandicapProgressMessage(
                     "Printing event summary")); 
 
@@ -75,7 +74,7 @@
             {
                 logger.WriteLog("Error, failed to print event summary: " + ex.ToString());
 
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         "Failed to print event summary"));
 

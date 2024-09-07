@@ -8,12 +8,12 @@
     using CommonHandicapLib.Types;
     using CommonHandicapLib.XML.AthleteData;
     using CommonLib.Types;
-    using GalaSoft.MvvmLight.Messaging;
     using HandicapModel.Admin.Manage;
     using HandicapModel.AthletesModel;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO.XML;
     using NynaeveLib.XML;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// IO Class for the Athlete data XML file.
@@ -269,7 +269,7 @@
             if (!File.Exists(fileName))
             {
                 string error = string.Format("Athlete Data file missing, one created - {0}", fileName);
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         error));
                 this.logger.WriteLog(error);

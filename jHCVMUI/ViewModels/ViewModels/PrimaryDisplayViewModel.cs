@@ -4,33 +4,26 @@
     using System.Windows.Forms;
     using System.Windows.Input;
 
-    using CommonHandicapLib;
-
-    using HandicapModel;
-    using HandicapModel.Admin.IO;
-    using HandicapModel.Admin.Manage;
-    using HandicapModel.Interfaces.Admin.IO;
-    using HandicapModel.Interfaces.Admin.IO.TXT;
-
-    using NynaeveLib.Commands;
-    using NynaeveLib.DialogService;
-
     using Common;
     using CommonHandicapLib.Interfaces;
-    using jHCVMUI.ViewModels.Config;
+    using CommonHandicapLib.Messages;
     using DataEntry;
+    using HandicapModel.Admin.Manage;
+    using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.Admin.IO;
+    using HandicapModel.Interfaces.Admin.IO.TXT;
+    using jHCVMUI.ViewModels.Config;
     using jHCVMUI.ViewModels.Labels;
     using jHCVMUI.ViewModels.Primary;
     using jHCVMUI.ViewModels.Primary.DataPanes;
-
     using jHCVMUI.Views.Configuration;
     using jHCVMUI.Views.DataEntry;
     using jHCVMUI.Views.Labels;
     using jHCVMUI.Views.Summary;
     using jHCVMUI.Views.Windows;
-    using HandicapModel.Interfaces;
-    using GalaSoft.MvvmLight.Messaging;
-    using CommonHandicapLib.Messages;
+    using NynaeveLib.Commands;
+    using NynaeveLib.DialogService;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Primary display view model.
@@ -137,9 +130,9 @@
             this.commonIo = commonIo;
             this.isValidLocation = this.businessLayerManager.IsValid;
 
-            Messenger.Default.Register<HandicapErrorMessage>(this, this.PopulateErrorInformation);
-            Messenger.Default.Register<HandicapProgressMessage>(this, this.PopulateProgressInformation);
-            Messenger.Default.Register<ValidLocationMessage>(this, this.InvalidLocationMessage);
+            CommonMessenger.Default.Register<HandicapErrorMessage>(this, this.PopulateErrorInformation);
+            CommonMessenger.Default.Register<HandicapProgressMessage>(this, this.PopulateProgressInformation);
+            CommonMessenger.Default.Register<ValidLocationMessage>(this, this.InvalidLocationMessage);
 
             this.InitialiseViewModels();
             this.InitialiseOpenAppCommands();
@@ -511,7 +504,7 @@
         public void CancelPrint()
         {
             HandicapProgressMessage progress = new HandicapProgressMessage("Print cancelled");
-            Messenger.Default.Send(progress);
+            CommonMessenger.Default.Send(progress);
         }
 
         public void OpenTimeEntryEditorDialog()
@@ -601,9 +594,9 @@
             NewSeriesLoadedMessage newLoadedMessage = new NewSeriesLoadedMessage();
             HandicapProgressMessage progress = new HandicapProgressMessage("New Series Loaded");
 
-            Messenger.Default.Send(loadNewMessage);
-            Messenger.Default.Send(newLoadedMessage);
-            Messenger.Default.Send(progress);
+            CommonMessenger.Default.Send(loadNewMessage);
+            CommonMessenger.Default.Send(newLoadedMessage);
+            CommonMessenger.Default.Send(progress);
         }
 
         /// <summary>
@@ -616,10 +609,10 @@
             LoadNewSeriesMessage loadNewMessage = new LoadNewSeriesMessage();
             NewSeriesLoadedMessage newLoadedMessage = new NewSeriesLoadedMessage();
 
-            Messenger.Default.Send(createNew);
-            Messenger.Default.Send(loadNewMessage);
-            Messenger.Default.Send(newLoadedMessage);
-            Messenger.Default.Send(progress);
+            CommonMessenger.Default.Send(createNew);
+            CommonMessenger.Default.Send(loadNewMessage);
+            CommonMessenger.Default.Send(newLoadedMessage);
+            CommonMessenger.Default.Send(progress);
         }
 
         /// <summary>
