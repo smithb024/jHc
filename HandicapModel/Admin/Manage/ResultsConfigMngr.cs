@@ -155,7 +155,7 @@
             catch (Exception ex)
             {
                 this.logger.WriteLog("Failed to save results config file: " + ex.ToString());
-                Messenger.Default.Send(
+                CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         "Error creating results config file"));
             }

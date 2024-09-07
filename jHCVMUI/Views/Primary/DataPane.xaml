@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:dataView="clr-namespace:jHCVMUI.Views.PrimaryData"
              xmlns:viewModel="clr-namespace:jHCVMUI.ViewModels.Primary.DataPanes"
-             DataContext="{Binding DataPaneViewModel, Source={StaticResource ViewModelLocator}}"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
