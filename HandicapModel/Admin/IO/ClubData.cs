@@ -3,11 +3,14 @@
     using System.Collections.Generic;
     using System.IO;
     using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Messages;
+    using HandicapModel.Admin.IO.TXT;
     using HandicapModel.Admin.IO.XML;
     using HandicapModel.ClubsModel;
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.SeasonModel;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Club data
@@ -35,6 +38,16 @@
         private IClubSeasonDataReader clubSeasonDataReader;
 
         /// <summary>
+        /// The root directory.
+        /// </summary>
+        private string rootDirectory;
+
+        /// <summary>
+        /// The path to all the season data.
+        /// </summary>
+        private string dataPath;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="ClubData"/> class.
         /// </summary>
         /// <param name="generalIo">general IO manager</param>
@@ -45,6 +58,11 @@
         {
             this.logger = logger;
             this.generalIo = generalIo;
+
+            this.rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
+
+            CommonMessenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
 
             this.clubDataReader =
                 new ClubDataReader(
@@ -87,7 +105,7 @@
             List<IClubSeasonDetails> seasons)
         {
             return this.clubSeasonDataReader.SaveClubSeasonData(
-              RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.clubDataFile,
+              this.dataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.clubDataFile,
               seasons);
         }
 
@@ -101,7 +119,17 @@
         public List<IClubSeasonDetails> LoadClubSeasonData(string seasonName)
         {
             return this.clubSeasonDataReader.LoadClubSeasonData(
-              RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.clubDataFile);
+              this.dataPath + seasonName + Path.DirectorySeparatorChar + IOPaths.clubDataFile);
+        }
+
+        /// <summary>
+        /// Reinitialise the data path value from the file.
+        /// </summary>
+        /// <param name="message">reinitialise message</param>
+        private void ReinitialiseRoot(ReinitialiseRoot message)
+        {
+            this.rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
         }
     }
 }

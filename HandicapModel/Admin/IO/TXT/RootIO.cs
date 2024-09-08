@@ -1,61 +1,62 @@
 ﻿namespace HandicapModel.Admin.IO.TXT
 {
-  using System;
-  using System.Collections.Generic;
-  using System.IO;
-  using CommonHandicapLib;
-
-  public static class RootIO
-  {
-    public static string RootDataFile => "." + Path.DirectorySeparatorChar + IOPaths.rootDataFile;
+    using System;
+    using System.IO;
 
     /// <summary>
-    /// Save the parameter in the root folder.
+    /// IO class to get or save the root location.
     /// </summary>
-    /// <param name="rootDirectory">root directory for all the mode information</param>
-    /// <returns>successful flag</returns>
-    public static bool SaveRootFile(string rootDirectory)
+    public static class RootIO
     {
-      try
-      {
-        using (
-          StreamWriter writer =
-          new StreamWriter(
-           RootDataFile,
-           false))
-        {
-          writer.Write(rootDirectory);
-          return true;
-        }
-      }
-      catch (Exception ex)
-      {
-        return false;
-      }
-    }
+        public static string RootDataFile => "." + Path.DirectorySeparatorChar + IOPaths.rootDataFile;
 
-    /// <summary>
-    /// Load the location of the root directory.
-    /// </summary>
-    /// <returns>root directory</returns>
-    public static string LoadRootFile()
-    {
-      try
-      {
-        if (File.Exists(RootDataFile))
+        /// <summary>
+        /// Save the parameter in the root folder.
+        /// </summary>
+        /// <param name="rootDirectory">root directory for all the mode information</param>
+        /// <returns>successful flag</returns>
+        public static bool SaveRootFile(string rootDirectory)
         {
-          using (StreamReader reader = new StreamReader(RootDataFile))
-          {
-            return reader.ReadLine();
-          }
+            try
+            {
+                using (
+                  StreamWriter writer =
+                  new StreamWriter(
+                   RootDataFile,
+                   false))
+                {
+                    writer.Write(rootDirectory);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
-      }
-      catch (Exception ex)
-      {
-        return string.Empty;
-      }
 
-      return string.Empty;
+        /// <summary>
+        /// Load the location of the root directory.
+        /// </summary>
+        /// <returns>root directory</returns>
+        public static string LoadRootFile()
+        {
+            try
+            {
+                if (File.Exists(RootDataFile))
+                {
+                    using (StreamReader reader = new StreamReader(RootDataFile))
+                    {
+                        return reader.ReadLine();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return string.Empty;
+            }
+
+            return string.Empty;
+        }
     }
-  }
 }

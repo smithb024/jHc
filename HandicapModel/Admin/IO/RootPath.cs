@@ -21,18 +21,5 @@
           RootIO.LoadRootFile() +
           Path.DirectorySeparatorChar +
           IOPaths.configurationPath;
-
-        /// <summary>
-        /// Data path;
-        /// </summary>
-        /// <remarks>
-        /// Remember to listen for the ReinitialiseRoot message.
-        /// </remarks>
-        [Obsolete]
-        public static string DataPath =>
-          RootIO.LoadRootFile() +
-          Path.DirectorySeparatorChar +
-          IOPaths.dataPath +
-          Path.DirectorySeparatorChar;
     }
 }

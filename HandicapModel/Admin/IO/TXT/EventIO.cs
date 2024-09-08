@@ -35,6 +35,7 @@
         public EventIO(IJHcLogger logger)
         {
             this.logger = logger;
+
             this.rootDirectory = RootIO.LoadRootFile();
             this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
 
