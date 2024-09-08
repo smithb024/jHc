@@ -2,10 +2,13 @@
 {
     using System.IO;
     using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
+    using HandicapModel.Admin.IO.TXT;
     using HandicapModel.Admin.IO.XML;
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO.XML;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Event data
@@ -23,6 +26,16 @@
         private IEventDataReader eventDataReader;
 
         /// <summary>
+        /// The root directory.
+        /// </summary>
+        private string rootDirectory;
+
+        /// <summary>
+        /// The path to all the season data.
+        /// </summary>
+        private string dataPath;
+
+        /// <summary>
         /// Initialises a new instance <see cref="EventData"/> class.
         /// </summary>
         /// <param name="logger">application logger</param>
@@ -33,6 +46,11 @@
             this.eventDataReader =
                 new EventDataReader(
                     this.logger);
+
+            this.rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
+
+            CommonMessenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
         }
 
         /// <summary>
@@ -48,7 +66,7 @@
             EventMiscData eventData)
         {
             return this.eventDataReader.SaveEventData(
-              RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + IOPaths.eventMiscFile,
+              this.dataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + IOPaths.eventMiscFile,
               eventData);
         }
 
@@ -63,7 +81,17 @@
             string eventName)
         {
             return this.eventDataReader.LoadEventData(
-              RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + IOPaths.eventMiscFile);
+              this.dataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + IOPaths.eventMiscFile);
+        }
+
+        /// <summary>
+        /// Reinitialise the data path value from the file.
+        /// </summary>
+        /// <param name="message">reinitialise message</param>
+        private void ReinitialiseRoot(ReinitialiseRoot message)
+        {
+            this.rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
         }
     }
 }

@@ -5,10 +5,12 @@
     using System.IO;
     using System.Linq;
     using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using HandicapModel.Interfaces.Admin.IO.TXT;
     using HandicapModel.Interfaces.SeasonModel.EventModel;
     using HandicapModel.SeasonModel.EventModel;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Raw event specific IO.
@@ -26,6 +28,16 @@
         private readonly IJHcLogger logger;
 
         /// <summary>
+        /// The root directory.
+        /// </summary>
+        private string rootDirectory;
+
+        /// <summary>
+        /// The path to all the season data.
+        /// </summary>
+        private string dataPath;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="RawEventIO"/> class.
         /// </summary>
         /// <param name="logger">application logger</param>
@@ -33,6 +45,11 @@
             IJHcLogger logger)
         {
             this.logger = logger;
+
+            this.rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
+
+            CommonMessenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
         }
 
         /// <summary>
@@ -51,20 +68,20 @@
 
             try
             {
-                using (StreamWriter writer = new StreamWriter(RootPath.DataPath +
-                                                              seasonName +
-                                                              Path.DirectorySeparatorChar +
-                                                              eventName +
-                                                              Path.DirectorySeparatorChar +
-                                                              IOPaths.rawEventDataFile, false))
+                string filePath = this.dataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + IOPaths.rawEventDataFile;
+                using (StreamWriter writer = 
+                    new StreamWriter(
+                        filePath, 
+                        false))
                 {
                     foreach (Raw raw in rawData)
                     {
-                        writer.WriteLine(raw.RaceNumber.ToString() +
-                                         dataSplitter +
-                                         raw.TotalTime.ToString() +
-                                         dataSplitter +
-                                         raw.Order.ToString());
+                        writer.WriteLine(
+                            raw.RaceNumber.ToString() +
+                            dataSplitter +
+                            raw.TotalTime.ToString() +
+                            dataSplitter +
+                            raw.Order.ToString());
                     }
                 }
             }
@@ -92,9 +109,12 @@
 
             try
             {
-                if (File.Exists(RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + IOPaths.rawEventDataFile))
+                string filePath = this.dataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + IOPaths.rawEventDataFile;
+                if (File.Exists(filePath))
                 {
-                    using (StreamReader reader = new StreamReader(RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + IOPaths.rawEventDataFile))
+                    using (StreamReader reader = 
+                        new StreamReader(
+                            this.dataPath))
                     {
                         while ((line = reader.ReadLine()) != null)
                         {
@@ -125,20 +145,18 @@
         private IRaw ConvertLine(string line)
         {
             string[] splitLine = line.Split(dataSplitter);
-            RaceTimeType time = null;
             int order = 0;
-            string number = string.Empty;
 
             if (splitLine.Count() == 3)
             {
-                time = new RaceTimeType(splitLine[1]);
+                RaceTimeType time = new RaceTimeType(splitLine[1]);
 
                 if (time.Minutes == 0 && time.Seconds == 0)
                 {
                     return null;
                 }
 
-                number = splitLine[0];
+                string number = splitLine[0];
 
                 if (!int.TryParse(splitLine[2], out order))
                 {
@@ -151,6 +169,16 @@
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Reinitialise the data path value from the file.
+        /// </summary>
+        /// <param name="message">reinitialise message</param>
+        private void ReinitialiseRoot(ReinitialiseRoot message)
+        {
+            this.rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
         }
     }
 }

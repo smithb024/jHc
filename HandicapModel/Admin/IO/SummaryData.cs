@@ -1,17 +1,14 @@
 ﻿namespace HandicapModel.Admin.IO
 {
-    using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Messages;
+    using HandicapModel.Admin.IO.TXT;
     using HandicapModel.Admin.IO.XML;
-    using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.Common;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Summary data
@@ -26,7 +23,17 @@
         /// <summary>
         /// The summary data reader
         /// </summary>
-        ISummaryDataReader summaryDataReader;
+        private ISummaryDataReader summaryDataReader;
+
+        /// <summary>
+        /// The root directory.
+        /// </summary>
+        private string rootDirectory;
+
+        /// <summary>
+        /// The path to all the season data.
+        /// </summary>
+        private string dataPath;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="SummaryData"/> class.
@@ -38,6 +45,11 @@
             this.summaryDataReader =
                 new SummaryDataReader(
                     this.logger);
+
+            this.rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
+
+            CommonMessenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
         }
 
         /// <summary>
@@ -48,7 +60,7 @@
         public bool SaveSummaryData(ISummary summaryDetails)
         {
             return this.summaryDataReader.SaveSummaryData(
-              RootPath.DataPath + IOPaths.globalSummaryFile,
+              this.dataPath + IOPaths.globalSummaryFile,
               summaryDetails);
         }
 
@@ -63,7 +75,7 @@
             ISummary summaryDetails)
         {
             return this.summaryDataReader.SaveSummaryData(
-              RootPath.DataPath + Path.DirectorySeparatorChar + seasonName + Path.DirectorySeparatorChar + seasonName + IOPaths.xmlExtension,
+              this.dataPath + Path.DirectorySeparatorChar + seasonName + Path.DirectorySeparatorChar + seasonName + IOPaths.xmlExtension,
               summaryDetails);
         }
 
@@ -80,7 +92,7 @@
             ISummary summaryDetails)
         {
             return this.summaryDataReader.SaveSummaryData(
-              RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + eventName + IOPaths.xmlExtension,
+              this.dataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + eventName + IOPaths.xmlExtension,
               summaryDetails);
         }
 
@@ -91,7 +103,7 @@
         /// <returns>decoded summary data</returns>
         public ISummary LoadSummaryData()
         {
-            string path = $"{RootPath.DataPath}{IOPaths.globalSummaryFile}";
+            string path = $"{this.dataPath}{IOPaths.globalSummaryFile}";
             ISummary summary =
                 this.summaryDataReader.ReadCompleteSummaryData(
                     path);
@@ -106,7 +118,7 @@
         public ISummary LoadSummaryData(string seasonName)
         {
             return this.summaryDataReader.ReadCompleteSummaryData(
-              RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + seasonName + IOPaths.xmlExtension);
+              this.dataPath + seasonName + Path.DirectorySeparatorChar + seasonName + IOPaths.xmlExtension);
         }
 
         /// <summary>
@@ -119,7 +131,17 @@
             string eventName)
         {
             return this.summaryDataReader.ReadCompleteSummaryData(
-              RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + eventName + IOPaths.xmlExtension);
+              this.dataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + eventName + IOPaths.xmlExtension);
+        }
+
+        /// <summary>
+        /// Reinitialise the data path value from the file.
+        /// </summary>
+        /// <param name="message">reinitialise message</param>
+        private void ReinitialiseRoot(ReinitialiseRoot message)
+        {
+            this.rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
         }
     }
 }

@@ -105,7 +105,6 @@
     <Compile Include="Admin\IO\ResultsCSV\NextRunnerWriter.cs" />
     <Compile Include="Admin\IO\ResultsCSV\PointsTableWriter.cs" />
     <Compile Include="Admin\IO\ResultsCSV\ResultsWriter.cs" />
-    <Compile Include="Admin\IO\RootPath.cs" />
     <Compile Include="Admin\IO\SummaryData.cs" />
     <Compile Include="Admin\IO\TXT\CommonIO.cs" />
     <Compile Include="Admin\Manage\INormalisationConfigMngr.cs" />

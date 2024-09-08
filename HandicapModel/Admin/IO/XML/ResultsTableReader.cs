@@ -2,16 +2,20 @@
 {
     using System.Collections.Generic;
     using System.IO;
+    using System.Runtime.CompilerServices;
     using System.Xml.Linq;
     using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
     using CommonHandicapLib.XML.ResultsTable;
     using CommonLib.Types;
+    using HandicapModel.Admin.IO.TXT;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.SeasonModel.EventModel;
     using HandicapModel.SeasonModel.EventModel;
     using NynaeveLib.XML;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// The results table reader.
@@ -24,12 +28,27 @@
         private readonly IJHcLogger logger;
 
         /// <summary>
+        /// The root directory.
+        /// </summary>
+        private string rootDirectory;
+
+        /// <summary>
+        /// The path to all the season data.
+        /// </summary>
+        private string dataPath;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="ResultsTableReader"/> class.
         /// </summary>
         /// <param name="logger"></param>
         public ResultsTableReader(IJHcLogger logger)
         {
             this.logger = logger;
+
+            this.rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
+
+            CommonMessenger.Default.Register<ReinitialiseRoot>(this, this.ReinitialiseRoot);
         }
 
         /// <summary>
@@ -77,7 +96,7 @@
                 }
 
                 string fileName =
-                    ResultsTableReader.GetPath(
+                    this.GetPath(
                         seasonName,
                         eventName);
                 XmlFileIo.WriteXml<ResultsTableRoot>(
@@ -109,7 +128,7 @@
             IEventResults resultsTable = new EventResults();
             ResultsTableRoot deserialisedResultTable;
             string resultsPath =
-                ResultsTableReader.GetPath(
+                this.GetPath(
                     seasonName,
                     eventName);
 
@@ -171,11 +190,21 @@
         /// <param name="seasonName">season name</param>
         /// <param name="eventName">event name</param>
         /// <returns>XML path</returns>
-        private static string GetPath(
+        private string GetPath(
             string seasonName,
             string eventName)
         {
-            return RootPath.DataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + IOPaths.athleteResultsTable;
+            return this.dataPath + seasonName + Path.DirectorySeparatorChar + eventName + Path.DirectorySeparatorChar + IOPaths.athleteResultsTable;
+        }
+
+        /// <summary>
+        /// Reinitialise the data path value from the file.
+        /// </summary>
+        /// <param name="message">reinitialise message</param>
+        private void ReinitialiseRoot(ReinitialiseRoot message)
+        {
+            this.rootDirectory = RootIO.LoadRootFile();
+            this.dataPath = $"{this.rootDirectory}{Path.DirectorySeparatorChar}{IOPaths.dataPath}{Path.DirectorySeparatorChar}";
         }
     }
 }
