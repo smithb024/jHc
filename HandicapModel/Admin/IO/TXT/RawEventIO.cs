@@ -114,7 +114,7 @@
                 {
                     using (StreamReader reader = 
                         new StreamReader(
-                            this.dataPath))
+                            filePath))
                     {
                         while ((line = reader.ReadLine()) != null)
                         {
