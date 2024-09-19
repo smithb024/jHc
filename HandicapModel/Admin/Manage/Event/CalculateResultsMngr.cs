@@ -284,6 +284,11 @@
                         singleResult.FirstTimer);
 
                 }
+                else if (raw.TotalTime.DNF)
+                {
+                    pointsEarned.FinishingPoints = this.resultsConfiguration.ResultsConfigurationDetails.FinishingPoints;
+                    singleResult.Points = pointsEarned;
+                }
 
                 this.Model.Athletes.AddNewTime(key, new Appearances(singleResult.RunningTime, eventDate));
                 this.Model.CurrentSeason.AddNewTime(key, new Appearances(singleResult.RunningTime, eventDate));
