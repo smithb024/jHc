@@ -226,7 +226,7 @@
         {
             List<IRaw> results =
                 this.rawEventIo.LoadRawEventData(
-                this.seasonName, 
+                this.seasonName,
                 this.Name);
 
             return results;
