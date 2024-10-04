@@ -5,78 +5,78 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-  <UserControl.Resources>
-    <BooleanToVisibilityConverter x:Key="BoolToVis" />
-  </UserControl.Resources>
-  <Grid Background="{StaticResource HeaderBackground}">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="40"/>
-      <RowDefinition Height="*"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
-    <DockPanel Grid.Row="0" LastChildFill="True">
-      <Button Name="ConfigureNewEventButton"
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
+    <Grid Background="{StaticResource HeaderBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0" LastChildFill="True">
+            <Button Name="ConfigureNewEventButton"
                 Content="New"
                 Height="25"
                 Width="100"
                 Command="{Binding NewEventCommand}"
                 Style="{StaticResource HeaderButtonStyle}"
-              TabIndex="8"
+                TabIndex="8"
                 DockPanel.Dock="Right"
                 Margin="5"/>
-      <ComboBox Name="EventsComboBox"
+            <ComboBox Name="EventsComboBox"
                   ItemsSource="{Binding Path=Events}"
                   SelectedIndex="{Binding SelectedEventIndex}"
                   Style="{StaticResource HeaderComboBoxStyle}"
-                TabIndex="7"
+                  TabIndex="7"
                   Height="25"/>
-    </DockPanel>
-    <DockPanel Grid.Row="1" LastChildFill="True" Visibility="{Binding Path=NewEventAdditionEnabled, Converter={StaticResource BoolToVis}}">
-      <Button Name="CancelNewEventButton"
+        </DockPanel>
+        <DockPanel Grid.Row="1" LastChildFill="True" Visibility="{Binding Path=NewEventAdditionEnabled, Converter={StaticResource BoolToVis}}">
+            <Button Name="CancelNewEventButton"
                 Content="Cancel"
                 DockPanel.Dock="Right"
                 Command="{Binding CancelEventCommand}"
                 Style="{StaticResource HeaderButtonStyle}"
                 Height="25"
                 Width="100"
-              TabIndex="6"
+                TabIndex="6"
                 Margin="5"/>
-      <Button Name="AddNewEventButton"
+            <Button Name="AddNewEventButton"
                 Content="Add"
                 DockPanel.Dock="Right"
                 Command="{Binding AddEventCommand}"
                 Style="{StaticResource HeaderButtonStyle}"
                 Height="25"
                 Width="100"
-              TabIndex="5"
+                TabIndex="5"
                 Margin="5, 0, 0, 0"/>
-      <TextBox Name="NewEventYearTextBox"
+            <TextBox Name="NewEventYearTextBox"
                  DockPanel.Dock="Right"
                  Style="{StaticResource HeaderTextBoxStyle}"
                  Height="25"
-               TabIndex="3"
+                 TabIndex="3"
                  Text="{Binding NewEventYear, UpdateSourceTrigger=PropertyChanged}"/>
-      <TextBox Name="NewEventMonthTextBox"
+            <TextBox Name="NewEventMonthTextBox"
                  DockPanel.Dock="Right"
                  Style="{StaticResource HeaderTextBoxStyle}"
                  Height="25"
-               TabIndex="2"
+                 TabIndex="2"
                  Text="{Binding NewEventMonth, UpdateSourceTrigger=PropertyChanged}"/>
-      <TextBox Name="NewEventDayTextBox"
+            <TextBox Name="NewEventDayTextBox"
                  DockPanel.Dock="Right"
                  Style="{StaticResource HeaderTextBoxStyle}"
                  Height="25"
-               TabIndex="1"
+                 TabIndex="1"
                  Text="{Binding NewEventDay, UpdateSourceTrigger=PropertyChanged}"/>
-      <TextBox Name="NewEventNameTextBox"
+            <TextBox Name="NewEventNameTextBox"
                  Style="{StaticResource HeaderTextBoxStyle}"
                  Height="25"
-               TabIndex="0"
+                 TabIndex="0"
                  Text="{Binding NewEvent, UpdateSourceTrigger=PropertyChanged}"
                  Margin="0, 0, 5, 0"/>
-    </DockPanel>
-    <DockPanel Grid.Row="2" LastChildFill="False">
-      <Button Name="Run"
+        </DockPanel>
+        <DockPanel Grid.Row="2" LastChildFill="False">
+            <Button Name="Run"
               Content="{Binding RunResultsButtonName}"
               Command="{Binding CalculateResultsCommand}"
               DockPanel.Dock="Right"
@@ -84,7 +84,7 @@
               Height="25"
               Width="100"
               Margin="5"/>
-      <Button Name="EnterResults"
+            <Button Name="EnterResults"
               Content="Enter Results..."
               Command="{Binding OpenEventRawResultsDlgCommand}"
               DockPanel.Dock="Right"
@@ -92,7 +92,7 @@
               Height="25"
               Width="100"
               Margin="5, 0, 0, 0"/>
-      <Button Name="ImportResults"
+            <Button Name="ImportResults"
               Content="Import Results..."
               Command="{Binding OpenEventImportResultsDlgCommand}"
               DockPanel.Dock="Right"
@@ -100,6 +100,6 @@
               Height="25"
               Width="100"
               Margin="5, 0, 0, 0"/>
-    </DockPanel>
-  </Grid>
+        </DockPanel>
+    </Grid>
 </UserControl>
