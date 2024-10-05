@@ -1,11 +1,12 @@
 ﻿namespace jHCVMUI.ViewModels.Primary
 {
     using System.Windows.Input;
-
+    using CommonHandicapLib.Messages;
     using DataPanes;
     using HandicapModel.Interfaces;
     using jHCVMUI.ViewModels.ViewModels;
     using NynaeveLib.Commands;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// View model for the Data Pane view. This view controls the part of the main window which 
@@ -67,13 +68,13 @@
             this.teamTrophyPointsTableViewModel =
                 new TeamTrophyPointsTableViewModel(
                     this.model.CurrentSeason);
-            this.pointsTableViewModel = 
+            this.pointsTableViewModel =
                 new PointsTableViewModel(
                     this.model);
-            this.eventSummaryViewModel = 
+            this.eventSummaryViewModel =
                 new SummaryEventViewModel(
                     this.model.CurrentEvent);
-            this.seasonSummaryViewModel = 
+            this.seasonSummaryViewModel =
                 new SummaryTotalViewModel(
                     this.model.CurrentSeason);
             this.resultsTableViewModel =
@@ -88,6 +89,8 @@
             this.ShowPointsTableCommand = new SimpleCommand(this.SelectPointsTable);
             this.ShowResultsCommand = new SimpleCommand(this.SelectResultsTable);
             this.ShowSeasonSummaryCommand = new SimpleCommand(this.SelectSeasonSummaryData);
+
+            CommonMessenger.Default.Register<LoadNewEventMessage>(this, this.LoadNewEvent);
         }
 
         /// <summary>
@@ -222,6 +225,16 @@
         private void SelectResultsTable()
         {
             this.DataViewContents = this.resultsTableViewModel;
+        }
+
+        /// <summary>
+        /// Loads a  new event into the model.
+        /// </summary>
+        /// <param name="message">load new event message</param>
+        private void LoadNewEvent(
+            LoadNewEventMessage message)
+        {
+            this.RaisePropertyChangedEvent(nameof(this.EventDate));
         }
     }
 }
