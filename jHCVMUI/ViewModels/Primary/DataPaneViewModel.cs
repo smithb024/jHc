@@ -1,12 +1,12 @@
 ﻿namespace jHCVMUI.ViewModels.Primary
 {
     using System.Windows.Input;
-
+    using CommonHandicapLib.Messages;
     using DataPanes;
-    using HandicapModel;
     using HandicapModel.Interfaces;
     using jHCVMUI.ViewModels.ViewModels;
     using NynaeveLib.Commands;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// View model for the Data Pane view. This view controls the part of the main window which 
@@ -17,42 +17,42 @@
         /// <summary>
         /// Junior handicap model.
         /// </summary>
-        private IModel model;
+        private readonly IModel model;
+
+        /// <summary>
+        /// View model which supports the Mob Trophy points table.
+        /// </summary>
+        private readonly MobTrophyPointsTableViewModel mobTrophyPointsTableViewModel;
+
+        /// <summary>
+        /// View model which supports the team trophy points table.
+        /// </summary>
+        private readonly TeamTrophyPointsTableViewModel teamTrophyPointsTableViewModel;
+
+        /// <summary>
+        /// View model which supports the athlete points table.
+        /// </summary>
+        private readonly PointsTableViewModel pointsTableViewModel;
+
+        /// <summary>
+        /// View model which supports the summary table for the current event.
+        /// </summary>
+        private readonly SummaryEventViewModel eventSummaryViewModel;
+
+        /// <summary>
+        /// View model which supports the summary table for the current season.
+        /// </summary>
+        private readonly SummaryTotalViewModel seasonSummaryViewModel;
+
+        /// <summary>
+        /// View model which supports the results table for the current event.
+        /// </summary>
+        private readonly ResultsTableViewModel resultsTableViewModel;
 
         /// <summary>
         /// Object used to hold the main contents of the data view pane.
         /// </summary>
         private object dataViewContents;
-
-        /// <summary>
-        /// View model which supports the Mob Trophy points table.
-        /// </summary>
-        private MobTrophyPointsTableViewModel mobTrophyPointsTableViewModel;
-
-        /// <summary>
-        /// View model which supports the team trophy points table.
-        /// </summary>
-        private TeamTrophyPointsTableViewModel teamTrophyPointsTableViewModel;
-
-        /// <summary>
-        /// View model which supports the athlete points table.
-        /// </summary>
-        private PointsTableViewModel pointsTableViewModel;
-
-        /// <summary>
-        /// View model which supports the summary table for the current event.
-        /// </summary>
-        private SummaryEventViewModel eventSummaryViewModel;
-
-        /// <summary>
-        /// View model which supports the summary table for the current season.
-        /// </summary>
-        private SummaryTotalViewModel seasonSummaryViewModel;
-
-        /// <summary>
-        /// View model which supports the results table for the current event.
-        /// </summary>
-        private ResultsTableViewModel resultsTableViewModel;
 
         /// <summary>
         /// View model which supports the data pane on the main window.
@@ -68,13 +68,13 @@
             this.teamTrophyPointsTableViewModel =
                 new TeamTrophyPointsTableViewModel(
                     this.model.CurrentSeason);
-            this.pointsTableViewModel = 
+            this.pointsTableViewModel =
                 new PointsTableViewModel(
                     this.model);
-            this.eventSummaryViewModel = 
+            this.eventSummaryViewModel =
                 new SummaryEventViewModel(
                     this.model.CurrentEvent);
-            this.seasonSummaryViewModel = 
+            this.seasonSummaryViewModel =
                 new SummaryTotalViewModel(
                     this.model.CurrentSeason);
             this.resultsTableViewModel =
@@ -89,6 +89,8 @@
             this.ShowPointsTableCommand = new SimpleCommand(this.SelectPointsTable);
             this.ShowResultsCommand = new SimpleCommand(this.SelectResultsTable);
             this.ShowSeasonSummaryCommand = new SimpleCommand(this.SelectSeasonSummaryData);
+
+            CommonMessenger.Default.Register<LoadNewEventMessage>(this, this.LoadNewEvent);
         }
 
         /// <summary>
@@ -126,10 +128,7 @@
         /// </summary>
         public object DataViewContents
         {
-            get
-            {
-                return this.dataViewContents;
-            }
+            get => this.dataViewContents;
 
             set
             {
@@ -226,6 +225,16 @@
         private void SelectResultsTable()
         {
             this.DataViewContents = this.resultsTableViewModel;
+        }
+
+        /// <summary>
+        /// Loads a  new event into the model.
+        /// </summary>
+        /// <param name="message">load new event message</param>
+        private void LoadNewEvent(
+            LoadNewEventMessage message)
+        {
+            this.RaisePropertyChangedEvent(nameof(this.EventDate));
         }
     }
 }

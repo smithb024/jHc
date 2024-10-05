@@ -41,28 +41,63 @@
         /// </summary>
         private readonly IJHcLogger logger;
 
-        private EventRawResultsDlg m_eventRawResultsDialog = null;
-        private ImportEventRawResultDialog eventImportResultsDialog = null;
-
-        private EventRawResultsViewModel m_eventRawResultsViewModel = null;
-
-        private ObservableCollection<string> m_events = new ObservableCollection<string>();
-        private int m_currentEventIndex = 0;
-        private bool m_newEventAdditionEnabled = false;
-        private string m_newEvent = string.Empty;
-        private DateType m_newEventDate = new DateType(DateTime.Now.Day, DateTime.Now.Month, DateTime.Now.Year);
-
-        private string runResultsButtonName = string.Empty;
-
         /// <summary>
         /// Junior handicap model.
         /// </summary>
-        private IModel model;
+        private readonly IModel model;
 
         /// <summary>
         /// Business layer manager.
         /// </summary>
-        private IBLMngr businessLayerManager;
+        private readonly IBLMngr businessLayerManager;
+
+        /// <summary>
+        /// The instance of the raw results dialog.
+        /// </summary>
+        private EventRawResultsDlg eventRawResultsDialog = null;
+
+        /// <summary>
+        /// The instance of the import raw results dialog.
+        /// </summary>
+        private ImportEventRawResultDialog eventImportResultsDialog = null;
+
+        /// <summary>
+        /// The instance of the raw results view model.
+        /// </summary>
+        private EventRawResultsViewModel eventRawResultsViewModel = null;
+
+        /// <summary>
+        /// The collection of event names.
+        /// </summary>
+        private ObservableCollection<string> events = new ObservableCollection<string>();
+
+        /// <summary>
+        /// The index of the currently selected event.
+        /// </summary>
+        private int currentEventIndex = 0;
+
+        /// <summary>
+        /// Indicates whether it is possible to add a new event. 
+        /// </summary>
+        /// <remarks>
+        /// The add new event controls are controlled unless specifically shown.
+        /// </remarks>
+        private bool newEventAdditionEnabled = false;
+
+        /// <summary>
+        /// The name of a proposed new event.
+        /// </summary>
+        private string newEvent = string.Empty;
+
+        /// <summary>
+        /// The initial suggestion for the date of a new event.
+        /// </summary>
+        private DateType newEventDate;
+
+        /// <summary>
+        /// The name of the results button.
+        /// </summary>
+        private string runResultsButtonName = string.Empty;
 
         /// <summary>
         /// The name of the current season.
@@ -94,28 +129,34 @@
 
             this.seasonName = this.model.CurrentSeason.Name;
 
+            this.NewEventDate =
+                new DateType(
+                    DateTime.Now.Day,
+                    DateTime.Now.Month, 
+                    DateTime.Now.Year);
+
             // TODO, this.IsLocationValid has been copied from PrimaryDisplayViewModel. Can this be rationalised.
-            NewEventCommand =
+            this.NewEventCommand =
               new SimpleCommand(
                 this.EnableNewEventFields,
                 this.IsLocationValid);
-            AddEventCommand =
+            this.AddEventCommand =
               new SimpleCommand(
                 this.AddNewEvent,
                 this.NewEventValid);
-            CancelEventCommand =
+            this.CancelEventCommand =
               new SimpleCommand(
                 this.CancelNewEventFields);
 
-            OpenEventRawResultsDlgCommand =
+            this.OpenEventRawResultsDlgCommand =
               new SimpleCommand(
                 this.OpenEventRawResultsDialog,
                 this.IsLocationValid);
-            OpenEventImportResultsDlgCommand =
+            this.OpenEventImportResultsDlgCommand =
               new SimpleCommand(
                 this.OpenEventImportResultsDialog,
                 this.IsLocationValid);
-            CalculateResultsCommand =
+            this.CalculateResultsCommand =
               new SimpleCommand(
                 this.CalculateResults,
                 this.CanCalculateResults);
@@ -136,11 +177,11 @@
         /// </summary>
         public ObservableCollection<string> Events
         {
-            get { return m_events; }
+            get => this.events; 
             set
             {
-                m_events = value;
-                RaisePropertyChangedEvent("Events");
+                this.events = value;
+                this.RaisePropertyChangedEvent(nameof(this.Events));
             }
         }
 
@@ -149,10 +190,10 @@
         /// </summary>
         public int SelectedEventIndex
         {
-            get { return m_currentEventIndex; }
+            get => this.currentEventIndex;
             set
             {
-                m_currentEventIndex = value;
+                this.currentEventIndex = value;
                 this.LoadEvent();
 
                 this.UpdateResultsButton();
@@ -165,11 +206,11 @@
         /// </summary>
         public bool NewEventAdditionEnabled
         {
-            get { return m_newEventAdditionEnabled; }
+            get => this.newEventAdditionEnabled; 
             set
             {
-                m_newEventAdditionEnabled = value;
-                RaisePropertyChangedEvent("NewEventAdditionEnabled");
+                this.newEventAdditionEnabled = value;
+                this.RaisePropertyChangedEvent(nameof(this.NewEventAdditionEnabled));
             }
         }
 
@@ -178,11 +219,11 @@
         /// </summary>
         public string NewEvent
         {
-            get { return m_newEvent; }
+            get => this.newEvent; 
             set
             {
-                m_newEvent = value;
-                RaisePropertyChangedEvent("NewEvent");
+                this.newEvent = value;
+                this.RaisePropertyChangedEvent(nameof(this.NewEvent));
             }
         }
 
@@ -191,11 +232,11 @@
         /// </summary>
         public int NewEventDay
         {
-            get { return m_newEventDate.Day; }
+            get => this.newEventDate.Day;
             set
             {
-                m_newEventDate.Day = value;
-                RaisePropertyChangedEvent("NewEventDay");
+                this.newEventDate.Day = value;
+                this.RaisePropertyChangedEvent(nameof(this.NewEventDay));
             }
         }
 
@@ -204,11 +245,11 @@
         /// </summary>
         public int NewEventMonth
         {
-            get { return m_newEventDate.Month; }
+            get => this.newEventDate.Month;
             set
             {
-                m_newEventDate.Month = value;
-                RaisePropertyChangedEvent("NewEventMonth");
+                this.newEventDate.Month = value;
+                this.RaisePropertyChangedEvent(nameof(this.NewEventMonth));
             }
         }
 
@@ -217,11 +258,11 @@
         /// </summary>
         public int NewEventYear
         {
-            get { return m_newEventDate.Year; }
+            get => this.newEventDate.Year;
             set
             {
-                m_newEventDate.Year = value;
-                RaisePropertyChangedEvent("NewEventYear");
+                this.newEventDate.Year = value;
+                this.RaisePropertyChangedEvent(nameof(this.NewEventYear));
             }
         }
 
@@ -230,8 +271,8 @@
         /// </summary>
         public DateType NewEventDate
         {
-            get { return m_newEventDate; }
-            set { m_newEventDate = value; }
+            get => this.newEventDate; 
+            set => this.newEventDate = value; 
         }
 
         /// <summary>
@@ -239,11 +280,11 @@
         /// </summary>
         public string RunResultsButtonName
         {
-            get { return runResultsButtonName; }
+            get => this.runResultsButtonName;
             set
             {
-                runResultsButtonName = value;
-                RaisePropertyChangedEvent("RunResultsButtonName");
+                this.runResultsButtonName = value;
+                this.RaisePropertyChangedEvent(nameof(this.RunResultsButtonName));
             }
         }
 
@@ -291,7 +332,7 @@
         {
             string newEventName = this.NewEvent;
 
-            if (!this.businessLayerManager.CreateNewEvent(NewEvent, NewEventDate))
+            if (!this.businessLayerManager.CreateNewEvent(this.NewEvent, this.NewEventDate))
             {
                 this.businessLayerManager.SetProgressInformation($"Failed to create season {newEventName}");
                 return;
@@ -300,8 +341,8 @@
             this.Events.Add(newEventName);
             SelectCurrentEvent(newEventName);
 
-            NewEvent = string.Empty;
-            NewEventAdditionEnabled = false;
+            this.NewEvent = string.Empty;
+            this.NewEventAdditionEnabled = false;
 
             this.businessLayerManager.SetProgressInformation($"{newEventName} created");
         }
@@ -333,27 +374,13 @@
         /// </summary>
         public bool NewEventValid()
         {
-            if (NewEvent == string.Empty)
+            if (this.NewEvent == string.Empty)
             {
                 return false;
             }
 
-            return !Events.Any(newEvent => newEvent == NewEvent);
+            return !this.Events.Any(newEvent => newEvent == this.NewEvent);
         }
-
-        ///// <summary>
-        ///// Takes a list of all available events and adds them to the Events collection.
-        ///// </summary>
-        ///// <param name="events">seasons list</param>
-        //public void PopulateEvents(List<string> events)
-        //{
-        //    Events = new ObservableCollection<string>();
-        //    Events.Add(string.Empty);
-        //    foreach (string newEvent in events)
-        //    {
-        //        Events.Add(newEvent);
-        //    }
-        //}
 
         /// <summary>
         /// Takes a list of all available events and adds them to the Events collection.
@@ -370,11 +397,11 @@
         /// <param name="currentSeason">season to find</param>
         public void SelectCurrentEvent(string currentEvent)
         {
-            for (int eventIndex = 0; eventIndex < Events.Count(); ++eventIndex)
+            for (int eventIndex = 0; eventIndex < this.Events.Count(); ++eventIndex)
             {
-                if (Events[eventIndex] == currentEvent)
+                if (this.Events[eventIndex] == currentEvent)
                 {
-                    SelectedEventIndex = eventIndex;
+                    this.SelectedEventIndex = eventIndex;
                     break;
                 }
             }
@@ -394,7 +421,7 @@
                 this.businessLayerManager.CalculateResults();
             }
 
-            UpdateResultsButton();
+            this.UpdateResultsButton();
         }
 
         /// <summary>
@@ -421,11 +448,11 @@
         {
             if (this.model.CurrentEvent.ResultsTable.Entries.Count > 0)
             {
-                RunResultsButtonName = "Delete Results";
+                this.RunResultsButtonName = "Delete Results";
             }
             else
             {
-                RunResultsButtonName = "Calculate Results";
+                this.RunResultsButtonName = "Calculate Results";
             }
         }
 
@@ -436,30 +463,30 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public void OpenEventRawResultsDialog()
         {
-            if (m_eventRawResultsDialog == null)
+            if (this.eventRawResultsDialog == null)
             {
-                m_eventRawResultsDialog = new EventRawResultsDlg();
+                this.eventRawResultsDialog = new EventRawResultsDlg();
             }
 
-            m_eventRawResultsDialog.Unloaded -= new RoutedEventHandler(CloseEventRawResultsDialog);
-            m_eventRawResultsDialog.Unloaded += new RoutedEventHandler(CloseEventRawResultsDialog);
+            this.eventRawResultsDialog.Unloaded -= new RoutedEventHandler(this.CloseEventRawResultsDialog);
+            this.eventRawResultsDialog.Unloaded += new RoutedEventHandler(this.CloseEventRawResultsDialog);
 
-            m_eventRawResultsViewModel =
+            this.eventRawResultsViewModel =
                 new EventRawResultsViewModel(
                     this.model.CurrentEvent,
                     this.model.Athletes,
                     this.commonIo,
                     this.logger);
-            m_eventRawResultsDialog.DataContext = m_eventRawResultsViewModel;
+            this.eventRawResultsDialog.DataContext = this.eventRawResultsViewModel;
 
             // Close the import dialog if on display. These should be mutually exclusive.
-            if (eventImportResultsDialog != null)
+            if (this.eventImportResultsDialog != null)
             {
-                eventImportResultsDialog.Close();
+                this.eventImportResultsDialog.Close();
             }
 
-            m_eventRawResultsDialog.Show();
-            m_eventRawResultsDialog.Activate();
+            this.eventRawResultsDialog.Show();
+            this.eventRawResultsDialog.Activate();
         }
 
         /// <summary>
@@ -467,30 +494,30 @@
         /// </summary>
         public void OpenEventImportResultsDialog()
         {
-            if (eventImportResultsDialog == null)
+            if (this.eventImportResultsDialog == null)
             {
-                eventImportResultsDialog = new ImportEventRawResultDialog();
+                this.eventImportResultsDialog = new ImportEventRawResultDialog();
             }
 
-            eventImportResultsDialog.Unloaded -= new RoutedEventHandler(CloseEventImportResultsDialog);
-            eventImportResultsDialog.Unloaded += new RoutedEventHandler(CloseEventImportResultsDialog);
+            this.eventImportResultsDialog.Unloaded -= new RoutedEventHandler(this.CloseEventImportResultsDialog);
+            this.eventImportResultsDialog.Unloaded += new RoutedEventHandler(this.CloseEventImportResultsDialog);
 
-            m_eventRawResultsViewModel =
+            this.eventRawResultsViewModel =
                 new EventRawResultsViewModel(
                     this.model.CurrentEvent,
                     this.model.Athletes,
                     this.commonIo,
                     this.logger);
-            eventImportResultsDialog.DataContext = m_eventRawResultsViewModel;
+            this.eventImportResultsDialog.DataContext = this.eventRawResultsViewModel;
 
             // Close the raw imput dialog if on display. These should be mutually exclusive.
-            if (m_eventRawResultsDialog != null)
+            if (this.eventRawResultsDialog != null)
             {
-                m_eventRawResultsDialog.Close();
+                this.eventRawResultsDialog.Close();
             }
 
-            eventImportResultsDialog.Show();
-            eventImportResultsDialog.Activate();
+            this.eventImportResultsDialog.Show();
+            this.eventImportResultsDialog.Activate();
         }
 
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
@@ -500,9 +527,9 @@
         /// <param name="sender">window object</param>
         /// <param name="e">Event arguments</param>
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public void CloseEventRawResultsDialog(object sender, System.Windows.RoutedEventArgs e)
+        public void CloseEventRawResultsDialog(object sender, RoutedEventArgs e)
         {
-            m_eventRawResultsDialog = null;
+            this.eventRawResultsDialog = null;
         }
 
         /// <summary>
@@ -510,9 +537,9 @@
         /// </summary>
         /// <param name="sender">window object</param>
         /// <param name="e">event arguments</param>
-        public void CloseEventImportResultsDialog(object sender, System.Windows.RoutedEventArgs e)
+        public void CloseEventImportResultsDialog(object sender, RoutedEventArgs e)
         {
-            eventImportResultsDialog = null;
+            this.eventImportResultsDialog = null;
         }
 
         /// <summary>

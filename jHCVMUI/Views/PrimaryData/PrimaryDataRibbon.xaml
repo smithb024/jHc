@@ -12,73 +12,73 @@
 
     <DockPanel LastChildFill="True">
         <Border DockPanel.Dock="Right"
-            BorderBrush="{Binding EventSummaryVisible, Converter={StaticResource highlightConverter}}"
+            BorderBrush="{Binding Path=EventSummaryVisible, Converter={StaticResource highlightConverter}}"
             BorderThickness="0,0,0,3"
             Margin="5,0,5,0">
             <Button Name="EventSummary"
               Content="Event Summary"
               Style="{StaticResource BodyButtonStyle}"
-              Command="{Binding ShowEventSummaryCommand}"
+              Command="{Binding Path=ShowEventSummaryCommand}"
               Height="25"
               Width="100"/>
         </Border>
         <Border DockPanel.Dock="Right"
-            BorderBrush="{Binding TeamTrophyPointsTableVisible, Converter={StaticResource highlightConverter}}"
+            BorderBrush="{Binding Path=TeamTrophyPointsTableVisible, Converter={StaticResource highlightConverter}}"
             BorderThickness="0,0,0,3"
             Margin="5,0,0,0">
             <Button Name="EventTeamTrophyPointsTable"
               Content="Team Trophy"
               Style="{StaticResource BodyButtonStyle}"
-              Command="{Binding ShowTeamTrophyPointsTableCommand}"
+              Command="{Binding Path=ShowTeamTrophyPointsTableCommand}"
               Height="25"
               Width="100"/>
         </Border>
         <Border DockPanel.Dock="Right"
-            BorderBrush="{Binding MobTrophyPointsTableVisible, Converter={StaticResource highlightConverter}}"
+            BorderBrush="{Binding Path=MobTrophyPointsTableVisible, Converter={StaticResource highlightConverter}}"
             BorderThickness="0,0,0,3"
             Margin="5,0,0,0">
             <Button Name="EventMobTrophyPointsTable"
               Content="Mob Trophy"
               Style="{StaticResource BodyButtonStyle}"
-              Command="{Binding ShowMobTrophyPointsTableCommand}"
+              Command="{Binding Path=ShowMobTrophyPointsTableCommand}"
               Height="25"
               Width="100"/>
         </Border>
         <Border DockPanel.Dock="Right"
-            BorderBrush="{Binding PointsTableVisible, Converter={StaticResource highlightConverter}}"
+            BorderBrush="{Binding Path=PointsTableVisible, Converter={StaticResource highlightConverter}}"
             BorderThickness="0,0,0,3"
             Margin="5,0,0,0">
             <Button Name="EventPointsTable"
               Content="Points Table"
               Style="{StaticResource BodyButtonStyle}"
-              Command="{Binding ShowPointsTableCommand}"
+              Command="{Binding Path=ShowPointsTableCommand}"
               Height="25"
               Width="100"/>
         </Border>
         <Border DockPanel.Dock="Right"
-            BorderBrush="{Binding ResultsTableVisible, Converter={StaticResource highlightConverter}}"
+            BorderBrush="{Binding Path=ResultsTableVisible, Converter={StaticResource highlightConverter}}"
             BorderThickness="0,0,0,3"
             Margin="5,0,0,0">
             <Button Name="EventResults"
               Content="Results Table"
               Style="{StaticResource BodyButtonStyle}"
-              Command="{Binding ShowResultsCommand}"
+              Command="{Binding Path=ShowResultsCommand}"
               Height="25"
               Width="100"/>
         </Border>
         <Border DockPanel.Dock="Right"
-            BorderBrush="{Binding SeasonSummaryVisible, Converter={StaticResource highlightConverter}}"
+            BorderBrush="{Binding Path=SeasonSummaryVisible, Converter={StaticResource highlightConverter}}"
             BorderThickness="0,0,0,3"
             Margin="5,0,0,0">
             <Button Name="GlobalResults"
               Content="Season Summary"
               Style="{StaticResource BodyButtonStyle}"
-              Command="{Binding ShowSeasonSummaryCommand}"
+              Command="{Binding Path=ShowSeasonSummaryCommand}"
               Height="25"
               Width="100"/>
         </Border>
         <Label Name="EventDateLabel"
-           Content="{Binding EventDate}"
+           Content="{Binding Path=EventDate}"
            Style="{StaticResource SummaryTitleLabel}"/>
     </DockPanel>
 </UserControl>
