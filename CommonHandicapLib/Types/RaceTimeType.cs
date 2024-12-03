@@ -1,6 +1,7 @@
 ﻿namespace CommonHandicapLib.Types
 {
     using System;
+    using System.Runtime.CompilerServices;
     using CommonLib.Types;
 
     /// <summary>
@@ -22,6 +23,11 @@
         private const string unknownDescription = "UNK";
 
         /// <summary>
+        /// The time is from a relay event.
+        /// </summary>
+        private const string relayDescription = "Relay";
+
+        /// <summary>
         /// Initialises a new instance of <see cref="RaceTimeType"/> type.
         /// </summary>
         /// <param name="time">new time</param>
@@ -29,15 +35,20 @@
         {
             if (time.CompareTo(dnfDescription) == 0)
             {
-                DNF = true;
+                this.Description = RaceTimeDescription.Dnf;
+            }
+            else if (time.CompareTo(relayDescription) == 0)
+            {
+                this.Description = RaceTimeDescription.Relay;
             }
             else if (time.CompareTo(unknownDescription) == 0)
             {
-                Unknown = true;
+                this.Description = RaceTimeDescription.Unknown;
             }
             else
             {
-                Update(time);
+                this.Description = RaceTimeDescription.Finished;
+                this.Update(time);
             }
         }
 
@@ -49,43 +60,28 @@
         public RaceTimeType(int minutes, int seconds)
           : base(minutes, seconds)
         {
+            this.Description = RaceTimeDescription.Finished;
         }
 
         /// <summary>
         /// Initialises a new instance of the <see cref="RaceTimeType"/> type.
         /// </summary>
-        /// <remarks>
-        /// Contains DNF value, you would only expect a true in this constructor.
-        /// </remarks>
-        /// <param name="dnf">did not finish value</param>
-        /// <param name="unknown">race time is unknown</param>
+        /// <param name="description">the description decorator</param>
         public RaceTimeType(
-          bool dnf,
-          bool unknown)
+          RaceTimeDescription description)
         {
-            this.DNF = dnf;
-            this.Unknown = unknown;
+            this.Description = description;
         }
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="RaceTimeType"/> class.
+        /// Gets or sets the description of the <see cref="RaceTimeType"/>. 
         /// </summary>
         /// <remarks>
-        /// Contains default values.
+        /// This decorator provides a description of the type of time being recorded. Only the
+        /// <see cref="RaceTimeDescription.Finished"/> value would mean that the time is valid. The
+        /// other values all refer to non numeric times.
         /// </remarks>
-        public RaceTimeType()
-        {
-        }
-
-        /// <summary>
-        /// Gets or sets a flag indicating if the athlete finished or not.
-        /// </summary>
-        public bool DNF { get; set; }
-
-        /// <summary>
-        /// Gets or sets a flag indicating if the time is known or not.
-        /// </summary>
-        public bool Unknown { get; set; }
+        public RaceTimeDescription Description { get; set; }
 
         /// <summary>
         /// Add time, if seconds role over to the next  minute increase minute by one and reset seconds.
@@ -96,14 +92,10 @@
         public static RaceTimeType operator +(RaceTimeType lhs,
                                               RaceTimeType rhs)
         {
-            if (lhs.DNF == true || rhs.DNF == true)
+            if (lhs.Description != RaceTimeDescription.Finished ||
+                rhs.Description != RaceTimeDescription.Finished)
             {
-                return new RaceTimeType(true, false);
-            }
-
-            if (lhs.Unknown == true || rhs.Unknown == true)
-            {
-                return new RaceTimeType(false, true);
+                return new RaceTimeType(RaceTimeDescription.Unknown);
             }
 
             int productMinutes = lhs.Minutes + rhs.Minutes;
@@ -127,14 +119,10 @@
         public static RaceTimeType operator -(RaceTimeType lhs,
                                               RaceTimeType rhs)
         {
-            if (lhs.DNF == true || rhs.DNF == true)
+            if (lhs.Description != RaceTimeDescription.Finished ||
+                rhs.Description != RaceTimeDescription.Finished)
             {
-                return new RaceTimeType(true, false);
-            }
-
-            if (lhs.Unknown == true || rhs.Unknown == true)
-            {
-                return new RaceTimeType(false, true);
+                return new RaceTimeType(RaceTimeDescription.Unknown);
             }
 
             if (rhs.Minutes > lhs.Minutes ||
@@ -177,10 +165,8 @@
             }
 
             return
-              (time.DNF && DNF) ||
-              (time.Minutes == Minutes && time.Seconds == Seconds && time.DNF == DNF) ||
-              (time.Unknown && Unknown) ||
-              (time.Minutes == Minutes && time.Seconds == Seconds && time.Unknown == Unknown);
+              (time.Description == this.Description && this.Description != RaceTimeDescription.Finished) ||
+              (time.Minutes == this.Minutes && time.Seconds == this.Seconds && this.Description == RaceTimeDescription.Finished);
         }
 
         /// <summary>
@@ -189,7 +175,7 @@
         /// <returns>hash code</returns>
         public override int GetHashCode()
         {
-            return Minutes ^ Seconds;
+            return this.Minutes ^ this.Seconds;
         }
 
         /// <summary>
@@ -212,10 +198,8 @@
             }
 
             return
-              (rhs.DNF && lhs.DNF) ||
-              (lhs.Minutes == rhs.Minutes && lhs.Seconds == rhs.Seconds && lhs.DNF == rhs.DNF) ||
-              (rhs.Unknown && lhs.Unknown) ||
-              (lhs.Minutes == rhs.Minutes && lhs.Seconds == rhs.Seconds && lhs.Unknown == rhs.Unknown);
+              (rhs.Description == lhs.Description && rhs.Description != RaceTimeDescription.Finished) ||
+              (lhs.Minutes == rhs.Minutes && lhs.Seconds == rhs.Seconds && rhs.Description == RaceTimeDescription.Finished);
         }
 
         /// <summary>
@@ -237,7 +221,9 @@
                 return true;
             }
 
-            return (lhs.Minutes != rhs.Minutes || lhs.Seconds != rhs.Seconds || rhs.DNF != lhs.DNF || rhs.Unknown != lhs.Unknown);
+            return (lhs.Minutes != rhs.Minutes ||
+                lhs.Seconds != rhs.Seconds ||
+                rhs.Description != lhs.Description);
         }
 
         /// <summary>
@@ -249,12 +235,8 @@
         public static bool operator >(RaceTimeType lhs,
                                       RaceTimeType rhs)
         {
-            if (lhs.DNF == true || rhs.DNF == true)
-            {
-                return false;
-            }
-
-            if (lhs.Unknown == true || rhs.Unknown == true)
+            if (lhs.Description != RaceTimeDescription.Finished ||
+                rhs.Description != RaceTimeDescription.Finished)
             {
                 return false;
             }
@@ -280,12 +262,8 @@
         public static bool operator <(RaceTimeType lhs,
                                       RaceTimeType rhs)
         {
-            if (lhs.DNF == true || rhs.DNF == true)
-            {
-                return false;
-            }
-
-            if (lhs.Unknown == true || rhs.Unknown == true)
+            if (lhs.Description != RaceTimeDescription.Finished ||
+                rhs.Description != RaceTimeDescription.Finished)
             {
                 return false;
             }
@@ -311,14 +289,9 @@
         public static RaceTimeType operator /(RaceTimeType lhs,
                                               int rhs)
         {
-            if (lhs.DNF)
+            if (lhs.Description != RaceTimeDescription.Finished)
             {
-                return new RaceTimeType(true, false);
-            }
-
-            if (lhs.Unknown)
-            {
-                return new RaceTimeType(false, true);
+                return new RaceTimeType(lhs.Description);
             }
 
             int minutesInt = 0;
@@ -347,17 +320,21 @@
         /// <returns>new string</returns>
         public override string ToString()
         {
-            if (DNF)
+            if (this.Description == RaceTimeDescription.Dnf)
             {
                 return dnfDescription;
             }
-            else if (Unknown)
+            else if (this.Description == RaceTimeDescription.Relay)
+            {
+                return relayDescription;
+            }
+            else if (this.Description == RaceTimeDescription.Unknown)
             {
                 return unknownDescription;
             }
             else
             {
-                return Minutes.ToString() + separator + Seconds.ToString("00");
+                return this.Minutes.ToString() + this.separator + this.Seconds.ToString("00");
             }
         }
     }
