@@ -549,7 +549,7 @@
         /// </summary>
         public void SaveRawResultsCmd()
         {
-            SaveRawEventResults();
+            this.SaveRawEventResults();
 
             CommonMessenger.Default.Send(
                 new HandicapProgressMessage(
@@ -789,9 +789,13 @@
         {
             List<IRaw> rawList = new List<IRaw>();
 
-            foreach (RawResults result in AllAthletes.FindAll(athlete => athlete.RaceNumber != string.Empty))
+            foreach (RawResults result in this.AllAthletes.FindAll(athlete => athlete.RaceNumber != string.Empty))
             {
-                rawList.Add(new Raw(result.RaceNumber, result.RaceTime, result.Order));
+                rawList.Add(
+                    new Raw(
+                        result.RaceNumber, 
+                        result.RaceTime, 
+                        result.Order));
             }
 
             return this.handicapEventModel.SaveRawResults(rawList);
