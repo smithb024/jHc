@@ -151,7 +151,7 @@
             {
                 if (eventsIncluded < 3)
                 {
-                    if (!this.Times[index].Time.DNF && !this.Times[index].Time.Unknown)
+                    if (this.Times[index].Time.Description == RaceTimeDescription.Finished)
                     {
                         handicapWorking = handicapWorking + this.Times[index].Time;
                         ++eventsIncluded;

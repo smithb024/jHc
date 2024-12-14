@@ -269,7 +269,8 @@
                     return this.PredeclaredHandicap;
                 }
 
-                if (this.Times[this.Times.Count - 1].Time.DNF)
+                if (this.Times[this.Times.Count - 1].Time.Description == RaceTimeDescription.Dnf ||
+                    this.Times[this.Times.Count - 1].Time.Description == RaceTimeDescription.Relay)
                 {
                     return this.PredeclaredHandicap;
                 }
