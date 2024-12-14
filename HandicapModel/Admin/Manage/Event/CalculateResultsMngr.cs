@@ -239,7 +239,7 @@
                     resultsTable.Entries.Count + 1,
                     999999);
 
-                if (!raw.TotalTime.DNF && !raw.TotalTime.Unknown)
+                if (raw.TotalTime.Description == RaceTimeDescription.Finished)
                 {
                     if (this.Model.Athletes.IsFirstTimer(key))
                     {
@@ -284,7 +284,7 @@
                         singleResult.FirstTimer);
 
                 }
-                else if (raw.TotalTime.DNF)
+                else if (raw.TotalTime.Description == RaceTimeDescription.Dnf)
                 {
                     pointsEarned.FinishingPoints = this.resultsConfiguration.ResultsConfigurationDetails.FinishingPoints;
                     singleResult.Points = pointsEarned;
@@ -335,7 +335,7 @@
 
             foreach (ResultsTableEntry result in resultsTable.Entries)
             {
-                if (!result.Time.DNF && !result.Time.Unknown)
+                if (result.Time.Description == RaceTimeDescription.Finished)
                 {
                     if (this.PositionScoreToBeCounted(result.FirstTimer) &&
                       !(positionPoint == 0))
@@ -368,7 +368,7 @@
 
             foreach (ResultsTableEntry result in resultsTable.Entries)
             {
-                if (!result.Time.DNF && !result.Time.Unknown)
+                if (result.Time.Description == RaceTimeDescription.Finished)
                 {
                     if (this.PositionScoreToBeCounted(result.FirstTimer))
                     {
@@ -573,14 +573,9 @@
             bool thirdBoyFound = false;
             bool thirdGirlFound = false;
 
-            foreach (ResultsTableEntry result in resultsTable.Entries)
+            foreach (IResultsTableEntry result in resultsTable.Entries)
             {
-                if (result.Time.DNF)
-                {
-                    continue;
-                }
-
-                if (result.Time.Unknown)
+                if (result.Time.Description != RaceTimeDescription.Finished)
                 {
                     continue;
                 }
