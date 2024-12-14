@@ -27,8 +27,8 @@
             RaceTimeType time,
             DateType date)
         {
-            Time = time;
-            Date = date;
+            this.Time = time;
+            this.Date = date;
         }
 
         /// <summary>
@@ -36,8 +36,8 @@
         /// </summary>
         public RaceTimeType Time
         {
-            get { return time; }
-            set { time = value; }
+            get => this.time;
+            set => this.time = value; 
         }
 
         /// <summary>
@@ -50,8 +50,8 @@
         /// </summary>
         public DateType Date
         {
-            get { return date; }
-            set { date = value; }
+            get => this.date;
+            set => this.date = value; 
         }
 
         /// <summary>
@@ -69,12 +69,12 @@
         /// <returns>Time valid flag</returns>
         public bool IsTimeValid()
         {
-            if (time == null)
+            if (this.time == null)
             {
                 return false;
             }
 
-            return !time.DNF && !time.Unknown;
+            return this.time.Description == RaceTimeDescription.Finished;
         }
     }
 }
