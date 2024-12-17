@@ -387,6 +387,19 @@
         }
 
         /// <summary>
+        /// Increate the number of <paramref name="type"/> by one across all the summaries.
+        /// </summary>
+        /// <param name="type">
+        /// The type of property to change.
+        /// </param>
+        public void IncrementSummaries(SummaryPropertiesType type)
+        {
+            this.CurrentEvent.IncrementSummary(type);
+            this.CurrentSeason.IncrementSummary(type);
+            this.GlobalSummary.Increment(type);
+        }
+
+        /// <summary>
         /// A load new series command has been initiated. Reload the models from the files.
         /// </summary>
         /// <param name="message"></param>

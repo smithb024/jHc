@@ -181,5 +181,13 @@
         /// Save the global summary data.
         /// </summary>
         void SaveGlobalSummary();
+
+        /// <summary>
+        /// Increate the number of <paramref name="type"/> by one across all the summaries.
+        /// </summary>
+        /// <param name="type">
+        /// The type of property to change.
+        /// </param>
+        void IncrementSummaries(SummaryPropertiesType type);
     }
 }

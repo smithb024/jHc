@@ -256,7 +256,7 @@
                         {
                             pointsEarned.BestPoints = this.resultsConfiguration.ResultsConfigurationDetails.SeasonBestPoints;
                             singleResult.SB = true;
-                            this.RecordNewSB();
+                            this.Model.IncrementSummaries(SummaryPropertiesType.SB);
                         }
                     }
 
@@ -269,7 +269,7 @@
                         if (!singleResult.FirstTimer)
                         {
                             singleResult.PB = true;
-                            this.RecordNewPB();
+                            this.Model.IncrementSummaries(SummaryPropertiesType.PB);
                         }
                     }
 
@@ -636,60 +636,6 @@
         }
 
         /// <summary>
-        /// Add one new SB to all summary data.
-        /// </summary>
-        private void RecordNewSB()
-        {
-            this.Model.CurrentEvent.Summary.UpdateSummary(
-                this.Model.CurrentEvent.Summary.MaleRunners,
-                this.Model.CurrentEvent.Summary.FemaleRunners,
-                this.Model.CurrentEvent.Summary.SBs + 1,
-                this.Model.CurrentEvent.Summary.PBs,
-                this.Model.CurrentEvent.Summary.FirstTimers);
-
-            this.Model.CurrentSeason.Summary.UpdateSummary(
-                this.Model.CurrentSeason.Summary.MaleRunners,
-                this.Model.CurrentSeason.Summary.FemaleRunners,
-                this.Model.CurrentSeason.Summary.SBs + 1,
-                this.Model.CurrentSeason.Summary.PBs,
-                this.Model.CurrentSeason.Summary.FirstTimers);
-
-            this.Model.GlobalSummary.UpdateSummary(
-                this.Model.GlobalSummary.MaleRunners,
-                this.Model.GlobalSummary.FemaleRunners,
-                this.Model.GlobalSummary.SBs + 1,
-                this.Model.GlobalSummary.PBs,
-                this.Model.GlobalSummary.FirstTimers);
-        }
-
-        /// <summary>
-        /// Add one new PB to all summary data.
-        /// </summary>
-        private void RecordNewPB()
-        {
-            this.Model.CurrentEvent.Summary.UpdateSummary(
-                this.Model.CurrentEvent.Summary.MaleRunners,
-                this.Model.CurrentEvent.Summary.FemaleRunners,
-                this.Model.CurrentEvent.Summary.SBs,
-                this.Model.CurrentEvent.Summary.PBs + 1,
-                this.Model.CurrentEvent.Summary.FirstTimers);
-
-            this.Model.CurrentSeason.Summary.UpdateSummary(
-                this.Model.CurrentSeason.Summary.MaleRunners,
-                this.Model.CurrentSeason.Summary.FemaleRunners,
-                this.Model.CurrentSeason.Summary.SBs,
-                this.Model.CurrentSeason.Summary.PBs + 1,
-                this.Model.CurrentSeason.Summary.FirstTimers);
-
-            this.Model.GlobalSummary.UpdateSummary(
-                this.Model.GlobalSummary.MaleRunners,
-                this.Model.GlobalSummary.FemaleRunners,
-                this.Model.GlobalSummary.SBs,
-                this.Model.GlobalSummary.PBs + 1,
-                this.Model.GlobalSummary.FirstTimers);
-        }
-
-        /// <summary>
         /// Check to see if the time can be added to the fastest times lists.
         /// </summary>
         /// <param name="sex">athlete sex</param>
@@ -727,26 +673,19 @@
             SexType sex,
             bool firstTimer)
         {
-            this.Model.CurrentEvent.Summary.UpdateSummary(
-                sex == SexType.Male ? this.Model.CurrentEvent.Summary.MaleRunners + 1 : this.Model.CurrentEvent.Summary.MaleRunners,
-                sex == SexType.Female ? this.Model.CurrentEvent.Summary.FemaleRunners + 1 : this.Model.CurrentEvent.Summary.FemaleRunners,
-                this.Model.CurrentEvent.Summary.SBs,
-                this.Model.CurrentEvent.Summary.PBs,
-                firstTimer ? this.Model.CurrentEvent.Summary.FirstTimers + 1 : this.Model.CurrentEvent.Summary.FirstTimers);
+            if (sex == SexType.Male)
+            {
+                this.Model.IncrementSummaries(SummaryPropertiesType.Male);
+            }
+            else if (sex == SexType.Female)
+            {
+                this.Model.IncrementSummaries(SummaryPropertiesType.Female);
+            }
 
-            this.Model.CurrentSeason.Summary.UpdateSummary(
-                sex == SexType.Male ? this.Model.CurrentSeason.Summary.MaleRunners + 1 : this.Model.CurrentSeason.Summary.MaleRunners,
-                sex == SexType.Female ? this.Model.CurrentSeason.Summary.FemaleRunners + 1 : this.Model.CurrentSeason.Summary.FemaleRunners,
-                this.Model.CurrentSeason.Summary.SBs,
-                this.Model.CurrentSeason.Summary.PBs,
-                firstTimer ? this.Model.CurrentSeason.Summary.FirstTimers + 1 : this.Model.CurrentSeason.Summary.FirstTimers);
-
-            this.Model.GlobalSummary.UpdateSummary(
-                sex == SexType.Male ? this.Model.GlobalSummary.MaleRunners + 1 : this.Model.GlobalSummary.MaleRunners,
-                sex == SexType.Female ? this.Model.GlobalSummary.FemaleRunners + 1 : this.Model.GlobalSummary.FemaleRunners,
-                this.Model.GlobalSummary.SBs,
-                this.Model.GlobalSummary.PBs,
-                firstTimer ? this.Model.GlobalSummary.FirstTimers + 1 : this.Model.GlobalSummary.FirstTimers);
+            if (firstTimer)
+            {
+                this.Model.IncrementSummaries(SummaryPropertiesType.FT);
+            }
         }
 
         /// <summary>

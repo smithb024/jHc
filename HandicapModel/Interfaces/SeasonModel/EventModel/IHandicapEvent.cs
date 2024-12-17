@@ -4,6 +4,7 @@
     using System;
     using System.Collections.Generic;
     using HandicapModel.Interfaces.Common;
+    using CommonLib.Enumerations;
 
     /// <summary>
     /// Interface for the Event Model, this describes the full set of results for a single event.
@@ -72,6 +73,14 @@
         /// </summary>
         /// <param name="results">new set of results.</param>
         void SetResultsTable(IEventResults results);
+
+        /// <summary>
+        /// Within the summary, increate the number of <paramref name="type"/> by one.
+        /// </summary>
+        /// <param name="type">
+        /// The type of property to change.
+        /// </param>
+        void IncrementSummary(SummaryPropertiesType type);
 
         ///// <summary>
         ///// 

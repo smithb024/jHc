@@ -5,6 +5,7 @@
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
+    using CommonLib.Enumerations;
     using CommonLib.Types;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO;
@@ -239,6 +240,17 @@
         public void SetResultsTable(IEventResults results)
         {
             this.ResultsTable = results;
+        }
+
+        /// <summary>
+        /// Within the summary, increate the number of <paramref name="type"/> by one.
+        /// </summary>
+        /// <param name="type">
+        /// The type of property to change.
+        /// </param>
+        public void IncrementSummary(SummaryPropertiesType type)
+        {
+            this.Summary.Increment(type);
         }
 
         /// <summary>

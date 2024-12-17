@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using CommonLib.Enumerations;
     using CommonLib.Types;
     using HandicapModel.Interfaces.Common;
 
@@ -33,11 +34,11 @@
             int numberOfPB,
             int numberOfFirstTimers)
         {
-            MaleRunners = numberOfMaleRunners;
-            FemaleRunners = numberOfFemaleRunners;
-            SBs = numberOfYB;
-            PBs = numberOfPB;
-            FirstTimers = numberOfFirstTimers;
+            this.MaleRunners = numberOfMaleRunners;
+            this.FemaleRunners = numberOfFemaleRunners;
+            this.SBs = numberOfYB;
+            this.PBs = numberOfPB;
+            this.FirstTimers = numberOfFirstTimers;
             this.FastestBoys = new List<IAthleteTime>();
             this.FastestGirls = new List<IAthleteTime>();
         }
@@ -186,6 +187,40 @@
             this.SBs = sBs;
             this.PBs = pBs;
             this.FirstTimers = firstTimers;
+
+            this.SummaryDataChangedEvent?.Invoke(this, new EventArgs());
+        }
+
+        /// <summary>
+        /// Increate the number of <paramref name="type"/> by one.
+        /// </summary>
+        /// <param name="type">
+        /// The type of property to change.
+        /// </param>
+        public void Increment(SummaryPropertiesType type)
+        {
+            switch (type)
+            {
+                case SummaryPropertiesType.Male:
+                    ++this.MaleRunners;
+                    break;
+
+                case SummaryPropertiesType.Female:
+                    ++this.FemaleRunners;
+                    break;
+
+                case SummaryPropertiesType.SB:
+                    ++this.SBs;
+                    break;
+
+                case SummaryPropertiesType.PB:
+                    ++this.PBs;
+                    break;
+
+                case SummaryPropertiesType.FT:
+                    ++this.FirstTimers;
+                    break;
+            }
 
             this.SummaryDataChangedEvent?.Invoke(this, new EventArgs());
         }

@@ -8,6 +8,7 @@
     using System;
     using System.Collections.Generic;
     using HandicapModel.Interfaces.Common;
+    using CommonLib.Enumerations;
 
     /// <summary>
     /// Interface which describes a single season and manages the changes to it.
@@ -176,5 +177,13 @@
         /// <param name="date">date of the update</param>
         /// <param name="points">new points</param>
         void UpdatePositionPoints(int key, DateType date, int points);
+
+        /// <summary>
+        /// Within the summary, increate the number of <paramref name="type"/> by one.
+        /// </summary>
+        /// <param name="type">
+        /// The type of property to change.
+        /// </param>
+        void IncrementSummary(SummaryPropertiesType type);
     }
 }
