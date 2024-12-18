@@ -144,7 +144,7 @@
 
             this.Model.CurrentEvent.SetResultsTable(resultsTable);
 
-            this.SaveAll();
+            this.Model.SaveAll();
 
             this.logger.WriteLog("Calculate results completed.");
             HandicapProgressMessage finishedMessage = new HandicapProgressMessage("Calculate Results - Completed");

@@ -400,6 +400,20 @@
         }
 
         /// <summary>
+        /// Save all tables.
+        /// </summary>
+        public void SaveAll()
+        {
+            this.CurrentEvent.SaveResultsTable();
+
+            this.CurrentEvent.SaveEventSummary();
+            this.CurrentSeason.SaveCurrentSeason();
+            this.SaveGlobalSummary();
+            this.SaveClubList();
+            this.SaveAthleteList();
+        }
+
+        /// <summary>
         /// A load new series command has been initiated. Reload the models from the files.
         /// </summary>
         /// <param name="message"></param>

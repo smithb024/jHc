@@ -80,7 +80,7 @@
             this.Model.CurrentEvent.SetResultsTable(new EventResults());
             this.Model.CurrentEvent.Summary.Reset();
 
-            this.SaveAll();
+            this.Model.SaveAll();
 
             this.logger.WriteLog("Delete results completed");
         }

@@ -189,5 +189,10 @@
         /// The type of property to change.
         /// </param>
         void IncrementSummaries(SummaryPropertiesType type);
+
+        /// <summary>
+        /// Save all the tables.
+        /// </summary>
+        void SaveAll();
     }
 }

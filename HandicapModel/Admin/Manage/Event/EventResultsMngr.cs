@@ -20,19 +20,5 @@
         /// Gets the junior handicap model
         /// </summary>
         protected IModel Model { get; }
-
-        /// <summary>
-        /// Save all tables.
-        /// </summary>
-        protected void SaveAll()
-        {
-            this.Model.CurrentEvent.SaveResultsTable();
-
-            this.Model.CurrentEvent.SaveEventSummary();
-            this.Model.CurrentSeason.SaveCurrentSeason();
-            this.Model.SaveGlobalSummary();
-            this.Model.SaveClubList();
-            this.Model.SaveAthleteList();
-        }
     }
 }
