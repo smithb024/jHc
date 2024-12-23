@@ -301,6 +301,11 @@
             return resultsTable;
         }
 
+        /// <summary>
+        /// Add the points for finishing at the front of the event.
+        /// </summary>
+        /// <param name="resultsTable">The results table</param>
+        /// <param name="currentDate">The date of the event.</param>
         private void AddPositionPoints(
           EventResults resultsTable,
           DateType currentDate)
