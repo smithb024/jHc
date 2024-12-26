@@ -29,7 +29,7 @@
         /// <param name="entry">new entry</param>
         public void AddEntry(IResultsTableEntry entry)
         {
-            Entries.Add(entry);
+            this.Entries.Add(entry);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@
             TimeType lastTime = new TimeType(59, 59);
             int lastPostion = position;
 
-            OrderByRunningTime();
+            this.OrderByRunningTime();
 
             foreach (ResultsTableEntry result in this.Entries = this.Entries)
             {
