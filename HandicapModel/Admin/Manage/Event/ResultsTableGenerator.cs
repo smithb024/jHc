@@ -10,6 +10,7 @@
     using HandicapModel.Interfaces.SeasonModel.EventModel;
     using HandicapModel.SeasonModel.EventModel;
     using System.Collections.Generic;
+    using System.Xml.Linq;
 
     /// <summary>
     /// Factory Class which is used to create the <see cref="EventResults"/> table.
@@ -128,7 +129,7 @@
                         }
                     }
 
-                    this.CheckForFastestTime(
+                    this.model.SetFastest(
                         this.athletes.GetAthleteSex(key),
                         key,
                         this.athletes.GetAthleteName(key),
@@ -182,35 +183,6 @@
             }
 
             return athleteHandicap;
-        }
-
-        /// <summary>
-        /// Check to see if the time can be added to the fastest times lists.
-        /// </summary>
-        /// <param name="sex">athlete sex</param>
-        /// <param name="key">athlete key</param>
-        /// <param name="name">athlete name</param>
-        /// <param name="time">athlete time</param>
-        /// <param name="date">date the time was set</param>
-        private void CheckForFastestTime(
-            SexType sex,
-            int key,
-            string name,
-            TimeType time,
-            DateType date)
-        {
-            if (sex == SexType.Female)
-            {
-                this.model.CurrentEvent.Summary.SetFastestGirl(key, name, time, date);
-                this.model.CurrentSeason.Summary.SetFastestGirl(key, name, time, date);
-                this.model.GlobalSummary.SetFastestGirl(key, name, time, date);
-            }
-            else if (sex == SexType.Male)
-            {
-                this.model.CurrentEvent.Summary.SetFastestBoy(key, name, time, date);
-                this.model.CurrentSeason.Summary.SetFastestBoy(key, name, time, date);
-                this.model.GlobalSummary.SetFastestBoy(key, name, time, date);
-            }
         }
 
         /// <summary>

@@ -640,58 +640,58 @@
             }
         }
 
-        /// <summary>
-        /// Check to see if the time can be added to the fastest times lists.
-        /// </summary>
-        /// <param name="sex">athlete sex</param>
-        /// <param name="key">athlete key</param>
-        /// <param name="name">athlete name</param>
-        /// <param name="time">athlete time</param>
-        /// <param name="date">date the time was set</param>
-        private void CheckForFastestTime(
-            SexType sex,
-            int key,
-            string name,
-            TimeType time,
-            DateType date)
-        {
-            if (sex == SexType.Female)
-            {
-                this.Model.CurrentEvent.Summary.SetFastestGirl(key, name, time, date);
-                this.Model.CurrentSeason.Summary.SetFastestGirl(key, name, time, date);
-                this.Model.GlobalSummary.SetFastestGirl(key, name, time, date);
-            }
-            else if (sex == SexType.Male)
-            {
-                this.Model.CurrentEvent.Summary.SetFastestBoy(key, name, time, date);
-                this.Model.CurrentSeason.Summary.SetFastestBoy(key, name, time, date);
-                this.Model.GlobalSummary.SetFastestBoy(key, name, time, date);
-            }
-        }
+        ///// <summary>
+        ///// Check to see if the time can be added to the fastest times lists.
+        ///// </summary>
+        ///// <param name="sex">athlete sex</param>
+        ///// <param name="key">athlete key</param>
+        ///// <param name="name">athlete name</param>
+        ///// <param name="time">athlete time</param>
+        ///// <param name="date">date the time was set</param>
+        //private void CheckForFastestTime(
+        //    SexType sex,
+        //    int key,
+        //    string name,
+        //    TimeType time,
+        //    DateType date)
+        //{
+        //    if (sex == SexType.Female)
+        //    {
+        //        this.Model.CurrentEvent.Summary.SetFastestGirl(key, name, time, date);
+        //        this.Model.CurrentSeason.Summary.SetFastestGirl(key, name, time, date);
+        //        this.Model.GlobalSummary.SetFastestGirl(key, name, time, date);
+        //    }
+        //    else if (sex == SexType.Male)
+        //    {
+        //        this.Model.CurrentEvent.Summary.SetFastestBoy(key, name, time, date);
+        //        this.Model.CurrentSeason.Summary.SetFastestBoy(key, name, time, date);
+        //        this.Model.GlobalSummary.SetFastestBoy(key, name, time, date);
+        //    }
+        //}
 
-        /// <summary>
-        /// Update all the number statistics.
-        /// </summary>
-        /// <param name="sex">athlete sex</param>
-        /// <param name="firstTimer">indicates if the athlete is a first timer</param>
-        private void UpdateNumberStatistics(
-            SexType sex,
-            bool firstTimer)
-        {
-            if (sex == SexType.Male)
-            {
-                this.Model.IncrementSummaries(SummaryPropertiesType.Male);
-            }
-            else if (sex == SexType.Female)
-            {
-                this.Model.IncrementSummaries(SummaryPropertiesType.Female);
-            }
+        ///// <summary>
+        ///// Update all the number statistics.
+        ///// </summary>
+        ///// <param name="sex">athlete sex</param>
+        ///// <param name="firstTimer">indicates if the athlete is a first timer</param>
+        //private void UpdateNumberStatistics(
+        //    SexType sex,
+        //    bool firstTimer)
+        //{
+        //    if (sex == SexType.Male)
+        //    {
+        //        this.Model.IncrementSummaries(SummaryPropertiesType.Male);
+        //    }
+        //    else if (sex == SexType.Female)
+        //    {
+        //        this.Model.IncrementSummaries(SummaryPropertiesType.Female);
+        //    }
 
-            if (firstTimer)
-            {
-                this.Model.IncrementSummaries(SummaryPropertiesType.FT);
-            }
-        }
+        //    if (firstTimer)
+        //    {
+        //        this.Model.IncrementSummaries(SummaryPropertiesType.FT);
+        //    }
+        //}
 
         /// <summary>
         /// Loop through all clubs and set the points in the mode.
@@ -726,32 +726,32 @@
             return !(this.resultsConfiguration.ResultsConfigurationDetails.ExcludeFirstTimers && isFirstTimer);
         }
 
-        /// <summary>
-        /// Gets the athlete handicap from the current season. If none is available, it gets it from
-        /// the athlete main body as the predefined handicap.
-        /// </summary>
-        /// <param name="athleteKey">athlete key</param>
-        /// <returns>athlete handicap</returns>
-        private RaceTimeType GetAthleteHandicap(
-          int athleteKey)
-        {
-            // Note the current handicap.
-            RaceTimeType athleteHandicap =
-              this.Model.CurrentSeason.GetAthleteHandicap(
-                athleteKey,
-                this.hcConfiguration);
+        ///// <summary>
+        ///// Gets the athlete handicap from the current season. If none is available, it gets it from
+        ///// the athlete main body as the predefined handicap.
+        ///// </summary>
+        ///// <param name="athleteKey">athlete key</param>
+        ///// <returns>athlete handicap</returns>
+        //private RaceTimeType GetAthleteHandicap(
+        //  int athleteKey)
+        //{
+        //    // Note the current handicap.
+        //    RaceTimeType athleteHandicap =
+        //      this.Model.CurrentSeason.GetAthleteHandicap(
+        //        athleteKey,
+        //        this.hcConfiguration);
 
-            if (athleteHandicap == null)
-            {
-                TimeType globalHandicap =
-                  this.Model.Athletes.GetRoundedHandicap(athleteKey);
-                athleteHandicap =
-                  new RaceTimeType(
-                    globalHandicap.Minutes,
-                    globalHandicap.Seconds);
-            }
+        //    if (athleteHandicap == null)
+        //    {
+        //        TimeType globalHandicap =
+        //          this.Model.Athletes.GetRoundedHandicap(athleteKey);
+        //        athleteHandicap =
+        //          new RaceTimeType(
+        //            globalHandicap.Minutes,
+        //            globalHandicap.Seconds);
+        //    }
 
-            return athleteHandicap;
-        }
+        //    return athleteHandicap;
+        //}
     }
 }

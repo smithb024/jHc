@@ -254,6 +254,31 @@
         }
 
         /// <summary>
+        /// Set the fastest times in the summary.
+        /// </summary>
+        /// <param name="sex">athlete sex</param>
+        /// <param name="key">athlete key</param>
+        /// <param name="name">athlete name</param>
+        /// <param name="time">athlete time</param>
+        /// <param name="date">date the time was set</param>
+        public void SetFastest(
+            SexType sex,
+            int key,
+            string name,
+            TimeType time,
+            DateType date)
+        {
+            if (sex == SexType.Female)
+            {
+                this.Summary.SetFastestGirl(key, name, time, date);
+            }
+            else if (sex == SexType.Male)
+            {
+                this.Summary.SetFastestBoy(key, name, time, date);
+            }
+        }
+
+        /// <summary>
         /// Save the current results.
         /// </summary>
         public void SaveResultsTable()

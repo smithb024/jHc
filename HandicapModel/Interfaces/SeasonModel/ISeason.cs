@@ -185,5 +185,20 @@
         /// The type of property to change.
         /// </param>
         void IncrementSummary(SummaryPropertiesType type);
+
+        /// <summary>
+        /// Set the fastest times in the summary.
+        /// </summary>
+        /// <param name="sex">athlete sex</param>
+        /// <param name="key">athlete key</param>
+        /// <param name="name">athlete name</param>
+        /// <param name="time">athlete time</param>
+        /// <param name="date">date the time was set</param>
+        void SetFastest(
+            SexType sex,
+            int key,
+            string name,
+            TimeType time,
+            DateType date);
     }
 }
