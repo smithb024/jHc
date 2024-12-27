@@ -10,12 +10,11 @@
     using HandicapModel.Interfaces.SeasonModel.EventModel;
     using HandicapModel.SeasonModel.EventModel;
     using System.Collections.Generic;
-    using System.Xml.Linq;
 
     /// <summary>
     /// Factory Class which is used to create the <see cref="EventResults"/> table.
     /// </summary>
-    public class ResultsTableGenerator
+    public class ResultsTableGenerator : IResultsTableGenerator
     {
         /// <summary>
         /// Results Input/Output
@@ -35,21 +34,23 @@
         /// <summary>
         /// The athletes in the model.
         /// </summary>
-        private Athletes athletes; 
+        private Athletes athletes;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="ResultsTableGenerator"/> class.
         /// </summary>
         /// <param name="resultsConfiguration">The results configuration manager.</param>
-        /// <param name="hcConfiguration">The normalisation configuration.</param>
+        /// <param name="normalisationConfigurationManager">
+        /// normalisation configuration manager
+        /// </param>
         /// <param name="model">The application model object</param>
         public ResultsTableGenerator(
-            IResultsConfigMngr resultsConfiguration, 
-            NormalisationConfigType hcConfiguration,
+            IResultsConfigMngr resultsConfiguration,
+            INormalisationConfigMngr normalisationConfigurationManager,
             IModel model)
         {
             this.resultsConfiguration = resultsConfiguration;
-            this.hcConfiguration = hcConfiguration;
+            this.hcConfiguration = normalisationConfigurationManager.ReadNormalisationConfiguration();
             this.model = model;
             this.athletes = null;
         }
