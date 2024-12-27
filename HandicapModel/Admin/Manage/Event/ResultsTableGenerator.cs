@@ -73,6 +73,11 @@
 
                 // Get athlete key.
                 int key = this.athletes.GetAthleteKey(raw.RaceNumber) ?? 0;
+                string athleteName = this.athletes.GetAthleteName(key);
+                string athleteClub = this.athletes.GetAthleteClub(key);
+                SexType athleteSex = this.athletes.GetAthleteSex(key);
+                int? athleteAge = this.athletes.GetAthleteAge(key);
+                TimeType pb = this.athletes.GetPB(key);
 
                 // Note the current handicap.
                 RaceTimeType athleteHandicap =
@@ -83,15 +88,15 @@
                 ResultsTableEntry singleResult =
                   new ResultsTableEntry(
                     key,
-                    this.athletes.GetAthleteName(key),
+                    athleteName,
                     raw.TotalTime,
                     raw.Order,
                     athleteHandicap,
-                    this.athletes.GetAthleteClub(key),
-                    this.athletes.GetAthleteSex(key),
+                    athleteClub,
+                    athleteSex,
                     raw.RaceNumber,
                     eventDate,
-                    this.athletes.GetAthleteAge(key),
+                    athleteAge,
                     resultsTable.Entries.Count + 1,
                     999999);
 
@@ -119,7 +124,7 @@
                     singleResult.Points = pointsEarned;
 
                     // Work out the personal best information.
-                    if (this.athletes.GetPB(key) > singleResult.RunningTime)
+                    if (pb > singleResult.RunningTime)
                     {
                         // Only not as PB if not the first run.
                         if (!singleResult.FirstTimer)
@@ -130,13 +135,13 @@
                     }
 
                     this.model.SetFastest(
-                        this.athletes.GetAthleteSex(key),
+                        athleteSex,
                         key,
-                        this.athletes.GetAthleteName(key),
+                        athleteName,
                         raw.TotalTime - athleteHandicap,
                         eventDate);
                     this.UpdateNumberStatistics(
-                        this.athletes.GetAthleteSex(key),
+                        athleteSex,
                         singleResult.FirstTimer);
 
                 }
