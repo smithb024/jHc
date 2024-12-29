@@ -146,7 +146,9 @@
                         singleResult.FirstTimer);
 
                 }
-                else if (raw.TotalTime.Description == RaceTimeDescription.Dnf)
+                else if (
+                    raw.TotalTime.Description == RaceTimeDescription.Dnf ||
+                    raw.TotalTime.Description == RaceTimeDescription.Relay)
                 {
                     pointsEarned.FinishingPoints = this.resultsConfiguration.ResultsConfigurationDetails.FinishingPoints;
                     singleResult.Points = pointsEarned;
