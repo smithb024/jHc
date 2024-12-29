@@ -211,8 +211,19 @@
         /// <remarks>
         /// Complete time minus handicap.
         /// </remarks>
-        public RaceTimeType RunningTime =>
-            this.Time - this.Handicap;
+        public RaceTimeType RunningTime
+        {
+            get 
+            {
+                if (this.Time.Description != RaceTimeDescription.Finished)
+                {
+                    return this.Time;
+                }
+
+                return this.Time - this.Handicap; 
+            }
+
+        }
 
         /// <summary>
         /// Gets the athlete's sex.
