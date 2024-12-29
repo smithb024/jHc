@@ -152,6 +152,13 @@
                 {
                     pointsEarned.FinishingPoints = this.resultsConfiguration.ResultsConfigurationDetails.FinishingPoints;
                     singleResult.Points = pointsEarned;
+
+                    if (raw.TotalTime.Description == RaceTimeDescription.Relay)
+                    {
+                        this.UpdateNumberStatistics(
+                        athleteSex,
+                        false);
+                    }
                 }
 
                 this.athletes.AddNewTime(key, new Appearances(singleResult.RunningTime, eventDate));
