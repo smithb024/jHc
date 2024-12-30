@@ -156,7 +156,7 @@
                         row.Handicap);
                 CommonPoints points =
                     new CommonPoints(
-                        row.PMobTrophyoints,
+                        row.MobTrophyPoints,
                         date);
                 int position = resultsTable.Entries.Count + 1;
 

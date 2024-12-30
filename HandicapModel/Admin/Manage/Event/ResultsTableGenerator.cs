@@ -77,7 +77,6 @@
                 string athleteName = this.athletes.GetAthleteName(key);
                 string athleteClub = this.athletes.GetAthleteClub(key);
                 SexType athleteSex = this.athletes.GetAthleteSex(key);
-                int? athleteAge = this.athletes.GetAthleteAge(key);
                 TimeType pb = this.athletes.GetPB(key);
 
                 // Note the current handicap.
@@ -97,12 +96,13 @@
                     athleteSex,
                     raw.RaceNumber,
                     eventDate,
-                    athleteAge,
                     resultsTable.Entries.Count + 1,
                     999999);
 
                 if (raw.TotalTime.Description == RaceTimeDescription.Finished)
                 {
+                    // The athlete finished successfully - this is a normal event.
+                    // Go through and set all the points/times and bests.
                     if (this.athletes.IsFirstTimer(key))
                     {
                         singleResult.FirstTimer = true;
@@ -146,19 +146,21 @@
                         singleResult.FirstTimer);
 
                 }
-                else if (
-                    raw.TotalTime.Description == RaceTimeDescription.Dnf ||
-                    raw.TotalTime.Description == RaceTimeDescription.Relay)
+                else if (raw.TotalTime.Description == RaceTimeDescription.Dnf)
                 {
+                    // The athlete started, but couldn't finish. Apply the default points earned.
+                    singleResult.Points = pointsEarned;
+                }
+                else if (raw.TotalTime.Description == RaceTimeDescription.Relay)
+                {
+                    // The athlete competed in a relay event. 
+                    // Add finishing points and update the statistics. 
                     pointsEarned.FinishingPoints = this.resultsConfiguration.ResultsConfigurationDetails.FinishingPoints;
                     singleResult.Points = pointsEarned;
 
-                    if (raw.TotalTime.Description == RaceTimeDescription.Relay)
-                    {
-                        this.UpdateNumberStatistics(
+                    this.UpdateNumberStatistics(
                         athleteSex,
                         false);
-                    }
                 }
 
                 this.athletes.AddNewTime(key, new Appearances(singleResult.RunningTime, eventDate));

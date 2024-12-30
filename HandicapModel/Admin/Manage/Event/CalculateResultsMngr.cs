@@ -342,6 +342,11 @@
             // The position is used to assign points to an athlete in the Team Trophy.
             int teamTrophyCompetitionPosition = 0;
             int nextScore = 1;
+
+            // Determine whether the event is a relay event.
+            bool isRelayEvent =
+                this.IsRelayEvent(
+                    resultsTable);
  
             resultsTable.OrderByFinishingTime();
             Dictionary<string, ITeamTrophyEvent> eventDictionary = new Dictionary<string, ITeamTrophyEvent>();
@@ -389,10 +394,11 @@
 
                 ++teamTrophyCompetitionPosition;
                 ITeamTrophyEvent clubEvent = eventDictionary[result.Club];
+                int pointsValue = isRelayEvent ? 1 : teamTrophyCompetitionPosition;
 
                 ICommonTeamTrophyPoints clubPoint =
                     new CommonTeamTrophyPoints(
-                        teamTrophyCompetitionPosition,
+                        pointsValue,
                         result.Name,
                         result.Key,
                         true,
@@ -421,11 +427,12 @@
             }
 
             List<ITeamTrophyEvent> orderedEvent = new List<ITeamTrophyEvent>();
+            int completionValue = isRelayEvent ? 2 : nextScore;
             foreach (KeyValuePair<string, ITeamTrophyEvent> entry in eventDictionary)
             {
                 entry.Value.Complete(
                     this.resultsConfiguration.ResultsConfigurationDetails.NumberInTeamTrophyTeam,
-                    nextScore);
+                    completionValue);
                 orderedEvent.Add(entry.Value);
             }
 
@@ -573,6 +580,27 @@
           bool isFirstTimer)
         {
             return !(this.resultsConfiguration.ResultsConfigurationDetails.ExcludeFirstTimers && isFirstTimer);
+        }
+
+        /// <summary>
+        /// During relay events, everyone will receive the position points of 1 and the blanks
+        /// will be filled in with a 2 when calculating the team trophy. This will enable the 
+        /// algorithm to correctly determine how to share out the points. 
+        /// This determines whether any one of the results is a relay result. This will be used 
+        /// by the factory to assume that the whole event is a relay one.
+        /// </summary>
+        /// <param name="resultsTable">
+        /// The partially calculated results table. It's times will say if it's relay or not.
+        /// </param>
+        /// <returns>Is the event to be considered a relay event.</returns>
+        private bool IsRelayEvent(
+            EventResults resultsTable)
+        {
+            bool results = 
+                resultsTable.Entries.Exists(
+                    r => r.Time.Description == RaceTimeDescription.Relay);
+
+            return results;
         }
     }
 }
