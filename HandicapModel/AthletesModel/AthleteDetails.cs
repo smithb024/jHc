@@ -16,9 +16,9 @@
     public class AthleteDetails
     {
         /// <summary>
-        /// The normalisation config manager.
+        /// The configuration information used to work out the handicaps
         /// </summary>
-        private readonly INormalisationConfigMngr normalisationConfigMngr;
+        private readonly NormalisationConfigType normalisationConfig;
 
         /// <summary>
         ///   Creates a new instance of the AthleteDetails class
@@ -70,7 +70,7 @@
           string birthDay,
           bool signedConsent,
           bool active,
-            INormalisationConfigMngr normalisationConfigManager)
+          INormalisationConfigMngr normalisationConfigManager)
         {
             this.Key = key;
             this.Name = name;
@@ -89,7 +89,7 @@
                 birthMonth,
                 birthDay);
 
-            this.normalisationConfigMngr = normalisationConfigManager;
+            this.normalisationConfig = normalisationConfigManager.ReadNormalisationConfiguration();
         }
 
         /// <summary>
@@ -110,17 +110,17 @@
         /// <param name="birthDay">birth day, no longer recorded</param>
         /// <param name="normalisationConfigManager">normalisation config manager</param>
         public AthleteDetails(
-          int key,
-          string name,
-          string club,
-          TimeType roundedHandicap,
-          SexType sex,
-          bool signedConsent,
-          bool active,
-          List<Appearances> times,
-          string birthYear,
-          string birthMonth,
-          string birthDay,
+            int key,
+            string name,
+            string club,
+            TimeType roundedHandicap,
+            SexType sex,
+            bool signedConsent,
+            bool active,
+            List<Appearances> times,
+            string birthYear,
+            string birthMonth,
+            string birthDay,
             INormalisationConfigMngr normalisationConfigManager)
         {
             this.Key = key;
@@ -136,12 +136,12 @@
             this.Times = new List<Appearances>();
 
             this.BirthDate =
-              new DateOfBirth(
-                birthYear,
-                birthMonth,
-                birthDay);
+                new DateOfBirth(
+                    birthYear,
+                    birthMonth,
+                    birthDay);
 
-            this.normalisationConfigMngr = normalisationConfigManager;
+            this.normalisationConfig = normalisationConfigManager.ReadNormalisationConfiguration();
         }
 
         /// <summary>
@@ -162,14 +162,12 @@
         /// <summary>
         /// Gets the Surname of the athlete.
         /// </summary>
-        public string Forename =>
-            NameHelper.GetForename(Name);
+        public string Forename => NameHelper.GetForename(this.Name);
 
         /// <summary>
         /// Gets the Surname of the athlete.
         /// </summary>
-        public string Surname =>
-            NameHelper.GetSurname(Name);
+        public string Surname => NameHelper.GetSurname(this.Name);
 
         /// <summary>
         /// Gets or sets all the running numbers used this season this season.
@@ -188,7 +186,7 @@
             {
                 if (this.RunningNumbers.Count > 0)
                 {
-                    for (int index = 0; index < RunningNumbers.Count; ++index)
+                    for (int index = 0; index < this.RunningNumbers.Count; ++index)
                     {
                         if (string.Compare(this.RunningNumbers[index].Substring(0, 1), "A") == 0)
                         {
@@ -255,11 +253,7 @@
                     return this.PredeclaredHandicap;
                 }
 
-                // TODO, do we really want to read this every time, can it be stored in memory?
-                NormalisationConfigType normalisationConfig =
-                    this.normalisationConfigMngr.ReadNormalisationConfiguration();
-
-                if (!normalisationConfig.UseCalculatedHandicap)
+                if (!this.normalisationConfig.UseCalculatedHandicap)
                 {
                     return this.PredeclaredHandicap;
                 }
@@ -275,10 +269,12 @@
                     return this.PredeclaredHandicap;
                 }
 
-                TimeType calculatedHandicap = new TimeType(normalisationConfig.HandicapTime, 0) - this.Times[this.Times.Count - 1].Time;
+                TimeType calculatedHandicap = 
+                    new TimeType(
+                        this.normalisationConfig.HandicapTime, 0) - this.Times[this.Times.Count - 1].Time;
 
                 return HandicapHelper.RoundHandicap(
-                  normalisationConfig,
+                  this.normalisationConfig,
                   calculatedHandicap);
             }
         }
@@ -337,7 +333,7 @@
         /// <param name="runningNumber">running number</param>
         public void AddNewNumber(string runningNumber)
         {
-            RunningNumbers.Add(runningNumber);
+            this.RunningNumbers.Add(runningNumber);
         }
 
         /// <summary>
