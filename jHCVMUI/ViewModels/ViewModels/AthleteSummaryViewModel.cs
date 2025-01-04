@@ -34,11 +34,13 @@
         private readonly INormalisationConfigMngr normalisationConfigManager;
 
         /// <summary>
-        /// Results configuration manager.
+        /// The collection of athletes.
         /// </summary>
-        private readonly IResultsConfigMngr resultsConfigurationManager;
-
         private ObservableCollection<AthleteCompleteViewModel> athleteCollection;
+
+        /// <summary>
+        /// The index of the selected <see cref="athleteCollection"/>.
+        /// </summary>
         private int athleteCollectionIndex;
 
         /// <summary>
@@ -46,24 +48,21 @@
         /// </summary>
         /// <param name="model">junior handicap model</param>
         /// <param name="normalisationConfigManager">Normalisation configuration manager</param>
-        /// <param name="resultsConfigurationManager">results configuration manager</param>
         public AthleteSummaryViewModel(
             IModel model,
-            INormalisationConfigMngr normalisationConfigManager,
-            IResultsConfigMngr resultsConfigurationManager)
+            INormalisationConfigMngr normalisationConfigManager)
         {
             this.model = model;
             this.normalisationConfigManager = normalisationConfigManager;
-            this.resultsConfigurationManager = resultsConfigurationManager;
 
             this.LoadAthleteInformation(model.Athletes.AthleteDetails);
-            //model.AthletesCallback = new AthletesDelegate(AthleteInfoUpdated);
 
             this.athleteCollectionIndex = -1;
-
-            string testString = this.AthleteSummaryKey;
         }
         
+        /// <summary>
+        /// Gets a value which indicates if the index is valid.
+        /// </summary>
         private bool IndexValid =>
           this.AthleteCollectionIndex >= 0 && this.AthleteCollectionIndex < this.AthleteCollection?.Count;
 
@@ -76,11 +75,11 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public ObservableCollection<AthleteCompleteViewModel> AthleteCollection
         {
-            get { return athleteCollection; }
+            get => this.athleteCollection;
             set
             {
-                athleteCollection = value;
-                RaisePropertyChangedEvent("AthleteCollection");
+                this.athleteCollection = value;
+                this.RaisePropertyChangedEvent(nameof(this.AthleteCollection));
             }
         }
 
@@ -89,15 +88,12 @@
         /// </summary>
         public int AthleteCollectionIndex
         {
-            get
-            {
-                return this.athleteCollectionIndex;
-            }
+            get => this.athleteCollectionIndex;
 
             set
             {
                 this.athleteCollectionIndex = value;
-                this.RaisePropertyChangedEvent("AthleteCollectionIndex");
+                this.RaisePropertyChangedEvent(nameof(this.AthleteCollectionIndex));
                 this.UpdatePropertyChangedEvents();
             }
         }
@@ -106,7 +102,7 @@
         /// Gets the key for the currently selected athlete.
         /// </summary>
         public string AthleteSummaryKey =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].Key.ToString() :
               string.Empty;
 
@@ -114,7 +110,7 @@
         /// Gets the name for the currently selected athlete.
         /// </summary>
         public string AthleteSummaryName =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].Name :
               string.Empty;
 
@@ -122,7 +118,7 @@
         /// Gets the club for the currently selected athlete.
         /// </summary>
         public string AthleteSummaryClub =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].Club :
               string.Empty;
 
@@ -130,7 +126,7 @@
         /// Gets the sex for the currently selected athlete.
         /// </summary>
         public string AthleteSummarySex =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].Sex :
               string.Empty;
 
@@ -138,7 +134,7 @@
         /// Gets the rounded handicap for the currently selected athlete.
         /// </summary>
         public string AthleteSummaryHandicap =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].RoundedHandicap :
               string.Empty;
 
@@ -146,7 +142,7 @@
         /// Gets the PB for the currently selected athlete.
         /// </summary>
         public string AthleteSummaryPB =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].PB :
               string.Empty;
 
@@ -154,7 +150,7 @@
         /// Gets the last appearance for the currently selected athlete.
         /// </summary>
         public string AthleteSummaryLastAppearance =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].LastAppearance :
               string.Empty;
 
@@ -162,7 +158,7 @@
         /// Gets the events run count for the currently selected athlete.
         /// </summary>
         public string AthleteSummaryEventsRun =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].NumberOfRuns.ToString() :
               string.Empty;
 
@@ -170,7 +166,7 @@
         /// Gets the active for the currently selected athlete.
         /// </summary>
         public string AthleteSummarySignedConsent =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].SignedConsent.ToString() :
               string.Empty;
 
@@ -178,7 +174,7 @@
         /// Gets the active for the currently selected athlete.
         /// </summary>
         public string AthleteSummaryActive =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].Active.ToString() :
               string.Empty;
 
@@ -186,7 +182,7 @@
         /// Gets the season best for the currently selected athlete.
         /// </summary>
         public string AthleteSummarySB =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].SB :
               string.Empty;
 
@@ -194,7 +190,7 @@
         /// Gets the running numbers for the currently selected athlete.
         /// </summary>
         public ObservableCollection<string> AthleteSummaryRunningNumbers =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].CurrentSeasonNumbers :
               new ObservableCollection<string>();
 
@@ -202,7 +198,7 @@
         /// Gets all times for the currently selected athlete.
         /// </summary>
         public ObservableCollection<AppearancesViewModel> AthleteSummaryAllTimes =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].AllTimes :
               new ObservableCollection<AppearancesViewModel>();
 
@@ -210,7 +206,7 @@
         /// Gets this seasons times for the currently selected athlete.
         /// </summary>
         public ObservableCollection<AppearancesViewModel> AthleteSummarySeasonTimes =>
-            IndexValid ?
+           this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].CurrentSeasonTimes :
               new ObservableCollection<AppearancesViewModel>();
 
@@ -218,7 +214,7 @@
         /// Gets the total points for the currently selected athlete.
         /// </summary>
         public string AthleteSummaryTotalPoints =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].CurrentSeasonTotalPoints.ToString() :
               string.Empty;
 
@@ -226,7 +222,7 @@
         /// Gets the finishing points for the currently selected athlete.
         /// </summary>
         public string AthleteSummaryFinishingPoints =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].CurrentSeasonFinishingPoints.ToString() :
               string.Empty;
 
@@ -234,7 +230,7 @@
         /// Gets the position points for the currently selected athlete.
         /// </summary>
         public string AthleteSummaryPositionPoints =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].CurrentSeasonPositionPoints.ToString() :
               string.Empty;
 
@@ -242,10 +238,9 @@
         /// Gets the best points for the currently selected athlete.
         /// </summary>
         public string AthleteSummaryBestPoints =>
-            IndexValid ?
+            this.IndexValid ?
               this.AthleteCollection[this.AthleteCollectionIndex].CurrentSeasonBestPoints.ToString() :
               string.Empty;
-        //athleteCurrentSeason.Points.BestPoints));
 
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         /// <name>LoadAthleteInformation</name>
@@ -306,7 +301,7 @@
         /// </summary>
         public void AthleteInfoUpdated()
         {
-            LoadAthleteInformation(this.model.Athletes.AthleteDetails);
+            this.LoadAthleteInformation(this.model.Athletes.AthleteDetails);
         }
 
         /// <summary>
@@ -335,24 +330,24 @@
         /// </summary>
         private void UpdatePropertyChangedEvents()
         {
-            this.RaisePropertyChangedEvent("AthleteSummaryKey");
-            this.RaisePropertyChangedEvent("AthleteSummaryName");
-            this.RaisePropertyChangedEvent("AthleteSummaryClub");
-            this.RaisePropertyChangedEvent("AthleteSummarySex");
-            this.RaisePropertyChangedEvent("AthleteSummaryHandicap");
-            this.RaisePropertyChangedEvent("AthleteSummaryPB");
-            this.RaisePropertyChangedEvent("AthleteSummaryLastAppearance");
-            this.RaisePropertyChangedEvent("AthleteSummaryEventsRun");
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummaryKey));
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummaryName));
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummaryClub));
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummarySex));
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummaryHandicap));
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummaryPB));
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummaryLastAppearance));
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummaryEventsRun));
             this.RaisePropertyChangedEvent(nameof(this.AthleteSummarySignedConsent));
-            this.RaisePropertyChangedEvent("AthleteSummaryActive");
-            this.RaisePropertyChangedEvent("AthleteSummarySB");
-            this.RaisePropertyChangedEvent("AthleteSummaryRunningNumbers");
-            this.RaisePropertyChangedEvent("AthleteSummaryAllTimes");
-            this.RaisePropertyChangedEvent("AthleteSummarySeasonTimes");
-            this.RaisePropertyChangedEvent("AthleteSummaryTotalPoints");
-            this.RaisePropertyChangedEvent("AthleteSummaryFinishingPoints");
-            this.RaisePropertyChangedEvent("AthleteSummaryPositionPoints");
-            this.RaisePropertyChangedEvent("AthleteSummaryBestPoints");
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummaryActive));
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummarySB));
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummaryRunningNumbers));
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummaryAllTimes));
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummarySeasonTimes));
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummaryTotalPoints));
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummaryFinishingPoints));
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummaryPositionPoints));
+            this.RaisePropertyChangedEvent(nameof(this.AthleteSummaryBestPoints));
         }
     }
 }

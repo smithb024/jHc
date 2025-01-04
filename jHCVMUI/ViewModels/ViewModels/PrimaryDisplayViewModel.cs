@@ -344,8 +344,7 @@
             m_athleteSummaryDialog.DataContext =
               new AthleteSummaryViewModel(
                   this.model,
-                  this.normalisationConfigManager,
-                  this.resultsConfigurationManager);
+                  this.normalisationConfigManager);
 
             m_athleteSummaryDialog.Show();
             m_athleteSummaryDialog.Activate();
