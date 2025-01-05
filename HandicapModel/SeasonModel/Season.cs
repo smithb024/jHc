@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
@@ -363,17 +364,33 @@
         /// <returns>number of appearances</returns>
         public int GetAthleteAppearancesCount(int key)
         {
-            return Athletes.Find(athlete => athlete.Key == key)?.NumberOfAppearances ?? 0;
+            return this.Athletes.Find(athlete => athlete.Key == key)?.NumberOfAppearances ?? 0;
         }
 
         /// <summary>
-        /// Get the current handicap season best
+        /// Get the current handicap season best.
         /// </summary>
+        /// <remarks>
+        /// Ensure that relay or DNF results are ignored by checking to make sure that there is a
+        /// valid time present in the season.
+        /// </remarks>
         /// <param name="key">unique key</param>
         /// <returns>season best time</returns>
         public TimeType GetSB(int key)
         {
-            return Athletes.Find(athlete => athlete.Key == key)?.SB ?? new TimeType(0, 0);
+            IAthleteSeasonDetails foundAthlete =
+                this.Athletes.Find(
+                    athlete => athlete.Key == key);
+
+            if (foundAthlete != null)
+            {
+                if (foundAthlete.Times.All(a => a.Time.Description == RaceTimeDescription.Finished))
+                {
+                    return foundAthlete.SB;
+                }
+            }
+
+            return new TimeType(0, 0);
         }
 
         /// <summary>
@@ -383,7 +400,7 @@
         /// <param name="newTime">new time to add</param>
         public void AddNewTime(int key, Appearances newTime)
         {
-            IAthleteSeasonDetails athlete = Athletes.Find(a => a.Key == key);
+            IAthleteSeasonDetails athlete = this.Athletes.Find(a => a.Key == key);
 
             if (athlete == null)
             {
