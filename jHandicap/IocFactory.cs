@@ -18,6 +18,7 @@
     using HandicapModel.Admin.Manage;
     using HandicapModel.Interfaces;
     using HandicapModel;
+    using HandicapModel.Admin.Manage.Event;
 
     /// <summary>
     /// Factory class, used to set up dependency injection
@@ -49,6 +50,7 @@
                 .AddSingleton<IResultsConfigMngr, ResultsConfigMngr>()
                 .AddSingleton<ISeriesConfigMngr, SeriesConfigMngr>()
                 .AddSingleton<IModel, Model>()
+                .AddSingleton<IResultsTableGenerator, ResultsTableGenerator>()
                 .AddSingleton<IBLMngr, BLMngr>()
                 .AddSingleton<PrimaryDisplayViewModel>()
                 .AddSingleton<EventPaneViewModel>()

@@ -43,13 +43,13 @@
         {
             get
             {
-                ++nextKey;
-                return nextKey;
+                ++this.nextKey;
+                return this.nextKey;
             }
 
             private set
             {
-                nextKey = value;
+                this.nextKey = value;
             }
         }
 
@@ -125,12 +125,12 @@
         /// </summary>
         public void SetNextKey()
         {
-            NextKey = 0;
+            this.NextKey = 0;
             foreach (AthleteDetails athlete in this.AthleteDetails)
             {
-                if (athlete.Key > NextKey)
+                if (athlete.Key > this.NextKey)
                 {
-                    NextKey = athlete.Key;
+                    this.NextKey = athlete.Key;
                 }
             }
         }
@@ -152,7 +152,7 @@
         /// <returns>athlete name</returns>
         public string GetAthleteName(int key)
         {
-            return AthleteDetails.Find(athlete => athlete.Key == key)?.Name ?? "Unknown Athlete";
+            return this.AthleteDetails.Find(athlete => athlete.Key == key)?.Name ?? "Unknown Athlete";
         }
 
         /// <summary>
@@ -162,7 +162,7 @@
         /// <returns>athlete's club</returns>
         public string GetAthleteClub(int key)
         {
-            return AthleteDetails.Find(athlete => athlete.Key == key)?.Club ?? string.Empty;
+            return this.AthleteDetails.Find(athlete => athlete.Key == key)?.Club ?? string.Empty;
         }
 
         /// <summary>
@@ -172,7 +172,7 @@
         /// <returns>athlete age</returns>
         public int? GetAthleteAge(int key)
         {
-            return AthleteDetails.Find(athlete => athlete.Key == key)?.BirthDate.Age ?? null;
+            return this.AthleteDetails.Find(athlete => athlete.Key == key)?.BirthDate.Age ?? null;
         }
 
         /// <summary>
@@ -182,7 +182,7 @@
         /// <returns>athlete's sex</returns>
         public SexType GetAthleteSex(int key)
         {
-            return AthleteDetails.Find(athlete => athlete.Key == key)?.Sex ?? SexType.NotSpecified;
+            return this.AthleteDetails.Find(athlete => athlete.Key == key)?.Sex ?? SexType.NotSpecified;
         }
 
         /// <summary>
@@ -193,7 +193,7 @@
         /// <returns>true if a first timer.</returns>
         public bool IsFirstTimer(int key)
         {
-            AthleteDetails athlete = AthleteDetails.Find(a => a.Key == key);
+            AthleteDetails athlete = this.AthleteDetails.Find(a => a.Key == key);
 
             if (athlete == null)
             {
@@ -210,7 +210,7 @@
         /// <returns>handicap value</returns>
         public TimeType GetRoundedHandicap(int key)
         {
-            return (AthleteDetails.Find(athlete => athlete.Key == key)?.RoundedHandicap ?? new TimeType(0, 0));
+            return (this.AthleteDetails.Find(athlete => athlete.Key == key)?.RoundedHandicap ?? new TimeType(0, 0));
         }
 
         /// <summary>
@@ -220,7 +220,7 @@
         /// <returns>PB value</returns>
         public TimeType GetPB(int key)
         {
-            return (AthleteDetails.Find(athlete => athlete.Key == key)?.PB ?? new TimeType(0, 0));
+            return (this.AthleteDetails.Find(athlete => athlete.Key == key)?.PB ?? new TimeType(0, 0));
         }
 
         /// <summary>
@@ -230,7 +230,7 @@
         /// <param name="newTime">new time to add</param>
         public void AddNewTime(int key, Appearances newTime)
         {
-            AthleteDetails athlete = AthleteDetails.Find(a => a.Key == key);
+            AthleteDetails athlete = this.AthleteDetails.Find(a => a.Key == key);
 
             if (athlete == null)
             {
@@ -247,7 +247,7 @@
         /// <returns>number of athletes registed to the named club</returns>
         public int GetNumberRegisteredToClub(string clubName)
         {
-            return AthleteDetails.FindAll(athlete => athlete.Club == clubName).Count;
+            return this.AthleteDetails.FindAll(athlete => athlete.Club == clubName).Count;
         }
 
         /// <summary>

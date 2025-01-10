@@ -52,7 +52,7 @@
         /// <summary>
         /// The points scored in the mob trophy.
         /// </summary>
-        private string mobTrophypoints;
+        private string mobTrophyPoints;
 
         /// <summary>
         /// The points scored in the team trophy.
@@ -97,7 +97,7 @@
             this.extraInformation = string.Empty;
             this.order = 0;
             this.personalBest = false;
-            this.mobTrophypoints = string.Empty;
+            this.mobTrophyPoints = string.Empty;
             this.teamTrophyPoints = 0;
             this.number = string.Empty;
             this.runningOrder = 0;
@@ -150,7 +150,7 @@
             this.order = order;
             this.personalBest = isPersonalBest;
             this.yearBest = isYearBest;
-            this.mobTrophypoints = mobTrophyPoints;
+            this.mobTrophyPoints = mobTrophyPoints;
             this.teamTrophyPoints = teamTrophyPoints;
             this.number = number;
             this.runningOrder = runningOrder;
@@ -299,22 +299,22 @@
         /// Gets or sets the points of the athlete in the row.
         /// </summary>
         [XmlAttribute("pts")]
-        public string PMobTrophyoints
+        public string MobTrophyPoints
         {
             get
             {
-                return this.mobTrophypoints;
+                return this.mobTrophyPoints;
             }
 
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    this.mobTrophypoints = string.Empty;
+                    this.mobTrophyPoints = string.Empty;
                 }
                 else
                 {
-                    this.mobTrophypoints = value;
+                    this.mobTrophyPoints = value;
                 }
             }
         }

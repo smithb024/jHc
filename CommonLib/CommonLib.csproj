@@ -50,6 +50,7 @@
     <Compile Include="Decoders\SplitStringDecoder.cs" />
     <Compile Include="Enumerations\FieldUpdatedType.cs" />
     <Compile Include="Enumerations\SexType.cs" />
+    <Compile Include="Enumerations\SummaryPropertiesType.cs" />
     <Compile Include="Helpers\ListOCConverter.cs" />
     <Compile Include="Helpers\StringCollectionOutput.cs" />
     <Compile Include="Images\GUIToImage.cs" />

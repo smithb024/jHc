@@ -71,7 +71,17 @@
         private string raceNumberUsed = "";
         private int minutes = 0;
         private int seconds = 0;
+
+        /// <summary>
+        /// Indiciates if the athlete did not finish.
+        /// </summary>
         private bool dnf = false;
+
+        /// <summary>
+        /// Indiciates if the athlete was taking part in a relay, so normal scoring rules do not 
+        /// apply.
+        /// </summary>
+        private bool relay = false;
 
         /// <summary>
         /// Index used to select a input source from the <see cref="TimeInputSources"/> collection.
@@ -255,21 +265,65 @@
         /// <summary>
         /// Gets and sets a flag indicating if the athlete finished.
         /// </summary>
+        /// <remarks>
+        /// If set, then <see cref="Relay"/> can't be
+        /// </remarks>
         public bool DNF
         {
-            get { return dnf; }
+            get => this.dnf;
             set
             {
-                dnf = value;
-                RaisePropertyChangedEvent("DNF");
-                RaisePropertyChangedEvent("TimeIsValid");
+                if (this.dnf == value)
+                {
+                    return;
+                }
+
+                this.dnf = value;
+                this.RaisePropertyChangedEvent(nameof(this.DNF));
+
+                if (this.dnf)
+                {
+                    this.relay = false;
+                    this.RaisePropertyChangedEvent(nameof(this.Relay));
+                }
+
+                this.RaisePropertyChangedEvent(nameof(this.TimeIsValid));
+            }
+        }
+
+        /// <summary>
+        /// Gets and sets a flag indicating if the athlete is in a relay.
+        /// </summary>
+        /// <remarks>
+        /// If set, then <see cref="DNF"/> can't be
+        /// </remarks>
+        public bool Relay
+        {
+            get => this.relay;
+            set
+            {
+                if (this.relay == value)
+                {
+                    return ;
+                }
+
+                this.relay = value;
+                this.RaisePropertyChangedEvent(nameof(this.Relay));
+
+                if (this.relay)
+                {
+                    this.dnf = false;
+                    this.RaisePropertyChangedEvent(nameof(this.DNF));
+                }
+
+                this.RaisePropertyChangedEvent(nameof(this.TimeIsValid));
             }
         }
 
         /// <summary>
         /// Gets a value indicating if the time is a valid input. 
         /// </summary>
-        public bool TimeIsValid => !DNF;
+        public bool TimeIsValid => !this.DNF || !this.Relay;
 
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         /// <name>AthleteCollection</name>
@@ -456,8 +510,31 @@
         /// </summary>
         public void AddRawTimeCmd()
         {
-            RegisterNewResult(RaceNumberUsed,
-                              DNF ? new RaceTimeType(DNF, false) : new RaceTimeType(TotalMinutes, TotalSeconds));
+            RaceTimeType raceTimeType;
+
+            if (this.DNF)
+            {
+                raceTimeType = 
+                    new RaceTimeType(
+                        RaceTimeDescription.Dnf);
+            }
+            else if (this.Relay)
+            {
+                raceTimeType =
+                    new RaceTimeType(
+                        RaceTimeDescription.Relay);
+            }
+            else
+            {
+                raceTimeType =
+                    new RaceTimeType(
+                        this.TotalMinutes, 
+                        this.TotalSeconds);
+            }
+
+            this.RegisterNewResult(
+                this.RaceNumberUsed,
+                raceTimeType);
 
             this.UnregisteredAthletesIndex = -1;
         }
@@ -472,7 +549,7 @@
         /// </summary>
         public void SaveRawResultsCmd()
         {
-            SaveRawEventResults();
+            this.SaveRawEventResults();
 
             CommonMessenger.Default.Send(
                 new HandicapProgressMessage(
@@ -712,9 +789,13 @@
         {
             List<IRaw> rawList = new List<IRaw>();
 
-            foreach (RawResults result in AllAthletes.FindAll(athlete => athlete.RaceNumber != string.Empty))
+            foreach (RawResults result in this.AllAthletes.FindAll(athlete => athlete.RaceNumber != string.Empty))
             {
-                rawList.Add(new Raw(result.RaceNumber, result.RaceTime, result.Order));
+                rawList.Add(
+                    new Raw(
+                        result.RaceNumber, 
+                        result.RaceTime, 
+                        result.Order));
             }
 
             return this.handicapEventModel.SaveRawResults(rawList);

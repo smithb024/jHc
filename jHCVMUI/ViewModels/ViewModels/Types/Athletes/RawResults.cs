@@ -3,12 +3,32 @@
     using System.Collections.ObjectModel;
     using CommonHandicapLib.Types;
 
+    /// <summary>
+    /// The raw results for a single athlete in a single event.
+    /// </summary>
     public class RawResults : AthleteSeasonBase
     {
+        /// <summary>
+        /// The race time.
+        /// </summary>
         private RaceTimeType raceTime;
+
+        /// <summary>
+        /// An order key, used if two athletes have the same time.
+        /// </summary>
         private int order;
+
+        /// <summary>
+        /// The number of the athlete, used during the event.
+        /// </summary>
         private string raceNumber;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="RawResults"/> class.
+        /// </summary>
+        /// <param name="key">The athlete key</param>
+        /// <param name="name">The athlete name</param>
+        /// <param name="runningNumbers">The number associated with the athlete</param>
         public RawResults(
           int key,
           string name,
@@ -27,11 +47,11 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public RaceTimeType RaceTime
         {
-            get { return raceTime; }
+            get => this.raceTime;
             set
             {
-                raceTime = value;
-                RaisePropertyChangedEvent("RaceTime");
+                this.raceTime = value;
+                this.RaisePropertyChangedEvent(nameof(this.RaceTime));
             }
         }
 
@@ -45,11 +65,11 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public int Order
         {
-            get { return order; }
+            get => this.order; 
             set
             {
-                order = value;
-                RaisePropertyChangedEvent("Order");
+                this.order = value;
+                this.RaisePropertyChangedEvent(nameof(this.Order));
             }
         }
 
@@ -63,11 +83,11 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public string RaceNumber
         {
-            get { return raceNumber; }
+            get => raceNumber;
             set
             {
-                raceNumber = value;
-                RaisePropertyChangedEvent("RaceNumber");
+                this.raceNumber = value;
+                this.RaisePropertyChangedEvent(nameof(this.RaceNumber));
             }
         }
     }

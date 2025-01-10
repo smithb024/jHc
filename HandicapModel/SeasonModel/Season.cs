@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
+    using CommonLib.Enumerations;
     using CommonLib.Types;
     using HandicapModel.Admin.Manage;
     using HandicapModel.Common;
@@ -362,17 +364,33 @@
         /// <returns>number of appearances</returns>
         public int GetAthleteAppearancesCount(int key)
         {
-            return Athletes.Find(athlete => athlete.Key == key)?.NumberOfAppearances ?? 0;
+            return this.Athletes.Find(athlete => athlete.Key == key)?.NumberOfAppearances ?? 0;
         }
 
         /// <summary>
-        /// Get the current handicap season best
+        /// Get the current handicap season best.
         /// </summary>
+        /// <remarks>
+        /// Ensure that relay or DNF results are ignored by checking to make sure that there is a
+        /// valid time present in the season.
+        /// </remarks>
         /// <param name="key">unique key</param>
         /// <returns>season best time</returns>
         public TimeType GetSB(int key)
         {
-            return Athletes.Find(athlete => athlete.Key == key)?.SB ?? new TimeType(0, 0);
+            IAthleteSeasonDetails foundAthlete =
+                this.Athletes.Find(
+                    athlete => athlete.Key == key);
+
+            if (foundAthlete != null)
+            {
+                if (foundAthlete.Times.Any(a => a.Time.Description == RaceTimeDescription.Finished))
+                {
+                    return foundAthlete.SB;
+                }
+            }
+
+            return new TimeType(0, 0);
         }
 
         /// <summary>
@@ -382,7 +400,7 @@
         /// <param name="newTime">new time to add</param>
         public void AddNewTime(int key, Appearances newTime)
         {
-            IAthleteSeasonDetails athlete = Athletes.Find(a => a.Key == key);
+            IAthleteSeasonDetails athlete = this.Athletes.Find(a => a.Key == key);
 
             if (athlete == null)
             {
@@ -408,6 +426,42 @@
             }
 
             athlete.UpdatePositionPoints(date, points);
+        }
+
+        /// <summary>
+        /// Within the summary, increate the number of <paramref name="type"/> by one.
+        /// </summary>
+        /// <param name="type">
+        /// The type of property to change.
+        /// </param>
+        public void IncrementSummary(SummaryPropertiesType type)
+        {
+            this.Summary.Increment(type);
+        }
+
+        /// <summary>
+        /// Set the fastest times in the summary.
+        /// </summary>
+        /// <param name="sex">athlete sex</param>
+        /// <param name="key">athlete key</param>
+        /// <param name="name">athlete name</param>
+        /// <param name="time">athlete time</param>
+        /// <param name="date">date the time was set</param>
+        public void SetFastest(
+            SexType sex,
+            int key,
+            string name,
+            TimeType time,
+            DateType date)
+        {
+            if (sex == SexType.Female)
+            {
+                this.Summary.SetFastestGirl(key, name, time, date);
+            }
+            else if (sex == SexType.Male)
+            {
+                this.Summary.SetFastestBoy(key, name, time, date);
+            }
         }
 
         /// <summary>

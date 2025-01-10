@@ -181,5 +181,33 @@
         /// Save the global summary data.
         /// </summary>
         void SaveGlobalSummary();
+
+        /// <summary>
+        /// Increate the number of <paramref name="type"/> by one across all the summaries.
+        /// </summary>
+        /// <param name="type">
+        /// The type of property to change.
+        /// </param>
+        void IncrementSummaries(SummaryPropertiesType type);
+
+        /// <summary>
+        /// Attempt to set the fastest times across all summaries.
+        /// </summary>
+        /// <param name="sex">athlete sex</param>
+        /// <param name="key">athlete key</param>
+        /// <param name="name">athlete name</param>
+        /// <param name="time">athlete time</param>
+        /// <param name="date">date the time was set</param>
+        void SetFastest(
+            SexType sex,
+            int key,
+            string name,
+            TimeType time,
+            DateType date);
+
+        /// <summary>
+        /// Save all the tables.
+        /// </summary>
+        void SaveAll();
     }
 }

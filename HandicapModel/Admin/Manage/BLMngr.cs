@@ -112,6 +112,7 @@
             INormalisationConfigMngr normalisationConfigurationManager,
             IResultsConfigMngr resultsConfigurationManager,
             ISeriesConfigMngr seriesConfigurationManager,
+            IResultsTableGenerator resultsTableGenerator,
             IAthleteData athleteData,
             IClubData clubData,
             IEventData eventData,
@@ -139,9 +140,9 @@
             this.resultsCalculator =
                 new CalculateResultsMngr(
                     this.model,
-                    this.normalisationConfigurationManager,
                     this.resultsConfigurationManager,
                     this.seriesConfigurationManager,
+                    resultsTableGenerator,
                     this.logger);
 
             this.IsValid =

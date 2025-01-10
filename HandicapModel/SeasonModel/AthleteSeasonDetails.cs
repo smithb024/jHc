@@ -130,6 +130,10 @@
         /// <summary>
         /// Calculates a new handicap from the list of times.
         /// </summary>
+        /// <remarks>
+        /// There are a number of ways of returning null. Null is returned when a rounded handicap
+        /// is not determined.
+        /// </remarks>
         public RaceTimeType GetRoundedHandicap(NormalisationConfigType hcConfiguration)
         {
             RaceTimeType handicap;
@@ -147,11 +151,11 @@
 
             int eventsIncluded = 0;
 
-            for (int index = NumberOfAppearances - 1; index >= 0; --index)
+            for (int index = this.NumberOfAppearances - 1; index >= 0; --index)
             {
                 if (eventsIncluded < 3)
                 {
-                    if (!this.Times[index].Time.DNF && !this.Times[index].Time.Unknown)
+                    if (this.Times[index].Time.Description == RaceTimeDescription.Finished)
                     {
                         handicapWorking = handicapWorking + this.Times[index].Time;
                         ++eventsIncluded;
@@ -161,6 +165,11 @@
                 {
                     break;
                 }
+            }
+
+            if (eventsIncluded == 0)
+            {
+                return null;
             }
 
             handicap = new RaceTimeType(hcConfiguration.HandicapTime, 0) - (handicapWorking / eventsIncluded);

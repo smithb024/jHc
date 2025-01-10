@@ -4,6 +4,7 @@
     using System;
     using System.Collections.Generic;
     using HandicapModel.Interfaces.Common;
+    using CommonLib.Enumerations;
 
     /// <summary>
     /// Interface for the Event Model, this describes the full set of results for a single event.
@@ -73,9 +74,27 @@
         /// <param name="results">new set of results.</param>
         void SetResultsTable(IEventResults results);
 
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //void SummaryTableUpdated();
+        /// <summary>
+        /// Within the summary, increate the number of <paramref name="type"/> by one.
+        /// </summary>
+        /// <param name="type">
+        /// The type of property to change.
+        /// </param>
+        void IncrementSummary(SummaryPropertiesType type);
+
+        /// <summary>
+        /// Set the fastest times in the summary.
+        /// </summary>
+        /// <param name="sex">athlete sex</param>
+        /// <param name="key">athlete key</param>
+        /// <param name="name">athlete name</param>
+        /// <param name="time">athlete time</param>
+        /// <param name="date">date the time was set</param>
+        void SetFastest(
+            SexType sex,
+            int key,
+            string name,
+            TimeType time,
+            DateType date);
     }
 }

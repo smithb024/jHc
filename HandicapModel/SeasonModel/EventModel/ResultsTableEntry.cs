@@ -80,7 +80,6 @@
         /// <param name="club">Athlete's club</param>
         /// <param name="raceNumber">Number used in event</param>
         /// <param name="date">event date</param>
-        /// <param name="age">age of the athlete</param>
         /// <param name="position">the position of the current entry</param>
         /// <param name="teamTrophyPoints">points associated with the Team Trophy</param>
         public ResultsTableEntry(
@@ -93,7 +92,6 @@
           SexType sex,
           string raceNumber,
           DateType date,
-          int? age,
           int position,
           int teamTrophyPoints)
         {
@@ -101,14 +99,23 @@
             this.Club = club;
             this.Handicap = handicap;
             this.Name = name;
-            this.Order = order;
             this.Points = new CommonPoints(date);
             this.TeamTrophyPoints = teamTrophyPoints;
             this.RaceNumber = raceNumber;
             this.Sex = sex;
             this.Time = time;
-            this.Position = position;
             this.ExtraInfo = string.Empty;
+
+            if (time.Description == RaceTimeDescription.Relay)
+            {
+                this.Order = 1;
+                this.Position = 1;
+            }
+            else
+            {
+                this.Order = order;
+                this.Position = position;
+            }
         }
 
         /// <summary>
@@ -211,8 +218,19 @@
         /// <remarks>
         /// Complete time minus handicap.
         /// </remarks>
-        public RaceTimeType RunningTime =>
-            this.Time - this.Handicap;
+        public RaceTimeType RunningTime
+        {
+            get 
+            {
+                if (this.Time.Description != RaceTimeDescription.Finished)
+                {
+                    return this.Time;
+                }
+
+                return this.Time - this.Handicap; 
+            }
+
+        }
 
         /// <summary>
         /// Gets the athlete's sex.

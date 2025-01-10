@@ -77,6 +77,8 @@
     <Compile Include="Admin\IO\ResultsCSV\ResultsWriter.cs" />
     <Compile Include="Admin\IO\SummaryData.cs" />
     <Compile Include="Admin\IO\TXT\CommonIO.cs" />
+    <Compile Include="Admin\Manage\Event\IResultsTableGenerator.cs" />
+    <Compile Include="Admin\Manage\Event\ResultsTableGenerator.cs" />
     <Compile Include="Admin\Manage\INormalisationConfigMngr.cs" />
     <Compile Include="Admin\Manage\ISeriesConfigMngr.cs" />
     <Compile Include="Interfaces\Admin\IO\IAthleteData.cs" />

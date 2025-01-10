@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using CommonLib.Enumerations;
     using CommonLib.Types;
 
     /// <summary>
@@ -95,6 +96,14 @@
             int SBs,
             int PBs,
             int FirstTimers);
+
+        /// <summary>
+        /// Increate the number of <paramref name="type"/> by one.
+        /// </summary>
+        /// <param name="type">
+        /// The type of property to change.
+        /// </param>
+        void Increment(SummaryPropertiesType type);
 
         /// <summary>
         /// Sets the fastest boy time

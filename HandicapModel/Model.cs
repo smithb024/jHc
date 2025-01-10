@@ -387,6 +387,62 @@
         }
 
         /// <summary>
+        /// Increate the number of <paramref name="type"/> by one across all the summaries.
+        /// </summary>
+        /// <param name="type">
+        /// The type of property to change.
+        /// </param>
+        public void IncrementSummaries(SummaryPropertiesType type)
+        {
+            this.CurrentEvent.IncrementSummary(type);
+            this.CurrentSeason.IncrementSummary(type);
+            this.GlobalSummary.Increment(type);
+        }
+
+        /// <summary>
+        /// Attempt to set the fastest times across all summaries.
+        /// </summary>
+        /// <param name="sex">athlete sex</param>
+        /// <param name="key">athlete key</param>
+        /// <param name="name">athlete name</param>
+        /// <param name="time">athlete time</param>
+        /// <param name="date">date the time was set</param>
+        public void SetFastest(
+            SexType sex,
+            int key,
+            string name,
+            TimeType time,
+            DateType date)
+        {
+            this.CurrentEvent.SetFastest(sex, key, name, time, date);
+            this.CurrentSeason.SetFastest(sex, key, name, time, date);
+
+            if (sex == SexType.Female)
+            {
+                this.CurrentSeason.Summary.SetFastestGirl(key, name, time, date);
+            }
+            else if (sex == SexType.Male)
+            {
+                this.CurrentSeason.Summary.SetFastestBoy(key, name, time, date);
+            }
+
+        }
+
+        /// <summary>
+        /// Save all tables.
+        /// </summary>
+        public void SaveAll()
+        {
+            this.CurrentEvent.SaveResultsTable();
+
+            this.CurrentEvent.SaveEventSummary();
+            this.CurrentSeason.SaveCurrentSeason();
+            this.SaveGlobalSummary();
+            this.SaveClubList();
+            this.SaveAthleteList();
+        }
+
+        /// <summary>
         /// A load new series command has been initiated. Reload the models from the files.
         /// </summary>
         /// <param name="message"></param>

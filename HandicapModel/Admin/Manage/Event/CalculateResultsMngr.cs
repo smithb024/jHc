@@ -33,14 +33,14 @@
         private readonly IResultsConfigMngr resultsConfiguration;
 
         /// <summary>
-        /// Manager which contains all handicap configuration details.
-        /// </summary>
-        private readonly NormalisationConfigType hcConfiguration;
-
-        /// <summary>
         /// Manager which contains all series configuration details.
         /// </summary>
         private readonly SeriesConfigType seriesConfiguration;
+
+        /// <summary>
+        /// The results table generator factory.
+        /// </summary>
+        private readonly IResultsTableGenerator resultsTableGenerator;
 
         /// <summary>
         /// Application logger
@@ -60,19 +60,22 @@
         /// <param name="seriesConfigurationManager">
         /// series configuration manager
         /// </param>
+        /// <param name="resultsTableGenerator">
+        /// The factory which generates a results table object.
+        /// </param>
         /// <param name="logger">application logger</param>
         public CalculateResultsMngr(
             IModel model,
-            INormalisationConfigMngr normalisationConfigurationManager,
             IResultsConfigMngr resultsConfigurationManager,
             ISeriesConfigMngr seriesConfigurationManager,
+            IResultsTableGenerator resultsTableGenerator,
             IJHcLogger logger)
             : base(model)
         {
             this.logger = logger;
             this.resultsConfiguration = resultsConfigurationManager;
-            this.hcConfiguration = normalisationConfigurationManager.ReadNormalisationConfiguration();
             this.seriesConfiguration = seriesConfigurationManager.ReadSeriesConfiguration();
+            this.resultsTableGenerator = resultsTableGenerator;
         }
 
         /// <summary>
@@ -122,7 +125,7 @@
 
             // Analyse results
             EventResults resultsTable = 
-                this.GenerateResultsTable(
+                this.resultsTableGenerator.Generate(
                     rawResults);
 
             // Sort by running time to work out the speed order.
@@ -144,7 +147,7 @@
 
             this.Model.CurrentEvent.SetResultsTable(resultsTable);
 
-            this.SaveAll();
+            this.Model.SaveAll();
 
             this.logger.WriteLog("Calculate results completed.");
             HandicapProgressMessage finishedMessage = new HandicapProgressMessage("Calculate Results - Completed");
@@ -201,106 +204,10 @@
         }
 
         /// <summary>
-        /// Generate the results table from the raw results and return it.
+        /// Add the points for finishing at the front of the event.
         /// </summary>
-        /// <param name="rawResults">raw results</param>
-        /// <returns>event results table</returns>
-        private EventResults GenerateResultsTable(
-            List<IRaw> rawResults)
-        {
-            EventResults resultsTable = new EventResults();
-            DateType eventDate = this.Model.CurrentEvent.Date;
-
-            foreach (Raw raw in rawResults)
-            {
-                CommonPoints pointsEarned = new CommonPoints(eventDate);
-
-                // Get athlete key.
-                int key = this.Model.Athletes.GetAthleteKey(raw.RaceNumber) ?? 0;
-
-                // Note the current handicap.
-                RaceTimeType athleteHandicap =
-                  this.GetAthleteHandicap(
-                    key);
-
-                // Loop through all the entries in the raw results.
-                ResultsTableEntry singleResult =
-                  new ResultsTableEntry(
-                    key,
-                    this.Model.Athletes.GetAthleteName(key),
-                    raw.TotalTime,
-                    raw.Order,
-                    athleteHandicap,
-                    this.Model.Athletes.GetAthleteClub(key),
-                    this.Model.Athletes.GetAthleteSex(key),
-                    raw.RaceNumber,
-                    this.Model.CurrentEvent.Date,
-                    this.Model.Athletes.GetAthleteAge(key),
-                    resultsTable.Entries.Count + 1,
-                    999999);
-
-                if (!raw.TotalTime.DNF && !raw.TotalTime.Unknown)
-                {
-                    if (this.Model.Athletes.IsFirstTimer(key))
-                    {
-                        singleResult.FirstTimer = true;
-                    }
-
-                    pointsEarned.FinishingPoints = this.resultsConfiguration.ResultsConfigurationDetails.FinishingPoints;
-
-                    // Work out the season best information
-                    if (this.Model.CurrentSeason.GetSB(key) > singleResult.RunningTime)
-                    {
-                        // Can only count as season best if one time has been set.
-                        if (this.Model.CurrentSeason.GetAthleteAppearancesCount(key) > 0)
-                        {
-                            pointsEarned.BestPoints = this.resultsConfiguration.ResultsConfigurationDetails.SeasonBestPoints;
-                            singleResult.SB = true;
-                            this.RecordNewSB();
-                        }
-                    }
-
-                    singleResult.Points = pointsEarned;
-
-                    // Work out the personal best information.
-                    if (this.Model.Athletes.GetPB(key) > singleResult.RunningTime)
-                    {
-                        // Only not as PB if not the first run.
-                        if (!singleResult.FirstTimer)
-                        {
-                            singleResult.PB = true;
-                            this.RecordNewPB();
-                        }
-                    }
-
-                    this.CheckForFastestTime(
-                        this.Model.Athletes.GetAthleteSex(key),
-                        key,
-                        this.Model.Athletes.GetAthleteName(key),
-                        raw.TotalTime - athleteHandicap,
-                        eventDate);
-                    this.UpdateNumberStatistics(
-                        this.Model.Athletes.GetAthleteSex(key),
-                        singleResult.FirstTimer);
-
-                }
-                else if (raw.TotalTime.DNF)
-                {
-                    pointsEarned.FinishingPoints = this.resultsConfiguration.ResultsConfigurationDetails.FinishingPoints;
-                    singleResult.Points = pointsEarned;
-                }
-
-                this.Model.Athletes.AddNewTime(key, new Appearances(singleResult.RunningTime, eventDate));
-                this.Model.CurrentSeason.AddNewTime(key, new Appearances(singleResult.RunningTime, eventDate));
-                this.Model.CurrentSeason.AddNewPoints(key, pointsEarned);
-
-                // End loop through all the entries in the raw results.
-                resultsTable.AddEntry(singleResult);
-            }
-
-            return resultsTable;
-        }
-
+        /// <param name="resultsTable">The results table</param>
+        /// <param name="currentDate">The date of the event.</param>
         private void AddPositionPoints(
           EventResults resultsTable,
           DateType currentDate)
@@ -335,7 +242,7 @@
 
             foreach (ResultsTableEntry result in resultsTable.Entries)
             {
-                if (!result.Time.DNF && !result.Time.Unknown)
+                if (result.Time.Description == RaceTimeDescription.Finished)
                 {
                     if (this.PositionScoreToBeCounted(result.FirstTimer) &&
                       !(positionPoint == 0))
@@ -368,7 +275,7 @@
 
             foreach (ResultsTableEntry result in resultsTable.Entries)
             {
-                if (!result.Time.DNF && !result.Time.Unknown)
+                if (result.Time.Description == RaceTimeDescription.Finished)
                 {
                     if (this.PositionScoreToBeCounted(result.FirstTimer))
                     {
@@ -435,6 +342,11 @@
             // The position is used to assign points to an athlete in the Team Trophy.
             int teamTrophyCompetitionPosition = 0;
             int nextScore = 1;
+
+            // Determine whether the event is a relay event.
+            bool isRelayEvent =
+                this.IsRelayEvent(
+                    resultsTable);
  
             resultsTable.OrderByFinishingTime();
             Dictionary<string, ITeamTrophyEvent> eventDictionary = new Dictionary<string, ITeamTrophyEvent>();
@@ -482,10 +394,11 @@
 
                 ++teamTrophyCompetitionPosition;
                 ITeamTrophyEvent clubEvent = eventDictionary[result.Club];
+                int pointsValue = isRelayEvent ? 1 : teamTrophyCompetitionPosition;
 
                 ICommonTeamTrophyPoints clubPoint =
                     new CommonTeamTrophyPoints(
-                        teamTrophyCompetitionPosition,
+                        pointsValue,
                         result.Name,
                         result.Key,
                         true,
@@ -514,11 +427,12 @@
             }
 
             List<ITeamTrophyEvent> orderedEvent = new List<ITeamTrophyEvent>();
+            int completionValue = isRelayEvent ? 2 : nextScore;
             foreach (KeyValuePair<string, ITeamTrophyEvent> entry in eventDictionary)
             {
                 entry.Value.Complete(
                     this.resultsConfiguration.ResultsConfigurationDetails.NumberInTeamTrophyTeam,
-                    nextScore);
+                    completionValue);
                 orderedEvent.Add(entry.Value);
             }
 
@@ -573,14 +487,9 @@
             bool thirdBoyFound = false;
             bool thirdGirlFound = false;
 
-            foreach (ResultsTableEntry result in resultsTable.Entries)
+            foreach (IResultsTableEntry result in resultsTable.Entries)
             {
-                if (result.Time.DNF)
-                {
-                    continue;
-                }
-
-                if (result.Time.Unknown)
+                if (result.Time.Description != RaceTimeDescription.Finished)
                 {
                     continue;
                 }
@@ -641,120 +550,6 @@
         }
 
         /// <summary>
-        /// Add one new SB to all summary data.
-        /// </summary>
-        private void RecordNewSB()
-        {
-            this.Model.CurrentEvent.Summary.UpdateSummary(
-                this.Model.CurrentEvent.Summary.MaleRunners,
-                this.Model.CurrentEvent.Summary.FemaleRunners,
-                this.Model.CurrentEvent.Summary.SBs + 1,
-                this.Model.CurrentEvent.Summary.PBs,
-                this.Model.CurrentEvent.Summary.FirstTimers);
-
-            this.Model.CurrentSeason.Summary.UpdateSummary(
-                this.Model.CurrentSeason.Summary.MaleRunners,
-                this.Model.CurrentSeason.Summary.FemaleRunners,
-                this.Model.CurrentSeason.Summary.SBs + 1,
-                this.Model.CurrentSeason.Summary.PBs,
-                this.Model.CurrentSeason.Summary.FirstTimers);
-
-            this.Model.GlobalSummary.UpdateSummary(
-                this.Model.GlobalSummary.MaleRunners,
-                this.Model.GlobalSummary.FemaleRunners,
-                this.Model.GlobalSummary.SBs + 1,
-                this.Model.GlobalSummary.PBs,
-                this.Model.GlobalSummary.FirstTimers);
-        }
-
-        /// <summary>
-        /// Add one new PB to all summary data.
-        /// </summary>
-        private void RecordNewPB()
-        {
-            this.Model.CurrentEvent.Summary.UpdateSummary(
-                this.Model.CurrentEvent.Summary.MaleRunners,
-                this.Model.CurrentEvent.Summary.FemaleRunners,
-                this.Model.CurrentEvent.Summary.SBs,
-                this.Model.CurrentEvent.Summary.PBs + 1,
-                this.Model.CurrentEvent.Summary.FirstTimers);
-
-            this.Model.CurrentSeason.Summary.UpdateSummary(
-                this.Model.CurrentSeason.Summary.MaleRunners,
-                this.Model.CurrentSeason.Summary.FemaleRunners,
-                this.Model.CurrentSeason.Summary.SBs,
-                this.Model.CurrentSeason.Summary.PBs + 1,
-                this.Model.CurrentSeason.Summary.FirstTimers);
-
-            this.Model.GlobalSummary.UpdateSummary(
-                this.Model.GlobalSummary.MaleRunners,
-                this.Model.GlobalSummary.FemaleRunners,
-                this.Model.GlobalSummary.SBs,
-                this.Model.GlobalSummary.PBs + 1,
-                this.Model.GlobalSummary.FirstTimers);
-        }
-
-        /// <summary>
-        /// Check to see if the time can be added to the fastest times lists.
-        /// </summary>
-        /// <param name="sex">athlete sex</param>
-        /// <param name="key">athlete key</param>
-        /// <param name="name">athlete name</param>
-        /// <param name="time">athlete time</param>
-        /// <param name="date">date the time was set</param>
-        private void CheckForFastestTime(
-            SexType sex,
-            int key,
-            string name,
-            TimeType time,
-            DateType date)
-        {
-            if (sex == SexType.Female)
-            {
-                this.Model.CurrentEvent.Summary.SetFastestGirl(key, name, time, date);
-                this.Model.CurrentSeason.Summary.SetFastestGirl(key, name, time, date);
-                this.Model.GlobalSummary.SetFastestGirl(key, name, time, date);
-            }
-            else if (sex == SexType.Male)
-            {
-                this.Model.CurrentEvent.Summary.SetFastestBoy(key, name, time, date);
-                this.Model.CurrentSeason.Summary.SetFastestBoy(key, name, time, date);
-                this.Model.GlobalSummary.SetFastestBoy(key, name, time, date);
-            }
-        }
-
-        /// <summary>
-        /// Update all the number statistics.
-        /// </summary>
-        /// <param name="sex">athlete sex</param>
-        /// <param name="firstTimer">indicates if the athlete is a first timer</param>
-        private void UpdateNumberStatistics(
-            SexType sex,
-            bool firstTimer)
-        {
-            this.Model.CurrentEvent.Summary.UpdateSummary(
-                sex == SexType.Male ? this.Model.CurrentEvent.Summary.MaleRunners + 1 : this.Model.CurrentEvent.Summary.MaleRunners,
-                sex == SexType.Female ? this.Model.CurrentEvent.Summary.FemaleRunners + 1 : this.Model.CurrentEvent.Summary.FemaleRunners,
-                this.Model.CurrentEvent.Summary.SBs,
-                this.Model.CurrentEvent.Summary.PBs,
-                firstTimer ? this.Model.CurrentEvent.Summary.FirstTimers + 1 : this.Model.CurrentEvent.Summary.FirstTimers);
-
-            this.Model.CurrentSeason.Summary.UpdateSummary(
-                sex == SexType.Male ? this.Model.CurrentSeason.Summary.MaleRunners + 1 : this.Model.CurrentSeason.Summary.MaleRunners,
-                sex == SexType.Female ? this.Model.CurrentSeason.Summary.FemaleRunners + 1 : this.Model.CurrentSeason.Summary.FemaleRunners,
-                this.Model.CurrentSeason.Summary.SBs,
-                this.Model.CurrentSeason.Summary.PBs,
-                firstTimer ? this.Model.CurrentSeason.Summary.FirstTimers + 1 : this.Model.CurrentSeason.Summary.FirstTimers);
-
-            this.Model.GlobalSummary.UpdateSummary(
-                sex == SexType.Male ? this.Model.GlobalSummary.MaleRunners + 1 : this.Model.GlobalSummary.MaleRunners,
-                sex == SexType.Female ? this.Model.GlobalSummary.FemaleRunners + 1 : this.Model.GlobalSummary.FemaleRunners,
-                this.Model.GlobalSummary.SBs,
-                this.Model.GlobalSummary.PBs,
-                firstTimer ? this.Model.GlobalSummary.FirstTimers + 1 : this.Model.GlobalSummary.FirstTimers);
-        }
-
-        /// <summary>
         /// Loop through all clubs and set the points in the mode.
         /// </summary>
         /// <param name="mobTrophyPoints">points for all clubs</param>
@@ -788,31 +583,24 @@
         }
 
         /// <summary>
-        /// Gets the athlete handicap from the current season. If none is available, it gets it from
-        /// the athlete main body as the predefined handicap.
+        /// During relay events, everyone will receive the position points of 1 and the blanks
+        /// will be filled in with a 2 when calculating the team trophy. This will enable the 
+        /// algorithm to correctly determine how to share out the points. 
+        /// This determines whether any one of the results is a relay result. This will be used 
+        /// by the factory to assume that the whole event is a relay one.
         /// </summary>
-        /// <param name="athleteKey">athlete key</param>
-        /// <returns>athlete handicap</returns>
-        private RaceTimeType GetAthleteHandicap(
-          int athleteKey)
+        /// <param name="resultsTable">
+        /// The partially calculated results table. It's times will say if it's relay or not.
+        /// </param>
+        /// <returns>Is the event to be considered a relay event.</returns>
+        private bool IsRelayEvent(
+            EventResults resultsTable)
         {
-            // Note the current handicap.
-            RaceTimeType athleteHandicap =
-              this.Model.CurrentSeason.GetAthleteHandicap(
-                athleteKey,
-                this.hcConfiguration);
+            bool results = 
+                resultsTable.Entries.Exists(
+                    r => r.Time.Description == RaceTimeDescription.Relay);
 
-            if (athleteHandicap == null)
-            {
-                TimeType globalHandicap =
-                  this.Model.Athletes.GetRoundedHandicap(athleteKey);
-                athleteHandicap =
-                  new RaceTimeType(
-                    globalHandicap.Minutes,
-                    globalHandicap.Seconds);
-            }
-
-            return athleteHandicap;
+            return results;
         }
     }
 }
