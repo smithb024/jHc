@@ -384,7 +384,7 @@
 
             if (foundAthlete != null)
             {
-                if (foundAthlete.Times.All(a => a.Time.Description == RaceTimeDescription.Finished))
+                if (foundAthlete.Times.Any(a => a.Time.Description == RaceTimeDescription.Finished))
                 {
                     return foundAthlete.SB;
                 }
