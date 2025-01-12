@@ -281,9 +281,9 @@
 
             try
             {
-                this.summaryData.SaveSummaryData(Name, Summary);
-                this.athleteData.SaveAthleteSeasonData(Name, Athletes);
-                this.clubData.SaveClubSeasonData(Name, Clubs);
+                this.summaryData.SaveSummaryData(this.Name, this.Summary);
+                this.athleteData.SaveAthleteSeasonData(this.Name, this.Athletes);
+                this.clubData.SaveClubSeasonData(this.Name, this.Clubs);
             }
             catch (Exception ex)
             {
@@ -331,9 +331,9 @@
                 key,
                 name);
 
-            Athletes.Add(newAthlete);
+            this.Athletes.Add(newAthlete);
 
-            this.athleteData.SaveAthleteSeasonData(Name, Athletes);
+            this.athleteData.SaveAthleteSeasonData(this.Name, this.Athletes);
 
             this.AthletesChangedEvent?.Invoke(this, new EventArgs());
             this.AthleteCollectionChangedEvent?.Invoke(this, EventArgs.Empty);
@@ -346,11 +346,11 @@
         /// <returns>rounded handicap</returns>
         public RaceTimeType GetAthleteHandicap(int key, NormalisationConfigType hcConfiguration)
         {
-            if (Athletes != null && Athletes.Count > 0)
+            if (this.Athletes != null && this.Athletes.Count > 0)
             {
-                if (Athletes.Exists(athlete => athlete.Key == key))
+                if (this.Athletes.Exists(athlete => athlete.Key == key))
                 {
-                    return Athletes.Find(athlete => athlete.Key == key).GetRoundedHandicap(hcConfiguration);
+                    return this.Athletes.Find(athlete => athlete.Key == key).GetRoundedHandicap(hcConfiguration);
                 }
             }
 
@@ -418,7 +418,7 @@
         /// <param name="points">earned points</param>
         public void UpdatePositionPoints(int key, DateType date, int points)
         {
-            IAthleteSeasonDetails athlete = Athletes.Find(a => a.Key == key);
+            IAthleteSeasonDetails athlete = this.Athletes.Find(a => a.Key == key);
 
             if (athlete == null)
             {
@@ -473,7 +473,7 @@
             int key,
             CommonPoints points)
         {
-            IAthleteSeasonDetails athlete = Athletes.Find(a => a.Key == key);
+            IAthleteSeasonDetails athlete = this.Athletes.Find(a => a.Key == key);
 
             if (athlete == null)
             {
@@ -493,7 +493,7 @@
             string clubName,
             ICommonPoints points)
         {
-            IClubSeasonDetails clubDetails = Clubs.Find(club => club.Name.CompareTo(clubName) == 0);
+            IClubSeasonDetails clubDetails = this.Clubs.Find(club => club.Name.CompareTo(clubName) == 0);
 
             if (clubDetails != null)
             {
@@ -504,7 +504,7 @@
                 ClubSeasonDetails newClubDetails = new ClubSeasonDetails(clubName);
                 newClubDetails.AddNewEvent(points);
 
-                Clubs.Add(newClubDetails);
+                this.Clubs.Add(newClubDetails);
             }
 
             this.ClubsChangedEvent?.Invoke(this, new EventArgs());
@@ -519,7 +519,7 @@
             string clubName,
             ITeamTrophyEvent points)
         {
-            IClubSeasonDetails clubDetails = Clubs.Find(club => club.Name.CompareTo(clubName) == 0);
+            IClubSeasonDetails clubDetails = this.Clubs.Find(club => club.Name.CompareTo(clubName) == 0);
 
             if (clubDetails != null)
             {
@@ -530,7 +530,7 @@
                 ClubSeasonDetails newClubDetails = new ClubSeasonDetails(clubName);
                 newClubDetails.AddNewEvent(points);
 
-                Clubs.Add(newClubDetails);
+                this.Clubs.Add(newClubDetails);
             }
 
             this.ClubsChangedEvent?.Invoke(this, new EventArgs());
