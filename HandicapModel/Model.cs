@@ -261,9 +261,9 @@
           bool signedConsent,
           bool active)
         {
-            Athletes.SetNewAthlete(
+            this.Athletes.SetNewAthlete(
               new AthleteDetails(
-                Athletes.NextKey,
+                this.Athletes.NextKey,
                 athleteName,
                 club,
                 new TimeType(initialHandicap, 0),
@@ -308,9 +308,9 @@
           bool signedConsent,
           bool active)
         {
-            Athletes.SetNewAthlete(
+            this.Athletes.SetNewAthlete(
               new AthleteDetails(
-                Athletes.NextKey,
+                this.Athletes.NextKey,
                 athleteName,
                 club,
                 new TimeType(initialHandicapMinutes, initialHandicapSeconds),
@@ -370,7 +370,7 @@
         {
             this.CurrentSeason =
                 new Season(
-                    resultsConfigurationManager,
+                    this.resultsConfigurationManager,
                     this.athleteData,
                     this.clubData,
                     this.summaryData,

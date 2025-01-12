@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.IO;
-
+    using CommonHandicapLib.Helpers;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
@@ -18,118 +18,8 @@
     /// <summary>
     /// IO Class for the Athlete data XML file.
     /// </summary>
-    internal class AthleteDataReader : IAthleteDataReader
+    public class AthleteDataReader : IAthleteDataReader
     {
-        /// <summary>
-        /// Root label in the file.
-        /// </summary>
-        private const string c_rootLabel = "AthleteDetails";
-
-        /// <summary>
-        /// Athlete list element label
-        /// </summary>
-        private const string c_athleteListLabel = "AthleteList";
-
-        /// <summary>
-        /// Athlete element label
-        /// </summary>
-        private const string c_athleteLabel = "Athlete";
-
-        /// <summary>
-        /// Key element label
-        /// </summary>
-        private const string c_keyLabel = "Key";
-
-        /// <summary>
-        /// Athlete name element label.
-        /// </summary>
-        private const string c_nameLabel = "Name";
-
-        /// <summary>
-        /// Athlete forename element label.
-        /// </summary>
-        private const string ForenameLabel = "Forename";
-
-        /// <summary>
-        /// Athlete family name element label.
-        /// </summary>
-        private const string FamilyNameLabel = "FamilyName";
-
-        /// <summary>
-        /// Athlete club element label
-        /// </summary>
-        private const string c_clubLabel = "Club";
-
-        /// <summary>
-        /// Signed consent element label.
-        /// </summary>
-        private const string SignedConsentAttribute = "SC";
-
-        /// <summary>
-        /// Predeclare handicap element label.
-        /// </summary>
-        private const string predeclaredHandicapLabel = "HC";
-
-        /// <summary>
-        /// Athlete sex element label
-        /// </summary>
-        private const string c_sexLabel = "Sex";
-
-        /// <summary>
-        /// Is currently active element label.
-        /// </summary>
-        private const string activeLabel = "Atv";
-
-        /// <summary>
-        /// Birth year attribute label.
-        /// </summary>
-        private const string birthYearAttribute = "bY";
-
-        /// <summary>
-        /// Birth month attribute label.
-        /// </summary>
-        private const string birthMonthAttribute = "bM";
-
-        /// <summary>
-        /// Birth day attribute label.
-        /// </summary>
-        private const string birthDayAttribute = "bD";
-
-        /// <summary>
-        /// Appearances element label
-        /// </summary>
-        private const string c_appearancesLabel = "apn";
-
-        /// <summary>
-        /// Time element label
-        /// </summary>
-        private const string c_timeLabel = "time";
-
-        /// <summary>
-        /// Race date element label
-        /// </summary>
-        private const string c_raceTimeLabel = "rtm";
-
-        /// <summary>
-        /// Race date element label
-        /// </summary>
-        private const string c_raceDateLabel = "rdt";
-
-        /// <summary>
-        /// Race numbers element lable
-        /// </summary>
-        private const string c_runningNumbersElement = "runningNumbers";
-
-        /// <summary>
-        /// Race number element label
-        /// </summary>
-        private const string c_numberElement = "number";
-
-        /// <summary>
-        /// Race number attribute label.
-        /// </summary>
-        private const string c_numberAttribute = "no";
-
         /// <summary>
         /// Normalisation config manager.
         /// </summary>
@@ -216,6 +106,8 @@
                         {
                            Key = athletesDetails.Key,
                            Name = athletesDetails.Name,
+                           Forename = athletesDetails.Forename,
+                           FamilyName = athletesDetails.FamilyName,
                            Club = athletesDetails.Club,
                            Sex = athletesDetails.Sex,
                            SignedConsent = athletesDetails.SignedConsent,
@@ -273,7 +165,7 @@
                     new HandicapErrorMessage(
                         error));
                 this.logger.WriteLog(error);
-                SaveAthleteData(fileName, new Athletes(this.seriesConfigManager));
+                this.SaveAthleteData(fileName, new Athletes(this.seriesConfigManager));
             }
 
             try
@@ -297,10 +189,20 @@
                         new TimeType(
                             deserialisedAthlete.PredeclaredHandicap);
 
+                string deserialisedForename =
+                    string.IsNullOrEmpty(deserialisedAthlete.Forename)
+                    ? deserialisedAthlete.Forename
+                    : NameHelper.GetForename(deserialisedAthlete.Name);
+                string deserialisedFamilyName =
+                    string.IsNullOrEmpty(deserialisedAthlete.FamilyName)
+                    ? deserialisedAthlete.FamilyName
+                    : NameHelper.GetSurname(deserialisedAthlete.Name);
+
                 AthleteDetails athleteDetails =
                     new AthleteDetails(
                         deserialisedAthlete.Key,
-                        deserialisedAthlete.Name,
+                        deserialisedForename,
+                        deserialisedFamilyName,
                         deserialisedAthlete.Club,
                         predeclaredTime,
                         deserialisedAthlete.Sex,
@@ -337,29 +239,6 @@
             }
 
             return deserialisedAthletes;
-        }
-
-        /// <summary>
-        /// Convert from a string to a boolean. A null string returns false.
-        /// The input value has been read from an xml file.
-        /// </summary>
-        /// <param name="xmlValue">value to convert</param>
-        /// <returns>new boolean</returns>
-        private bool ConvertBool(string xmlValue)
-        {
-            if (xmlValue == null)
-            {
-                return false;
-            }
-
-            string test = true.ToString();
-
-            if (string.Compare(xmlValue, true.ToString(), true) == 0)
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }

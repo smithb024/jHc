@@ -32,6 +32,7 @@
               key,
               string.Empty,
               string.Empty,
+              string.Empty,
               new TimeType(59, 59),
               SexType.NotSpecified,
               "1970",
@@ -47,7 +48,8 @@
         ///   Creates a new instance of the AthleteDetails class
         /// </summary>
         /// <param name="key">unique key</param>
-        /// <param name="name">athlete's name</param>
+        /// <param name="forename">forename of the athlete</param>
+        /// <param name="familyName">family name of the athlete</param>
         /// <param name="club">athlete's club</param>
         /// <param name="roundedHandicap">rounded handicap</param>
         /// <param name="sex">athlete's sex</param>
@@ -60,20 +62,22 @@
         /// <param name="active">active</param>
         /// <param name="normalisationConfigManager">normalisation config manager</param>
         public AthleteDetails(
-          int key,
-          string name,
-          string club,
-          TimeType roundedHandicap,
-          SexType sex,
-          string birthYear,
-          string birthMonth,
-          string birthDay,
-          bool signedConsent,
-          bool active,
-          INormalisationConfigMngr normalisationConfigManager)
+            int key,
+            string forename,
+            string familyName,
+            string club,
+            TimeType roundedHandicap,
+            SexType sex,
+            string birthYear,
+            string birthMonth,
+            string birthDay,
+            bool signedConsent,
+            bool active,
+            INormalisationConfigMngr normalisationConfigManager)
         {
             this.Key = key;
-            this.Name = name;
+            this.Forename = forename;
+            this.FamilyName = familyName;
             this.Club = club;
             this.PredeclaredHandicap = roundedHandicap;
             this.Sex = sex;
@@ -96,7 +100,8 @@
         /// Initialises a new instance of the <see cref="AthleteDetails"/> class.
         /// </summary>
         /// <param name="key">athlete unique key</param>
-        /// <param name="name">name of the athlete</param>
+        /// <param name="forename">forename of the athlete</param>
+        /// <param name="familyName">family name of the athlete</param>
         /// <param name="club">regitered club</param>
         /// <param name="roundedHandicap">current rounded handicap</param>
         /// <param name="sex">sex of the athlete</param>
@@ -111,7 +116,8 @@
         /// <param name="normalisationConfigManager">normalisation config manager</param>
         public AthleteDetails(
             int key,
-            string name,
+            string forename,
+            string familyName,
             string club,
             TimeType roundedHandicap,
             SexType sex,
@@ -124,7 +130,8 @@
             INormalisationConfigMngr normalisationConfigManager)
         {
             this.Key = key;
-            this.Name = name;
+            this.Forename = forename;
+            this.FamilyName = familyName;
             this.Club = club;
             this.PredeclaredHandicap = roundedHandicap;
             this.Sex = sex;
@@ -157,17 +164,17 @@
         /// <summary>
         /// Gets or sets the athlete name
         /// </summary>
-        public string Name { get; set; }
+        public string Name => $"{this.Forename} {this.FamilyName}";
 
         /// <summary>
-        /// Gets the Surname of the athlete.
+        /// Gets the Forename of the athlete.
         /// </summary>
-        public string Forename => NameHelper.GetForename(this.Name);
+        public string Forename { get; set; }
 
         /// <summary>
-        /// Gets the Surname of the athlete.
+        /// Gets the Family Name of the athlete.
         /// </summary>
-        public string Surname => NameHelper.GetSurname(this.Name);
+        public string FamilyName { get; set; }
 
         /// <summary>
         /// Gets or sets all the running numbers used this season this season.

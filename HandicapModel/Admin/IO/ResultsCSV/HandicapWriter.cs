@@ -49,7 +49,7 @@
                 {
                     List<AthleteDetails> athletes = new List<AthleteDetails>(model.Athletes.AthleteDetails);
                     athletes = athletes.OrderBy(athlete => athlete.Forename).ToList();
-                    athletes = athletes.OrderBy(athlete => athlete.Surname).ToList();
+                    athletes = athletes.OrderBy(athlete => athlete.FamilyName).ToList();
 
                     foreach (AthleteDetails athlete in athletes)
                     {
