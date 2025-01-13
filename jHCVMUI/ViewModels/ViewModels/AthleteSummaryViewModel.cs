@@ -255,7 +255,7 @@
               this.normalisationConfigManager.ReadNormalisationConfiguration();
 
             List<AthleteDetails> orderedList = athletes.OrderBy(athlete => athlete.Forename).ToList();
-            orderedList = orderedList.OrderBy(athlete => athlete.Surname).ToList();
+            orderedList = orderedList.OrderBy(athlete => athlete.FamilyName).ToList();
 
             this.AthleteCollection = new ObservableCollection<AthleteCompleteViewModel>();
             foreach (AthleteDetails athlete in orderedList)

@@ -38,7 +38,17 @@
         private bool changeActive = true;
         private string changePredeclaredHandicap;
         private string addRaceNumber = string.Empty;
-        private string newName = string.Empty;
+
+        /// <summary>
+        /// The forename of the new athlete.
+        /// </summary>
+        private string newForename;
+
+        /// <summary>
+        /// The family name of the new athlete.
+        /// </summary>
+        private string newFamilyName;
+
         private string m_newClub = string.Empty;
         private string newRaceNumber = string.Empty;
         private SexType m_newSex = SexType.Male;
@@ -72,6 +82,8 @@
             this.model = model;
             this.athleteCollection = new ObservableCollection<AthleteType>();
             this.changePredeclaredHandicap = string.Empty;
+            this.newForename = string.Empty;
+            this.newFamilyName = string.Empty;
 
             this.numberPrefix = seriesConfigManager.ReadNumberPrefix();
             LoadAthleteInformation();
@@ -249,24 +261,41 @@
         }
 
         /// <summary>
-        /// Gets and sets the new athlete's name
+        /// Gets and sets the new athlete's forename
         /// </summary>
-        public string NewName
+        public string NewForename
         {
-            get
-            {
-                return this.newName;
-            }
+            get => this.newForename;
 
             set
             {
-                if (this.newName == value)
+                if (this.newForename == value)
                 {
                     return;
                 }
 
-                this.newName = value;
-                this.RaisePropertyChangedEvent(nameof(this.NewName));
+                this.newForename = value;
+                this.RaisePropertyChangedEvent(nameof(this.NewForename));
+                this.DetermineWhetherIsPossibleDuplicate();
+            }
+        }
+
+        /// <summary>
+        /// Gets and sets the new athlete's family name
+        /// </summary>
+        public string NewFamilyName
+        {
+            get => this.newFamilyName;
+
+            set
+            {
+                if (this.newFamilyName == value)
+                {
+                    return;
+                }
+
+                this.newFamilyName = value;
+                this.RaisePropertyChangedEvent(nameof(this.NewFamilyName));
                 this.DetermineWhetherIsPossibleDuplicate();
             }
         }
@@ -558,7 +587,7 @@
         /// </summary>
         public void SaveAthletes()
         {
-            foreach (AthleteType athlete in AthleteCollection)
+            foreach (AthleteType athlete in this.AthleteCollection)
             {
                 switch (athlete.Status)
                 {
@@ -574,6 +603,7 @@
                                 {
                                     this.model.CreateNewAthlete(
                                       athlete.Name,
+                                      athlete.Surname,
                                       athlete.Club,
                                       initialHandicapMinutes,
                                       initialHandicapSeconds,
@@ -594,6 +624,7 @@
                             {
                                 this.model.CreateNewAthlete(
                                   athlete.Name,
+                                  athlete.Surname,
                                   athlete.Club,
                                   initialHandicap,
                                   athlete.Sex,
@@ -664,9 +695,10 @@
             AthleteType newAthlete =
               new AthleteType(
                 0,
-                NewName,
-                NewClub,
-                NewSex,
+                this.NewForename,
+                this.NewFamilyName,
+                this.NewClub,
+                this.NewSex,
                 newNumbers,
                 this.NewBirthYear,
                 this.NewBirthMonth,
@@ -680,10 +712,11 @@
 
             this.athleteCollection.Add(newAthlete);
 
-            NewName = string.Empty;
-            NewClub = string.Empty;
-            NewInitialHandicap = string.Empty;
-            NewSex = SexType.Male;
+            this.NewForename = string.Empty;
+            this.NewFamilyName = string.Empty;
+            this.NewClub = string.Empty;
+            this.NewInitialHandicap = string.Empty;
+            this.NewSex = SexType.Male;
 
             this.ResetSelectedIndex();
             this.UpdateNextRunningNumber();
@@ -714,32 +747,11 @@
                 return false;
             }
 
-            if (NewName != string.Empty && NewSex != SexType.NotSpecified)
+            if (this.NewForename != string.Empty &&
+                this.NewFamilyName != string.Empty &&
+                this.NewSex != SexType.NotSpecified)
             {
                 return this.TimeValid(this.NewInitialHandicap);
-                //int initialHandicap = 0;
-                //if (int.TryParse(NewInitialHandicap, out initialHandicap))
-                //{
-                //  return true;
-                //}
-                //else
-                //{
-                //  if (NewInitialHandicap.Contains(":"))
-                //  {
-                //    int initialHandicapMinutes = 0;
-                //    int initialHandicapSeconds = 0;
-
-                //    if (int.TryParse(NewInitialHandicap.Substring(0, NewInitialHandicap.IndexOf(":")), out initialHandicapMinutes))
-                //    {
-                //      if (int.TryParse(NewInitialHandicap.Substring(NewInitialHandicap.IndexOf(":") + 1), out initialHandicapSeconds))
-                //      {
-                //        return true;
-                //      }
-                //    }
-                //  }
-
-                //  return false;
-                //}
             }
             else
             {
@@ -1027,7 +1039,8 @@
 
             foreach(AthleteType athleteType in this.athleteCollection)
             {
-                if (string.Equals(this.NewName, athleteType.Name))
+                if (string.Equals(this.NewForename, athleteType.Name) &&
+                    string.Equals(this.NewFamilyName, athleteType.Surname))
                 {
                     isPossibleDuplicate = true;
                     break;
