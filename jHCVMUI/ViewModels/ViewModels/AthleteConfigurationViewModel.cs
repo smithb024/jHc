@@ -863,7 +863,7 @@
         private void LoadAthleteInformation()
         {
             List<AthleteDetails> orderedList = this.model.Athletes.AthleteDetails.OrderBy(athlete => athlete.Forename).ToList();
-            orderedList = orderedList.OrderBy(athlete => athlete.Surname).ToList();
+            orderedList = orderedList.OrderBy(athlete => athlete.FamilyName).ToList();
 
             this.athleteCollection = new ObservableCollection<AthleteType>();
             foreach (AthleteDetails athlete in orderedList)
