@@ -602,8 +602,8 @@
                                 if (int.TryParse(athlete.PredeclaredHandicap.Substring(athlete.PredeclaredHandicap.IndexOf(":") + 1), out initialHandicapSeconds))
                                 {
                                     this.model.CreateNewAthlete(
-                                      athlete.Name,
-                                      athlete.Surname,
+                                      athlete.Forename,
+                                      athlete.FamilyName,
                                       athlete.Club,
                                       initialHandicapMinutes,
                                       initialHandicapSeconds,
@@ -623,8 +623,8 @@
                             if (int.TryParse(athlete.PredeclaredHandicap, out initialHandicap))
                             {
                                 this.model.CreateNewAthlete(
-                                  athlete.Name,
-                                  athlete.Surname,
+                                  athlete.Forename,
+                                  athlete.FamilyName,
                                   athlete.Club,
                                   initialHandicap,
                                   athlete.Sex,
@@ -883,7 +883,8 @@
                 this.athleteCollection.Add(
                   new AthleteType(
                     athlete.Key,
-                    athlete.Name,
+                    athlete.Forename,
+                    athlete.FamilyName,
                     athlete.Club,
                     athlete.Sex,
                     ListOCConverter.ToObservableCollection(athlete.RunningNumbers),
@@ -1039,8 +1040,8 @@
 
             foreach(AthleteType athleteType in this.athleteCollection)
             {
-                if (string.Equals(this.NewForename, athleteType.Name) &&
-                    string.Equals(this.NewFamilyName, athleteType.Surname))
+                if (string.Equals(this.NewForename, athleteType.Forename) &&
+                    string.Equals(this.NewFamilyName, athleteType.FamilyName))
                 {
                     isPossibleDuplicate = true;
                     break;

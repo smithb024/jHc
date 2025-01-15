@@ -12,7 +12,17 @@
     public class AthleteType : ViewModelBase
     {
         private int m_key = -1;
-        private string m_name = string.Empty;
+
+        /// <summary>
+        /// The athlete's forename.
+        /// </summary>
+        private string forename;
+
+        /// <summary>
+        /// The athlete's family name.
+        /// </summary>
+        private string familyName;
+
         private string m_club = string.Empty;
         private SexType m_sex = SexType.NotSpecified;
         private string predeclaredHandicap = string.Empty;
@@ -32,7 +42,8 @@
         /// Initialises a new instance of the <see cref="AthleteType"/> class.
         /// </summary>
         /// <param name="key">athlete key</param>
-        /// <param name="name">athlete name</param>
+        /// <param name="name">athlete forename</param>
+        /// <param name="familyName">athlete family name</param>
         /// <param name="club">athlete club</param>
         /// <param name="sex">athlete sex</param>
         /// <param name="runningNumbers">numbers the athlete is registered to run under</param>
@@ -46,7 +57,8 @@
         /// <param name="predeclaredHandicap">user declared handicap</param>
         public AthleteType(
           int key,
-          string name,
+          string forename,
+          string familyName,
           string club,
           SexType sex,
           ObservableCollection<string> runningNumbers,
@@ -57,10 +69,11 @@
           bool active,
           string predeclaredHandicap)
         {
-            Key = key;
-            Name = name;
-            Club = club;
-            Sex = sex;
+            this.m_key = key;
+            this.forename = forename;
+            this.familyName = familyName;
+            this.m_club = club;
+            this.m_sex = sex;
             this.runningNumbers = runningNumbers;
             this.birthYear = birthYear;
             this.birthMonth = birthMonth;
@@ -90,26 +103,26 @@
         /// Gets and sets the name.
         /// </summary>
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public string Name
+        public string Forename
         {
-            get { return m_name; }
+            get => this.forename;
             set
             {
-                m_name = value;
-                this.RaisePropertyChangedEvent(nameof(this.Name));
-                this.RaisePropertyChangedEvent(nameof(this.Surname));
+                forename = value;
+                this.RaisePropertyChangedEvent(nameof(this.Forename));
             }
         }
 
         /// <summary>
         /// Gets the surname.
         /// </summary>
-        public string Surname
+        public string FamilyName
         {
-            get
+            get => this.familyName;
+            set
             {
-                // TODO Double Barrels surnames.
-                return this.Name.Substring(this.Name.LastIndexOf(" ") + 1);
+                this.familyName = value;
+                this.RaisePropertyChangedEvent(nameof(this.FamilyName));
             }
         }
 
