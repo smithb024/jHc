@@ -191,12 +191,12 @@
 
                 string deserialisedForename =
                     string.IsNullOrEmpty(deserialisedAthlete.Forename)
-                    ? deserialisedAthlete.Forename
-                    : NameHelper.GetForename(deserialisedAthlete.Name);
+                    ? NameHelper.GetForename(deserialisedAthlete.Name)
+                    : deserialisedAthlete.Forename;
                 string deserialisedFamilyName =
                     string.IsNullOrEmpty(deserialisedAthlete.FamilyName)
-                    ? deserialisedAthlete.FamilyName
-                    : NameHelper.GetSurname(deserialisedAthlete.Name);
+                    ? NameHelper.GetSurname(deserialisedAthlete.Name)
+                    : deserialisedAthlete.FamilyName;
 
                 AthleteDetails athleteDetails =
                     new AthleteDetails(
