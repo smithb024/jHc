@@ -108,7 +108,7 @@
             get => this.forename;
             set
             {
-                forename = value;
+                this.forename = value;
                 this.RaisePropertyChangedEvent(nameof(this.Forename));
             }
         }
@@ -124,6 +124,14 @@
                 this.familyName = value;
                 this.RaisePropertyChangedEvent(nameof(this.FamilyName));
             }
+        }
+
+        /// <summary>
+        /// Gets the surname.
+        /// </summary>
+        public string Name
+        {
+            get => $"{this.forename} {this.familyName}";
         }
 
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------

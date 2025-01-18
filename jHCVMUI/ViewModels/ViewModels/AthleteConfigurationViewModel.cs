@@ -86,16 +86,24 @@
             this.newFamilyName = string.Empty;
 
             this.numberPrefix = seriesConfigManager.ReadNumberPrefix();
-            LoadAthleteInformation();
+            this.LoadAthleteInformation();
 
-            ClubCollection.Add(new ClubType() { Club = string.Empty });
+            this.ClubCollection.Add(
+                new ClubType()
+                {
+                    Club = string.Empty
+                });
 
             // Order clubs alphabetically.
             List<string> clubs = model.GetClubList().OrderBy(club => club).ToList();
 
             foreach (string club in clubs)
             {
-                ClubCollection.Add(new ClubType() { Club = club });
+                this.ClubCollection.Add(
+                    new ClubType()
+                    {
+                        Club = club
+                    });
             }
 
             this.newRaceNumber = this.NextRunningNumber;
@@ -103,26 +111,57 @@
 
             // Search parameters
             this.searchString = string.Empty;
-            this.surnameLetterSelectorCollection = new List<string>() { "", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z" };
+            this.surnameLetterSelectorCollection =
+                new List<string>()
+                {
+                    "",
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F",
+                    "G",
+                    "H",
+                    "I",
+                    "J",
+                    "K",
+                    "L",
+                    "M",
+                    "N",
+                    "O",
+                    "P",
+                    "Q",
+                    "R",
+                    "S",
+                    "T",
+                    "U",
+                    "V",
+                    "X",
+                    "Y",
+                    "Z"
+                };
             this.surnameSelectorIndex = 0;
 
-            AthleteAddNumberCommand = new AthleteConfigAddNumberCmd(this);
+            this.AthleteAddNumberCommand =
+                new AthleteConfigAddNumberCmd(
+                    this);
             this.AthleteChangeCommand =
-              new SimpleCommand(
-                this.ChangeAthlete,
-                this.CanChange);
+                new SimpleCommand(
+                    this.ChangeAthlete,
+                    this.CanChange);
             this.AthleteDeleteCommand =
-              new SimpleCommand(
-                this.DeleteAthlete,
-                this.CanDelete);
+                new SimpleCommand(
+                    this.DeleteAthlete,
+                    this.CanDelete);
             this.AthleteNewCommand =
-              new SimpleCommand(
-                this.AddNewAthlete,
-                this.CanAdd);
+                new SimpleCommand(
+                    this.AddNewAthlete,
+                    this.CanAdd);
             this.AthleteSaveCommand =
-              new SimpleCommand(
-                this.SaveAthletes,
-                this.CanSave);
+                new SimpleCommand(
+                    this.SaveAthletes,
+                    this.CanSave);
         }
 
         /// <summary>
@@ -159,8 +198,8 @@
             get
             {
                 return AthleteCollectionFilter.FilterSurname(
-                  this.athleteCollection,
-                  this.SelectedLetter());
+                    this.athleteCollection,
+                    this.SelectedLetter());
             }
         }
 
@@ -172,8 +211,8 @@
             get
             {
                 return AthleteCollectionFilter.SearchName(
-                  this.AthleteCollection,
-                  this.SearchString);
+                    this.AthleteCollection,
+                    this.SearchString);
             }
         }
 
@@ -438,7 +477,7 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public string NewInitialHandicap
         {
-            get => m_newInitialHandicap; 
+            get => m_newInitialHandicap;
             set
             {
                 m_newInitialHandicap = value;
@@ -1038,7 +1077,7 @@
         {
             bool isPossibleDuplicate = false;
 
-            foreach(AthleteType athleteType in this.athleteCollection)
+            foreach (AthleteType athleteType in this.athleteCollection)
             {
                 if (string.Equals(this.NewForename, athleteType.Forename) &&
                     string.Equals(this.NewFamilyName, athleteType.FamilyName))
