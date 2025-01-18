@@ -38,7 +38,17 @@
         private bool changeActive = true;
         private string changePredeclaredHandicap;
         private string addRaceNumber = string.Empty;
-        private string newName = string.Empty;
+
+        /// <summary>
+        /// The forename of the new athlete.
+        /// </summary>
+        private string newForename;
+
+        /// <summary>
+        /// The family name of the new athlete.
+        /// </summary>
+        private string newFamilyName;
+
         private string m_newClub = string.Empty;
         private string newRaceNumber = string.Empty;
         private SexType m_newSex = SexType.Male;
@@ -72,18 +82,28 @@
             this.model = model;
             this.athleteCollection = new ObservableCollection<AthleteType>();
             this.changePredeclaredHandicap = string.Empty;
+            this.newForename = string.Empty;
+            this.newFamilyName = string.Empty;
 
             this.numberPrefix = seriesConfigManager.ReadNumberPrefix();
-            LoadAthleteInformation();
+            this.LoadAthleteInformation();
 
-            ClubCollection.Add(new ClubType() { Club = string.Empty });
+            this.ClubCollection.Add(
+                new ClubType()
+                {
+                    Club = string.Empty
+                });
 
             // Order clubs alphabetically.
             List<string> clubs = model.GetClubList().OrderBy(club => club).ToList();
 
             foreach (string club in clubs)
             {
-                ClubCollection.Add(new ClubType() { Club = club });
+                this.ClubCollection.Add(
+                    new ClubType()
+                    {
+                        Club = club
+                    });
             }
 
             this.newRaceNumber = this.NextRunningNumber;
@@ -91,26 +111,57 @@
 
             // Search parameters
             this.searchString = string.Empty;
-            this.surnameLetterSelectorCollection = new List<string>() { "", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z" };
+            this.surnameLetterSelectorCollection =
+                new List<string>()
+                {
+                    "",
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F",
+                    "G",
+                    "H",
+                    "I",
+                    "J",
+                    "K",
+                    "L",
+                    "M",
+                    "N",
+                    "O",
+                    "P",
+                    "Q",
+                    "R",
+                    "S",
+                    "T",
+                    "U",
+                    "V",
+                    "X",
+                    "Y",
+                    "Z"
+                };
             this.surnameSelectorIndex = 0;
 
-            AthleteAddNumberCommand = new AthleteConfigAddNumberCmd(this);
+            this.AthleteAddNumberCommand =
+                new AthleteConfigAddNumberCmd(
+                    this);
             this.AthleteChangeCommand =
-              new SimpleCommand(
-                this.ChangeAthlete,
-                this.CanChange);
+                new SimpleCommand(
+                    this.ChangeAthlete,
+                    this.CanChange);
             this.AthleteDeleteCommand =
-              new SimpleCommand(
-                this.DeleteAthlete,
-                this.CanDelete);
+                new SimpleCommand(
+                    this.DeleteAthlete,
+                    this.CanDelete);
             this.AthleteNewCommand =
-              new SimpleCommand(
-                this.AddNewAthlete,
-                this.CanAdd);
+                new SimpleCommand(
+                    this.AddNewAthlete,
+                    this.CanAdd);
             this.AthleteSaveCommand =
-              new SimpleCommand(
-                this.SaveAthletes,
-                this.CanSave);
+                new SimpleCommand(
+                    this.SaveAthletes,
+                    this.CanSave);
         }
 
         /// <summary>
@@ -147,8 +198,8 @@
             get
             {
                 return AthleteCollectionFilter.FilterSurname(
-                  this.athleteCollection,
-                  this.SelectedLetter());
+                    this.athleteCollection,
+                    this.SelectedLetter());
             }
         }
 
@@ -160,8 +211,8 @@
             get
             {
                 return AthleteCollectionFilter.SearchName(
-                  this.AthleteCollection,
-                  this.SearchString);
+                    this.AthleteCollection,
+                    this.SearchString);
             }
         }
 
@@ -249,24 +300,41 @@
         }
 
         /// <summary>
-        /// Gets and sets the new athlete's name
+        /// Gets and sets the new athlete's forename
         /// </summary>
-        public string NewName
+        public string NewForename
         {
-            get
-            {
-                return this.newName;
-            }
+            get => this.newForename;
 
             set
             {
-                if (this.newName == value)
+                if (this.newForename == value)
                 {
                     return;
                 }
 
-                this.newName = value;
-                this.RaisePropertyChangedEvent(nameof(this.NewName));
+                this.newForename = value;
+                this.RaisePropertyChangedEvent(nameof(this.NewForename));
+                this.DetermineWhetherIsPossibleDuplicate();
+            }
+        }
+
+        /// <summary>
+        /// Gets and sets the new athlete's family name
+        /// </summary>
+        public string NewFamilyName
+        {
+            get => this.newFamilyName;
+
+            set
+            {
+                if (this.newFamilyName == value)
+                {
+                    return;
+                }
+
+                this.newFamilyName = value;
+                this.RaisePropertyChangedEvent(nameof(this.NewFamilyName));
                 this.DetermineWhetherIsPossibleDuplicate();
             }
         }
@@ -409,7 +477,7 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public string NewInitialHandicap
         {
-            get => m_newInitialHandicap; 
+            get => m_newInitialHandicap;
             set
             {
                 m_newInitialHandicap = value;
@@ -558,7 +626,7 @@
         /// </summary>
         public void SaveAthletes()
         {
-            foreach (AthleteType athlete in AthleteCollection)
+            foreach (AthleteType athlete in this.AthleteCollection)
             {
                 switch (athlete.Status)
                 {
@@ -573,7 +641,8 @@
                                 if (int.TryParse(athlete.PredeclaredHandicap.Substring(athlete.PredeclaredHandicap.IndexOf(":") + 1), out initialHandicapSeconds))
                                 {
                                     this.model.CreateNewAthlete(
-                                      athlete.Name,
+                                      athlete.Forename,
+                                      athlete.FamilyName,
                                       athlete.Club,
                                       initialHandicapMinutes,
                                       initialHandicapSeconds,
@@ -593,7 +662,8 @@
                             if (int.TryParse(athlete.PredeclaredHandicap, out initialHandicap))
                             {
                                 this.model.CreateNewAthlete(
-                                  athlete.Name,
+                                  athlete.Forename,
+                                  athlete.FamilyName,
                                   athlete.Club,
                                   initialHandicap,
                                   athlete.Sex,
@@ -664,9 +734,10 @@
             AthleteType newAthlete =
               new AthleteType(
                 0,
-                NewName,
-                NewClub,
-                NewSex,
+                this.NewForename,
+                this.NewFamilyName,
+                this.NewClub,
+                this.NewSex,
                 newNumbers,
                 this.NewBirthYear,
                 this.NewBirthMonth,
@@ -680,10 +751,11 @@
 
             this.athleteCollection.Add(newAthlete);
 
-            NewName = string.Empty;
-            NewClub = string.Empty;
-            NewInitialHandicap = string.Empty;
-            NewSex = SexType.Male;
+            this.NewForename = string.Empty;
+            this.NewFamilyName = string.Empty;
+            this.NewClub = string.Empty;
+            this.NewInitialHandicap = string.Empty;
+            this.NewSex = SexType.Male;
 
             this.ResetSelectedIndex();
             this.UpdateNextRunningNumber();
@@ -714,32 +786,11 @@
                 return false;
             }
 
-            if (NewName != string.Empty && NewSex != SexType.NotSpecified)
+            if (this.NewForename != string.Empty &&
+                this.NewFamilyName != string.Empty &&
+                this.NewSex != SexType.NotSpecified)
             {
                 return this.TimeValid(this.NewInitialHandicap);
-                //int initialHandicap = 0;
-                //if (int.TryParse(NewInitialHandicap, out initialHandicap))
-                //{
-                //  return true;
-                //}
-                //else
-                //{
-                //  if (NewInitialHandicap.Contains(":"))
-                //  {
-                //    int initialHandicapMinutes = 0;
-                //    int initialHandicapSeconds = 0;
-
-                //    if (int.TryParse(NewInitialHandicap.Substring(0, NewInitialHandicap.IndexOf(":")), out initialHandicapMinutes))
-                //    {
-                //      if (int.TryParse(NewInitialHandicap.Substring(NewInitialHandicap.IndexOf(":") + 1), out initialHandicapSeconds))
-                //      {
-                //        return true;
-                //      }
-                //    }
-                //  }
-
-                //  return false;
-                //}
             }
             else
             {
@@ -863,7 +914,7 @@
         private void LoadAthleteInformation()
         {
             List<AthleteDetails> orderedList = this.model.Athletes.AthleteDetails.OrderBy(athlete => athlete.Forename).ToList();
-            orderedList = orderedList.OrderBy(athlete => athlete.Surname).ToList();
+            orderedList = orderedList.OrderBy(athlete => athlete.FamilyName).ToList();
 
             this.athleteCollection = new ObservableCollection<AthleteType>();
             foreach (AthleteDetails athlete in orderedList)
@@ -871,7 +922,8 @@
                 this.athleteCollection.Add(
                   new AthleteType(
                     athlete.Key,
-                    athlete.Name,
+                    athlete.Forename,
+                    athlete.FamilyName,
                     athlete.Club,
                     athlete.Sex,
                     ListOCConverter.ToObservableCollection(athlete.RunningNumbers),
@@ -1025,9 +1077,10 @@
         {
             bool isPossibleDuplicate = false;
 
-            foreach(AthleteType athleteType in this.athleteCollection)
+            foreach (AthleteType athleteType in this.athleteCollection)
             {
-                if (string.Equals(this.NewName, athleteType.Name))
+                if (string.Equals(this.NewForename, athleteType.Forename) &&
+                    string.Equals(this.NewFamilyName, athleteType.FamilyName))
                 {
                     isPossibleDuplicate = true;
                     break;

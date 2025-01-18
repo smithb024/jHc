@@ -23,24 +23,37 @@
             </Grid.RowDefinitions>
             
             <!-- Name -->
-            <DockPanel 
-                LastChildFill="True"
+            <Grid 
                 Grid.Column="0"
                 Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
                 <Label 
                     Content="Name"
                     Margin="5"
                     Width="60"
+                    Grid.Column="0"
                     Foreground="{StaticResource HeaderControlForeground}"
-                    HorizontalAlignment="Right"
-                    DockPanel.Dock="Left"/>
+                    HorizontalAlignment="Right"/>
                 <TextBox 
-                    Name="AthleteNameTextBox"
+                    Name="AthleteForenameTextBox"
                     TabIndex="0"
-                    Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                    Grid.Column="1"
+                    Text="{Binding NewForename, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                     Style="{StaticResource HeaderTextBoxStyle}"
                     Margin="5"/>
-            </DockPanel>
+                <TextBox 
+                    Name="AthleteFamilyNameTextBox"
+                    TabIndex="1"
+                    Grid.Column="3"
+                    Text="{Binding NewFamilyName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                    Style="{StaticResource HeaderTextBoxStyle}"
+                    Margin="5"/>
+            </Grid>
 
             <!-- Race Number -->
             <DockPanel 

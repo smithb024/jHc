@@ -94,7 +94,8 @@
         /// <summary>
         /// Create a new athlete and add it to the athlete list.
         /// </summary>
-        /// <param name="athleteName">name of the athlete</param>
+        /// <param name="forename">forename of the athlete</param>
+        /// <param name="familyName">family name of the athlete</param>
         /// <param name="club">athlete's club</param>
         /// <param name="initialHandicap">initial handicap</param>
         /// <param name="sex">athlete's sex</param>
@@ -107,7 +108,8 @@
         /// </param>
         /// <param name="active">Indicates whether the athlete is currently active</param>
         void CreateNewAthlete(
-          string athleteName,
+          string forename,
+          string familyName,
           string club,
           int initialHandicap,
           SexType sex,
@@ -121,7 +123,8 @@
         /// <summary>
         /// Create a new athlete and add it to the athlete list.
         /// </summary>
-        /// <param name="athleteName">name of the athlete</param>
+        /// <param name="forename">forename of the athlete</param>
+        /// <param name="familyName">family name of the athlete</param>
         /// <param name="club">athlete's club</param>
         /// <param name="initialHandicapMinutes">initial handicap (minutes)</param>
         /// <param name="initialHandicapSeconds">initial handicap (seconds)</param>
@@ -135,7 +138,8 @@
         /// </param>
         /// <param name="active">Indicates whether the athlete is currently active</param>
         void CreateNewAthlete(
-          string athleteName,
+          string forename,
+          string familyName,
           string club,
           int initialHandicapMinutes,
           int initialHandicapSeconds,
