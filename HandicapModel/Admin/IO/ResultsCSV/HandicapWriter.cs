@@ -40,12 +40,16 @@
                 NormalisationConfigType hcConfiguration = 
                     normalisationConfigMngr.ReadNormalisationConfiguration();
 
-                using (StreamWriter writer = new StreamWriter(Path.GetFullPath(folder) +
-                                                               Path.DirectorySeparatorChar +
-                                                               model.CurrentSeason.Name +
-                                                               model.CurrentEvent.Name +
-                                                               ResultsPaths.handicapTable +
-                                                               ResultsPaths.csvExtension))
+                string handicapTablePath =
+                    Path.GetFullPath(folder) +
+                    Path.DirectorySeparatorChar +
+                    model.CurrentSeason.Name +
+                    model.CurrentEvent.Name +
+                    ResultsPaths.handicapTable +
+                    ResultsPaths.csvExtension;
+
+                using (StreamWriter writer = 
+                    new StreamWriter(handicapTablePath))
                 {
                     List<AthleteDetails> athletes = new List<AthleteDetails>(model.Athletes.AthleteDetails);
                     athletes = athletes.OrderBy(athlete => athlete.Forename).ToList();
@@ -76,15 +80,16 @@
                             newHandicap = athlete.RoundedHandicap;
                         }
 
-                        string entryString = athlete.Name +
-                                             ResultsPaths.separator +
-                                             number +
-                                             ResultsPaths.separator +
-                                             newHandicap +
-                                             ResultsPaths.separator +
-                                             athlete.Club +
-                                             ResultsPaths.separator +
-                                             consented;
+                        string entryString = 
+                            athlete.Name +
+                            ResultsPaths.separator +
+                            number +
+                            ResultsPaths.separator +
+                            newHandicap +
+                            ResultsPaths.separator +
+                            athlete.Club +
+                            ResultsPaths.separator +
+                            consented;
 
                         writer.WriteLine(entryString);
                     }
