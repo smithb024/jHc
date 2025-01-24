@@ -62,9 +62,7 @@
                             continue;
                         }
 
-                        string number =
-                          model.Athletes.GetAthleteRunningNumber(
-                            athlete.Key);
+                        string number = athlete.PrimaryNumber;
                         TimeType newHandicap =
                           model.CurrentSeason.GetAthleteHandicap(
                             athlete.Key,
