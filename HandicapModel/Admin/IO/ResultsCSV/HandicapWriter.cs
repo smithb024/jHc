@@ -71,6 +71,10 @@
                             athlete.SignedConsent
                             ? "Y"
                             : string.Empty;
+                        string inCurrentSeason =
+                            model.CurrentSeason.GetAthleteAppearancesCount(athlete.Key) > 0
+                            ? "Y"
+                            : string.Empty;
 
                         // Use default handicap, if the athlete is not registered for the current season.
                         if (newHandicap == null)
@@ -87,9 +91,11 @@
                             ResultsPaths.separator +
                             athlete.Club +
                             ResultsPaths.separator +
-                            consented;
+                            consented +
+                            ResultsPaths.separator +
+                            inCurrentSeason;
 
-                        writer.WriteLine(entryString);
+                    writer.WriteLine(entryString);
                     }
                     success = true;
                 }
