@@ -13,6 +13,9 @@
     using HandicapModel.Interfaces;
     using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
+    /// <summary>
+    /// Static class which is used to write the handicap results to a file.
+    /// </summary>
     public static class HandicapWriter
     {
         /// <summary>
@@ -40,12 +43,16 @@
                 NormalisationConfigType hcConfiguration = 
                     normalisationConfigMngr.ReadNormalisationConfiguration();
 
-                using (StreamWriter writer = new StreamWriter(Path.GetFullPath(folder) +
-                                                               Path.DirectorySeparatorChar +
-                                                               model.CurrentSeason.Name +
-                                                               model.CurrentEvent.Name +
-                                                               ResultsPaths.handicapTable +
-                                                               ResultsPaths.csvExtension))
+                string handicapTablePath =
+                    Path.GetFullPath(folder) +
+                    Path.DirectorySeparatorChar +
+                    model.CurrentSeason.Name +
+                    model.CurrentEvent.Name +
+                    ResultsPaths.handicapTable +
+                    ResultsPaths.csvExtension;
+
+                using (StreamWriter writer = 
+                    new StreamWriter(handicapTablePath))
                 {
                     List<AthleteDetails> athletes = new List<AthleteDetails>(model.Athletes.AthleteDetails);
                     athletes = athletes.OrderBy(athlete => athlete.Forename).ToList();
@@ -58,15 +65,17 @@
                             continue;
                         }
 
-                        string number =
-                          model.Athletes.GetAthleteRunningNumber(
-                            athlete.Key);
+                        string number = athlete.PrimaryNumber;
                         TimeType newHandicap =
                           model.CurrentSeason.GetAthleteHandicap(
                             athlete.Key,
                             hcConfiguration);
                         string consented =
                             athlete.SignedConsent
+                            ? "Y"
+                            : string.Empty;
+                        string inCurrentSeason =
+                            model.CurrentSeason.GetAthleteAppearancesCount(athlete.Key) > 0
                             ? "Y"
                             : string.Empty;
 
@@ -76,17 +85,20 @@
                             newHandicap = athlete.RoundedHandicap;
                         }
 
-                        string entryString = athlete.Name +
-                                             ResultsPaths.separator +
-                                             number +
-                                             ResultsPaths.separator +
-                                             newHandicap +
-                                             ResultsPaths.separator +
-                                             athlete.Club +
-                                             ResultsPaths.separator +
-                                             consented;
+                        string entryString = 
+                            athlete.Name +
+                            ResultsPaths.separator +
+                            number +
+                            ResultsPaths.separator +
+                            newHandicap +
+                            ResultsPaths.separator +
+                            athlete.Club +
+                            ResultsPaths.separator +
+                            consented +
+                            ResultsPaths.separator +
+                            inCurrentSeason;
 
-                        writer.WriteLine(entryString);
+                    writer.WriteLine(entryString);
                     }
                     success = true;
                 }
