@@ -13,6 +13,9 @@
     using HandicapModel.Interfaces;
     using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
+    /// <summary>
+    /// Static class which is used to write the handicap results to a file.
+    /// </summary>
     public static class HandicapWriter
     {
         /// <summary>
