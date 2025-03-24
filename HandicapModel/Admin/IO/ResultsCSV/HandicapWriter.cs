@@ -74,9 +74,11 @@
                             athlete.SignedConsent
                             ? "Y"
                             : string.Empty;
+                        int numberOfAppearancesInCurrentSeason =
+                            model.CurrentSeason.GetAthleteAppearancesCount(athlete.Key);
                         string inCurrentSeason =
-                            model.CurrentSeason.GetAthleteAppearancesCount(athlete.Key) > 0
-                            ? "Y"
+                            numberOfAppearancesInCurrentSeason > 0
+                            ? numberOfAppearancesInCurrentSeason.ToString()
                             : string.Empty;
 
                         // Use default handicap, if the athlete is not registered for the current season.
