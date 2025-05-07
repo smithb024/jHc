@@ -8,7 +8,6 @@
              d:DesignHeight="600" d:DesignWidth="1000">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
-        <!--<converter:BoolToVisCollapsedVisibilityConverter x:Key="visibilityConverter"></converter:BoolToVisCollapsedVisibilityConverter>-->
 
         <Style TargetType="MenuItem">
             <Setter Property="Header" Value="{Binding Path=DisplayName}" />
@@ -16,52 +15,36 @@
         </Style>
 
         <MenuItem x:Key="FileMenuTemplate" Header="File">
-            <MenuItem Header="Load..." Command="{Binding LoadNewSeriesCommand}"/>
-            <MenuItem Header="New" Command="{Binding CreateNewSeriesCommand}"/>
+            <MenuItem Header="Load..." Command="{Binding Path=LoadNewSeriesCommand}"/>
+            <MenuItem Header="New" Command="{Binding Path=CreateNewSeriesCommand}"/>
             <Separator/>
-            <MenuItem Header="Print All..." Command="{Binding PrintAllCommand}"/>
-            <MenuItem Header="Print Race Labels..." Command="{Binding PrintRaceLabelsCommand}"/>
+            <MenuItem Header="Print All..." Command="{Binding Path=PrintAllCommand}"/>
+            <MenuItem Header="Print Race Labels..." Command="{Binding Path=PrintRaceLabelsCommand}"/>
             <Separator/>
-            <MenuItem Header="Time Entry Editor..." Command="{Binding OpenTimeEntryEditorComamnd}"/>
-            <MenuItem Header="Position Editor..." Command="{Binding OpenPositionEditorCommand}"/>
-            <MenuItem Header="Stopwatch 610P Editor..." Command="{Binding OpenStopwatchP610EEditorCommand}"/>
+            <MenuItem Header="Time Entry Editor..." Command="{Binding Path=OpenTimeEntryEditorComamnd}"/>
+            <MenuItem Header="Position Editor..." Command="{Binding Path=OpenPositionEditorCommand}"/>
+            <MenuItem Header="Stopwatch 610P Editor..." Command="{Binding Path=OpenStopwatchP610EEditorCommand}"/>
         </MenuItem>
 
         <MenuItem x:Key="ConfigMenuTemplate" Header="Configuration">
-            <MenuItem Header="Athlete Registration..." Command="{Binding OpenAthleteCommand}"/>
-            <MenuItem Header="Club Registration..." Command="{Binding OpenClubCommand}"/>
+            <MenuItem Header="Athlete Registration..." Command="{Binding Path=OpenAthleteCommand}"/>
+            <MenuItem Header="Club Registration..." Command="{Binding Path=OpenClubCommand}"/>
             <Separator/>
-            <MenuItem Header="Series Configuration..." Command="{Binding OpenSeriesConfigCommand}"/>
-            <MenuItem Header="Normalisation Configuration..." Command="{Binding OpenNormalisationConfigCommand}"/>
-            <MenuItem Header="Results Configuration..." Command="{Binding OpenResultConfigCommand}"/>
+            <MenuItem Header="Series Configuration..." Command="{Binding Path=OpenSeriesConfigCommand}"/>
+            <MenuItem Header="Normalisation Configuration..." Command="{Binding Path=OpenNormalisationConfigCommand}"/>
+            <MenuItem Header="Results Configuration..." Command="{Binding Path=OpenResultConfigCommand}"/>
         </MenuItem>
 
         <MenuItem x:Key="DataMenuTemplate" Header="Data">
-            <MenuItem Header="Athletes" Command="{Binding OpenAthleteSummaryCommand}"/>
-            <MenuItem Header="Clubs" Command="{Binding OpenClubSummaryCommand}"/>
-            <MenuItem Header="Summary" Command="{Binding OpenSummaryCommand}"/>
+            <MenuItem Header="Athletes" Command="{Binding Path=OpenAthleteSummaryCommand}"/>
+            <MenuItem Header="Clubs" Command="{Binding Path=OpenClubSummaryCommand}"/>
+            <MenuItem Header="Summary" Command="{Binding Path=OpenSummaryCommand}"/>
         </MenuItem>
 
         <MenuItem x:Key="HelpMenuTemplate" Header="Help">
-            <!--<ItemsControl x:Name="AppsItemsControl" ItemsSource="{Binding OpenAppCommands}">
-        <ItemsControl.ItemContainerStyle>
-          <Style TargetType="MenuItem">
-            <Setter Property="Header" Value="{Binding DisplayName}"/>
-            <Setter Property="Command" Value="{Binding RunCommand}"/>
-          </Style>
-        </ItemsControl.ItemContainerStyle>
-
-        -->
-            <!--<ItemsControl.ItemTemplate>
-          <DataTemplate>
-            <MenuItem Header="{Binding ElementName=AppsItemControl, Path=DataContext.DisplayName}" Command="{Binding ElementName=AppsItemControl, Path=DataContext.RunCommand}" />
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>-->
-            <!--
-      </ItemsControl>-->
-            <MenuItem Header="OPN 200x" Command="{Binding OpenOPN200Command}"/>
-            <MenuItem Header="Parkrun Timer" Command="{Binding OpenParkrunTimerCommand}"/>
-            <MenuItem Header="Stopwatch 610P" Command="{Binding OpenStopwatch610Command}"/>
+            <MenuItem Header="OPN 200x" Command="{Binding Path=OpenOPN200Command}"/>
+            <MenuItem Header="Parkrun Timer" Command="{Binding Path=OpenParkrunTimerCommand}"/>
+            <MenuItem Header="Stopwatch 610P" Command="{Binding Path=OpenStopwatch610Command}"/>
             <Separator/>
             <MenuItem Header="About"/>
         </MenuItem>
@@ -88,11 +71,11 @@
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
             <StatusBarItem Grid.Column="0">
-                <Label Content="{Binding ProgressInformation, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="{Binding Path=ProgressInformation, UpdateSourceTrigger=PropertyChanged}"/>
             </StatusBarItem>
             <Separator Grid.Column="1"/>
             <StatusBarItem Grid.Column="2">
-                <Label Content="{Binding ErrorInformation, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="{Binding Path=ErrorInformation, UpdateSourceTrigger=PropertyChanged}"/>
             </StatusBarItem>
         </StatusBar>
 
