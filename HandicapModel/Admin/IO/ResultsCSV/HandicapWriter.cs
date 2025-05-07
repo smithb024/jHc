@@ -87,8 +87,13 @@
                             newHandicap = athlete.RoundedHandicap;
                         }
 
+                        string printName = 
+                            athlete.IsFirstTimer() 
+                            ? $"{athlete.Name}*"
+                            : athlete.Name;
+
                         string entryString = 
-                            athlete.Name +
+                            printName +
                             ResultsPaths.separator +
                             number +
                             ResultsPaths.separator +

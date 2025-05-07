@@ -397,7 +397,7 @@
                     return;
                 }
 
-                SetProgressInformation("Print completed successfully");
+                this.SetProgressInformation("Print completed successfully");
             }
         }
 
