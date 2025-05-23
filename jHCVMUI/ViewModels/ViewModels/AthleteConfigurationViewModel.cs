@@ -24,6 +24,11 @@
     public class AthleteConfigurationViewModel : ViewModelBase
     {
         /// <summary>
+        /// Collection of all letters in the alphabet
+        /// </summary>
+        private readonly List<string> surnameLetterSelectorCollection;
+
+        /// <summary>
         /// Junior handicap model.
         /// </summary>
         private IModel model;
@@ -59,7 +64,6 @@
         private string birthYear = string.Empty;
 
         private string searchString;
-        private List<string> surnameLetterSelectorCollection;
         private int surnameSelectorIndex;
 
         private string numberPrefix;
@@ -137,6 +141,7 @@
                     "T",
                     "U",
                     "V",
+                    "W",
                     "X",
                     "Y",
                     "Z"
