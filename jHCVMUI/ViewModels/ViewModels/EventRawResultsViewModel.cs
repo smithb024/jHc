@@ -581,8 +581,8 @@
 
             bool saveSuccess = SaveRawEventResults();
 
-            RaisePropertyChangedEvent("UnregisteredAthletes");
-            RaisePropertyChangedEvent("RegisteredAthletes");
+            this.RaisePropertyChangedEvent("UnregisteredAthletes");
+            this.RaisePropertyChangedEvent("RegisteredAthletes");
 
             if (saveSuccess)
             {
@@ -625,47 +625,6 @@
                     break;
             }
 
-            //        this.RawImportedPostions = new List<RawPositionResults>();
-            //List<List<string>> rawPositions = this.commonIo.ReadPairedStringListFomFile(fileName);
-
-            //foreach (List<string> positionAthleteData in rawPositions)
-            //{
-            //    // Ensure 2 results present
-            //    if (positionAthleteData.Count == 2)
-            //    {
-            //        int? position = null;
-            //        string raceNumber = null;
-
-            //string result1 = ResultsDecoder.OpnScannerResultsBarcode(positionAthleteData[0]);
-            //        string result2 = ResultsDecoder.OpnScannerResultsBarcode(positionAthleteData[1]);
-
-            //        this.UpdatePositionAthleteData(result1, ref position, ref raceNumber);
-            //        this.UpdatePositionAthleteData(result2, ref position, ref raceNumber);
-
-            //        if (position != null && raceNumber != null)
-            //        {
-            //            RawImportedPostions.Add(new RawPositionResults(raceNumber, (int)position));
-            //        }
-            //        else
-            //        {
-            //            string errorString = string.Format("Can't decode {0}/{1}", positionAthleteData[0], positionAthleteData[1]);
-            //Messenger.Default.Send(
-            //    new HandicapProgressMessage(
-            //        errorString));
-            //this.logger.WriteLog(errorString);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        string errorString = "Please check results, result/barcode pair invalid";
-            //        Messenger.Default.Send(
-            //            new HandicapProgressMessage(
-            //                errorString));
-            //        this.logger.WriteLog(errorString);
-            //    }
-            //}
-
-            //RawImportedPostions = RawImportedPostions.OrderBy(position => position.Position).ToList();
             this.RaisePropertyChangedEvent(nameof(this.RawImportedPositions));
             this.DetermineImportedState();
         }
@@ -948,26 +907,9 @@
             return null;
         }
 
-        ///// <summary>
-        ///// Takes a result and populate the position or race number depending on what it is.
-        ///// </summary>
-        ///// <param name="result">position / athlete result</param>
-        ///// <param name="position">position of result</param>
-        ///// <param name="raceNumber">race number of result</param>
-        //private void UpdatePositionAthleteData(string result,
-        //                                       ref int? position,
-        //                                       ref string raceNumber)
-        //{
-        //    if (ResultsDecoder.IsPositionValue(result))
-        //    {
-        //        position = ResultsDecoder.ConvertPositionValue(result);
-        //    }
-        //    else
-        //    {
-        //        raceNumber = result;
-        //    }
-        //}
-
+        /// <summary>
+        /// Ensure that valid data has been imported.
+        /// </summary>
         private void DetermineImportedState()
         {
             this.canSaveImported = false;
@@ -977,7 +919,7 @@
                 return;
             }
 
-            if (TestForDuplicateNumbersAndPositions())
+            if (this.TestForDuplicateNumbersAndPositions())
             {
                 return;
             }
@@ -992,22 +934,22 @@
         /// <returns>true if there is a problem</returns>
         private bool TestForImportedCounts()
         {
-            if (RawImportedPositions.Count == 0)
+            if (this.RawImportedPositions.Count == 0)
             {
                 this.ImportedState = "Please import position data";
                 return true;
             }
-            else if (RawImportedTimes.Count == 0)
+            else if (this.RawImportedTimes.Count == 0)
             {
                 this.ImportedState = "Please import time data";
                 return true;
             }
-            else if (RawImportedPositions.Count < RawImportedTimes.Count)
+            else if (this.RawImportedPositions.Count < this.RawImportedTimes.Count)
             {
                 this.ImportedState = "More times than finishers.";
                 return true;
             }
-            else if (RawImportedPositions.Count > RawImportedTimes.Count)
+            else if (this.RawImportedPositions.Count > this.RawImportedTimes.Count)
             {
                 this.ImportedState = "More finishers than times.";
                 return true;
