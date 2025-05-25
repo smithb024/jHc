@@ -153,18 +153,31 @@
                     HorizontalAlignment="Right"/>
             </Grid>
         </Grid>
-        
-        <ScrollViewer Grid.Column="1"
-                  Margin="5">
-            <ListBox ItemsSource="{Binding Path=UnregisteredAthletes}"
+
+        <StackPanel Grid.Column="1"
+                    Orientation="Vertical"
+                    Margin="5">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsChecked="{Binding IsActive, UpdateSourceTrigger=PropertyChanged}">
+                    <Label
+                        Content="Is Active" />
+                </CheckBox>
+            </StackPanel>
+            <ScrollViewer >
+                <ListBox ItemsSource="{Binding Path=UnregisteredAthletes}"
                HorizontalContentAlignment="Stretch"
                SelectedIndex="{Binding UnregisteredAthletesIndex}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <local:EventRawResultsUnregisteredAthlete DataContext="{Binding}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </ScrollViewer>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <local:EventRawResultsUnregisteredAthlete DataContext="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
+        </StackPanel>
     </Grid>
 </Window>

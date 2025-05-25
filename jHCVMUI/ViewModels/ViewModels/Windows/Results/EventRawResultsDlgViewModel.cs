@@ -43,6 +43,11 @@
         private bool relay = false;
 
         /// <summary>
+        /// Indicates whether to filter on active athletes.
+        /// </summary>
+        private bool isActive;
+
+        /// <summary>
         /// The index of the currently selected unregistered athlete.
         /// </summary>
         private int unregisteredAthletesIndex;
@@ -57,6 +62,7 @@
             Athletes athletesModel)
         {
             this.handicapEventModel = handicapEventModel;
+            this.isActive = true;
 
             // Get the list of athletes registered for the current season from the Business layer.
             // This doesn't include the raw results, so read this directly from a file and add
@@ -237,6 +243,24 @@
                 }
 
                 this.RaisePropertyChangedEvent(nameof(this.TimeIsValid));
+            }
+        }
+
+        /// <summary>
+        /// Gets and sets a flag indicating whether to only provide active athletes to the view.
+        /// </summary>
+        public bool IsActive
+        {
+            get => this.isActive;
+            set
+            {
+                if (this.isActive == value)
+                {
+                    return;
+                }
+
+                this.isActive = value;
+                this.RaisePropertyChangedEvent(nameof(this.IsActive));
             }
         }
 
@@ -448,7 +472,9 @@
         /// <summary>
         /// 
         /// </summary>
-        private void RegisterNewResult(string raceNumber, RaceTimeType raceTime)
+        private void RegisterNewResult(
+            string raceNumber,
+            RaceTimeType raceTime)
         {
             RawResults result = this.FindAthlete(raceNumber);
 
@@ -463,7 +489,7 @@
 
                 this.ResetMemberData();
 
-                this.RaisePropertyChangedEvent(nameof(UnregisteredAthletes));
+                this.RaisePropertyChangedEvent(nameof(this.UnregisteredAthletes));
                 this.RaisePropertyChangedEvent(nameof(this.RegisteredAthletes));
             }
             else
