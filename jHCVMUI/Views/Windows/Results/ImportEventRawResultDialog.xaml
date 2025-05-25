@@ -99,7 +99,7 @@
                 Grid.Row="1"
                 Content="Save Results"
                 Style="{StaticResource BodyButtonStyle}"
-                Command="{Binding SaveImportedResultsCommand}"
+                Command="{Binding Path=SaveImportedResultsCommand}"
                 Margin="5"
                 Height="25"
                 Width="150"/>
@@ -108,7 +108,7 @@
                 Grid.Row="1"
                 Content="Import Times..."
                 Style="{StaticResource BodyButtonStyle}"
-                Command="{Binding ImportTimesCommand}"
+                Command="{Binding Path=ImportTimesCommand}"
                 Margin="5"
                 Height="25"
                 Width="150"/>
@@ -117,7 +117,7 @@
                 Grid.Column="1"
                 Style="{StaticResource BodyComboBoxStyle}"
                 ItemsSource="{Binding Path=TimeInputSources}"
-                SelectedIndex="{Binding TimeInputSourceIndex}"
+                SelectedIndex="{Binding Path=TimeInputSourceIndex}"
                 Margin="5,5,5,0"
                 Height="25"
                 Width="150"/>
@@ -126,7 +126,7 @@
                 Grid.Row="1"
                 Content="Import Positions..."
                 Style="{StaticResource BodyButtonStyle}"
-                Command="{Binding ImportPositionsCommand}"
+                Command="{Binding Path=ImportPositionsCommand}"
                 Margin="5"
                 Height="25"
                 Width="150"/>
@@ -135,7 +135,7 @@
                 Grid.Column="0"
                 Style="{StaticResource BodyComboBoxStyle}"
                 ItemsSource="{Binding Path=PositionInputSources}"
-                SelectedIndex="{Binding PositionInputSourceIndex}"
+                SelectedIndex="{Binding Path=PositionInputSourceIndex}"
                 Margin="5,5,5,0"
                 Height="25"
                 Width="150"/>

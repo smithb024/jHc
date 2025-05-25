@@ -15,6 +15,7 @@
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO.TXT;
     using jHCVMUI.ViewModels.ViewModels;
+    using jHCVMUI.ViewModels.ViewModels.Windows.Results;
     using jHCVMUI.Views.Windows.Results;
     using NynaeveLib.Commands;
     using CommonMessenger = NynaeveLib.Messenger.Messenger;
@@ -60,11 +61,6 @@
         /// The instance of the import raw results dialog.
         /// </summary>
         private ImportEventRawResultDialog eventImportResultsDialog = null;
-
-        /// <summary>
-        /// The instance of the raw results view model.
-        /// </summary>
-        private EventRawResultsViewModel eventRawResultsViewModel = null;
 
         /// <summary>
         /// The collection of event names.
@@ -471,13 +467,11 @@
             this.eventRawResultsDialog.Unloaded -= new RoutedEventHandler(this.CloseEventRawResultsDialog);
             this.eventRawResultsDialog.Unloaded += new RoutedEventHandler(this.CloseEventRawResultsDialog);
 
-            this.eventRawResultsViewModel =
-                new EventRawResultsViewModel(
+            EventRawResultsDlgViewModel viewModel =
+                new EventRawResultsDlgViewModel(
                     this.model.CurrentEvent,
-                    this.model.Athletes,
-                    this.commonIo,
-                    this.logger);
-            this.eventRawResultsDialog.DataContext = this.eventRawResultsViewModel;
+                    this.model.Athletes);
+            this.eventRawResultsDialog.DataContext = viewModel;
 
             // Close the import dialog if on display. These should be mutually exclusive.
             if (this.eventImportResultsDialog != null)
@@ -502,13 +496,13 @@
             this.eventImportResultsDialog.Unloaded -= new RoutedEventHandler(this.CloseEventImportResultsDialog);
             this.eventImportResultsDialog.Unloaded += new RoutedEventHandler(this.CloseEventImportResultsDialog);
 
-            this.eventRawResultsViewModel =
-                new EventRawResultsViewModel(
+            ImportEventRawResultDialogViewModel viewModel =
+                new ImportEventRawResultDialogViewModel(
                     this.model.CurrentEvent,
                     this.model.Athletes,
                     this.commonIo,
                     this.logger);
-            this.eventImportResultsDialog.DataContext = this.eventRawResultsViewModel;
+            this.eventImportResultsDialog.DataContext = viewModel;
 
             // Close the raw imput dialog if on display. These should be mutually exclusive.
             if (this.eventRawResultsDialog != null)

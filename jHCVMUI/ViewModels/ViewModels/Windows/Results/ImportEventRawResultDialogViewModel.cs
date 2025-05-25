@@ -1,4 +1,4 @@
-﻿namespace jHCVMUI.ViewModels.ViewModels
+﻿namespace jHCVMUI.ViewModels.ViewModels.Windows.Results
 {
     using System;
     using System.Collections.Generic;
@@ -18,30 +18,10 @@
     using NynaeveLib.Commands;
     using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
-    // Need to know all athletes who are registered for the current season.
-    // Put together a list results:
-    // Time
-    // Race Number
-    // Name
-    // Club
-    // Handicap
-    // Order (for those with the same time).
-
-    // Will want to tick off any registered athletes when they are given a time.
-    // Prevent an athlete from getting two times.
-
-    // Edit time and race number
-
     /// <summary>
-    /// This view model manages inputting raw results.
+    /// View model which supports the dialog which is used to enter results from input files.
     /// </summary>
-    /// <remarks>
-    /// This seems to be used for manually entering raw results and for importing results from a file,
-    /// it may or may not be ideal solution. Be careful when changing, because of unintended 
-    /// consequences on the other view. 
-    /// Views are EventRawResultsDlg and ImportEventRawResultsDialog.
-    /// </remarks>
-    public class EventRawResultsViewModel : ViewModelBase
+    public class ImportEventRawResultDialogViewModel : ViewModelBase
     {
         /// <summary>
         /// Common IO manager
@@ -54,34 +34,19 @@
         private readonly IJHcLogger logger;
 
         /// <summary>
-        /// Associate athlete model..
+        /// Associate athlete model.
         /// </summary>
-        private Athletes athletesModel;
+        private readonly Athletes athletesModel;
 
         /// <summary>
         /// Associated handicap event model.
         /// </summary>
-        private IHandicapEvent handicapEventModel;
+        private readonly IHandicapEvent handicapEventModel;
 
-        // TODO Originally a neat little view model which handled both data entry windows
-        // It checked athletes to ensure that they were registered.
-        // Have needed to allow it to handle unknown athletes, the adds ons to help it
-        // do that give the class a hacky feel.
+        /// <summary>
+        /// List of all athletes
+        /// </summary>
         private List<RawResults> allAthletes = new List<RawResults>();
-        private string raceNumberUsed = "";
-        private int minutes = 0;
-        private int seconds = 0;
-
-        /// <summary>
-        /// Indiciates if the athlete did not finish.
-        /// </summary>
-        private bool dnf = false;
-
-        /// <summary>
-        /// Indiciates if the athlete was taking part in a relay, so normal scoring rules do not 
-        /// apply.
-        /// </summary>
-        private bool relay = false;
 
         /// <summary>
         /// Index used to select a input source from the <see cref="TimeInputSources"/> collection.
@@ -99,18 +64,13 @@
         private string importedState;
 
         /// <summary>
-        /// The index of the currently selected unregistered athlete.
-        /// </summary>
-        private int unregisteredAthletesIndex;
-
-        /// <summary>
         /// View model which manages raw results view.
         /// </summary>
         /// <param name="handicapEventModel">junior handicap model</param>
         /// <param name="athletesModel">athletes model</param>
         /// <param name="commonIo">common IO manager</param>
         /// <param name="logger">application logger</param>
-        public EventRawResultsViewModel(
+        public ImportEventRawResultDialogViewModel(
             IHandicapEvent handicapEventModel,
             Athletes athletesModel,
             ICommonIo commonIo,
@@ -125,219 +85,20 @@
             // This doesn't include the raw results, so read this directly from a file and add
             // to the the list.
             this.LoadRegisteredInformation(athletesModel.AthleteDetails);
-            LoadRawEventResults();
 
             this.canSaveImported = false;
             this.importedState = string.Empty;
 
-            AddNewResultCommand =
-              new SimpleCommand(
-                this.AddRawTimeCmd,
-                this.AddRawTimeCmdAvailable);
-            SaveImportedResultsCommand =
+            this.SaveImportedResultsCommand =
               new SimpleCommand(
                 this.SaveImportResults,
                 this.CanSaveImported);
-            SaveCommand =
-              new SimpleCommand(
-                this.SaveRawResultsCmd,
-                this.SaveRawResultsCmdAvailable);
-            ImportPositionsCommand =
+            this.ImportPositionsCommand =
               new SimpleCommand(
                 this.ImportPositionDataDialog);
-            ImportTimesCommand =
+            this.ImportTimesCommand =
               new SimpleCommand(
                 this.ImportTimesDataDialog);
-
-            this.unregisteredAthletesIndex = -1;
-        }
-
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>AthleteCollection</name>
-        /// <date>02/03/15</date>
-        /// <summary>
-        /// Gets and sets the athlete collection
-        /// </summary>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public List<RawResults> AllAthletes
-        {
-            get { return allAthletes; }
-            set { allAthletes = value; }
-        }
-
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>AthleteCollection</name>
-        /// <date>02/03/15</date>
-        /// <summary>
-        /// Gets and sets the athlete collection
-        /// </summary>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public List<RawResults> UnregisteredAthletes
-        {
-            get
-            {
-                return new List<RawResults>(allAthletes.FindAll(RawResults => RawResults.RaceTime == null));
-            }
-        }
-
-        /// <summary>
-        /// Gets and sets the currently selected object in the athlete collection.
-        /// </summary>
-        /// <remarks>
-        /// Setting the index causes the <see cref="RaceNumberUsed"/> to be set to the number of the
-        /// chosen athlete. Maybe this should be done via a click event.
-        /// </remarks>
-        public int UnregisteredAthletesIndex
-        {
-            get
-            {
-                return this.unregisteredAthletesIndex;
-            }
-
-            set
-            {
-                this.unregisteredAthletesIndex = value;
-                this.RaisePropertyChangedEvent(nameof(this.UnregisteredAthletesIndex));
-
-                if (this.UnregisteredAthletes.Count > 0 && this.UnregisteredAthletesIndex >= 0)
-                {
-                    if (this.UnregisteredAthletes[this.unregisteredAthletesIndex].AthleteNumbers.Count > 0)
-                    {
-                        this.RaceNumberUsed = this.UnregisteredAthletes[this.unregisteredAthletesIndex].AthleteNumbers[0];
-                    }
-                    else
-                    {
-                        this.RaceNumberUsed = string.Empty;
-                    }
-                }
-                else
-                {
-                    this.RaceNumberUsed = string.Empty;
-                }
-            }
-        }
-
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <summary>
-        /// Gets and sets race number used by an athlete.
-        /// </summary>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public string RaceNumberUsed
-        {
-            get { return this.raceNumberUsed; }
-            set
-            {
-                this.raceNumberUsed = value;
-                RaisePropertyChangedEvent("RaceNumberUsed");
-            }
-        }
-
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <summary>
-        /// Gets and sets the minutes taken.
-        /// </summary>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public int TotalMinutes
-        {
-            get { return minutes; }
-            set
-            {
-                minutes = value;
-                RaisePropertyChangedEvent("TotalMinutes");
-            }
-        }
-
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <summary>
-        /// Gets and sets the seconds taken.
-        /// </summary>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public int TotalSeconds
-        {
-            get { return seconds; }
-            set
-            {
-                seconds = value;
-                RaisePropertyChangedEvent("TotalSeconds");
-            }
-        }
-
-        /// <summary>
-        /// Gets and sets a flag indicating if the athlete finished.
-        /// </summary>
-        /// <remarks>
-        /// If set, then <see cref="Relay"/> can't be
-        /// </remarks>
-        public bool DNF
-        {
-            get => this.dnf;
-            set
-            {
-                if (this.dnf == value)
-                {
-                    return;
-                }
-
-                this.dnf = value;
-                this.RaisePropertyChangedEvent(nameof(this.DNF));
-
-                if (this.dnf)
-                {
-                    this.relay = false;
-                    this.RaisePropertyChangedEvent(nameof(this.Relay));
-                }
-
-                this.RaisePropertyChangedEvent(nameof(this.TimeIsValid));
-            }
-        }
-
-        /// <summary>
-        /// Gets and sets a flag indicating if the athlete is in a relay.
-        /// </summary>
-        /// <remarks>
-        /// If set, then <see cref="DNF"/> can't be
-        /// </remarks>
-        public bool Relay
-        {
-            get => this.relay;
-            set
-            {
-                if (this.relay == value)
-                {
-                    return ;
-                }
-
-                this.relay = value;
-                this.RaisePropertyChangedEvent(nameof(this.Relay));
-
-                if (this.relay)
-                {
-                    this.dnf = false;
-                    this.RaisePropertyChangedEvent(nameof(this.DNF));
-                }
-
-                this.RaisePropertyChangedEvent(nameof(this.TimeIsValid));
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating if the time is a valid input. 
-        /// </summary>
-        public bool TimeIsValid => !this.DNF || !this.Relay;
-
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>AthleteCollection</name>
-        /// <date>02/03/15</date>
-        /// <summary>
-        /// Gets and sets the athlete collection
-        /// </summary>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public ObservableCollection<RawResults> RegisteredAthletes
-        {
-            get
-            {
-                return new ObservableCollection<RawResults>(allAthletes.FindAll(RawResults => RawResults.RaceTime != null));
-            }
         }
 
         /// <summary>
@@ -345,15 +106,8 @@
         /// </summary>
         public List<RawPositionResults> RawImportedPositions
         {
-            get
-            {
-                return rawImportedPostions;
-            }
-
-            set
-            {
-                rawImportedPostions = value;
-            }
+            get => this.rawImportedPostions;
+            set => this.rawImportedPostions = value;
         }
 
         /// <summary>
@@ -361,15 +115,8 @@
         /// </summary>
         public List<RaceTimeType> RawImportedTimes
         {
-            get
-            {
-                return rawImportedTimes;
-            }
-
-            set
-            {
-                rawImportedTimes = value;
-            }
+            get => this.rawImportedTimes;
+            set => this.rawImportedTimes = value;
         }
 
         /// <summary>
@@ -377,13 +124,15 @@
         /// </summary>
         public string ImportedState
         {
-            get
-            {
-                return this.importedState;
-            }
+            get => this.importedState;
 
             set
             {
+                if (this.importedState == value)
+                {
+                    return;
+                }
+
                 this.importedState = value;
                 this.RaisePropertyChangedEvent(nameof(this.ImportedState));
             }
@@ -395,22 +144,11 @@
         public List<string> TimeInputSources => Enum.GetNames(typeof(TimeSources)).ToList();
 
         /// <summary>
-        /// Gets the currently selected time input source.
-        /// </summary>
-        public TimeSources CurrentTimeInputSource =>
-                this.timeInputSourceIndex < 0 || this.timeInputSourceIndex > this.TimeInputSources.Count
-                    ? TimeSources.Manual
-                    : (TimeSources)this.timeInputSourceIndex;
-
-        /// <summary>
         /// Gets or sets the current index of the currently selected time input source.
         /// </summary>
         public int TimeInputSourceIndex
         {
-            get
-            {
-                return this.timeInputSourceIndex;
-            }
+            get => this.timeInputSourceIndex;
 
             set
             {
@@ -433,22 +171,11 @@
         public List<string> PositionInputSources => Enum.GetNames(typeof(PositionSources)).ToList();
 
         /// <summary>
-        /// Gets the currently selected position input source.
-        /// </summary>
-        public PositionSources CurrentPositionInputSource =>
-            (this.positionInputSourceIndex < 0 || this.positionInputSourceIndex > this.PositionInputSources.Count)
-                ? PositionSources.OPN200
-                :(PositionSources)this.positionInputSourceIndex;
-
-        /// <summary>
         /// Gets or sets the current index of the currently selected position input source.
         /// </summary>
         public int PositionInputSourceIndex
         {
-            get
-            {
-                return this.positionInputSourceIndex;
-            }
+            get => this.positionInputSourceIndex;
 
             set
             {
@@ -465,110 +192,36 @@
             }
         }
 
-        public ICommand SaveCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand SaveImportedResultsCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand AddNewResultCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand ImportTimesCommand
-        {
-            get;
-            private set;
-        }
-
-        public ICommand ImportPositionsCommand
-        {
-            get;
-            private set;
-        }
-
         /// <summary>
-        /// Check to see if the race number is available for selection because it is in the unregistered
-        /// athletes list.
+        /// Gets a command which saves the results.
         /// </summary>
-        /// <returns></returns>
-        public bool AddRawTimeCmdAvailable()
-        {
-            return this.RaceNumberPresent(UnregisteredAthletes, RaceNumberUsed);
-        }
+        public ICommand SaveImportedResultsCommand { get; private set; }
 
         /// <summary>
-        /// Command received to register a new result from the GUI data.
+        /// Gets a command which starts the import times process.
         /// </summary>
-        public void AddRawTimeCmd()
-        {
-            RaceTimeType raceTimeType;
-
-            if (this.DNF)
-            {
-                raceTimeType = 
-                    new RaceTimeType(
-                        RaceTimeDescription.Dnf);
-            }
-            else if (this.Relay)
-            {
-                raceTimeType =
-                    new RaceTimeType(
-                        RaceTimeDescription.Relay);
-            }
-            else
-            {
-                raceTimeType =
-                    new RaceTimeType(
-                        this.TotalMinutes, 
-                        this.TotalSeconds);
-            }
-
-            this.RegisterNewResult(
-                this.RaceNumberUsed,
-                raceTimeType);
-
-            this.UnregisteredAthletesIndex = -1;
-        }
-
-        public bool SaveRawResultsCmdAvailable()
-        {
-            return true;
-        }
+        public ICommand ImportTimesCommand { get; private set; }
 
         /// <summary>
-        /// Save the raw results.
+        /// Gets a command which starts the import positions process.
         /// </summary>
-        public void SaveRawResultsCmd()
-        {
-            this.SaveRawEventResults();
-
-            CommonMessenger.Default.Send(
-                new HandicapProgressMessage(
-                    "Raw results saved"));
-        }
+        public ICommand ImportPositionsCommand { get; private set; }
 
         /// <summary>
-        /// 
+        /// Save the imported results.
         /// </summary>
         public void SaveImportResults()
         {
             try
             {
-                LoadRegisteredInformation(this.athletesModel.AthleteDetails);
+                this.LoadRegisteredInformation(this.athletesModel.AthleteDetails);
 
-                for (int index = 0; index < RawImportedPositions.Count; ++index)
+                for (int index = 0; index < this.RawImportedPositions.Count; ++index)
                 {
                     // Should have already checked that these two arrays are the same size.
-                    RegisterNewResult(RawImportedPositions[index].RaceNumber, RawImportedTimes[index]);
+                    this.RegisterNewResult(
+                        this.RawImportedPositions[index].RaceNumber, 
+                        this.RawImportedTimes[index]);
                 }
             }
             catch (Exception ex)
@@ -579,10 +232,7 @@
                 this.logger.WriteLog("Failed on import of results: " + ex.ToString());
             }
 
-            bool saveSuccess = SaveRawEventResults();
-
-            this.RaisePropertyChangedEvent("UnregisteredAthletes");
-            this.RaisePropertyChangedEvent("RegisteredAthletes");
+            bool saveSuccess = this.SaveRawEventResults();
 
             if (saveSuccess)
             {
@@ -599,11 +249,16 @@
         }
 
         /// <summary>
-        /// 
+        /// Import positional data.
         /// </summary>
         public void ImportPositionsData(string fileName)
         {
-            switch (this.CurrentPositionInputSource)
+            PositionSources currentPositionInputSource =
+                (this.positionInputSourceIndex < 0 || this.positionInputSourceIndex > this.PositionInputSources.Count)
+                ? PositionSources.OPN200
+                : (PositionSources)this.positionInputSourceIndex;
+
+            switch (currentPositionInputSource)
             {
                 case PositionSources.OPN200:
                     this.RawImportedPositions =
@@ -634,7 +289,12 @@
         /// </summary>
         public void ImportTimesData(string fileName)
         {
-            switch (this.CurrentTimeInputSource)
+            TimeSources currentTimeInputSource =
+                this.timeInputSourceIndex < 0 || this.timeInputSourceIndex > this.TimeInputSources.Count
+                ? TimeSources.Manual
+                : (TimeSources)this.timeInputSourceIndex;
+
+            switch (currentTimeInputSource)
             {
                 case TimeSources.Manual:
                     this.RawImportedTimes =
@@ -671,72 +331,25 @@
         }
 
         /// <summary>
-        /// Resets all the resetable member data.
-        /// </summary>
-        private void ResetMemberData()
-        {
-            RaceNumberUsed = string.Empty;
-            TotalMinutes = 59;
-            TotalSeconds = 59;
-            DNF = false;
-        }
-
-        /// <summary>
         /// Load all athletes and sort by race number.
         /// </summary>
         /// <param name="athletes">registered athletes</param>
         private void LoadRegisteredInformation(List<AthleteDetails> athletes)
         {
             List<AthleteDetails> orderedList = athletes.OrderBy(athlete => athlete.PrimaryNumber).ToList();
-            AllAthletes = new List<RawResults>();
+            this.allAthletes = new List<RawResults>();
 
             foreach (AthleteDetails athlete in orderedList)
             {
                 if (athlete.RunningNumbers != null &&
                   athlete.RunningNumbers.Count > 0)
                 {
-                    AllAthletes.Add(
+                    this.allAthletes.Add(
                       new RawResults(
                         athlete.Key,
                         athlete.Name,
                         new ObservableCollection<string>(
                           athlete.RunningNumbers)));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Load the raw event results into the registered athletes.
-        /// </summary>
-        private void LoadRawEventResults()
-        {
-            List<IRaw> rawResultsData = this.handicapEventModel.LoadRawResults();
-
-            foreach (IRaw raw in rawResultsData)
-            {
-                bool found = false;
-
-                foreach (RawResults results in UnregisteredAthletes)
-                {
-                    if (results.AthleteNumbers.Contains(raw.RaceNumber))
-                    {
-                        results.RaceNumber = raw.RaceNumber;
-                        results.RaceTime = raw.TotalTime;
-                        results.Order = raw.Order;
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (!found)
-                {
-                    ObservableCollection<string> newNumber = new ObservableCollection<string> { raw.RaceNumber };
-                    RawResults newResult = new RawResults(0, string.Empty, newNumber);
-                    newResult.RaceTime = raw.TotalTime;
-                    newResult.RaceNumber = raw.RaceNumber;
-                    newResult.Order = raw.Order;
-
-                    this.AllAthletes.Add(newResult);
                 }
             }
         }
@@ -748,12 +361,12 @@
         {
             List<IRaw> rawList = new List<IRaw>();
 
-            foreach (RawResults result in this.AllAthletes.FindAll(athlete => athlete.RaceNumber != string.Empty))
+            foreach (RawResults result in this.allAthletes.FindAll(athlete => athlete.RaceNumber != string.Empty))
             {
                 rawList.Add(
                     new Raw(
-                        result.RaceNumber, 
-                        result.RaceTime, 
+                        result.RaceNumber,
+                        result.RaceTime,
                         result.Order));
             }
 
@@ -800,7 +413,7 @@
 
             foreach (RawPositionResults raw in this.RawImportedPositions)
             {
-                if (!this.RaceNumberPresent(AllAthletes, raw.RaceNumber))
+                if (!this.RaceNumberPresent(this.allAthletes, raw.RaceNumber))
                 {
                     invalidValues.Add($"{raw.RaceNumber} is not registered to an athlete");
                 }
@@ -862,13 +475,10 @@
                 result.RaceTime = raceTime;
 
                 // Determine the finish order if two or more athletes share the same finishing time.
-                List<RawResults> filteredList = AllAthletes.FindAll(athlete => athlete.RaceTime == result.RaceTime);
+                List<RawResults> filteredList = this
+                    .allAthletes.FindAll(
+                    athlete => athlete.RaceTime == result.RaceTime);
                 result.Order = filteredList.Count();
-
-                ResetMemberData();
-
-                RaisePropertyChangedEvent("UnregisteredAthletes");
-                RaisePropertyChangedEvent("RegisteredAthletes");
             }
             else
             {
@@ -880,10 +490,12 @@
                 newResult.RaceNumber = raceNumber;
 
                 // Determine the finish order if two or more athletes share the same finishing time.
-                List<RawResults> filteredList = AllAthletes.FindAll(athlete => athlete.RaceTime == raceTime);
+                List<RawResults> filteredList = 
+                    this.allAthletes.FindAll(
+                        athlete => athlete.RaceTime == raceTime);
                 newResult.Order = filteredList.Count();
 
-                this.AllAthletes.Add(newResult);
+                this.allAthletes.Add(newResult);
             }
         }
 
@@ -893,7 +505,7 @@
         /// <returns>requested athlete</returns>
         private RawResults FindAthlete(string raceNumber)
         {
-            foreach (RawResults athlete in UnregisteredAthletes)
+            foreach (RawResults athlete in this.allAthletes)
             {
                 foreach (string number in athlete.AthleteNumbers)
                 {

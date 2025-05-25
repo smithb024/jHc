@@ -99,7 +99,6 @@
     <Compile Include="ViewModels\ViewModels\AthleteSummaryViewModel.cs" />
     <Compile Include="ViewModels\ViewModels\ClubConfigurationViewModel.cs" />
     <Compile Include="ViewModels\ViewModels\ClubSummaryViewModel.cs" />
-    <Compile Include="ViewModels\ViewModels\EventRawResultsViewModel.cs" />
     <Compile Include="ViewModels\ViewModels\Helpers\AthleteCollectionFilter.cs" />
     <Compile Include="ViewModels\ViewModels\PrimaryDisplayViewModel.cs" />
     <Compile Include="ViewModels\ViewModels\Types\Athletes\AthleteBase.cs" />
@@ -119,6 +118,8 @@
     <Compile Include="ViewModels\ViewModels\Types\Misc\AppearancesViewModel.cs" />
     <Compile Include="ViewModels\ViewModels\Types\PointsType.cs" />
     <Compile Include="ViewModels\ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\ViewModels\Windows\Results\EventRawResultsDlgViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\Windows\Results\ImportEventRawResultDialogViewModel.cs" />
     <Compile Include="Views\Components\AppearanceDetail.xaml.cs">
       <DependentUpon>AppearanceDetail.xaml</DependentUpon>
     </Compile>
