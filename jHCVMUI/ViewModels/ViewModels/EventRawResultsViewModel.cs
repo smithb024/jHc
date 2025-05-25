@@ -575,7 +575,7 @@
             {
                 CommonMessenger.Default.Send(
                     new HandicapProgressMessage(
-                        "Results inport failed"));
+                        "Results import failed"));
                 this.logger.WriteLog("Failed on import of results: " + ex.ToString());
             }
 
@@ -588,13 +588,13 @@
             {
                 CommonMessenger.Default.Send(
                     new HandicapProgressMessage(
-                        "Results inport completed"));
+                        "Results import completed"));
             }
             else
             {
                 CommonMessenger.Default.Send(
                     new HandicapProgressMessage(
-                        "Results inport failed"));
+                        "Results import failed"));
             }
         }
 
