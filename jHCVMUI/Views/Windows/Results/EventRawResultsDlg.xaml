@@ -154,10 +154,16 @@
             </Grid>
         </Grid>
 
-        <StackPanel Grid.Column="1"
-                    Orientation="Vertical"
-                    Margin="5">
-            <StackPanel Orientation="Horizontal">
+        <Grid Grid.Column="1"
+              Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel
+                Grid.Row="0"
+                Orientation="Horizontal">
                 <CheckBox 
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
@@ -167,10 +173,11 @@
                         Content="Is Active" />
                 </CheckBox>
             </StackPanel>
-            <ScrollViewer >
+
+            <ScrollViewer Grid.Row="1">
                 <ListBox ItemsSource="{Binding Path=UnregisteredAthletes}"
-               HorizontalContentAlignment="Stretch"
-               SelectedIndex="{Binding UnregisteredAthletesIndex}">
+                         HorizontalContentAlignment="Stretch"
+                         SelectedIndex="{Binding UnregisteredAthletesIndex}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <local:EventRawResultsUnregisteredAthlete DataContext="{Binding}"/>
@@ -178,6 +185,6 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </ScrollViewer>
-        </StackPanel>
+        </Grid>
     </Grid>
 </Window>

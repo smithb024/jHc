@@ -6,6 +6,7 @@
     using System.Windows.Input;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
+    using CommonHandicapLib.XML.AthleteData;
     using HandicapModel.AthletesModel;
     using HandicapModel.Interfaces.SeasonModel.EventModel;
     using HandicapModel.SeasonModel.EventModel;
@@ -297,13 +298,23 @@
         /// Check to see if the race number is available for selection because it is in the unregistered
         /// athletes list.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// Flag indicating whether the add time command should be enabled.
+        /// </returns>
         public bool AddRawTimeCmdAvailable()
         {
+            foreach (AthleteRegistrationViewModel athlete in this.athleteList)
+            {
+                foreach (string number in athlete.AthleteNumbers)
+                {
+                    if (string.Equals(number, this.RaceNumberUsed))
+                    {
+                        return true;
+                    }
+                }
+            }
+
             return false;
-            //return this.RaceNumberPresent(
-            //    this.UnregisteredAthletes, 
-            //    this.RaceNumberUsed);
         }
 
         /// <summary>
