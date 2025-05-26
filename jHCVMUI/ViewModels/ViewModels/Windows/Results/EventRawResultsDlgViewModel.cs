@@ -27,6 +27,13 @@
         /// 
         /// </summary>
         private List<RawResults> allAthletes = new List<RawResults>();
+
+        /// <summary>
+        /// A list of all athletes known to the model. They are used to create the unregistered
+        /// athletes.
+        /// </summary>
+        private List<AthleteRegistrationViewModel> athleteList = new List<AthleteRegistrationViewModel>();
+
         private string raceNumberUsed = "";
         private int minutes = 0;
         private int seconds = 0;
@@ -53,7 +60,7 @@
         private int unregisteredAthletesIndex;
 
         /// <summary>
-        /// View model which manages raw results view.
+        /// Initialises a new instance of the <see cref="EventRawResultsDlgViewModel"/> class.
         /// </summary>
         /// <param name="handicapEventModel">junior handicap model</param>
         /// <param name="athletesModel">athletes model</param>
@@ -61,6 +68,8 @@
             IHandicapEvent handicapEventModel,
             Athletes athletesModel)
         {
+            this.athleteList = new List<AthleteRegistrationViewModel>();
+            this.RegisteredAthletes = new ObservableCollection<RawResults>();
             this.handicapEventModel = handicapEventModel;
             this.isActive = true;
 
@@ -82,17 +91,13 @@
             this.unregisteredAthletesIndex = -1;
         }
 
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        /// <name>AthleteCollection</name>
-        /// <date>02/03/15</date>
         /// <summary>
-        /// Gets and sets the athlete collection
+        /// Gets the list of unregistered athletes to display on the dialog.
         /// </summary>
-        /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public List<RawResults> UnregisteredAthletes =>
-            new List<RawResults>(
-                this.allAthletes.FindAll(
-                    rawResults => rawResults.RaceTime == null));
+        public List<AthleteRegistrationViewModel> UnregisteredAthletes =>
+            new List<AthleteRegistrationViewModel>(
+                this.athleteList.FindAll(
+                    a => !a.IsRegisteredForCurrentEvent));
 
         /// <summary>
         /// Gets and sets the currently selected object in the athlete collection.
@@ -276,13 +281,7 @@
         /// Gets and sets the athlete collection
         /// </summary>
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-        public ObservableCollection<RawResults> RegisteredAthletes
-        {
-            get =>
-                new ObservableCollection<RawResults>(
-                    this.allAthletes.FindAll(
-                        rawResults => rawResults.RaceTime != null));
-        }
+        public ObservableCollection<RawResults> RegisteredAthletes { get; }
 
         /// <summary>
         /// Gets a command which saves the raw results.
@@ -301,9 +300,10 @@
         /// <returns></returns>
         public bool AddRawTimeCmdAvailable()
         {
-            return this.RaceNumberPresent(
-                this.UnregisteredAthletes, 
-                this.RaceNumberUsed);
+            return false;
+            //return this.RaceNumberPresent(
+            //    this.UnregisteredAthletes, 
+            //    this.RaceNumberUsed);
         }
 
         /// <summary>
@@ -382,6 +382,14 @@
                 if (athlete.RunningNumbers != null &&
                   athlete.RunningNumbers.Count > 0)
                 {
+                    AthleteRegistrationViewModel newAthlete =
+                        new AthleteRegistrationViewModel(
+                            athlete.Key,
+                            athlete.Name,
+                            new ObservableCollection<string>(
+                                athlete.RunningNumbers));
+                    this.athleteList.Add(newAthlete);
+
                     this.allAthletes.Add(
                       new RawResults(
                         athlete.Key,
@@ -401,30 +409,50 @@
 
             foreach (IRaw raw in rawResultsData)
             {
-                bool found = false;
+                AthleteRegistrationViewModel foundAthlete =
+                    this.athleteList.Find(
+                        a => a.AthleteNumbers.Contains(raw.RaceNumber));
 
-                foreach (RawResults results in UnregisteredAthletes)
+                if (foundAthlete != null) 
                 {
-                    if (results.AthleteNumbers.Contains(raw.RaceNumber))
-                    {
-                        results.RaceNumber = raw.RaceNumber;
-                        results.RaceTime = raw.TotalTime;
-                        results.Order = raw.Order;
-                        found = true;
-                        break;
-                    }
+                    RawResults rawResult =
+                        new RawResults(
+                            foundAthlete.Key,
+                            foundAthlete.Name,
+                            foundAthlete.AthleteNumbers)
+                        {
+                            RaceTime = raw.TotalTime,
+                            RaceNumber = raw.RaceNumber,
+                            Order = raw.Order
+                        };
+                    this.RegisteredAthletes.Add(rawResult);
+                    foundAthlete.SetRegistered(foundAthlete.Key);
                 }
 
-                if (!found)
-                {
-                    ObservableCollection<string> newNumber = new ObservableCollection<string> { raw.RaceNumber };
-                    RawResults newResult = new RawResults(0, string.Empty, newNumber);
-                    newResult.RaceTime = raw.TotalTime;
-                    newResult.RaceNumber = raw.RaceNumber;
-                    newResult.Order = raw.Order;
+                //bool found = false;
 
-                    this.allAthletes.Add(newResult);
-                }
+                //foreach (RawResults results in UnregisteredAthletes)
+                //{
+                //    if (results.AthleteNumbers.Contains(raw.RaceNumber))
+                //    {
+                //        results.RaceNumber = raw.RaceNumber;
+                //        results.RaceTime = raw.TotalTime;
+                //        results.Order = raw.Order;
+                //        found = true;
+                //        break;
+                //    }
+                //}
+
+                //if (!found)
+                //{
+                //    ObservableCollection<string> newNumber = new ObservableCollection<string> { raw.RaceNumber };
+                //    RawResults newResult = new RawResults(0, string.Empty, newNumber);
+                //    newResult.RaceTime = raw.TotalTime;
+                //    newResult.RaceNumber = raw.RaceNumber;
+                //    newResult.Order = raw.Order;
+
+                //    this.allAthletes.Add(newResult);
+                //}
             }
         }
 
@@ -515,16 +543,16 @@
         /// <returns>requested athlete</returns>
         private RawResults FindAthlete(string raceNumber)
         {
-            foreach (RawResults athlete in this.UnregisteredAthletes)
-            {
-                foreach (string number in athlete.AthleteNumbers)
-                {
-                    if (number == raceNumber)
-                    {
-                        return athlete;
-                    }
-                }
-            }
+            //foreach (RawResults athlete in this.UnregisteredAthletes)
+            //{
+            //    foreach (string number in athlete.AthleteNumbers)
+            //    {
+            //        if (number == raceNumber)
+            //        {
+            //            return athlete;
+            //        }
+            //    }
+            //}
 
             return null;
         }

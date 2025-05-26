@@ -120,6 +120,7 @@
     <Compile Include="ViewModels\ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\ViewModels\Windows\Results\EventRawResultsDlgViewModel.cs" />
     <Compile Include="ViewModels\ViewModels\Windows\Results\ImportEventRawResultDialogViewModel.cs" />
+    <Compile Include="ViewModels\ViewModels\Windows\Results\AthleteRegistrationViewModel.cs" />
     <Compile Include="Views\Components\AppearanceDetail.xaml.cs">
       <DependentUpon>AppearanceDetail.xaml</DependentUpon>
     </Compile>
