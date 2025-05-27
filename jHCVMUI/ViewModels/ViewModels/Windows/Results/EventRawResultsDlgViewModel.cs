@@ -6,7 +6,6 @@
     using System.Windows.Input;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.Types;
-    using CommonHandicapLib.XML.AthleteData;
     using HandicapModel.AthletesModel;
     using HandicapModel.Interfaces.SeasonModel.EventModel;
     using HandicapModel.SeasonModel.EventModel;
@@ -86,8 +85,7 @@
                 this.AddRawTimeCmdAvailable);
             this.SaveCommand =
               new SimpleCommand(
-                this.SaveRawResultsCmd,
-                this.SaveRawResultsCmdAvailable);
+                this.SaveRawResultsCmd);
 
             this.unregisteredAthletesIndex = -1;
         }
@@ -98,7 +96,8 @@
         public List<AthleteRegistrationViewModel> UnregisteredAthletes =>
             new List<AthleteRegistrationViewModel>(
                 this.athleteList.FindAll(
-                    a => !a.IsRegisteredForCurrentEvent));
+                    a => 
+                    !a.IsRegisteredForCurrentEvent));
 
         /// <summary>
         /// Gets and sets the currently selected object in the athlete collection.
@@ -322,38 +321,46 @@
         /// </summary>
         public void AddRawTimeCmd()
         {
-            RaceTimeType raceTimeType;
+            RaceTimeType raceTime = this.CalculateRaceTime();
 
-            if (this.DNF)
+            ObservableCollection <string> newNumber =
+                new ObservableCollection<string>
+                {
+                    this.RaceNumberUsed 
+                };
+
+            AthleteRegistrationViewModel foundAthlete =
+                this.athleteList.Find(
+                    a => a.AthleteNumbers.Contains(this.RaceNumberUsed));
+
+            if (foundAthlete == null)
             {
-                raceTimeType =
-                    new RaceTimeType(
-                        RaceTimeDescription.Dnf);
-            }
-            else if (this.Relay)
-            {
-                raceTimeType =
-                    new RaceTimeType(
-                        RaceTimeDescription.Relay);
-            }
-            else
-            {
-                raceTimeType =
-                    new RaceTimeType(
-                        this.TotalMinutes,
-                        this.TotalSeconds);
+                return;
             }
 
-            this.RegisterNewResult(
-                this.RaceNumberUsed,
-                raceTimeType);
+            RawResults newResult =
+                new RawResults(
+                    foundAthlete.Key,
+                    foundAthlete.Name,
+                    newNumber)
+                {
+                    RaceTime = raceTime,
+                    RaceNumber = this.RaceNumberUsed
+                };
 
+            // Determine the finish order if two or more athletes share the same finishing time.
+            List<RawResults> filteredList = 
+                this.FindAll(
+                    raceTime);
+            newResult.Order = filteredList.Count();
+
+            this.RegisteredAthletes.Add(newResult);
+            this.RegisterAthlete(foundAthlete.Key);
+            this.ResetMemberData();
+
+            this.RaisePropertyChangedEvent(nameof(this.UnregisteredAthletes));
+            this.RaisePropertyChangedEvent(nameof(this.RegisteredAthletes));
             this.UnregisteredAthletesIndex = -1;
-        }
-
-        public bool SaveRawResultsCmdAvailable()
-        {
-            return true;
         }
 
         /// <summary>
@@ -369,7 +376,7 @@
         }
 
         /// <summary>
-        /// Resets all the resetable member data.
+        /// Reset the fields which are used to enter new results.
         /// </summary>
         private void ResetMemberData()
         {
@@ -377,6 +384,7 @@
             this.TotalMinutes = 59;
             this.TotalSeconds = 59;
             this.DNF = false;
+            this.Relay = false;
         }
 
         /// <summary>
@@ -414,6 +422,9 @@
         /// <summary>
         /// Load the raw event results into the registered athletes.
         /// </summary>
+        /// <remarks>
+        /// This is a set up method, so should only be called from the constructor.
+        /// </remarks>
         private void LoadRawEventResults()
         {
             List<IRaw> rawResultsData = this.handicapEventModel.LoadRawResults();
@@ -439,31 +450,6 @@
                     this.RegisteredAthletes.Add(rawResult);
                     foundAthlete.SetRegistered(foundAthlete.Key);
                 }
-
-                //bool found = false;
-
-                //foreach (RawResults results in UnregisteredAthletes)
-                //{
-                //    if (results.AthleteNumbers.Contains(raw.RaceNumber))
-                //    {
-                //        results.RaceNumber = raw.RaceNumber;
-                //        results.RaceTime = raw.TotalTime;
-                //        results.Order = raw.Order;
-                //        found = true;
-                //        break;
-                //    }
-                //}
-
-                //if (!found)
-                //{
-                //    ObservableCollection<string> newNumber = new ObservableCollection<string> { raw.RaceNumber };
-                //    RawResults newResult = new RawResults(0, string.Empty, newNumber);
-                //    newResult.RaceTime = raw.TotalTime;
-                //    newResult.RaceNumber = raw.RaceNumber;
-                //    newResult.Order = raw.Order;
-
-                //    this.allAthletes.Add(newResult);
-                //}
             }
         }
 
@@ -566,6 +552,74 @@
             //}
 
             return null;
+        }
+
+        /// <summary>
+        /// Go through all the athletes in <see cref="athleteList"/> and attempt to register them.
+        /// As soon as the correct one is found, registration will be successful, so return from 
+        /// the method.
+        /// </summary>
+        /// <param name="key">The key of the athlete to register</param>
+        private void RegisterAthlete(int key)
+        {
+            foreach (AthleteRegistrationViewModel athlete in this.athleteList)
+            {
+                if (athlete.SetRegistered(key))
+                {
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Create a <see cref="RaceTimeType"/> object from the input values.
+        /// </summary>
+        /// <returns>A <see cref="RaceTimeType"/> object</returns>
+        private RaceTimeType CalculateRaceTime()
+        {
+            RaceTimeType raceTimeType;
+
+            if (this.DNF)
+            {
+                raceTimeType =
+                    new RaceTimeType(
+                        RaceTimeDescription.Dnf);
+            }
+            else if (this.Relay)
+            {
+                raceTimeType =
+                    new RaceTimeType(
+                        RaceTimeDescription.Relay);
+            }
+            else
+            {
+                raceTimeType =
+                    new RaceTimeType(
+                        this.TotalMinutes,
+                        this.TotalSeconds);
+            }
+
+            return raceTimeType;
+        }
+
+        /// <summary>
+        /// Determine all registered results with the same time. 
+        /// </summary>
+        /// <param name="raceTime">The time to search for</param>
+        /// <returns>A list of all results.</returns>
+        private List<RawResults> FindAll(RaceTimeType raceTime)
+        {
+            List<RawResults> filteredList = new List<RawResults>();
+
+            foreach (RawResults rawResults in this.RegisteredAthletes)
+            {
+                if (rawResults.RaceTime == raceTime)
+                {
+                    filteredList.Add(rawResults);
+                }
+            }
+
+            return filteredList;
         }
     }
 }
