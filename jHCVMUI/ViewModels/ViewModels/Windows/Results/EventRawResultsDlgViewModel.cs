@@ -24,11 +24,6 @@
         private readonly IHandicapEvent handicapEventModel;
 
         /// <summary>
-        /// 
-        /// </summary>
-        private List<RawResults> allAthletes = new List<RawResults>();
-
-        /// <summary>
         /// A list of all athletes known to the model. They are used to create the unregistered
         /// athletes.
         /// </summary>
@@ -394,7 +389,6 @@
         private void LoadRegisteredInformation(List<AthleteDetails> athletes)
         {
             List<AthleteDetails> orderedList = athletes.OrderBy(athlete => athlete.PrimaryNumber).ToList();
-            this.allAthletes = new List<RawResults>();
 
             foreach (AthleteDetails athlete in orderedList)
             {
@@ -408,13 +402,6 @@
                             new ObservableCollection<string>(
                                 athlete.RunningNumbers));
                     this.athleteList.Add(newAthlete);
-
-                    this.allAthletes.Add(
-                      new RawResults(
-                        athlete.Key,
-                        athlete.Name,
-                        new ObservableCollection<string>(
-                          athlete.RunningNumbers)));
                 }
             }
         }
@@ -470,88 +457,6 @@
             }
 
             return this.handicapEventModel.SaveRawResults(rawList);
-        }
-
-        /// <summary>
-        /// Check to see of the race number is currently allocated to an athlete.
-        /// </summary>
-        /// <param name="athletes">list of athletes to check</param>
-        /// <param name="raceNumber">race number to check</param>
-        /// <returns>flag indicating if the race number is allocated to an athlete</returns>
-        private bool RaceNumberPresent(List<RawResults> athletes, string raceNumber)
-        {
-            foreach (RawResults athlete in athletes)
-            {
-                foreach (string number in athlete.AthleteNumbers)
-                {
-                    if (string.Equals(number, raceNumber))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void RegisterNewResult(
-            string raceNumber,
-            RaceTimeType raceTime)
-        {
-            RawResults result = this.FindAthlete(raceNumber);
-
-            if (result != null)
-            {
-                result.RaceNumber = raceNumber;
-                result.RaceTime = raceTime;
-
-                // Determine the finish order if two or more athletes share the same finishing time.
-                List<RawResults> filteredList = this.allAthletes.FindAll(athlete => athlete.RaceTime == result.RaceTime);
-                result.Order = filteredList.Count();
-
-                this.ResetMemberData();
-
-                this.RaisePropertyChangedEvent(nameof(this.UnregisteredAthletes));
-                this.RaisePropertyChangedEvent(nameof(this.RegisteredAthletes));
-            }
-            else
-            {
-                // The athlete is unknown. Add the data to all athletes, all athletes is read 
-                // when saving the raw results.
-                ObservableCollection<string> newNumber = new ObservableCollection<string> { raceNumber };
-                RawResults newResult = new RawResults(0, string.Empty, newNumber);
-                newResult.RaceTime = raceTime;
-                newResult.RaceNumber = raceNumber;
-
-                // Determine the finish order if two or more athletes share the same finishing time.
-                List<RawResults> filteredList = this.allAthletes.FindAll(athlete => athlete.RaceTime == raceTime);
-                newResult.Order = filteredList.Count();
-
-                this.allAthletes.Add(newResult);
-            }
-        }
-
-        /// <summary>
-        /// Search throught the unregistered athlete to find the athlete with the race number
-        /// </summary>
-        /// <returns>requested athlete</returns>
-        private RawResults FindAthlete(string raceNumber)
-        {
-            //foreach (RawResults athlete in this.UnregisteredAthletes)
-            //{
-            //    foreach (string number in athlete.AthleteNumbers)
-            //    {
-            //        if (number == raceNumber)
-            //        {
-            //            return athlete;
-            //        }
-            //    }
-            //}
-
-            return null;
         }
 
         /// <summary>
