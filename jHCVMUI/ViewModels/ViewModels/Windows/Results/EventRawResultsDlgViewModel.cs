@@ -352,7 +352,7 @@
             List<RawResults> filteredList = 
                 this.FindAll(
                     raceTime);
-            newResult.Order = filteredList.Count();
+            newResult.Order = filteredList.Count() + 1;
 
             this.RegisteredAthletes.Add(newResult);
             this.RegisterAthlete(foundAthlete.Key);
@@ -460,7 +460,7 @@
         {
             List<IRaw> rawList = new List<IRaw>();
 
-            foreach (RawResults result in this.allAthletes.FindAll(athlete => athlete.RaceNumber != string.Empty))
+            foreach (RawResults result in this.RegisteredAthletes)
             {
                 rawList.Add(
                     new Raw(
