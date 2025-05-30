@@ -47,7 +47,7 @@
         /// <summary>
         /// Indicates whether to filter on active athletes.
         /// </summary>
-        private bool isActive;
+        private bool isActiveFilter;
 
         /// <summary>
         /// The index of the currently selected unregistered athlete.
@@ -66,7 +66,7 @@
             this.athleteList = new List<AthleteRegistrationViewModel>();
             this.RegisteredAthletes = new ObservableCollection<RawResults>();
             this.handicapEventModel = handicapEventModel;
-            this.isActive = true;
+            this.isActiveFilter = true;
 
             // Get the list of athletes registered for the current season from the Business layer.
             // This doesn't include the raw results, so read this directly from a file and add
@@ -92,7 +92,8 @@
             new List<AthleteRegistrationViewModel>(
                 this.athleteList.FindAll(
                     a => 
-                    !a.IsRegisteredForCurrentEvent));
+                    !a.IsRegisteredForCurrentEvent &&
+                    this.IncludeBasedOnActiveStatus(a.IsActive)));
 
         /// <summary>
         /// Gets and sets the currently selected object in the athlete collection.
@@ -251,16 +252,17 @@
         /// </summary>
         public bool IsActive
         {
-            get => this.isActive;
+            get => this.isActiveFilter;
             set
             {
-                if (this.isActive == value)
+                if (this.isActiveFilter == value)
                 {
                     return;
                 }
 
-                this.isActive = value;
+                this.isActiveFilter = value;
                 this.RaisePropertyChangedEvent(nameof(this.IsActive));
+                this.RaisePropertyChangedEvent(nameof(this.UnregisteredAthletes));
             }
         }
 
@@ -400,7 +402,8 @@
                             athlete.Key,
                             athlete.Name,
                             new ObservableCollection<string>(
-                                athlete.RunningNumbers));
+                                athlete.RunningNumbers),
+                            athlete.Active);
                     this.athleteList.Add(newAthlete);
                 }
             }
@@ -525,6 +528,22 @@
             }
 
             return filteredList;
+        }
+
+        /// <summary>
+        /// Determine whether to include an athlete in the <see cref="UnregisteredAthletes"/> 
+        /// collection, based on the is active filter flag and the athlete's own active state.
+        /// </summary>
+        /// <param name="isActive">the athlete's active state.</param>
+        /// <returns>Include flag</returns>
+        private bool IncludeBasedOnActiveStatus(bool isActive)
+        {
+            if (!this.isActiveFilter)
+            {
+                return true;
+            }
+
+            return isActive;
         }
     }
 }

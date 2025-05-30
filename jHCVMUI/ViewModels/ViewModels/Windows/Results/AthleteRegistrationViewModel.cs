@@ -16,18 +16,26 @@
         /// <param name="runningNumbers">
         /// A collection of all running numbers associated with the athlete.
         /// </param>
+        /// <param name="isActive">Indicates whether this athlete is active</param>
         public AthleteRegistrationViewModel(
             int key,
             string name,
-            ObservableCollection<string> runningNumbers) 
+            ObservableCollection<string> runningNumbers,
+            bool isActive) 
             : base(key, name, runningNumbers)
         {
+            this.IsActive = isActive;
         }
 
         /// <summary>
         /// Gets a value indicating whether this athlete has been registered.
         /// </summary>
         public bool IsRegisteredForCurrentEvent { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this athlete is currently active.
+        /// </summary>
+        public bool IsActive { get; }
 
         /// <summary>
         /// Attempt to set the athlete as registered. It will set if the correct key is provided
