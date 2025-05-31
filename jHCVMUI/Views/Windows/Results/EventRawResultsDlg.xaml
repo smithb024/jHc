@@ -153,18 +153,48 @@
                     HorizontalAlignment="Right"/>
             </Grid>
         </Grid>
-        
-        <ScrollViewer Grid.Column="1"
-                  Margin="5">
-            <ListBox ItemsSource="{Binding Path=UnregisteredAthletes}"
-               HorizontalContentAlignment="Stretch"
-               SelectedIndex="{Binding UnregisteredAthletesIndex}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <local:EventRawResultsUnregisteredAthlete DataContext="{Binding}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </ScrollViewer>
+
+        <Grid Grid.Column="1"
+              Margin="5, 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel
+                Grid.Row="0"
+                Orientation="Horizontal">
+                <Label 
+                    Grid.Column="2"
+                    Content="Filter"
+                    VerticalContentAlignment="Center"
+                    IsEnabled="{Binding TimeIsValid, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox 
+                    Grid.Column="1"
+                    Width="120"
+                    Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"
+                    Style="{StaticResource BodyTextBoxStyle}"
+                    Margin="5"/>
+                <CheckBox 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    IsChecked="{Binding IsActive, UpdateSourceTrigger=PropertyChanged}">
+                    <Label Content="Is Active" />
+                </CheckBox>
+            </StackPanel>
+
+            <ScrollViewer Grid.Row="1">
+                <ListBox ItemsSource="{Binding Path=UnregisteredAthletes}"
+                         HorizontalContentAlignment="Stretch"
+                         SelectedIndex="{Binding UnregisteredAthletesIndex}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <local:EventRawResultsUnregisteredAthlete DataContext="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Window>
