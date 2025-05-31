@@ -45,6 +45,11 @@
         private bool relay = false;
 
         /// <summary>
+        /// A string which is used to filter the <see cref="UnregisteredAthletes"/>.
+        /// </summary>
+        private string filterString;
+
+        /// <summary>
         /// Indicates whether to filter on active athletes.
         /// </summary>
         private bool isActiveFilter;
@@ -93,7 +98,8 @@
                 this.athleteList.FindAll(
                     a => 
                     !a.IsRegisteredForCurrentEvent &&
-                    this.IncludeBasedOnActiveStatus(a.IsActive)));
+                    this.IncludeBasedOnActiveStatus(a.IsActive) &&
+                    this.IncludeBasedOnFilterString(a.Name)));
 
         /// <summary>
         /// Gets and sets the currently selected object in the athlete collection.
@@ -248,6 +254,26 @@
         }
 
         /// <summary>
+        /// Gets and sets a string which is used to filter the <see cref="UnregisteredAthletes"/>.
+        /// </summary>
+        public string FilterString
+        {
+            get => this.filterString;
+            set
+            {
+                if (this.filterString == value)
+                {
+                    return;
+                }
+
+                this.filterString = value;
+                this.RaisePropertyChangedEvent(nameof(this.FilterString));
+                this.UnregisteredAthletesIndex = -1;
+                this.RaisePropertyChangedEvent(nameof(this.UnregisteredAthletes));
+            }
+        }
+
+        /// <summary>
         /// Gets and sets a flag indicating whether to only provide active athletes to the view.
         /// </summary>
         public bool IsActive
@@ -262,6 +288,7 @@
 
                 this.isActiveFilter = value;
                 this.RaisePropertyChangedEvent(nameof(this.IsActive));
+                this.UnregisteredAthletesIndex = -1;
                 this.RaisePropertyChangedEvent(nameof(this.UnregisteredAthletes));
             }
         }
@@ -528,6 +555,22 @@
             }
 
             return filteredList;
+        }
+
+        /// <summary>
+        /// Determine whether to include an athlete in the <see cref="UnregisteredAthletes"/> 
+        /// collection, based on the is active filter flag and the athlete's own active state.
+        /// </summary>
+        /// <param name="isActive">the athlete's active state.</param>
+        /// <returns>Include flag</returns>
+        private bool IncludeBasedOnFilterString(string name)
+        {
+            if (string.IsNullOrEmpty(this.FilterString))
+            {
+                return true;
+            }
+
+            return name.Contains(this.FilterString);
         }
 
         /// <summary>
