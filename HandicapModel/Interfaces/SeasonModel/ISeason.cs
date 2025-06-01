@@ -3,8 +3,6 @@
     using CommonHandicapLib.Types;
     using CommonLib.Types;
     using HandicapModel.Common;
-    using HandicapModel.SeasonModel;
-    using HandicapModel.SeasonModel.EventModel;
     using System;
     using System.Collections.Generic;
     using HandicapModel.Interfaces.Common;
@@ -15,13 +13,6 @@
     /// </summary>
     public interface ISeason
     {
-        //AthleteSeasonDelegate AthletePointsCallback { get; set; }
-        //ClubSeasonDelegate ClubsCallback { get; set; }
-        //InformationDelegate ErrorCallback { get; set; }
-        //StringDelegate NameCallback { get; set; }
-        //InformationDelegate ProgressCallback { get; set; }
-        //SummaryDelegate SeasonSummaryCallback { get; set; }
-
         /// <summary>
         /// Event which is used to inform interested parties that there has been a change to the
         /// list of handicap event names.
@@ -61,11 +52,6 @@
         /// Gets the club specific details for each club present in the current season.
         /// </summary>
         List<IClubSeasonDetails> Clubs { get; }
-
-        ///// <summary>
-        ///// Not here
-        ///// </summary>
-        //EventHC CurrentEvent { get; }
 
         /// <summary>
         /// Gets the list of events in the current season.
@@ -151,13 +137,6 @@
         /// <param name="key">athlete id</param>
         /// <returns>season best time</returns>
         TimeType GetSB(int key);
-
-        ///// <summary>
-        ///// Not required
-        ///// </summary>
-        ///// <param name="eventName"></param>
-        ///// <returns></returns>
-        //bool LoadNewEvent(string eventName);
 
         /// <summary>
         /// Save the current model to a file.

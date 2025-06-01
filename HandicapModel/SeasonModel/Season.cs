@@ -42,6 +42,11 @@
         private readonly IJHcLogger logger;
 
         /// <summary>
+        /// Results configuration manager.
+        /// </summary>
+        private readonly IResultsConfigMngr resultsConfigurationManager;
+
+        /// <summary>
         /// Event specific IO manager.
         /// </summary>
         private readonly IEventIo eventIo;
@@ -65,11 +70,6 @@
         /// A list of club specific details for all clubs present in the current season.
         /// </summary>
         private List<IClubSeasonDetails> clubs = new List<IClubSeasonDetails>();
-
-        /// <summary>
-        /// Results configuration manager.
-        /// </summary>
-        private IResultsConfigMngr resultsConfigurationManager;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="Season"/> class

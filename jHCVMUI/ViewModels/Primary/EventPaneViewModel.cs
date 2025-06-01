@@ -284,6 +284,9 @@
             }
         }
 
+        /// <summary>
+        /// Gets the button which is used to calculate the results.
+        /// </summary>
         public ICommand CalculateResultsCommand { get; private set; }
         public ICommand OpenEventRawResultsDlgCommand { get; private set; }
         public ICommand OpenEventImportResultsDlgCommand { get; private set; }
