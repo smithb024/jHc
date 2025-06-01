@@ -43,7 +43,7 @@
                   Name="AthleteScroll">
             <ListBox ItemsSource="{Binding Path=AthleteCollection}"
                Name="AthleteCollectionList"
-               SelectedIndex="{Binding AthleteCollectionIndex}"
+               SelectedIndex="{Binding Path=AthleteCollectionIndex}"
                HorizontalContentAlignment="Stretch">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
