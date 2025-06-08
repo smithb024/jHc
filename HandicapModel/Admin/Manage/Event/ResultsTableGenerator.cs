@@ -170,11 +170,16 @@
                 // End loop through all the entries in the raw results.
                 resultsTable.AddEntry(singleResult);
 
-                // At this point we have a result for the raw result. The time has been added to the current season.
-                // Therefore (if the result is not DNF or relay) we can get a handicap from the current season.
-                // Once we have a handicap, we can add it to the full model.
-                // Save the full model. Do we save the full model elsewhere in the process.
+                // Store the new handicap.
+                RaceTimeType newHandicap =
+                    currentSeason.GetAthleteHandicap(
+                        key, 
+                        this.hcConfiguration);
+                this.model.UpdateAthlete(key, newHandicap);
             }
+
+            // Save the new handicaps.
+            this.model.SaveAthleteList();
 
             return resultsTable;
         }
