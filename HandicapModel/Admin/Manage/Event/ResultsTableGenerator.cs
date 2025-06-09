@@ -170,12 +170,9 @@
                 // End loop through all the entries in the raw results.
                 resultsTable.AddEntry(singleResult);
 
-                // Store the new handicap.
-                RaceTimeType newHandicap =
-                    currentSeason.GetAthleteHandicap(
-                        key, 
-                        this.hcConfiguration);
-                this.model.UpdateAthlete(key, newHandicap);
+                this.StoreNewHandicap(
+                    currentSeason,
+                    key);
             }
 
             // Save the new handicaps.
@@ -233,6 +230,26 @@
             if (firstTimer)
             {
                 this.model.IncrementSummaries(SummaryPropertiesType.FT);
+            }
+        }
+
+        /// <summary>
+        /// Store the new handicap in the main athlete mode.
+        /// </summary>
+        /// <param name="currentSeason">The current season.</param>
+        /// <param name="key">The id of the athlete in question.</param>
+        private void StoreNewHandicap(
+            ISeason currentSeason,
+            int key)
+        {
+            RaceTimeType newHandicap =
+                    currentSeason.GetAthleteHandicap(
+                        key,
+                        this.hcConfiguration);
+
+            if (newHandicap != null)
+            {
+                this.model.UpdateAthlete(key, newHandicap);
             }
         }
     }

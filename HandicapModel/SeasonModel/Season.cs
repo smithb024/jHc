@@ -344,13 +344,22 @@
         /// </summary>
         /// <param name="key">unique key</param>
         /// <returns>rounded handicap</returns>
-        public RaceTimeType GetAthleteHandicap(int key, NormalisationConfigType hcConfiguration)
+        public RaceTimeType GetAthleteHandicap(
+            int key, 
+            NormalisationConfigType hcConfiguration)
         {
             if (this.Athletes != null && this.Athletes.Count > 0)
             {
                 if (this.Athletes.Exists(athlete => athlete.Key == key))
                 {
-                    return this.Athletes.Find(athlete => athlete.Key == key).GetRoundedHandicap(hcConfiguration);
+                    IAthleteSeasonDetails athleteSeason =
+                        this.Athletes.Find(
+                            athlete => athlete.Key == key);
+
+                    RaceTimeType handicap =
+                        athleteSeason.GetRoundedHandicap(
+                            hcConfiguration);
+                    return handicap;
                 }
             }
 
