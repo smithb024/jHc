@@ -1,33 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-namespace jHCVMUI.Views.Configuration
+﻿namespace jHCVMUI.Views.Configuration
 {
-  /// <summary>
-  /// Interaction logic for NormalisationConfigDialog.xaml
-  /// </summary>
-  public partial class NormalisationConfigDialog : Window
-  {
-    public NormalisationConfigDialog()
+    using System.Windows;
+ 
+    /// <summary>
+    /// Interaction logic for NormalisationConfigDialog.xaml
+    /// </summary>
+    public partial class NormalisationConfigDialog : Window
     {
-      InitializeComponent();
-    }
+        /// <summary>
+        /// Initialises a new instance of the <see cref="NormalisationConfigDialog"/> class.
+        /// </summary>
+        public NormalisationConfigDialog()
+        {
+            this.InitializeComponent();
+        }
 
-    private void OkClick(object sender, RoutedEventArgs e)
-    {
-      this.DialogResult = true;
+        /// <summary>
+        /// Ok is clicked on the dialog.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event arguments</param>
+        private void OkClick(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
+        }
     }
-  }
 }

@@ -1,20 +1,28 @@
 ﻿namespace jHCVMUI.Views.Configuration
 {
-  using System.Windows;
+    using System.Windows;
 
-  /// <summary>
-  /// Interaction logic for SeriesConfigurationDialog.xaml
-  /// </summary>
-  public partial class SeriesConfigurationDialog : Window
-  {
-    public SeriesConfigurationDialog()
+    /// <summary>
+    /// Interaction logic for SeriesConfigurationDialog.xaml
+    /// </summary>
+    public partial class SeriesConfigurationDialog : Window
     {
-      this.InitializeComponent();
-    }
+        /// <summary>
+        /// Initialises a new instance of the <see cref="SeriesConfigurationDialog"/> class.
+        /// </summary>
+        public SeriesConfigurationDialog()
+        {
+            this.InitializeComponent();
+        }
 
-    private void OkClick(object sender, RoutedEventArgs e)
-    {
-      this.DialogResult = true;
+        /// <summary>
+        /// Ok is clicked on the dialog.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event arguments</param>
+        private void OkClick(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
+        }
     }
-  }
 }
