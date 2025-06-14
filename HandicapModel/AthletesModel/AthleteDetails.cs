@@ -240,53 +240,6 @@
         public TimeType PredeclaredHandicap { get; set; }
 
         /// <summary>
-        /// Gets the athlete's rounded handicap.
-        /// </summary>
-        /// <remarks>
-        /// This is the last know handicap and should be used when starting a new season or for summary information to the
-        /// user. The handicap only really has a point within a season. It is set when a new set of results is generated
-        /// and a new rounded handicap is created.
-        /// Note, this could potentially be out of date if one season updates the value, then another and the user returns
-        /// to the first season.
-        /// </remarks>
-        public TimeType RoundedHandicap
-        {
-            get
-            {
-                // If the athlete has a registered time then take a handicap from the last 
-                // known one, otherwise use the originally defined one.
-                if (this.Times == null || this.Times.Count == 0)
-                {
-                    return this.PredeclaredHandicap;
-                }
-
-                if (!this.normalisationConfig.UseCalculatedHandicap)
-                {
-                    return this.PredeclaredHandicap;
-                }
-
-                if (this.Times?.Count == 0)
-                {
-                    return this.PredeclaredHandicap;
-                }
-
-                if (this.Times[this.Times.Count - 1].Time.Description == RaceTimeDescription.Dnf ||
-                    this.Times[this.Times.Count - 1].Time.Description == RaceTimeDescription.Relay)
-                {
-                    return this.PredeclaredHandicap;
-                }
-
-                TimeType calculatedHandicap = 
-                    new TimeType(
-                        this.normalisationConfig.HandicapTime, 0) - this.Times[this.Times.Count - 1].Time;
-
-                return HandicapHelper.RoundHandicap(
-                  this.normalisationConfig,
-                  calculatedHandicap);
-            }
-        }
-
-        /// <summary>
         /// Gets the athlete's last appearance.
         /// </summary>
         public DateType LastAppearance

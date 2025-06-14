@@ -94,7 +94,7 @@
         /// </summary>
         public int NumberOfAppearances
         {
-            get { return Times.Count; }
+            get => Times.Count;
         }
 
         /// <summary>

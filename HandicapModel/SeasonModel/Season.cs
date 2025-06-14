@@ -42,6 +42,11 @@
         private readonly IJHcLogger logger;
 
         /// <summary>
+        /// Results configuration manager.
+        /// </summary>
+        private readonly IResultsConfigMngr resultsConfigurationManager;
+
+        /// <summary>
         /// Event specific IO manager.
         /// </summary>
         private readonly IEventIo eventIo;
@@ -65,11 +70,6 @@
         /// A list of club specific details for all clubs present in the current season.
         /// </summary>
         private List<IClubSeasonDetails> clubs = new List<IClubSeasonDetails>();
-
-        /// <summary>
-        /// Results configuration manager.
-        /// </summary>
-        private IResultsConfigMngr resultsConfigurationManager;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="Season"/> class
@@ -344,13 +344,22 @@
         /// </summary>
         /// <param name="key">unique key</param>
         /// <returns>rounded handicap</returns>
-        public RaceTimeType GetAthleteHandicap(int key, NormalisationConfigType hcConfiguration)
+        public RaceTimeType GetAthleteHandicap(
+            int key, 
+            NormalisationConfigType hcConfiguration)
         {
             if (this.Athletes != null && this.Athletes.Count > 0)
             {
                 if (this.Athletes.Exists(athlete => athlete.Key == key))
                 {
-                    return this.Athletes.Find(athlete => athlete.Key == key).GetRoundedHandicap(hcConfiguration);
+                    IAthleteSeasonDetails athleteSeason =
+                        this.Athletes.Find(
+                            athlete => athlete.Key == key);
+
+                    RaceTimeType handicap =
+                        athleteSeason.GetRoundedHandicap(
+                            hcConfiguration);
+                    return handicap;
                 }
             }
 

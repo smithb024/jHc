@@ -271,7 +271,7 @@
                         athlete.Name);
                 }
 
-                string handicap = athleteCurrentSeason.GetRoundedHandicap(hcConfiguration)?.ToString() ?? athlete.RoundedHandicap.ToString();
+                string handicap = athleteCurrentSeason.GetRoundedHandicap(hcConfiguration)?.ToString() ?? athlete.PredeclaredHandicap.ToString();
 
                 this.AthleteCollection.Add(
                   new AthleteCompleteViewModel(

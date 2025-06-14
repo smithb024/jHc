@@ -700,8 +700,8 @@
             }
 
             this.model.SaveAthleteList();
-            ResetSelectedIndex();
-            LoadAthleteInformation();
+            this.ResetSelectedIndex();
+            this.LoadAthleteInformation();
 
             CommonMessenger.Default.Send(
                 new HandicapProgressMessage(

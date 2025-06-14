@@ -370,6 +370,20 @@
         }
 
         /// <summary>
+        /// Changes an athlete's predeclared handicap.
+        /// </summary>
+        /// <param name="athleteKey">athlete's unique identifier</param>
+        /// <param name="predeclaredHandicap">the predeclared handicap</param>
+        public void UpdateAthlete(
+          int athleteKey,
+          TimeType predeclaredHandicap)
+        {
+            this.Athletes.ChangeAthlete(
+              athleteKey,
+              predeclaredHandicap);
+        }
+
+        /// <summary>
         /// Reinitialise the season.
         /// </summary>
         public void ReinitialiseSeason()

@@ -54,14 +54,14 @@
           bool active)
           : base(key, name)
         {
-            Club = club;
-            Sex = sex;
-            RoundedHandicap = roundedHandicap;
-            PB = pb;
-            LastAppearance = lastAppearance;
-            NumberOfRuns = noRuns;
+            this.Club = club;
+            this.Sex = sex;
+            this.RoundedHandicap = roundedHandicap;
+            this.PB = pb;
+            this.LastAppearance = lastAppearance;
+            this.NumberOfRuns = noRuns;
             this.signedConsent = signedConsent;
-            Active = active;
+            this.Active = active;
         }
 
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
@@ -73,11 +73,11 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public string Club
         {
-            get { return m_club; }
+            get => this.m_club; 
             set
             {
-                m_club = value;
-                RaisePropertyChangedEvent("Club");
+                this.m_club = value;
+                this.RaisePropertyChangedEvent(nameof(this.Club));
             }
         }
 
@@ -90,11 +90,11 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public string Sex
         {
-            get { return m_sex; }
+            get => this.m_sex;
             set
             {
-                m_sex = value;
-                RaisePropertyChangedEvent("Sex");
+                this.m_sex = value;
+                this.RaisePropertyChangedEvent(nameof(this.Sex));
             }
         }
 
@@ -107,11 +107,11 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public string RoundedHandicap
         {
-            get { return m_handicap; }
+            get => this.m_handicap;
             set
             {
-                m_handicap = value;
-                RaisePropertyChangedEvent("RoundedHandicap");
+                this.m_handicap = value;
+                this.RaisePropertyChangedEvent(nameof(this.RoundedHandicap));
             }
         }
 
@@ -124,11 +124,11 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public string PB
         {
-            get { return m_pb; }
+            get => this.m_pb;
             set
             {
-                m_pb = value;
-                RaisePropertyChangedEvent("PB");
+                this.m_pb = value;
+                this.RaisePropertyChangedEvent(nameof(this.PB));
             }
         }
 
@@ -141,11 +141,11 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public string LastAppearance
         {
-            get { return m_lastAppearance; }
+            get => this.m_lastAppearance; 
             set
             {
-                m_lastAppearance = value;
-                RaisePropertyChangedEvent("LastAppearance");
+                this.m_lastAppearance = value;
+                this.RaisePropertyChangedEvent(nameof(this.LastAppearance));
             }
         }
 
@@ -158,11 +158,11 @@
         /// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
         public int NumberOfRuns
         {
-            get { return m_numberOfRuns; }
+            get => this.m_numberOfRuns; 
             set
             {
-                m_numberOfRuns = value;
-                RaisePropertyChangedEvent("NumberOfRuns");
+                this.m_numberOfRuns = value;
+                this.RaisePropertyChangedEvent(nameof(this.NumberOfRuns));
             }
         }
 
@@ -171,14 +171,11 @@
         /// </summary>
         public bool SignedConsent
         {
-            get
-            {
-                return this.signedConsent;
-            }
+            get => this.signedConsent;
             set
             {
                 this.signedConsent = value;
-                RaisePropertyChangedEvent(nameof(this.signedConsent));
+                this.RaisePropertyChangedEvent(nameof(this.signedConsent));
             }
         }
 
@@ -187,11 +184,11 @@
         /// </summary>
         public bool Active
         {
-            get { return active; }
+            get => this.active;
             set
             {
-                active = value;
-                RaisePropertyChangedEvent("Active");
+                this.active = value;
+                this.RaisePropertyChangedEvent(nameof(this.Active));
             }
         }
     }

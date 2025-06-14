@@ -1,33 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-namespace jHCVMUI.Views.Configuration
+﻿namespace jHCVMUI.Views.Configuration
 {
-  /// <summary>
-  /// Interaction logic for ResultsConfigDialog.xaml
-  /// </summary>
-  public partial class ResultsConfigDialog : Window
-  {
-    public ResultsConfigDialog()
-    {
-      InitializeComponent();
-    }
+    using System.Windows;
 
-    private void OkClick(object sender, RoutedEventArgs e)
+    /// <summary>
+    /// Interaction logic for ResultsConfigDialog.xaml
+    /// </summary>
+    public partial class ResultsConfigDialog : Window
     {
-      this.DialogResult = true;
+        /// <summary>
+        /// Initialises a new instance of the <see cref="ResultsConfigDialog"/> class.
+        /// </summary>
+        public ResultsConfigDialog()
+        {
+            this.InitializeComponent();
+        }
+
+        /// <summary>
+        /// Ok is clicked on the dialog.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event arguments</param>
+        private void OkClick(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
+        }
     }
-  }
 }

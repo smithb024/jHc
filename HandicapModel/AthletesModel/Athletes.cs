@@ -6,6 +6,7 @@
     using CommonLib.Enumerations;
     using HandicapModel.Common;
     using HandicapModel.Admin.Manage;
+    using System.Reflection;
 
     /// <summary>
     /// Manages the athletes in the model.
@@ -47,10 +48,7 @@
                 return this.nextKey;
             }
 
-            private set
-            {
-                this.nextKey = value;
-            }
+            private set => this.nextKey = value;
         }
 
         /// <summary>
@@ -87,7 +85,7 @@
         }
 
         /// <summary>
-        /// Changes an athlete's club.
+        /// Changes an athlete's details.
         /// </summary>
         /// <param name="athleteKey">athlete's unique identifier</param>
         /// <param name="newClub">new club</param>
@@ -105,17 +103,32 @@
             bool active,
             TimeType predeclaredHandicap)
         {
-            for (int index = 0; index < this.AthleteDetails.Count; ++index)
+            AthleteDetails athlete = this.GetAthlete(athleteKey);
+
+            if (athlete != null)
             {
-                if (this.AthleteDetails[index].Key == athleteKey)
-                {
-                    this.AthleteDetails[index].Club = newClub;
-                    this.AthleteDetails[index].SignedConsent = signedConsent;
-                    this.AthleteDetails[index].Active = active;
-                    this.AthleteDetails[index].RunningNumbers = runningNumbers;
-                    this.AthleteDetails[index].PredeclaredHandicap = predeclaredHandicap;
-                    break;
-                }
+                athlete.Club = newClub;
+                athlete.SignedConsent = signedConsent;
+                athlete.Active = active;
+                athlete.RunningNumbers = runningNumbers;
+                athlete.PredeclaredHandicap = predeclaredHandicap;
+            }
+        }
+
+        /// <summary>
+        /// Changes an athlete's predeclared handicap.
+        /// </summary>
+        /// <param name="athleteKey">athlete's unique identifier</param>
+        /// <param name="predeclaredHandicap">user declared handicap</param>
+        public void ChangeAthlete(
+            int athleteKey,
+            TimeType predeclaredHandicap)
+        {
+            AthleteDetails athlete = this.GetAthlete(athleteKey);
+
+            if (athlete != null) 
+            {
+                athlete.PredeclaredHandicap = predeclaredHandicap;
             }
         }
 
@@ -210,7 +223,7 @@
         /// <returns>handicap value</returns>
         public TimeType GetRoundedHandicap(int key)
         {
-            return (this.AthleteDetails.Find(athlete => athlete.Key == key)?.RoundedHandicap ?? new TimeType(0, 0));
+            return (this.AthleteDetails.Find(athlete => athlete.Key == key)?.PredeclaredHandicap ?? new TimeType(0, 0));
         }
 
         /// <summary>

@@ -84,7 +84,7 @@
                         // Use default handicap, if the athlete is not registered for the current season.
                         if (newHandicap == null)
                         {
-                            newHandicap = athlete.RoundedHandicap;
+                            newHandicap = athlete.PredeclaredHandicap;
                         }
 
                         string printName = 

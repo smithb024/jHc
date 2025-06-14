@@ -81,7 +81,7 @@
                     // TODO, I suspect this should never happen???
                     if (newHandicap == null)
                     {
-                        newHandicap = athlete.RoundedHandicap;
+                        newHandicap = athlete.PredeclaredHandicap;
                     }
 
                     // Ensure that the athlete is registered for the season.

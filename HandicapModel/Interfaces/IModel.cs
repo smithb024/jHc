@@ -158,7 +158,7 @@
         void DeleteAthlete(int athleteKey);
 
         /// <summary>
-        /// Changes an athlete's club.
+        /// Changes an athlete's details.
         /// </summary>
         /// <param name="athleteKey">athlete's unique identifier</param>
         /// <param name="newClub">new club</param>
@@ -174,6 +174,15 @@
           List<string> runningNumbers,
           bool signedConsent,
           bool active,
+          TimeType predeclaredHandicap);
+
+        /// <summary>
+        /// Changes an athlete's predeclared handicap.
+        /// </summary>
+        /// <param name="athleteKey">athlete's unique identifier</param>
+        /// <param name="predeclaredHandicap">the predeclared handicap</param>
+        void UpdateAthlete(
+          int athleteKey,
           TimeType predeclaredHandicap);
 
         /// <summary>
