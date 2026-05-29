@@ -1,17 +1,17 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Windows.Input;
-    using HandicapModel.SeasonModel;
     using HandicapModel.Common;
+    using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.SeasonModel;
+    using HandicapModel.SeasonModel;
     using jHCVMUI.ViewModels.ViewModels;
     using jHCVMUI.ViewModels.ViewModels.Types;
     using jHCVMUI.ViewModels.ViewModels.Types.Clubs;
-
     using NynaeveLib.Commands;
     using System;
-    using HandicapModel.Interfaces.SeasonModel;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Windows.Input;
 
     /// <summary>
     /// View Model used by the Data Pane to display the Mob Trophy points table.
@@ -41,10 +41,10 @@
         /// <summary>
         /// View model which suports the mob trophy points table.
         /// </summary>
-        /// <param name="model">season model</param>
-        public MobTrophyPointsTableViewModel(ISeason model)
+        /// <param name="model">junior handicap model</param>
+        public MobTrophyPointsTableViewModel(IModel model)
         {
-            this.model = model;
+            this.model = model.CurrentSeason;
             this.mobTrophyPointsTable = new ObservableCollection<MobTrophyPointsTableRowViewModel>();
             this.currentMobTrophyPointsTableIndex = 0;
             this.expandedData = false;

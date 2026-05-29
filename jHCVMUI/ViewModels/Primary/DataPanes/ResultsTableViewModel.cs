@@ -1,15 +1,15 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
+    using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.SeasonModel.EventModel;
+    using jHCVMUI.ViewModels.ViewModels;
+    using jHCVMUI.ViewModels.ViewModels.Types.Athletes;
+    using NynaeveLib.Commands;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
-    using HandicapModel.Interfaces.SeasonModel.EventModel;
-    using jHCVMUI.ViewModels.ViewModels;
-    using jHCVMUI.ViewModels.ViewModels.Types.Athletes;
-
-    using NynaeveLib.Commands;
 
     /// <summary>
     /// View model used by the Data Pane to display the Results Table.
@@ -42,12 +42,12 @@
         /// </summary>
         /// <param name="model">Junior handicap model</param>
         public ResultsTableViewModel(
-            IHandicapEvent model)
+            IModel model)
         {
-            this.model = model;
+            this.model = model.CurrentEvent;
             this.resultsOrder = ResultsOrder.Default;
 
-            model.ResultsChangedEvent += this.ModelResultsChanged;
+            this.model.ResultsChangedEvent += this.ModelResultsChanged;
             //model.CurrentSeason.CurrentEvent.ResultsCallback = new ResultsDelegate(this.PopulateResultsTable);
 
             ExpandCommand =

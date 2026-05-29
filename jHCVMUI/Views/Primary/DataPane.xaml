@@ -43,7 +43,7 @@
             Grid.Column="0"/>
         
         <ContentControl 
-            Content="{Binding DataViewContents}"
+            Content="{Binding Path=DataViewContents}"
             Grid.Row="1" 
             Grid.Column="0"/>
     </Grid>

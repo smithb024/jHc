@@ -1,7 +1,8 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
-    using System;
+    using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.SeasonModel.EventModel;
+    using System;
 
     /// <summary>
     /// View model for the event summary view.
@@ -16,13 +17,13 @@
         /// <summary>
         /// Initialises a new instance of the <see cref="SummaryEventViewModel"/> class.
         /// </summary>
-        /// <param name="model">Current event model</param>
+        /// <param name="model">handicap model</param>
         public SummaryEventViewModel(
-            IHandicapEvent model)
-            : base (model.Summary)
+            IModel model)
+            : base (model.CurrentEvent.Summary)
         {
-            this.eventModel = model;
-            model.SummaryChangedEvent += this.ModelUpdated;
+            this.eventModel = model.CurrentEvent;
+            this.eventModel.SummaryChangedEvent += this.ModelUpdated;
         }
 
         /// <summary>

@@ -1,14 +1,15 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Windows.Input;
+    using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
     using jHCVMUI.ViewModels.ViewModels;
     using jHCVMUI.ViewModels.ViewModels.Types.Clubs;
     using NynaeveLib.Commands;
+    using System;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Windows.Input;
 
     /// <summary>
     /// View model which supports the points table for the team trophy. 
@@ -38,10 +39,10 @@
         /// <summary>
         /// Initialises a new instance of the <see cref="ISeason"/> class.
         /// </summary>
-        /// <param name="model">season model</param>
-        public TeamTrophyPointsTableViewModel(ISeason model)
+        /// <param name="model">junior handicap model</param>
+        public TeamTrophyPointsTableViewModel(IModel model)
         {
-            this.model = model;
+            this.model = model.CurrentSeason;
             this.pointsTable = new ObservableCollection<TeamTrophyPointsTableRowViewModel>();
             this.currentTeamTrophyPointsTableIndex = 0;
             this.expandedData = false;

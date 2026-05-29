@@ -1,7 +1,8 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
-    using System;
+    using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.SeasonModel;
+    using System;
 
     /// <summary>
     /// View model for the total season summary view.
@@ -18,11 +19,11 @@
         /// </summary>
         /// <param name="model">Junior handicap model</param>
         public SummaryTotalViewModel(
-            ISeason model)
-            : base(model.Summary)
+            IModel model)
+            : base(model.CurrentSeason.Summary)
         {
-            this.seasonModel = model;
-            model.SummaryChangedEvent += this.ModelUpdated;
+            this.seasonModel = model.CurrentSeason;
+            this.seasonModel.SummaryChangedEvent += this.ModelUpdated;
         }
 
         /// <summary>
