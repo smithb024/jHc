@@ -37,7 +37,10 @@
         private void Refresh(
             RefreshDataPaneMessage message)
         {
-            this.UpdateModel(this.seasonModel.Summary);
+            if (message.RefreshSummaryTotal)
+            {
+                this.UpdateModel(this.seasonModel.Summary);
+            }
         }
     }
 }

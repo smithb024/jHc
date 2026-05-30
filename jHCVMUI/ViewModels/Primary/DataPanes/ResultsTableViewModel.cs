@@ -234,8 +234,11 @@
         private void Refresh(
             RefreshDataPaneMessage message)
         {
-            this.ResultsTable.Clear();
-            this.PopulateResultsTable();
+            if (message.RefreshResultsTable)
+            {
+                this.ResultsTable.Clear();
+                this.PopulateResultsTable();
+            }
         }
     }
 }

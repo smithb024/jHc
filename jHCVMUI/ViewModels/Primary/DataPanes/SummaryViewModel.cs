@@ -1,10 +1,8 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
-    using CommonHandicapLib.Messages;
     using CommonLib.Types;
     using HandicapModel.Interfaces.Common;
     using jHCVMUI.ViewModels.ViewModels;
-    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// View Model used by the Data Pane to display summary information.
@@ -32,10 +30,6 @@
             this.FastestBoyTime = this.model.FastestBoyTime;
             this.FastestGirl = this.model.FastestGirl;
             this.FastestGirlTime = this.model.FastestGirlTime;
-
-            CommonMessenger.Default.Register<RefreshDataPaneMessage>(
-                this,
-                this.RefreshSummary);
         }
 
         /// <summary>
@@ -134,17 +128,6 @@
             this.RaisePropertyChangedEvent(nameof(this.FastestGirl));
             this.RaisePropertyChangedEvent(nameof(this.FastestBoyTime));
             this.RaisePropertyChangedEvent(nameof(this.FastestGirlTime));
-        }
-
-        /// <summary>
-        /// Refresh this view model.
-        /// </summary>
-        /// <param name="message">refresh view model message</param>
-        private void RefreshSummary(
-            RefreshDataPaneMessage message)
-        {
-            this.PopulateSummaryFromModel();
-            this.FastestAthletesFromModel();
         }
     }
 }

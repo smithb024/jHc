@@ -37,7 +37,10 @@
         private void Refresh(
             RefreshDataPaneMessage message)
         {
-            this.UpdateModel(this.eventModel.Summary);
+            if (message.RefreshSummaryEvent)
+            {
+                this.UpdateModel(this.eventModel.Summary);
+            }
         }
     }
 }
