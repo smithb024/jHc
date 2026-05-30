@@ -1,9 +1,10 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
-    using System;
+    using CommonHandicapLib.Messages;
     using CommonLib.Types;
     using HandicapModel.Interfaces.Common;
     using jHCVMUI.ViewModels.ViewModels;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// View Model used by the Data Pane to display summary information.
@@ -32,14 +33,15 @@
             this.FastestGirl = this.model.FastestGirl;
             this.FastestGirlTime = this.model.FastestGirlTime;
 
-            this.model.SummaryDataChangedEvent += this.PopulateSummaryFromModel;
-            this.model.FastestDataChangedEvent += this.FastestAthletesFromModel;
+            CommonMessenger.Default.Register<RefreshDataPaneMessage>(
+                this,
+                this.RefreshSummary);
         }
 
         /// <summary>
         /// Gets the number of total runners.
         /// </summary>
-        public int TotalRunners => MaleRunners + FemaleRunners;
+        public int TotalRunners => this.MaleRunners + this.FemaleRunners;
 
         /// <summary>
         /// Gets the number of male runners.
@@ -87,12 +89,21 @@
         public TimeType FastestGirlTime { get; private set; }
 
         /// <summary>
+        /// Release the old model and reset with the new one.
+        /// </summary>
+        /// <param name="newModel">new model.</param>
+        protected void UpdateModel(ISummary newModel)
+        {
+            this.model = newModel;
+            this.PopulateSummaryFromModel();
+            this.FastestAthletesFromModel();
+        }
+
+        /// <summary>
         /// Populate the season summary with the latest information.
         /// </summary>
         /// <param name="summary">summary information</param>
-        protected void PopulateSummaryFromModel(
-            object sender,
-            EventArgs e)
+        private void PopulateSummaryFromModel()
         {
             this.MaleRunners = this.model.MaleRunners;
             this.FemaleRunners = this.model.FemaleRunners;
@@ -112,9 +123,7 @@
         /// Populate the season summary with the latest information.
         /// </summary>
         /// <param name="summary">summary information</param>
-        protected void FastestAthletesFromModel(
-            object sender,
-            EventArgs e)
+        private void FastestAthletesFromModel()
         {
             this.FastestBoy = this.model.FastestBoy;
             this.FastestBoyTime = this.model.FastestBoyTime;
@@ -128,21 +137,14 @@
         }
 
         /// <summary>
-        /// Release the old model and reset with the new one.
+        /// Refresh this view model.
         /// </summary>
-        /// <param name="newModel">new model.</param>
-        protected void UpdateModel(ISummary newModel)
+        /// <param name="message">refresh view model message</param>
+        private void RefreshSummary(
+            RefreshDataPaneMessage message)
         {
-            this.model.SummaryDataChangedEvent -= this.PopulateSummaryFromModel;
-            this.model.FastestDataChangedEvent -= this.FastestAthletesFromModel;
-
-            this.model = newModel;
-
-            this.model.SummaryDataChangedEvent += this.PopulateSummaryFromModel;
-            this.model.FastestDataChangedEvent += this.FastestAthletesFromModel;
-
-            this.PopulateSummaryFromModel(null, EventArgs.Empty);
-            this.FastestAthletesFromModel(null, EventArgs.Empty);
+            this.PopulateSummaryFromModel();
+            this.FastestAthletesFromModel();
         }
     }
 }
