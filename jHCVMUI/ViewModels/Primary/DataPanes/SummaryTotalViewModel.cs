@@ -1,8 +1,10 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
+    using CommonHandicapLib.Messages;
     using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.SeasonModel;
     using System;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// View model for the total season summary view.
@@ -24,6 +26,10 @@
         {
             this.seasonModel = model.CurrentSeason;
             this.seasonModel.SummaryChangedEvent += this.ModelUpdated;
+
+            CommonMessenger.Default.Register<RefreshDataPaneMessage>(
+                this,
+                this.Refresh);
         }
 
         /// <summary>
@@ -37,5 +43,14 @@
         {
             this.UpdateModel(seasonModel.Summary);
         }
-   }
+
+        /// <summary>
+        /// Refresh this view model.
+        /// </summary>
+        /// <param name="message">refresh view model message</param>
+        private void Refresh(
+            RefreshDataPaneMessage message)
+        {
+        }
+    }
 }

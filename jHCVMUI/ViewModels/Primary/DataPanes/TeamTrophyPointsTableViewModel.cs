@@ -1,5 +1,6 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
+    using CommonHandicapLib.Messages;
     using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
@@ -10,6 +11,7 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// View model which supports the points table for the team trophy. 
@@ -53,6 +55,10 @@
                 this.UpdateExpandedFlag);
 
             this.PopulateClubTable();
+
+            CommonMessenger.Default.Register<RefreshDataPaneMessage>(
+                this,
+                this.Refresh);
         }
 
         /// <summary>
@@ -186,5 +192,14 @@
             this.PointsTable.Clear();
             this.PopulateClubTable();
         }
+
+        /// <summary>
+        /// Refresh this view model.
+        /// </summary>
+        /// <param name="message">refresh view model message</param>
+        private void Refresh(
+            RefreshDataPaneMessage message)
+        {
         }
+    }
 }

@@ -1,5 +1,6 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
+    using CommonHandicapLib.Messages;
     using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.SeasonModel.EventModel;
     using jHCVMUI.ViewModels.ViewModels;
@@ -10,6 +11,7 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// View model used by the Data Pane to display the Results Table.
@@ -64,6 +66,10 @@
                     this.CanOrderResultsByTime);
 
             this.PopulateResultsTable();
+
+            CommonMessenger.Default.Register<RefreshDataPaneMessage>(
+                this,
+                this.Refresh);
         }
 
         /// <summary>
@@ -241,6 +247,15 @@
             }
 
             this.resultsOrder = ResultsOrder.Time;
+        }
+
+        /// <summary>
+        /// Refresh this view model.
+        /// </summary>
+        /// <param name="message">refresh view model message</param>
+        private void Refresh(
+            RefreshDataPaneMessage message)
+        {
         }
     }
 }

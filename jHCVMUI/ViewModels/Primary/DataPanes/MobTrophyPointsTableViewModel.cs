@@ -1,5 +1,6 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
+    using CommonHandicapLib.Messages;
     using HandicapModel.Common;
     using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.SeasonModel;
@@ -12,6 +13,7 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// View Model used by the Data Pane to display the Mob Trophy points table.
@@ -55,6 +57,10 @@
             this.ExpandCommand =
               new SimpleCommand(
                 this.UpdateExpandedFlag);
+
+            CommonMessenger.Default.Register<RefreshDataPaneMessage>(
+                this, 
+                this.Refresh);
         }
 
         /// <summary>
@@ -183,6 +189,15 @@
                 new ObservableCollection<MobTrophyPointsTableRowViewModel>(
                     MobTrophyPointsTable.OrderByDescending(
                         order => order.TotalPoints));
+        }
+
+        /// <summary>
+        /// Refresh this view model.
+        /// </summary>
+        /// <param name="message">refresh view model message</param>
+        private void Refresh(
+            RefreshDataPaneMessage message)
+        {
         }
     }
 }
