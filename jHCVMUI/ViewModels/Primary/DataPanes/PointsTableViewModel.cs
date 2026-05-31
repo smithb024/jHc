@@ -7,7 +7,6 @@
     using HandicapModel.Interfaces.SeasonModel;
     using jHCVMUI.ViewModels.ViewModels;
     using jHCVMUI.ViewModels.ViewModels.Types.Athletes;
-    using System;
     using System.Collections.ObjectModel;
     using System.Linq;
     using CommonMessenger = NynaeveLib.Messenger.Messenger;
@@ -43,7 +42,6 @@
             this.seasonModel = this.model.CurrentSeason;
             this.pointsTable = new ObservableCollection<PointsTableRowViewModel>();
 
-            this.seasonModel.AthleteCollectionChangedEvent += this.RegenerateThePointsTable;
             this.PopulatePointsTable();
 
             CommonMessenger.Default.Register<RefreshDataPaneMessage>(
@@ -56,10 +54,7 @@
         /// </summary>
         public ObservableCollection<PointsTableRowViewModel> PointsTable
         {
-            get
-            {
-                return this.pointsTable;
-            }
+            get => this.pointsTable;
 
             set
             {
@@ -67,24 +62,6 @@
                 this.RaisePropertyChangedEvent(nameof(this.PointsTable));
             }
         }
-
-        /// <summary>
-        /// Clear all existing entries on the points table and generate from scratch.
-        /// </summary>
-        /// <param name="sender">The season model</param>
-        /// <param name="e">event arguments</param>
-        public void RegenerateThePointsTable(
-            object sender,
-            EventArgs e)
-        {
-            foreach (PointsTableRowViewModel row in this.PointsTable)
-            {
-                row.Dispose();
-            }
-
-            this.PointsTable.Clear();
-            this.PopulatePointsTable();
-       }
 
         /// <summary>
         /// Calculate and populate the athletes points table.
@@ -152,6 +129,11 @@
         private void Refresh(
             RefreshDataPaneMessage message)
         {
+            if (message.RefreshPointsTable)
+            {
+                this.PointsTable.Clear();
+                this.PopulatePointsTable();
+            }
         }
     }
 }

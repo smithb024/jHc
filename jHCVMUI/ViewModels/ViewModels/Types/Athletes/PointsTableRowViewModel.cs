@@ -1,6 +1,5 @@
 ﻿namespace jHCVMUI.ViewModels.ViewModels.Types.Athletes
 {
-    using CommonLib.Enumerations;
     using HandicapModel.AthletesModel;
     using HandicapModel.Interfaces.SeasonModel;
     using System;
@@ -8,7 +7,7 @@
     /// <summary>
     /// Class describing a single entry of the points table
     /// </summary>
-    public class PointsTableRowViewModel : AthleteBase, IDisposable
+    public class PointsTableRowViewModel : AthleteBase
     {
         /// <summary>
         /// The athlete details model object for the current season.
@@ -24,16 +23,6 @@
         /// Gets the global athlete model object;
         /// </summary>
         private readonly AthleteDetails athleteDetails;
-
-        /// <summary>
-        /// Callback to invoke when the points change. It will reorder the rows in the parent view model.
-        /// </summary>
-        private Action pointsChangedCallback;
-
-        /// <summary>
-        /// Value which indicates whether this object has been disposed.
-        /// </summary>
-        private bool disposedValue;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="PointsTableRowViewModel"/> class.
@@ -67,47 +56,42 @@
             this.NumberOfRuns = this.athleteSeasonDetails.NumberOfAppearances;
             this.SB = this.athleteSeasonDetails.SB.ToString();
             this.Sex = this.athleteDetails.Sex.ToString();
-
-            this.athleteSeasonDetails.ModelUpdateEvent += this.AthleteSeasonDetailsModelUpdateEvent;
-            this.athleteSeasonPoints.ModelUpdateEvent += this.AthleteSeasonPointsModelUpdateEvent;
-            this.athleteDetails.ModelUpdateEvent += this.AthleteDetailsModelUpdateEvent;
-            this.pointsChangedCallback = pointsChanged;
         }
 
         /// <summary>
-        /// Gets or sets the PB.
+        /// Gets the PB.
         /// </summary>
-        public string PB { get; private set; }
+        public string PB { get; }
 
         /// <summary>
-        /// Gets or sets the points.
+        /// Gets the points.
         /// </summary>
-        public int Points { get; private set; }
+        public int Points { get; }
 
         /// <summary>
-        /// Gets or sets the finishing points.
+        /// Gets the finishing points.
         /// </summary>
-        public int FinishingPoints { get; private set; }
+        public int FinishingPoints { get; }
 
         /// <summary>
-        /// Gets or sets the position points.
+        /// Gets the position points.
         /// </summary>
-        public int PositionPoints { get; private set; }
+        public int PositionPoints { get; }
 
         /// <summary>
-        /// Gets or sets the best points.
+        /// Gets the best points.
         /// </summary>
-        public int BestPoints { get; private set; }
+        public int BestPoints { get; }
 
         /// <summary>
-        /// Gets or sets the race number.
+        /// Gets the race number.
         /// </summary>
         public string RaceNumber { get; }
 
         /// <summary>
-        /// Gets or sets the number of runs.
+        /// Gets the number of runs.
         /// </summary>
-        public int NumberOfRuns { get; private set; }
+        public int NumberOfRuns { get; }
 
         /// <summary>
         /// Gets or sets the average points.
@@ -128,93 +112,13 @@
         }
 
         /// <summary>
-        /// Gets or sets the SB.
+        /// Gets  the SB.
         /// </summary>
-        public string SB { get; private set; }
+        public string SB { get; }
 
         /// <summary>
         /// Gets the Sex of the athlete.
         /// </summary>
         public string Sex { get; }
-
-        /// <summary>
-        /// Dispose this object.
-        /// </summary>
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Dispose the <see cref="PointsTableRowViewModel"/> class.
-        /// </summary>
-        /// <param name="disposing">is disposing flag</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposedValue)
-            {
-                if (disposing)
-                {
-                    this.athleteSeasonDetails.ModelUpdateEvent -= this.AthleteSeasonDetailsModelUpdateEvent;
-                    this.athleteSeasonPoints.ModelUpdateEvent -= this.AthleteSeasonPointsModelUpdateEvent;
-                    this.athleteDetails.ModelUpdateEvent -= this.AthleteDetailsModelUpdateEvent;
-                    this.pointsChangedCallback = null;
-                }
-
-                this.disposedValue = true;
-            }
-        }
-
-        /// <summary>
-        /// The <see cref="IAthleteSeasonPoints"/> model has changed. Update the view model with 
-        /// the latest information.
-        /// </summary>
-        /// <param name="sender">the <see cref="IAthleteSeasonPoints"/> object</param>
-        /// <param name="e">the evnet arguaments</param>
-        private void AthleteSeasonDetailsModelUpdateEvent(object sender, EventArgs e)
-        {
-            this.NumberOfRuns = this.athleteSeasonDetails.NumberOfAppearances;
-            this.SB = this.athleteSeasonDetails.SB.ToString();
-
-            this.RaisePropertyChangedEvent(nameof(this.NumberOfRuns));
-            this.RaisePropertyChangedEvent(nameof(this.SB));
-            this.RaisePropertyChangedEvent(nameof(this.AveragePoints));
-        }
-
-        /// <summary>
-        /// The <see cref="IAthleteSeasonPoints"/> model has changed. Update the view model with 
-        /// the latest information.
-        /// </summary>
-        /// <param name="sender">the <see cref="IAthleteSeasonPoints"/> object</param>
-        /// <param name="e">the evnet arguaments</param>
-        private void AthleteSeasonPointsModelUpdateEvent(object sender, EventArgs e)
-        {
-            this.Points = this.athleteSeasonPoints.TotalPoints;
-            this.FinishingPoints = this.athleteSeasonPoints.FinishingPoints;
-            this.PositionPoints = this.athleteSeasonPoints.PositionPoints;
-            this.BestPoints = this.athleteSeasonPoints.BestPoints;
-
-            this.RaisePropertyChangedEvent(nameof(this.Points));
-            this.RaisePropertyChangedEvent(nameof(this.FinishingPoints));
-            this.RaisePropertyChangedEvent(nameof(this.PositionPoints));
-            this.RaisePropertyChangedEvent(nameof(this.BestPoints));
-            this.RaisePropertyChangedEvent(nameof(this.AveragePoints));
-
-            this.pointsChangedCallback.Invoke();
-        }
-
-        /// <summary>
-        /// The <see cref="AthleteDetails"/> model has changed. Update the view model with 
-        /// the latest information.
-        /// </summary>
-        /// <param name="sender">the <see cref="AthleteDetails"/> object</param>
-        /// <param name="e">the evnet arguaments</param>
-        private void AthleteDetailsModelUpdateEvent(object sender, EventArgs e)
-        {
-            this.PB = this.athleteDetails.PB.ToString();
-
-            this.RaisePropertyChangedEvent(nameof(this.PB));
-        }
     }
 }
