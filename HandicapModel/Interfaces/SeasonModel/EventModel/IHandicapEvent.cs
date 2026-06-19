@@ -12,12 +12,6 @@
     public interface IHandicapEvent
     {
         /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to this
-        /// event's summary.
-        /// </summary>
-        event EventHandler SummaryChangedEvent;
-
-        /// <summary>
         /// Gets the date of the event.
         /// </summary>
         DateType Date { get; }

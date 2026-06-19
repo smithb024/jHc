@@ -1,6 +1,5 @@
 ﻿namespace HandicapModel.Interfaces.Common
 {
-    using System;
     using System.Collections.Generic;
     using CommonLib.Enumerations;
     using CommonLib.Types;
@@ -10,18 +9,6 @@
     /// </summary>
     public interface ISummary
     {
-        /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to this
-        /// summary. This event focuses on the summary data.
-        /// </summary>
-        event EventHandler SummaryDataChangedEvent;
-
-        /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to this
-        /// summary. This event focuses on the fastest athletes data.
-        /// </summary>
-        event EventHandler FastestDataChangedEvent;
-
         /// <summary>
         /// Gets the number of runners
         /// </summary>

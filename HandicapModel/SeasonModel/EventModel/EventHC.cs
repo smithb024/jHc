@@ -92,12 +92,6 @@
         }
 
         /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to this
-        /// event's summary.
-        /// </summary>
-        public event EventHandler SummaryChangedEvent;
-
-        /// <summary>
         /// Gets the name of this event.
         /// </summary>
         public string Name { get; private set; }
@@ -122,7 +116,6 @@
                 if (this.summary != value)
                 {
                     this.summary = value;
-                    this.SummaryChangedEvent?.Invoke(this, new EventArgs());
                 }
             }
         }
