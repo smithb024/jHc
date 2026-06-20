@@ -194,6 +194,15 @@
 
                 this.UpdateResultsButton();
                 this.RaisePropertyChangedEvent(nameof(this.SelectedEventIndex));
+                RefreshDataPaneMessage refreshMessage =
+                    new RefreshDataPaneMessage(
+                        false,
+                        false,
+                        false,
+                        true,
+                        false,
+                        true);
+                CommonMessenger.Default.Send<RefreshDataPaneMessage>(refreshMessage);
             }
         }
 
@@ -338,12 +347,21 @@
             }
 
             this.Events.Add(newEventName);
-            SelectCurrentEvent(newEventName);
+            this.SelectCurrentEvent(newEventName);
 
             this.NewEvent = string.Empty;
             this.NewEventAdditionEnabled = false;
 
             this.businessLayerManager.SetProgressInformation($"{newEventName} created");
+            RefreshDataPaneMessage refreshMessage =
+                new RefreshDataPaneMessage(
+                    false,
+                    false,
+                    false,
+                    true,
+                    false,
+                    true);
+            CommonMessenger.Default.Send<RefreshDataPaneMessage>(refreshMessage);
         }
 
         /// <summary>
@@ -421,6 +439,15 @@
             }
 
             this.UpdateResultsButton();
+            RefreshDataPaneMessage refreshMessage =
+                new RefreshDataPaneMessage(
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true);
+            CommonMessenger.Default.Send<RefreshDataPaneMessage>(refreshMessage);
         }
 
         /// <summary>

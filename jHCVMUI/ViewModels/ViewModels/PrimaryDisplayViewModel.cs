@@ -592,10 +592,19 @@
             LoadNewSeriesMessage loadNewMessage = new LoadNewSeriesMessage();
             NewSeriesLoadedMessage newLoadedMessage = new NewSeriesLoadedMessage();
             HandicapProgressMessage progress = new HandicapProgressMessage("New Series Loaded");
+            RefreshDataPaneMessage refreshMessage =
+                new RefreshDataPaneMessage(
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true);
 
             CommonMessenger.Default.Send(loadNewMessage);
             CommonMessenger.Default.Send(newLoadedMessage);
             CommonMessenger.Default.Send(progress);
+            CommonMessenger.Default.Send<RefreshDataPaneMessage>(refreshMessage);
         }
 
         /// <summary>
