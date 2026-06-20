@@ -51,7 +51,6 @@
             this.currentMobTrophyPointsTableIndex = 0;
             this.expandedData = false;
 
-            this.model.ClubsChangedEvent += this.PopulateMobTrophyPointsData;
             this.PopulateMobTrophyTable();
 
             this.ExpandCommand =
@@ -145,19 +144,6 @@
         }
 
         /// <summary>
-        /// Used to populate the Mob Trophy points table
-        /// </summary>
-        /// <param name="sender">sender object</param>
-        /// <param name="e">event arguments</param>
-        public void PopulateMobTrophyPointsData(
-            object sender,
-            EventArgs e)
-        {
-            MobTrophyPointsTable.Clear();
-            this.PopulateMobTrophyTable();
-        }
-
-        /// <summary>
         /// Calculate and populate the Mob Trophy points table.
         /// </summary>
         private void PopulateMobTrophyTable()
@@ -198,6 +184,8 @@
         private void Refresh(
             RefreshDataPaneMessage message)
         {
+            this.MobTrophyPointsTable.Clear();
+            this.PopulateMobTrophyTable();
         }
     }
 }

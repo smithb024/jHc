@@ -106,12 +106,6 @@
         }
 
         /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to the
-        /// list of clubs within this season.
-        /// </summary>
-        public event EventHandler ClubsChangedEvent;
-
-        /// <summary>
         /// Gets the name of this season.
         /// </summary>
         public string Name { get; private set; }
@@ -150,7 +144,6 @@
                 if (this.clubs != value)
                 {
                     this.clubs = value;
-                    this.ClubsChangedEvent?.Invoke(this, new EventArgs());
                 }
             }
         }
@@ -482,8 +475,6 @@
 
                 this.Clubs.Add(newClubDetails);
             }
-
-            this.ClubsChangedEvent?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
@@ -508,8 +499,6 @@
 
                 this.Clubs.Add(newClubDetails);
             }
-
-            this.ClubsChangedEvent?.Invoke(this, new EventArgs());
         }
     }
 }

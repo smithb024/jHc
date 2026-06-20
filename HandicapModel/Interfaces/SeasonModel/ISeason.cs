@@ -1,6 +1,5 @@
 ﻿namespace HandicapModel.Interfaces.SeasonModel
 {
-    using System;
     using System.Collections.Generic;
     using CommonHandicapLib.Types;
     using CommonLib.Types;
@@ -13,11 +12,6 @@
     /// </summary>
     public interface ISeason
     {
-        /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to the
-        /// list of clubs within this season.
-        /// </summary>
-        event EventHandler ClubsChangedEvent;
         /// <summary>
         /// Gets the season specific details for each athlete present in the current season.
         /// </summary>

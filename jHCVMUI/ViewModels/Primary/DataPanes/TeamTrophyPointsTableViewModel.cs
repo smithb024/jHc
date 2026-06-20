@@ -49,7 +49,6 @@
             this.currentTeamTrophyPointsTableIndex = 0;
             this.expandedData = false;
 
-            this.model.ClubsChangedEvent += this.PopulateClubPointsData;
             this.ExpandCommand =
               new SimpleCommand(
                 this.UpdateExpandedFlag);
@@ -171,7 +170,7 @@
                     clubPoints.AddPoints(points);
                 }
 
-                PointsTable.Add(clubPoints);
+                this.PointsTable.Add(clubPoints);
             }
 
             this.PointsTable =
@@ -181,25 +180,14 @@
         }
 
         /// <summary>
-        /// Used to populate the points table
-        /// </summary>
-        /// <param name="sender">sender object</param>
-        /// <param name="e">event arguments</param>
-        public void PopulateClubPointsData(
-            object sender,
-            EventArgs e)
-        {
-            this.PointsTable.Clear();
-            this.PopulateClubTable();
-        }
-
-        /// <summary>
         /// Refresh this view model.
         /// </summary>
         /// <param name="message">refresh view model message</param>
         private void Refresh(
             RefreshDataPaneMessage message)
         {
+            this.PointsTable.Clear();
+            this.PopulateClubTable();
         }
     }
 }
