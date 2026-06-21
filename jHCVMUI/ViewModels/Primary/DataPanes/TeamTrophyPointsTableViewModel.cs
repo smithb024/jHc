@@ -69,10 +69,7 @@
         /// </summary>
         public bool ExpandedData
         {
-            get
-            {
-                return this.expandedData;
-            }
+            get => this.expandedData;
 
             set
             {
@@ -89,28 +86,19 @@
         /// <summary>
         /// Gets the expanded label value.
         /// </summary>
-        public string ExpandedLabel
-        {
-            get
-            {
-                return ExpandedData ? "^" : "v";
-            }
-        }
+        public string ExpandedLabel => this.ExpandedData ? "^" : "v";
 
         /// <summary>
         /// Gets points sets the team trophy points table.
         /// </summary>
         public ObservableCollection<TeamTrophyPointsTableRowViewModel> PointsTable
         {
-            get
-            {
-                return this.pointsTable;
-            }
+            get => this.pointsTable;
 
             set
             {
                 this.pointsTable = value;
-                RaisePropertyChangedEvent(nameof(this.PointsTable));
+                this.RaisePropertyChangedEvent(nameof(this.PointsTable));
             }
         }
 
@@ -119,15 +107,12 @@
         /// </summary>
         public int SelectedPointsTableIndex
         {
-            get
-            {
-                return currentTeamTrophyPointsTableIndex;
-            }
+            get => this.currentTeamTrophyPointsTableIndex;
 
             set
             {
                 currentTeamTrophyPointsTableIndex = value;
-                RaisePropertyChangedEvent(nameof(this.SelectedPointsTableIndex));
+                this.RaisePropertyChangedEvent(nameof(this.SelectedPointsTableIndex));
             }
         }
 

@@ -74,16 +74,16 @@
             {
                 if (athlete.Points.TotalPoints > 0)
                 {
-                    double averagePoints = 0;
-                    if (athlete.NumberOfAppearances > 0)
-                    {
-                        averagePoints = (double)athlete.Points.TotalPoints / (double)athlete.NumberOfAppearances;
-                    }
+                    //double averagePoints = 0;
+                    //if (athlete.NumberOfAppearances > 0)
+                    //{
+                    //    averagePoints = (double)athlete.Points.TotalPoints / (double)athlete.NumberOfAppearances;
+                    //}
 
-                    TimeType pb = athletesModel.GetPB(athlete.Key);
-                    string runningNumber =
-                        athletesModel.GetAthleteRunningNumber(
-                            athlete.Key);
+                    //TimeType pb = athletesModel.GetPB(athlete.Key);
+                    //string runningNumber =
+                    //    athletesModel.GetAthleteRunningNumber(
+                    //        athlete.Key);
 
                     AthleteDetails athleteModel =
                         athletesModel.GetAthlete(
@@ -98,17 +98,13 @@
                     PointsTableRowViewModel newRow =
                         new PointsTableRowViewModel(
                             athlete,
-                            athleteModel,
-                            this.OrderTable);
+                            athleteModel);
 
                     this.PointsTable.Add(newRow);
                 }
             }
 
-            this.PointsTable =
-                new ObservableCollection<PointsTableRowViewModel>(
-                    this.PointsTable.OrderByDescending(
-                        order => order.Points));
+            this.OrderTable();
         }
 
         /// <summary>
@@ -116,6 +112,11 @@
         /// </summary>
         private void OrderTable()
         {
+            this.PointsTable =
+                new ObservableCollection<PointsTableRowViewModel>(
+                    this.PointsTable.OrderByDescending(
+                        order => order.NumberOfRuns));
+
             this.PointsTable =
                 new ObservableCollection<PointsTableRowViewModel>(
                     this.PointsTable.OrderByDescending(
