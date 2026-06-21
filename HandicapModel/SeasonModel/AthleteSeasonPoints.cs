@@ -1,8 +1,6 @@
 ﻿namespace HandicapModel.SeasonModel
 {
-    using System;
     using System.Collections.Generic;
-    using Admin.Manage;
     using CommonLib.Types;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.SeasonModel;
@@ -28,11 +26,6 @@
         {
             this.AllPoints = new List<CommonPoints>();
         }
-
-        /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to this model.
-        /// </summary>
-        public event EventHandler ModelUpdateEvent;
 
         /// <summary>
         /// Gets all the points received.
@@ -106,7 +99,6 @@
         public void AddNewEvent(CommonPoints newPoints)
         {
             this.AllPoints.Add(newPoints);
-            this.ModelUpdateEvent?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -127,7 +119,6 @@
                 this.AllPoints[eventIndex].FinishingPoints = finishingPoints;
                 this.AllPoints[eventIndex].PositionPoints = positionPoints;
                 this.AllPoints[eventIndex].BestPoints = bestPoints;
-                this.ModelUpdateEvent?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -139,7 +130,6 @@
         public void UpdatePositionPoints(DateType date, int points)
         {
             this.AllPoints.Find(allPoints => allPoints.Date == date).PositionPoints = points;
-            this.ModelUpdateEvent?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -153,8 +143,6 @@
             {
                 this.AllPoints.Remove(AllPoints.Find(dateCheck => dateCheck.Date == date));
             }
-
-            this.ModelUpdateEvent?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -10,11 +10,9 @@
     using DataEntry;
     using HandicapModel.Admin.Manage;
     using HandicapModel.Interfaces;
-    using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Admin.IO.TXT;
     using jHCVMUI.ViewModels.Config;
     using jHCVMUI.ViewModels.Labels;
-    using jHCVMUI.ViewModels.Primary;
     using jHCVMUI.ViewModels.Primary.DataPanes;
     using jHCVMUI.Views.Configuration;
     using jHCVMUI.Views.DataEntry;
@@ -56,9 +54,19 @@
         private readonly IJHcLogger logger;
 
         /// <summary>
-        /// The instance of the general IO manager.
+        /// The junior handicap model.
         /// </summary>
-        private readonly IGeneralIo generalIo;
+        private readonly IModel model;
+
+        /// <summary>
+        /// Results configuration manager
+        /// </summary>
+        private readonly IResultsConfigMngr resultsConfigurationManager;
+
+        /// <summary>
+        /// Business layer manager.
+        /// </summary>
+        private readonly IBLMngr businessLayerManager;
 
         /// <summary>
         /// Indicates whether the currently selected location is valid
@@ -75,28 +83,9 @@
         private ClubConfigurationViewModel m_clubConfigViewModel = null;
         private ClubSummaryViewModel clubSummaryViewModel = null;
         private AthleteConfigurationViewModel m_athleteConfigViewModel = null;
-        private AthleteSummaryViewModel m_athleteSummaryViewModel = null;
-        private SeasonPaneViewModel seasonPaneViewModel = null;
-        private EventPaneViewModel eventPaneViewModel = null;
-        private DataPaneViewModel dataPaneViewModel = null;
 
         private string progressInfo = string.Empty;
         private string errorInfo = string.Empty;
-
-        /// <summary>
-        /// The junior handicap model.
-        /// </summary>
-        private IModel model;
-
-        /// <summary>
-        /// Results configuration manager
-        /// </summary>
-        private IResultsConfigMngr resultsConfigurationManager;
-
-        /// <summary>
-        /// Business layer manager.
-        /// </summary>
-        private IBLMngr businessLayerManager;
 
         /// <summary>
         /// Creates a new instance of the <see cref="PrimaryDisplayViewModel"/> class
@@ -106,7 +95,6 @@
         /// <param name="normalisationConfigurationManager">normalisation configuration manager</param>
         /// <param name="resultsConfigurationManager">results configuration manager</param>
         /// <param name="seriesConfigurationManager">series configuration manager</param>
-        /// <param name="generalIo">general IO manager</param>
         /// <param name="commonIo">Common IO manager</param>
         /// <param name="logger">application logger</param>
         public PrimaryDisplayViewModel(
@@ -115,7 +103,6 @@
             INormalisationConfigMngr normalisationConfigurationManager,
             IResultsConfigMngr resultsConfigurationManager,
             ISeriesConfigMngr seriesConfigurationManager,
-            IGeneralIo generalIo,
             ICommonIo commonIo,
             IJHcLogger logger)
         {
@@ -126,7 +113,6 @@
             this.resultsConfigurationManager = resultsConfigurationManager;
             this.seriesConfigManager = seriesConfigurationManager;
             this.businessLayerManager = businessLayerManager;
-            this.generalIo = generalIo;
             this.commonIo = commonIo;
             this.isValidLocation = this.businessLayerManager.IsValid;
 
@@ -592,10 +578,19 @@
             LoadNewSeriesMessage loadNewMessage = new LoadNewSeriesMessage();
             NewSeriesLoadedMessage newLoadedMessage = new NewSeriesLoadedMessage();
             HandicapProgressMessage progress = new HandicapProgressMessage("New Series Loaded");
+            RefreshDataPaneMessage refreshMessage =
+                new RefreshDataPaneMessage(
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true);
 
             CommonMessenger.Default.Send(loadNewMessage);
             CommonMessenger.Default.Send(newLoadedMessage);
             CommonMessenger.Default.Send(progress);
+            CommonMessenger.Default.Send<RefreshDataPaneMessage>(refreshMessage);
         }
 
         /// <summary>

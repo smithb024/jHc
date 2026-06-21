@@ -1,24 +1,25 @@
 ﻿namespace jHandicap
 {
-    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib;
-    using CommunityToolkit.Mvvm.DependencyInjection;
-    using jHandicap.ViewModel;
-    using Microsoft.Extensions.DependencyInjection;
-    using HandicapModel.Admin.IO.TXT;
-    using HandicapModel.Interfaces.Admin.IO.TXT;
-    using HandicapModel.Admin.IO;
-    using HandicapModel.Interfaces.Admin.IO;
+    using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Interfaces.XML;
     using CommonHandicapLib.XML;
-    using HandicapModel.Admin.IO.XML;
-    using HandicapModel.Interfaces.Admin.IO.XML;
-    using jHCVMUI.ViewModels.Primary;
-    using jHCVMUI.ViewModels.ViewModels;
-    using HandicapModel.Admin.Manage;
-    using HandicapModel.Interfaces;
+    using CommunityToolkit.Mvvm.DependencyInjection;
     using HandicapModel;
+    using HandicapModel.Admin.IO;
+    using HandicapModel.Admin.IO.TXT;
+    using HandicapModel.Admin.IO.XML;
+    using HandicapModel.Admin.Manage;
     using HandicapModel.Admin.Manage.Event;
+    using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.Admin.IO;
+    using HandicapModel.Interfaces.Admin.IO.TXT;
+    using HandicapModel.Interfaces.Admin.IO.XML;
+    using jHandicap.ViewModel;
+    using jHCVMUI.ViewModels.Primary;
+    using jHCVMUI.ViewModels.Primary.DataPanes;
+    using jHCVMUI.ViewModels.ViewModels;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Factory class, used to set up dependency injection
@@ -55,6 +56,12 @@
                 .AddSingleton<PrimaryDisplayViewModel>()
                 .AddSingleton<EventPaneViewModel>()
                 .AddSingleton<SeasonPaneViewModel>()
+                .AddSingleton<MobTrophyPointsTableViewModel>()
+                .AddSingleton<TeamTrophyPointsTableViewModel>()
+                .AddSingleton<PointsTableViewModel>()
+                .AddSingleton<SummaryEventViewModel>()
+                .AddSingleton<SummaryTotalViewModel>()
+                .AddSingleton<ResultsTableViewModel>()
                 .AddSingleton<DataPaneViewModel>()
                 .AddSingleton<IMainViewModel, MainViewModel>()
                 .BuildServiceProvider());

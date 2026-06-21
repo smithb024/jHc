@@ -1,6 +1,5 @@
 ﻿namespace HandicapModel.Common
 {
-    using System;
     using System.Collections.Generic;
     using CommonLib.Enumerations;
     using CommonLib.Types;
@@ -42,18 +41,6 @@
             this.FastestBoys = new List<IAthleteTime>();
             this.FastestGirls = new List<IAthleteTime>();
         }
-
-        /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to this
-        /// summary. This event focuses on the summary data.
-        /// </summary>
-        public event EventHandler SummaryDataChangedEvent;
-
-        /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to this
-        /// summary. This event focuses on the fastest athletes data.
-        /// </summary>
-        public event EventHandler FastestDataChangedEvent;
 
         /// <summary>
         /// Gets the number of runners in the event.
@@ -187,8 +174,6 @@
             this.SBs = sBs;
             this.PBs = pBs;
             this.FirstTimers = firstTimers;
-
-            this.SummaryDataChangedEvent?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
@@ -221,8 +206,6 @@
                     ++this.FirstTimers;
                     break;
             }
-
-            this.SummaryDataChangedEvent?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
@@ -259,8 +242,6 @@
             {
                 FastestBoys.RemoveAt(FastestBoys.Count - 1);
             }
-
-            this.FastestDataChangedEvent?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
@@ -297,8 +278,6 @@
             {
                 FastestGirls.RemoveAt(FastestGirls.Count - 1);
             }
-
-            this.FastestDataChangedEvent?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
@@ -321,7 +300,6 @@
                         time == FastestBoys[index].Time)
                     {
                         FastestBoys.RemoveAt(index);
-                        this.FastestDataChangedEvent?.Invoke(this, new EventArgs());
                         return;
                     }
                 }
@@ -348,7 +326,6 @@
                         time == FastestGirls[index].Time)
                     {
                         FastestGirls.RemoveAt(index);
-                        this.FastestDataChangedEvent?.Invoke(this, new EventArgs());
                         return;
                     }
                 }
@@ -366,8 +343,6 @@
         {
             this.FastestBoys = fastestBoys;
             this.FastestGirls = fastestGirls;
-
-            this.FastestDataChangedEvent?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
@@ -382,9 +357,6 @@
             this.FirstTimers = 0;
             this.FastestBoys = new List<IAthleteTime>();
             this.FastestGirls = new List<IAthleteTime>();
-
-            this.SummaryDataChangedEvent?.Invoke(this, new EventArgs());
-            this.FastestDataChangedEvent?.Invoke(this, new EventArgs());
         }
     }
 }

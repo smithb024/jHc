@@ -114,22 +114,28 @@
         /// </summary>
         public int SelectedSeasonIndex
         {
-            get
-            {
-                return currentSeasonIndex;
-            }
+            get => this.currentSeasonIndex;
 
             set
             {
-                if (currentSeasonIndex == value)
+                if (this.currentSeasonIndex == value)
                 {
                     return;
                 }
 
-                currentSeasonIndex = value;
-                RaisePropertyChangedEvent(nameof(this.SelectedSeasonIndex));
+                this.currentSeasonIndex = value;
+                this.RaisePropertyChangedEvent(nameof(this.SelectedSeasonIndex));
 
                 this.LoadSeason();
+                RefreshDataPaneMessage refreshMessage =
+                    new RefreshDataPaneMessage(
+                        true,
+                        true,
+                        true,
+                        true,
+                        true,
+                        true);
+                CommonMessenger.Default.Send<RefreshDataPaneMessage>(refreshMessage);
             }
         }
 
@@ -206,6 +212,15 @@
             this.NewSeasonAdditionEnabled = false;
 
             this.businessLayerManager.SetProgressInformation($"{newSeasonName} created");
+            RefreshDataPaneMessage refreshMessage =
+            new RefreshDataPaneMessage(
+                true,
+                true,
+                true,
+                true,
+                true,
+                true);
+            CommonMessenger.Default.Send<RefreshDataPaneMessage>(refreshMessage);
         }
 
         /// <summary>

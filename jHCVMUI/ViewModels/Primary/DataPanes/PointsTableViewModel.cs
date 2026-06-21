@@ -1,14 +1,15 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Linq;
+    using CommonHandicapLib.Messages;
     using CommonLib.Types;
     using HandicapModel.AthletesModel;
     using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.SeasonModel;
     using jHCVMUI.ViewModels.ViewModels;
     using jHCVMUI.ViewModels.ViewModels.Types.Athletes;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// View Model used by the Data Pane to display the athletes points table.
@@ -41,8 +42,11 @@
             this.seasonModel = this.model.CurrentSeason;
             this.pointsTable = new ObservableCollection<PointsTableRowViewModel>();
 
-            this.seasonModel.AthleteCollectionChangedEvent += this.RegenerateThePointsTable;
             this.PopulatePointsTable();
+
+            CommonMessenger.Default.Register<RefreshDataPaneMessage>(
+                this,
+                this.Refresh);
         }
 
         /// <summary>
@@ -50,10 +54,7 @@
         /// </summary>
         public ObservableCollection<PointsTableRowViewModel> PointsTable
         {
-            get
-            {
-                return this.pointsTable;
-            }
+            get => this.pointsTable;
 
             set
             {
@@ -61,24 +62,6 @@
                 this.RaisePropertyChangedEvent(nameof(this.PointsTable));
             }
         }
-
-        /// <summary>
-        /// Clear all existing entries on the points table and generate from scratch.
-        /// </summary>
-        /// <param name="sender">The season model</param>
-        /// <param name="e">event arguments</param>
-        public void RegenerateThePointsTable(
-            object sender,
-            EventArgs e)
-        {
-            foreach (PointsTableRowViewModel row in this.PointsTable)
-            {
-                row.Dispose();
-            }
-
-            this.PointsTable.Clear();
-            this.PopulatePointsTable();
-       }
 
         /// <summary>
         /// Calculate and populate the athletes points table.
@@ -137,6 +120,20 @@
                 new ObservableCollection<PointsTableRowViewModel>(
                     this.PointsTable.OrderByDescending(
                         order => order.Points));
+        }
+
+        /// <summary>
+        /// Refresh this view model.
+        /// </summary>
+        /// <param name="message">refresh view model message</param>
+        private void Refresh(
+            RefreshDataPaneMessage message)
+        {
+            if (message.RefreshPointsTable)
+            {
+                this.PointsTable.Clear();
+                this.PopulatePointsTable();
+            }
         }
     }
 }

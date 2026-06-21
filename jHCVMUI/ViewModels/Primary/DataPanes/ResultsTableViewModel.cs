@@ -1,15 +1,16 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
-    using System;
+    using CommonHandicapLib.Messages;
+    using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.SeasonModel.EventModel;
+    using jHCVMUI.ViewModels.ViewModels;
+    using jHCVMUI.ViewModels.ViewModels.Types.Athletes;
+    using NynaeveLib.Commands;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
-    using HandicapModel.Interfaces.SeasonModel.EventModel;
-    using jHCVMUI.ViewModels.ViewModels;
-    using jHCVMUI.ViewModels.ViewModels.Types.Athletes;
-
-    using NynaeveLib.Commands;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// View model used by the Data Pane to display the Results Table.
@@ -19,7 +20,7 @@
         /// <summary>
         /// Associated handicap event model
         /// </summary>
-        private IHandicapEvent model;
+        private readonly IHandicapEvent model;
 
         /// <summary>
         /// Indicates the way the results are ordered.
@@ -42,15 +43,12 @@
         /// </summary>
         /// <param name="model">Junior handicap model</param>
         public ResultsTableViewModel(
-            IHandicapEvent model)
+            IModel model)
         {
-            this.model = model;
+            this.model = model.CurrentEvent;
             this.resultsOrder = ResultsOrder.Default;
 
-            model.ResultsChangedEvent += this.ModelResultsChanged;
-            //model.CurrentSeason.CurrentEvent.ResultsCallback = new ResultsDelegate(this.PopulateResultsTable);
-
-            ExpandCommand =
+            this.ExpandCommand =
               new SimpleCommand(
                 this.UpdateExpandedFlag);
 
@@ -64,6 +62,10 @@
                     this.CanOrderResultsByTime);
 
             this.PopulateResultsTable();
+
+            CommonMessenger.Default.Register<RefreshDataPaneMessage>(
+                this,
+                this.Refresh);
         }
 
         /// <summary>
@@ -86,15 +88,12 @@
         /// </summary>
         public ObservableCollection<ResultsTableRowViewModel> ResultsTable
         {
-            get
-            {
-                return this.resultsTable;
-            }
+            get => this.resultsTable;
 
             set
             {
                 this.resultsTable = value;
-                RaisePropertyChangedEvent(nameof(this.ResultsTable));
+                this.RaisePropertyChangedEvent(nameof(this.ResultsTable));
             }
         }
 
@@ -103,16 +102,13 @@
         /// </summary>
         public bool ExpandedData
         {
-            get
-            {
-                return this.expandedData;
-            }
+            get => this.expandedData;
 
             set
             {
                 this.expandedData = value;
-                RaisePropertyChangedEvent(nameof(this.ExpandedData));
-                RaisePropertyChangedEvent(nameof(this.ExpandedLabel));
+                this.RaisePropertyChangedEvent(nameof(this.ExpandedData));
+                this.RaisePropertyChangedEvent(nameof(this.ExpandedLabel));
             }
         }
 
@@ -124,7 +120,7 @@
         /// <summary>
         /// Toggle expanded data flag.
         /// </summary>
-        public void UpdateExpandedFlag()
+        private void UpdateExpandedFlag()
         {
             this.ExpandedData = !this.ExpandedData;
 
@@ -135,21 +131,9 @@
         }
 
         /// <summary>
-        /// Populate the the results table.
-        /// </summary>
-        /// <param name="sender">sender object</param>
-        /// <param name="e">event arguments</param>
-        public void ModelResultsChanged(
-            object sender,
-            EventArgs e)
-        {
-            this.PopulateResultsTable();
-        }
-
-        /// <summary>
         /// Run the <see cref="ResultsOrderByTimeCommand"/>.
         /// </summary>
-        public void OrderResultsByTime()
+        private void OrderResultsByTime()
         {
             this.SetResults(
               this.ResultsTable.OrderBy(
@@ -163,7 +147,7 @@
         /// can be run.
         /// </summary>
         /// <returns>Indicates whether the command can be run.</returns>
-        public bool CanOrderResultsByTime()
+        private bool CanOrderResultsByTime()
         {
             return this.resultsOrder != ResultsOrder.Time;
         }
@@ -171,7 +155,7 @@
         /// <summary>
         /// Run the <see cref="ResultsOrderBySpeedCommand"/>.
         /// </summary>
-        public void OrderResultsBySpeed()
+        private void OrderResultsBySpeed()
         {
             this.SetResults(
               this.ResultsTable.OrderBy(
@@ -185,7 +169,7 @@
         /// can be run.
         /// </summary>
         /// <returns>Indicates whether the command can be run.</returns>
-        public bool CanOrderResultsBySpeed()
+        private bool CanOrderResultsBySpeed()
         {
             return this.resultsOrder != ResultsOrder.Speed;
         }
@@ -217,30 +201,44 @@
             foreach (IResultsTableEntry entry in this.model.ResultsTable.Entries)
             {
                 this.ResultsTable.Add(
-                  new ResultsTableRowViewModel(
-                    entry.Key,
-                    entry.Position,
-                    entry.Name,
-                    entry.Club,
-                    entry.Handicap.ToString(),
-                    entry.ExtraInfo,
-                    entry.Notes,
-                    entry.FirstTimer,
-                    entry.RunningOrder,
-                    entry.PB,
-                    entry.Points.TotalPoints,
-                    entry.Points.FinishingPoints,
-                    entry.Points.PositionPoints,
-                    entry.Points.BestPoints,
-                    entry.TeamTrophyPoints,
-                    entry.RaceNumber,
-                    entry.Time.ToString(),
-                    entry.RunningTime.ToString(),
-                    entry.Sex.ToString(),
-                    entry.SB));
+                    new ResultsTableRowViewModel(
+                        entry.Key,
+                        entry.Position,
+                        entry.Name,
+                        entry.Club,
+                        entry.Handicap.ToString(),
+                        entry.ExtraInfo,
+                        entry.Notes,
+                        entry.FirstTimer,
+                        entry.RunningOrder,
+                        entry.PB,
+                        entry.Points.TotalPoints,
+                        entry.Points.FinishingPoints,
+                        entry.Points.PositionPoints,
+                        entry.Points.BestPoints,
+                        entry.TeamTrophyPoints,
+                        entry.RaceNumber,
+                        entry.Time.ToString(),
+                        entry.RunningTime.ToString(),
+                        entry.Sex.ToString(),
+                        entry.SB));
             }
 
             this.resultsOrder = ResultsOrder.Time;
+        }
+
+        /// <summary>
+        /// Refresh this view model.
+        /// </summary>
+        /// <param name="message">refresh view model message</param>
+        private void Refresh(
+            RefreshDataPaneMessage message)
+        {
+            if (message.RefreshResultsTable)
+            {
+                this.ResultsTable.Clear();
+                this.PopulateResultsTable();
+            }
         }
     }
 }

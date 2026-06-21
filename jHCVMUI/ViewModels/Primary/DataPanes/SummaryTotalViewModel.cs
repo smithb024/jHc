@@ -1,7 +1,9 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
-    using System;
+    using CommonHandicapLib.Messages;
+    using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.SeasonModel;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// View model for the total season summary view.
@@ -11,30 +13,34 @@
         /// <summary>
         /// The season model object.
         /// </summary>
-        private ISeason seasonModel;
+        private readonly ISeason seasonModel;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="SummaryTotalViewModel"/> class.
         /// </summary>
         /// <param name="model">Junior handicap model</param>
         public SummaryTotalViewModel(
-            ISeason model)
-            : base(model.Summary)
+            IModel model)
+            : base(model.CurrentSeason.Summary)
         {
-            this.seasonModel = model;
-            model.SummaryChangedEvent += this.ModelUpdated;
+            this.seasonModel = model.CurrentSeason;
+
+            CommonMessenger.Default.Register<RefreshDataPaneMessage>(
+                this,
+                this.Refresh);
         }
 
         /// <summary>
-        /// The whole summary model object has been replaced, update the view models. 
+        /// Refresh this view model.
         /// </summary>
-        /// <param name="sender">sender object</param>
-        /// <param name="e">event arguments</param>
-        private void ModelUpdated(
-            object sender,
-            EventArgs e)
+        /// <param name="message">refresh view model message</param>
+        private void Refresh(
+            RefreshDataPaneMessage message)
         {
-            this.UpdateModel(seasonModel.Summary);
+            if (message.RefreshSummaryTotal)
+            {
+                this.UpdateModel(this.seasonModel.Summary);
+            }
         }
-   }
+    }
 }

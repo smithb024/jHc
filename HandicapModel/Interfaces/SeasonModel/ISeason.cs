@@ -1,10 +1,9 @@
 ﻿namespace HandicapModel.Interfaces.SeasonModel
-{ 
+{
+    using System.Collections.Generic;
     using CommonHandicapLib.Types;
     using CommonLib.Types;
     using HandicapModel.Common;
-    using System;
-    using System.Collections.Generic;
     using HandicapModel.Interfaces.Common;
     using CommonLib.Enumerations;
 
@@ -13,36 +12,6 @@
     /// </summary>
     public interface ISeason
     {
-        /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to the
-        /// list of handicap event names.
-        /// </summary>
-        event EventHandler HandicapEventsChanged;
-
-        /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to the
-        /// list of clubs within this season.
-        /// </summary>
-        event EventHandler ClubsChangedEvent;
-
-        /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to the
-        /// list of athletes within this season.
-        /// </summary>
-        event EventHandler AthletesChangedEvent;
-
-        /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to the
-        /// number of athletes registered this season.
-        /// </summary>
-        event EventHandler AthleteCollectionChangedEvent;
-
-        /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to this
-        /// season's summary.
-        /// </summary>
-        event EventHandler SummaryChangedEvent;
-
         /// <summary>
         /// Gets the season specific details for each athlete present in the current season.
         /// </summary>

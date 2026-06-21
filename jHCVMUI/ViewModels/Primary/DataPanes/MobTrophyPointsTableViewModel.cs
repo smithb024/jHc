@@ -1,23 +1,29 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Windows.Input;
-    using HandicapModel.SeasonModel;
+    using CommonHandicapLib.Messages;
     using HandicapModel.Common;
+    using HandicapModel.Interfaces;
+    using HandicapModel.Interfaces.SeasonModel;
+    using HandicapModel.SeasonModel;
     using jHCVMUI.ViewModels.ViewModels;
     using jHCVMUI.ViewModels.ViewModels.Types;
     using jHCVMUI.ViewModels.ViewModels.Types.Clubs;
-
     using NynaeveLib.Commands;
-    using System;
-    using HandicapModel.Interfaces.SeasonModel;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Windows.Input;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// View Model used by the Data Pane to display the Mob Trophy points table.
     /// </summary>
     public class MobTrophyPointsTableViewModel : ViewModelBase
     {
+        /// <summary>
+        /// The associated season model.
+        /// </summary>
+        private readonly ISeason model;
+
         /// <summary>
         /// The Mob Trophy points table.
         /// </summary>
@@ -34,27 +40,25 @@
         private bool expandedData;
 
         /// <summary>
-        /// The associated season model.
-        /// </summary>
-        private ISeason model;
-
-        /// <summary>
         /// View model which suports the mob trophy points table.
         /// </summary>
-        /// <param name="model">season model</param>
-        public MobTrophyPointsTableViewModel(ISeason model)
+        /// <param name="model">junior handicap model</param>
+        public MobTrophyPointsTableViewModel(IModel model)
         {
-            this.model = model;
+            this.model = model.CurrentSeason;
             this.mobTrophyPointsTable = new ObservableCollection<MobTrophyPointsTableRowViewModel>();
             this.currentMobTrophyPointsTableIndex = 0;
             this.expandedData = false;
 
-            this.model.ClubsChangedEvent += this.PopulateMobTrophyPointsData;
             this.PopulateMobTrophyTable();
 
             this.ExpandCommand =
               new SimpleCommand(
                 this.UpdateExpandedFlag);
+
+            CommonMessenger.Default.Register<RefreshDataPaneMessage>(
+                this, 
+                this.Refresh);
         }
 
         /// <summary>
@@ -139,19 +143,6 @@
         }
 
         /// <summary>
-        /// Used to populate the Mob Trophy points table
-        /// </summary>
-        /// <param name="sender">sender object</param>
-        /// <param name="e">event arguments</param>
-        public void PopulateMobTrophyPointsData(
-            object sender,
-            EventArgs e)
-        {
-            MobTrophyPointsTable.Clear();
-            this.PopulateMobTrophyTable();
-        }
-
-        /// <summary>
         /// Calculate and populate the Mob Trophy points table.
         /// </summary>
         private void PopulateMobTrophyTable()
@@ -183,6 +174,17 @@
                 new ObservableCollection<MobTrophyPointsTableRowViewModel>(
                     MobTrophyPointsTable.OrderByDescending(
                         order => order.TotalPoints));
+        }
+
+        /// <summary>
+        /// Refresh this view model.
+        /// </summary>
+        /// <param name="message">refresh view model message</param>
+        private void Refresh(
+            RefreshDataPaneMessage message)
+        {
+            this.MobTrophyPointsTable.Clear();
+            this.PopulateMobTrophyTable();
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿namespace jHCVMUI.ViewModels.Primary
 {
-    using System.Windows.Input;
     using CommonHandicapLib.Messages;
     using DataPanes;
     using HandicapModel.Interfaces;
     using jHCVMUI.ViewModels.ViewModels;
     using NynaeveLib.Commands;
+    using System.Windows.Input;
     using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
@@ -58,28 +58,22 @@
         /// View model which supports the data pane on the main window.
         /// </summary>
         /// <param name="model">Junior handicap model</param>
-        public DataPaneViewModel(IModel model)
+        public DataPaneViewModel(
+            IModel model,
+            MobTrophyPointsTableViewModel mobTrophy,
+            TeamTrophyPointsTableViewModel teamTrophy,
+            PointsTableViewModel pointsTable,
+            SummaryEventViewModel eventSummary,
+            SummaryTotalViewModel totalSummary,
+            ResultsTableViewModel resultsTable)
         {
             this.model = model;
-
-            this.mobTrophyPointsTableViewModel =
-                new MobTrophyPointsTableViewModel(
-                    this.model.CurrentSeason);
-            this.teamTrophyPointsTableViewModel =
-                new TeamTrophyPointsTableViewModel(
-                    this.model.CurrentSeason);
-            this.pointsTableViewModel =
-                new PointsTableViewModel(
-                    this.model);
-            this.eventSummaryViewModel =
-                new SummaryEventViewModel(
-                    this.model.CurrentEvent);
-            this.seasonSummaryViewModel =
-                new SummaryTotalViewModel(
-                    this.model.CurrentSeason);
-            this.resultsTableViewModel =
-                new ResultsTableViewModel(
-                    this.model.CurrentEvent);
+            this.mobTrophyPointsTableViewModel = mobTrophy;
+            this.teamTrophyPointsTableViewModel = teamTrophy;
+            this.pointsTableViewModel = pointsTable;
+            this.eventSummaryViewModel = eventSummary;
+            this.seasonSummaryViewModel = totalSummary;
+            this.resultsTableViewModel = resultsTable;
 
             this.dataViewContents = this.seasonSummaryViewModel;
 

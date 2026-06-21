@@ -92,18 +92,6 @@
         }
 
         /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to the
-        /// results.
-        /// </summary>
-        public event EventHandler ResultsChangedEvent;
-
-        /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to this
-        /// event's summary.
-        /// </summary>
-        public event EventHandler SummaryChangedEvent;
-
-        /// <summary>
         /// Gets the name of this event.
         /// </summary>
         public string Name { get; private set; }
@@ -128,7 +116,6 @@
                 if (this.summary != value)
                 {
                     this.summary = value;
-                    this.SummaryChangedEvent?.Invoke(this, new EventArgs());
                 }
             }
         }
@@ -138,15 +125,13 @@
         /// </summary>
         public IEventResults ResultsTable
         {
-            get { return this.resultsTable; 
-            }
+            get => this.resultsTable; 
 
             private set
             {
                 if (this.resultsTable != value)
                 {
                     this.resultsTable = value;
-                    this.ResultsChangedEvent?.Invoke(this, new EventArgs());
                 }
             }
         }

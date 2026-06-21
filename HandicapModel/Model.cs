@@ -139,12 +139,6 @@
         }
 
         /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to the
-        /// list of season names.
-        /// </summary>
-        public event EventHandler SeasonsChangedEvent;
-
-        /// <summary>
         /// Gets the current season.
         /// </summary>
         public ISeason CurrentSeason { get; private set; }
@@ -180,7 +174,6 @@
         public void AddNewSeason(string newSeason)
         {
             this.Seasons.Add(newSeason);
-            this.SeasonsChangedEvent?.Invoke(this, new EventArgs());
         }
 
         /// <summary>

@@ -1,20 +1,27 @@
 ﻿namespace jHCVMUI.ViewModels.Primary.DataPanes
 {
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Windows.Input;
+    using CommonHandicapLib.Messages;
+    using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
     using jHCVMUI.ViewModels.ViewModels;
     using jHCVMUI.ViewModels.ViewModels.Types.Clubs;
     using NynaeveLib.Commands;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Windows.Input;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// View model which supports the points table for the team trophy. 
     /// </summary>
     public class TeamTrophyPointsTableViewModel : ViewModelBase
     {
+        /// <summary>
+        /// The associated season model.
+        /// </summary>
+        private readonly ISeason model;
+
         /// <summary>
         /// The points table.
         /// </summary>
@@ -31,27 +38,25 @@
         private bool expandedData;
 
         /// <summary>
-        /// The associated season model.
-        /// </summary>
-        private ISeason model;
-
-        /// <summary>
         /// Initialises a new instance of the <see cref="ISeason"/> class.
         /// </summary>
-        /// <param name="model">season model</param>
-        public TeamTrophyPointsTableViewModel(ISeason model)
+        /// <param name="model">junior handicap model</param>
+        public TeamTrophyPointsTableViewModel(IModel model)
         {
-            this.model = model;
+            this.model = model.CurrentSeason;
             this.pointsTable = new ObservableCollection<TeamTrophyPointsTableRowViewModel>();
             this.currentTeamTrophyPointsTableIndex = 0;
             this.expandedData = false;
 
-            this.model.ClubsChangedEvent += this.PopulateClubPointsData;
             this.ExpandCommand =
               new SimpleCommand(
                 this.UpdateExpandedFlag);
 
             this.PopulateClubTable();
+
+            CommonMessenger.Default.Register<RefreshDataPaneMessage>(
+                this,
+                this.Refresh);
         }
 
         /// <summary>
@@ -164,7 +169,7 @@
                     clubPoints.AddPoints(points);
                 }
 
-                PointsTable.Add(clubPoints);
+                this.PointsTable.Add(clubPoints);
             }
 
             this.PointsTable =
@@ -174,16 +179,14 @@
         }
 
         /// <summary>
-        /// Used to populate the points table
+        /// Refresh this view model.
         /// </summary>
-        /// <param name="sender">sender object</param>
-        /// <param name="e">event arguments</param>
-        public void PopulateClubPointsData(
-            object sender,
-            EventArgs e)
+        /// <param name="message">refresh view model message</param>
+        private void Refresh(
+            RefreshDataPaneMessage message)
         {
             this.PointsTable.Clear();
             this.PopulateClubTable();
         }
-        }
+    }
 }

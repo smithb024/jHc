@@ -106,36 +106,6 @@
         }
 
         /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to the
-        /// list of handicap event names.
-        /// </summary>
-        public event EventHandler HandicapEventsChanged;
-
-        /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to the
-        /// list of clubs within this season.
-        /// </summary>
-        public event EventHandler ClubsChangedEvent;
-
-        /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to the
-        /// list of athletes within this season.
-        /// </summary>
-        public event EventHandler AthletesChangedEvent;
-
-        /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to the
-        /// number of athletes registered this season.
-        /// </summary>
-        public event EventHandler AthleteCollectionChangedEvent;
-
-        /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to this
-        /// season's summary.
-        /// </summary>
-        public event EventHandler SummaryChangedEvent;
-
-        /// <summary>
         /// Gets the name of this season.
         /// </summary>
         public string Name { get; private set; }
@@ -155,7 +125,6 @@
                 if (this.athletes != value)
                 {
                     this.athletes = value;
-                    this.AthletesChangedEvent?.Invoke(this, new EventArgs());
                 }
             }
         }
@@ -175,7 +144,6 @@
                 if (this.clubs != value)
                 {
                     this.clubs = value;
-                    this.ClubsChangedEvent?.Invoke(this, new EventArgs());
                 }
             }
         }
@@ -195,7 +163,6 @@
                 if (this.summary != value)
                 {
                     this.summary = value;
-                    this.SummaryChangedEvent?.Invoke(this, new EventArgs());
                 }
             }
         }
@@ -214,7 +181,6 @@
                 if (this.events != value)
                 {
                     this.events = value;
-                    this.HandicapEventsChanged?.Invoke(this, new EventArgs());
                 }
             }
         }
@@ -267,8 +233,6 @@
 
                 this.logger.WriteLog($"Season, loaded {this.Name}");
             }
-
-            this.AthleteCollectionChangedEvent?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -334,9 +298,6 @@
             this.Athletes.Add(newAthlete);
 
             this.athleteData.SaveAthleteSeasonData(this.Name, this.Athletes);
-
-            this.AthletesChangedEvent?.Invoke(this, new EventArgs());
-            this.AthleteCollectionChangedEvent?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -490,7 +451,6 @@
             }
 
             athlete.AddNewPoints(points);
-            this.AthletesChangedEvent?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
@@ -515,8 +475,6 @@
 
                 this.Clubs.Add(newClubDetails);
             }
-
-            this.ClubsChangedEvent?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
@@ -541,8 +499,6 @@
 
                 this.Clubs.Add(newClubDetails);
             }
-
-            this.ClubsChangedEvent?.Invoke(this, new EventArgs());
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿namespace HandicapModel.AthletesModel
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using CommonHandicapLib.Helpers;
     using CommonHandicapLib.Types;
     using CommonLib.Enumerations;
     using CommonLib.Types;
@@ -152,11 +150,6 @@
         }
 
         /// <summary>
-        /// Event which is used to inform interested parties that there has been a change to this model.
-        /// </summary>
-        public event EventHandler ModelUpdateEvent;
-
-        /// <summary>
         /// Gets or sets the key.
         /// </summary>
         public int Key { get; set; }
@@ -303,7 +296,6 @@
         public void AddRaceTime(Appearances newTime)
         {
             this.Times.Add(newTime);
-            this.ModelUpdateEvent?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -316,7 +308,6 @@
             if (this.Times.Exists(dateCheck => dateCheck.Date == date))
             {
                 this.Times.Remove(Times.Find(dateCheck => dateCheck.Date == date));
-                this.ModelUpdateEvent?.Invoke(this, EventArgs.Empty);
             }
         }
 
