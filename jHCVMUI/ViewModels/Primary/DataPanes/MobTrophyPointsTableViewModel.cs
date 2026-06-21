@@ -71,39 +71,27 @@
         /// </summary>
         public bool ExpandedData
         {
-            get
-            {
-                return expandedData;
-            }
+            get => this.expandedData;
 
             set
             {
                 expandedData = value;
-                RaisePropertyChangedEvent("ExpandedData");
-                RaisePropertyChangedEvent("ExpandedLabel");
+                this.RaisePropertyChangedEvent(nameof(this.ExpandedData));
+                this.RaisePropertyChangedEvent(nameof(this.ExpandedLabel));
             }
         }
 
         /// <summary>
         /// Gets the expanded label value.
         /// </summary>
-        public string ExpandedLabel
-        {
-            get
-            {
-                return ExpandedData ? "^" : "v";
-            }
-        }
+        public string ExpandedLabel => this.ExpandedData ? "^" : "v";
 
         /// <summary>
         /// Gets points sets the Mob Trophy points table.
         /// </summary>
         public ObservableCollection<MobTrophyPointsTableRowViewModel> MobTrophyPointsTable
         {
-            get
-            {
-                return this.mobTrophyPointsTable;
-            }
+            get => this.mobTrophyPointsTable;
 
             set
             {
@@ -117,10 +105,7 @@
         /// </summary>
         public int SelectedMobTrophyPointsTableIndex
         {
-            get
-            {
-                return this.currentMobTrophyPointsTableIndex;
-            }
+            get => this.currentMobTrophyPointsTableIndex;
 
             set
             {
@@ -134,11 +119,11 @@
         /// </summary>
         public void UpdateExpandedFlag()
         {
-            ExpandedData = !ExpandedData;
+            this.ExpandedData = !this.ExpandedData;
 
-            foreach (MobTrophyPointsTableRowViewModel mobTrophyPoints in MobTrophyPointsTable)
+            foreach (MobTrophyPointsTableRowViewModel mobTrophyPoints in this.MobTrophyPointsTable)
             {
-                mobTrophyPoints.ExpandedData = ExpandedData;
+                mobTrophyPoints.ExpandedData = this.ExpandedData;
             }
         }
 
@@ -167,12 +152,12 @@
                             eventPoints.Date));
                 }
 
-                MobTrophyPointsTable.Add(mobTrophyPoints);
+                this.MobTrophyPointsTable.Add(mobTrophyPoints);
             }
 
-            MobTrophyPointsTable =
+            this.MobTrophyPointsTable =
                 new ObservableCollection<MobTrophyPointsTableRowViewModel>(
-                    MobTrophyPointsTable.OrderByDescending(
+                    this.MobTrophyPointsTable.OrderByDescending(
                         order => order.TotalPoints));
         }
 
