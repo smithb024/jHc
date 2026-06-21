@@ -33,14 +33,9 @@
         /// <param name="athleteDetails">
         /// The model object for an athlete. 
         /// </param>
-        /// <param name="pointsChanged">
-        /// Callback method. This is intended to be called when the points change, to allow the 
-        /// parent view model to reorder the rows.
-        /// </param>
         public PointsTableRowViewModel(
             IAthleteSeasonDetails athleteSeasonDetails,
-            AthleteDetails athleteDetails,
-            Action pointsChanged)
+            AthleteDetails athleteDetails)
           : base(athleteDetails.Key, athleteDetails.Name)
         {
             this.athleteSeasonDetails = athleteSeasonDetails;
