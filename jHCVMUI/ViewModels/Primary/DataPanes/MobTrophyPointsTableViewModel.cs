@@ -9,7 +9,6 @@
     using jHCVMUI.ViewModels.ViewModels.Types;
     using jHCVMUI.ViewModels.ViewModels.Types.Clubs;
     using NynaeveLib.Commands;
-    using System;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
@@ -20,6 +19,11 @@
     /// </summary>
     public class MobTrophyPointsTableViewModel : ViewModelBase
     {
+        /// <summary>
+        /// The associated season model.
+        /// </summary>
+        private readonly ISeason model;
+
         /// <summary>
         /// The Mob Trophy points table.
         /// </summary>
@@ -34,11 +38,6 @@
         /// Indicates whether verbose or concise data is show.
         /// </summary>
         private bool expandedData;
-
-        /// <summary>
-        /// The associated season model.
-        /// </summary>
-        private ISeason model;
 
         /// <summary>
         /// View model which suports the mob trophy points table.

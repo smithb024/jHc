@@ -7,7 +7,6 @@
     using jHCVMUI.ViewModels.ViewModels;
     using jHCVMUI.ViewModels.ViewModels.Types.Clubs;
     using NynaeveLib.Commands;
-    using System;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
@@ -18,6 +17,11 @@
     /// </summary>
     public class TeamTrophyPointsTableViewModel : ViewModelBase
     {
+        /// <summary>
+        /// The associated season model.
+        /// </summary>
+        private readonly ISeason model;
+
         /// <summary>
         /// The points table.
         /// </summary>
@@ -32,11 +36,6 @@
         /// Indicates whether verbose or concise data is show.
         /// </summary>
         private bool expandedData;
-
-        /// <summary>
-        /// The associated season model.
-        /// </summary>
-        private ISeason model;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="ISeason"/> class.
