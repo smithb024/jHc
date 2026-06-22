@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonLib.Types;
@@ -10,6 +11,7 @@
     using HandicapModel.Interfaces;
     using HandicapModel.Interfaces.Admin.IO;
     using HandicapModel.Interfaces.Common;
+    using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
     using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
@@ -50,6 +52,13 @@
                     ResultsPaths.mobTrophyPointsTable +
                     ResultsPaths.csvExtension;
 
+                List<IClubSeasonDetails> clubCopy = model.CurrentSeason.Clubs;
+                clubCopy =
+                    new List<IClubSeasonDetails>(
+                        clubCopy.OrderByDescending(
+                            order => order.MobTrophy.TotalPoints));
+
+
                 using (StreamWriter writer = new StreamWriter(outPath))
                 {
                     string titleString = "Club" + ResultsPaths.separator + "TotalPoints";
@@ -62,7 +71,7 @@
 
                     writer.WriteLine(titleString);
 
-                    foreach (ClubSeasonDetails club in model.CurrentSeason.Clubs)
+                    foreach (ClubSeasonDetails club in clubCopy)
                     {
                         if (club.MobTrophy.TotalPoints > 0)
                         {
