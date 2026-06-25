@@ -87,6 +87,13 @@
                 string outPath =
                     $"{folderPath}{ResultsPaths.teamTrophyPointsTable}{ResultsPaths.csvExtension}";
 
+
+                List<IClubSeasonDetails> clubCopy = model.CurrentSeason.Clubs;
+                clubCopy =
+                    new List<IClubSeasonDetails>(
+                        clubCopy.OrderByDescending(
+                            order => order.TeamTrophy.TotalScore));
+
                 using (
                     StreamWriter writer =
                     new StreamWriter(
@@ -102,7 +109,7 @@
 
                     writer.WriteLine(titleString);
 
-                    foreach (ClubSeasonDetails club in model.CurrentSeason.Clubs)
+                    foreach (ClubSeasonDetails club in clubCopy)
                     {
                         int totalScore =
                             TeamTrophyTableWriter.CalculateTotalScore(
