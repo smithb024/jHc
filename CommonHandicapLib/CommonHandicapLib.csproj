@@ -85,6 +85,9 @@
     <Compile Include="XML\AthleteDataSeason\EntrantTime.cs" />
     <Compile Include="XML\AthleteDataSeason\MobTrophyPoints.cs" />
     <Compile Include="XML\AthleteDataSeason\EntrantTimes.cs" />
+    <Compile Include="XML\AthleteDataSeason\TeamTrophyPoint.cs" />
+    <Compile Include="XML\AthleteDataSeason\TeamTrophyPoints.cs" />
+    <Compile Include="XML\AthleteDataSeason\TeamTrophyPointsRoot.cs" />
     <Compile Include="XML\AthleteData\AthleteCollection.cs" />
     <Compile Include="XML\AthleteData\AthleteDataAppearances.cs" />
     <Compile Include="XML\AthleteData\AthleteDataNumber.cs" />

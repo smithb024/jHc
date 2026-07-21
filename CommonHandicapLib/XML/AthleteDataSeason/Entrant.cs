@@ -83,7 +83,7 @@
         /// <summary>
         /// Gets or sets all the points scored in the mob trophy.
         /// </summary>
-        [XmlElement("hPts")]
+        [XmlElement("pts")]
         public MobTrophyPoints MobPoints
         {
             get => this.mobPoints;
@@ -93,8 +93,8 @@
         /// <summary>
         /// Gets or sets all the points scored in the team trophy.
         /// </summary>
-        [XmlElement("pts")]
-        public MobTeamsPoints TeamPoints
+        [XmlElement("hPts")]
+        public TeamTrophyPointsRoot TeamPoints
         {
             get => this.teamPoints;
             set => this.teamPoints = value;
