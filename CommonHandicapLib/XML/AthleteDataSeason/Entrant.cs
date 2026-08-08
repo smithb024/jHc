@@ -84,7 +84,7 @@
         /// Gets or sets all the points scored in the mob trophy.
         /// </summary>
         [XmlElement("pts")]
-        public MobTrophyPoints MobPoints
+        public MobTrophyPointsRoot MobPoints
         {
             get => this.mobPoints;
             set => this.mobPoints = value;

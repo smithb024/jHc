@@ -9,9 +9,19 @@
     public class MobTrophyPoint
     {
         /// <summary>
-        /// The points recorded for this date.
+        /// The finishing points scored in the mob trophy.
         /// </summary>
-        private string points;
+        private int finishingPoints;
+
+        /// <summary>
+        /// The position points scored in the mob trophy.
+        /// </summary>
+        private int positionPoints;
+
+        /// <summary>
+        /// The year best points scored in the mob trophy.
+        /// </summary>
+        private int ybPoints;
 
         /// <summary>
         /// The date of the event.
@@ -19,30 +29,39 @@
         private string date;
 
         /// <summary>
-        /// Gets or sets the time of the athlete.
+        /// Gets or sets the finishing points scored in the mob trophy.
         /// </summary>
-        [XmlAttribute("rtm")]
-        public string Time
+        [XmlAttribute("fpts")]
+        public int FinishingPoints
         {
-            get => this.time;
+            get => this.finishingPoints;
+            set => this.finishingPoints = value;
+        }
 
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    this.time = string.Empty;
-                }
-                else
-                {
-                    this.time = value;
-                }
-            }
+        /// <summary>
+        /// Gets or sets the position points scored in the mob trophy.
+        /// </summary>
+        [XmlAttribute("ppts")]
+        public int PositionPoints
+        {
+            get => this.positionPoints;
+            set => this.positionPoints = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the year best points scored in the mob trophy.
+        /// </summary>
+        [XmlAttribute("bpts")]
+        public int YbPoints
+        {
+            get => this.ybPoints;
+            set => this.ybPoints = value;
         }
 
         /// <summary>
         /// Gets or sets the date of the event.
         /// </summary>
-        [XmlAttribute("rdt")]
+        [XmlAttribute("date")]
         public string Date
         {
             get => this.date;
