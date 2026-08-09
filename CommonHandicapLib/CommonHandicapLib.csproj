@@ -77,8 +77,6 @@
     <Compile Include="Types\StatusType.cs" />
     <Compile Include="Interfaces\XML\IResultsConfigReader.cs" />
     <Compile Include="XML\AthleteDataSeason\Entrant.cs" />
-    <Compile Include="XML\AthleteDataSeason\EntrantCollection.cs" />
-    <Compile Include="XML\AthleteDataSeason\EntrantList.cs" />
     <Compile Include="XML\AthleteDataSeason\AtlSeaRoot.cs" />
     <Compile Include="XML\AthleteDataSeason\EntrantTimesRoot.cs" />
     <Compile Include="XML\AthleteDataSeason\MobTrophyPoint.cs" />

@@ -1,20 +1,24 @@
 ﻿namespace HandicapModel.Admin.IO.XML
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Xml.Linq;
-
-    using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Types;
+    using CommonHandicapLib.XML.AthleteData;
+    using CommonHandicapLib.XML.AthleteDataSeason;
     using CommonLib.Types;
+    using HandicapModel.Admin.IO.TXT;
     using HandicapModel.Admin.Manage;
+    using HandicapModel.AthletesModel;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
+    using NynaeveLib.XML;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Xml.Linq;
 
     /// <summary>
     /// Athlete season data reader
@@ -22,7 +26,7 @@
     internal class AthleteSeasonDataReader : IAthleteSeasonDataReader
     {
         private const string c_rootElement = "AtlSea";
-        private const string c_athleteElement = "entrant";
+        private const string c_athleteElement = "Entrant";
         private const string c_eventPointsElement = "pt";
         private const string MobTrophyPointsElement = "pts";
         private const string TeamTrophyPointsElement = "hPts";
@@ -152,6 +156,21 @@
           string fileName,
           IResultsConfigMngr resultsConfigurationManager)
         {
+            AtlSeaRoot deserialisationAthleteSeasonDetails;
+
+            try
+            {
+                deserialisationAthleteSeasonDetails =
+                    XmlFileIo.ReadXml<AtlSeaRoot>(
+                        fileName);
+            }
+            catch (XmlException ex)
+            {
+                this.logger.WriteLog(
+                    $"Error reading the Athletes Data file: {ex.XmlMessage}");
+                return new List<IAthleteSeasonDetails>();
+            }
+
             List<IAthleteSeasonDetails> seasonDetails = new List<IAthleteSeasonDetails>();
 
             try

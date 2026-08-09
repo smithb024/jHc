@@ -36,7 +36,7 @@
         /// <summary>
         /// Gets or sets the Key of the athlete in the row.
         /// </summary>
-        [XmlAttribute("Key")]
+        [XmlAttribute("key")]
         public int Key
         {
             get => this.key;
@@ -46,7 +46,7 @@
         /// <summary>
         /// Gets or sets the name of the athlete in the row.
         /// </summary>
-        [XmlAttribute("Name")]
+        [XmlAttribute("name")]
         public string Name
         {
             get => this.name;

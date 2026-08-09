@@ -7,7 +7,7 @@
     /// Serialiseable class. This provides the base class for the athlete data (season) file.
     /// </summary>
     [XmlRoot("AtlSea")]
-    public class AllSeaRoot : List<EntrantList>
+    public class AtlSeaRoot : List<Entrant>
     {
     }
 }
