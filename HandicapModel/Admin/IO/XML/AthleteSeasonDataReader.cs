@@ -2,12 +2,9 @@
 {
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Types;
-    using CommonHandicapLib.XML.AthleteData;
     using CommonHandicapLib.XML.AthleteDataSeason;
     using CommonLib.Types;
-    using HandicapModel.Admin.IO.TXT;
     using HandicapModel.Admin.Manage;
-    using HandicapModel.AthletesModel;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.Common;
@@ -16,35 +13,12 @@
     using NynaeveLib.XML;
     using System;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Xml.Linq;
 
     /// <summary>
     /// Athlete season data reader
     /// </summary>
     internal class AthleteSeasonDataReader : IAthleteSeasonDataReader
     {
-        private const string c_rootElement = "AtlSea";
-        private const string c_athleteElement = "Entrant";
-        private const string c_eventPointsElement = "pt";
-        private const string MobTrophyPointsElement = "pts";
-        private const string TeamTrophyPointsElement = "hPts";
-        private const string c_runningNumbersElement = "runningNumbers";
-        private const string c_timesElement = "tms";
-        private const string c_numberElement = "number";
-        private const string c_eventTimeElement = "time";
-
-        private const string c_keyAttribute = "key";
-        private const string c_bestPoints = "bpts";
-        private const string c_eventDateAttribute = "date";
-        private const string c_eventTimeAttribute = "time";
-        private const string c_finishingPoints = "fpts";
-        private const string c_nameAttribute = "name";
-        private const string c_numberAttribute = "no";
-        private const string c_positionPoints = "ppts";
-        private const string TeamTrophyPointsAttribute = "pts";
-
         /// <summary>
         /// The instance of the logger.
         /// </summary>
@@ -76,62 +50,67 @@
 
             try
             {
-                XDocument writer = new XDocument(
-                 new XDeclaration("1.0", "uft-8", "yes"),
-                 new XComment("Athlete's season XML"));
-                XElement rootElement = new XElement(c_rootElement);
+                AtlSeaRoot saveCollection = new AtlSeaRoot();
 
-                foreach (AthleteSeasonDetails season in seasons)
+                foreach (IAthleteSeasonDetails season in seasons)
                 {
-                    XElement athleteElement =
-                        new XElement(
-                            c_athleteElement,
-                            new XAttribute(c_keyAttribute, season.Key.ToString()),
-                            new XAttribute(c_nameAttribute, season.Name));
-
-                    XElement runningNumberElement = new XElement(c_runningNumbersElement);
-                    athleteElement.Add(runningNumberElement);
-                    XElement timesElement = new XElement(c_timesElement);
-                    athleteElement.Add(timesElement);
-                    XElement mobTrophyPointsElement = new XElement(MobTrophyPointsElement);
-                    athleteElement.Add(mobTrophyPointsElement);
-                    XElement teamTrophyPointsElement = new XElement(TeamTrophyPointsElement);
-                    athleteElement.Add(teamTrophyPointsElement);
-
-                    foreach (Appearances time in season.Times)
+                    EntrantTimesRoot entrantTimes = new EntrantTimesRoot();
+                    entrantTimes.Appearances = new EntrantTimes();
+                    foreach (Appearances appearance in season.Times)
                     {
-                        XElement timeElement = new XElement(c_eventTimeElement,
-                                                            new XAttribute(c_eventTimeAttribute, time.Time.ToString()),
-                                                            new XAttribute(c_eventDateAttribute, time.Date.ToString()));
-                        timesElement.Add(timeElement);
+                        EntrantTime time = 
+                            new EntrantTime()
+                            {
+                                Time = appearance.TimeString,
+                                Date = appearance.DateString
+                            };
+                        entrantTimes.Appearances.Add(time);
                     }
 
-                    foreach (CommonPoints points in season.Points.AllPoints)
-                    {
-                        XElement pointElement = new XElement(c_eventPointsElement,
-                                                             new XAttribute(c_finishingPoints, points.FinishingPoints.ToString()),
-                                                             new XAttribute(c_positionPoints, points.PositionPoints.ToString()),
-                                                             new XAttribute(c_bestPoints, points.BestPoints.ToString()),
-                                                             new XAttribute(c_eventDateAttribute, points.Date.ToString()));
-                        mobTrophyPointsElement.Add(pointElement);
-                    }
-
+                    TeamTrophyPointsRoot entrantTeamPoints = new TeamTrophyPointsRoot();
+                    entrantTeamPoints.Points = new TeamTrophyPoints();
                     foreach (IAthleteTeamTrophyPoints point in season.TeamTrophyPoints.AllPoints)
                     {
-                        XElement pointElement =
-                            new XElement(
-                                c_eventPointsElement,
-                                new XAttribute(TeamTrophyPointsAttribute, point.Point.ToString()),
-                                new XAttribute(c_eventDateAttribute, point.Date.ToString()));
-
-                        teamTrophyPointsElement.Add(pointElement);
+                        TeamTrophyPoint teamPoint =
+                            new TeamTrophyPoint()
+                            {
+                                Date = point.Date.ToString(),
+                                Points = point.Point
+                            };
+                        entrantTeamPoints.Points.Add(teamPoint);
                     }
 
-                    rootElement.Add(athleteElement);
+                    MobTrophyPointsRoot entrantMobPoints = new MobTrophyPointsRoot();
+                    entrantMobPoints.Points = new MobTrophyPoints();
+                    foreach (CommonPoints point in season.Points.AllPoints)
+                    {
+                        MobTrophyPoint mobPoint =
+                            new MobTrophyPoint()
+                            {
+                                Date = point.Date.ToString(),
+                                PositionPoints = point.PositionPoints,
+                                FinishingPoints = point.FinishingPoints,
+                                YbPoints = point.BestPoints
+                            };
+                        entrantMobPoints.Points.Add(mobPoint);
+                    }
+
+                    Entrant entrant = 
+                        new Entrant()
+                        {
+                            Key = season.Key,
+                            Name = season.Name,
+                            Times = entrantTimes,
+                            TeamPoints = entrantTeamPoints,
+                            MobPoints = entrantMobPoints
+                        };
+
+                    saveCollection.Add(entrant);
                 }
 
-                writer.Add(rootElement);
-                writer.Save(fileName);
+                XmlFileIo.WriteXml<AtlSeaRoot>(
+                    saveCollection,
+                    fileName);
             }
 
             catch (Exception ex)
@@ -173,119 +152,55 @@
 
             List<IAthleteSeasonDetails> seasonDetails = new List<IAthleteSeasonDetails>();
 
-            try
+            foreach (Entrant athlete in deserialisationAthleteSeasonDetails)
             {
-                XDocument reader = XDocument.Load(fileName);
-                XElement rootElement = reader.Root;
+                AthleteSeasonDetails athleteDetails =
+                  new AthleteSeasonDetails(
+                    athlete.Key,
+                    athlete.Name);
 
-                var athleteList = from Athlete in rootElement.Elements(c_athleteElement)
-                                  select new
-                                  {
-                                      key = (int)Athlete.Attribute(c_keyAttribute),
-                                      name = (string)Athlete.Attribute(c_nameAttribute),
-                                      runningNumbers = from RunningNumbers in Athlete.Elements(c_runningNumbersElement)
-                                                       select new
-                                                       {
-                                                           numbers = from Numbers in RunningNumbers.Elements(c_numberElement)
-                                                                     select new
-                                                                     {
-                                                                         number = (string)Numbers.Attribute(c_numberAttribute)
-                                                                     }
-                                                       },
-                                      eventTimes = from EventTimes in Athlete.Elements(c_timesElement)
-                                                   select new
-                                                   {
-                                                       events = from Times in EventTimes.Elements(c_eventTimeElement)
-                                                                select new
-                                                                {
-                                                                    time = (string)Times.Attribute(c_eventTimeAttribute),
-                                                                    date = (string)Times.Attribute(c_eventDateAttribute)
-                                                                }
-                                                   },
-                                      mobTrophyPoints = from Points in Athlete.Elements(MobTrophyPointsElement)
-                                               select new
-                                               {
-                                                   point = from Point in Points.Elements(c_eventPointsElement)
-                                                           select new
-                                                           {
-                                                               finishing = (int)Point.Attribute(c_finishingPoints),
-                                                               position = (int)Point.Attribute(c_positionPoints),
-                                                               best = (int)Point.Attribute(c_bestPoints),
-                                                               date = (string)Point.Attribute(c_eventDateAttribute)
-                                                           }
-                                               },
-                                      teamTrophyPoints = from Points in Athlete.Elements(TeamTrophyPointsElement)
-                                               select new
-                                               {
-                                                   point = from Point in Points.Elements(c_eventPointsElement)
-                                                           select new
-                                                           {
-                                                               teamTrophyPoint = (int)Point.Attribute(TeamTrophyPointsAttribute),
-                                                               date = (string)Point.Attribute(c_eventDateAttribute)
-                                                           }
-                                               }
-                                  };
-
-                foreach (var athlete in athleteList)
+                foreach (EntrantTime eventTms in athlete.Times.Appearances)
                 {
-                    AthleteSeasonDetails athleteDetails =
-                      new AthleteSeasonDetails(
-                        athlete.key,
-                        athlete.name);
-
-                    foreach (var eventTms in athlete.eventTimes)
-                    {
-                        foreach (var times in eventTms.events)
-                        {
-                            athleteDetails.AddNewTime(new Appearances(new RaceTimeType(times.time),
-                                                                      new DateType(times.date)));
-                        }
-                    }
-
-                    foreach (var points in athlete.mobTrophyPoints)
-                    {
-                        foreach (var point in points.point)
-                        {
-                            DateType eventDate =
-                                new DateType(
-                                    point.date);
-
-                            CommonPoints commonPoints =
-                                new CommonPoints(
-                                    point.finishing,
-                                    point.position,
-                                    point.best,
-                                    eventDate);
-
-                            athleteDetails.Points.AddNewEvent(commonPoints);
-                            // TODO, should probably check that there are the correct number read from the xml file.
-                            // i.e. there is one for each event in the currently loaded season.
-                            // Will want to change it to proper serialisation at some point.
-                        }
-                    }
-
-                    foreach(var points in athlete.teamTrophyPoints)
-                    {
-                        foreach(var point in points.point)
-                        {
-                            DateType date = new DateType(point.date);
-                            IAthleteTeamTrophyPoints newEvent =
-                                new AthleteTeamTrophyPoints(
-                                    point.teamTrophyPoint,
-                                    date);
-
-                            athleteDetails.TeamTrophyPoints.AddNewEvent(newEvent);
-                        }
-                    }
-
-                    seasonDetails.Add(athleteDetails);
+                    athleteDetails.AddNewTime(
+                        new Appearances(
+                            new RaceTimeType(
+                                eventTms.Time),
+                            new DateType(
+                                eventTms.Date)));
                 }
-            }
-            catch (Exception ex)
-            {
-                this.logger.WriteLog("Error reading athlete data: " + ex.ToString());
 
-                seasonDetails = new List<IAthleteSeasonDetails>();
+                foreach (MobTrophyPoint point in athlete.MobPoints.Points)
+                {
+                    DateType eventDate =
+                        new DateType(
+                            point.Date);
+
+                    CommonPoints commonPoints =
+                        new CommonPoints(
+                            point.FinishingPoints,
+                            point.PositionPoints,
+                            point.YbPoints,
+                            eventDate);
+
+                    athleteDetails.Points.AddNewEvent(commonPoints);
+                    // TODO, should probably check that there are the correct number read from the xml file.
+                    // i.e. there is one for each event in the currently loaded season.
+                }
+
+                foreach (TeamTrophyPoint point in athlete.TeamPoints.Points)
+                {
+                    DateType date =
+                    new DateType(
+                        point.Date);
+                    IAthleteTeamTrophyPoints newEvent =
+                        new AthleteTeamTrophyPoints(
+                            point.Points,
+                            date);
+
+                    athleteDetails.TeamTrophyPoints.AddNewEvent(newEvent);
+                }
+
+                seasonDetails.Add(athleteDetails);
             }
 
             return seasonDetails;
