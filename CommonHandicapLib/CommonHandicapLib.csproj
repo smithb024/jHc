@@ -97,6 +97,7 @@
     <Compile Include="XML\AthleteData\AthleteList.cs" />
     <Compile Include="XML\AthleteData\Athlete.cs" />
     <Compile Include="XML\AthleteData\AthleteDataTimes.cs" />
+    <Compile Include="XML\ClubData\ClubDetailsRoot.cs" />
     <Compile Include="XML\ResultsTable\ResultsTableRoot.cs" />
     <Compile Include="XML\ResultsTable\Row.cs" />
     <Compile Include="XML\SeriesConfigReader.cs" />
