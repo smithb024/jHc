@@ -98,6 +98,11 @@
     <Compile Include="XML\AthleteData\Athlete.cs" />
     <Compile Include="XML\AthleteData\AthleteDataTimes.cs" />
     <Compile Include="XML\ClubData\ClubDetailsRoot.cs" />
+    <Compile Include="XML\ClubSeasonData\CbSeaRoot.cs" />
+    <Compile Include="XML\ClubSeasonData\Club.cs" />
+    <Compile Include="XML\ClubSeasonData\ClubPointsRoot.cs" />
+    <Compile Include="XML\ClubSeasonData\ClubPoint.cs" />
+    <Compile Include="XML\ClubSeasonData\ClubPoints.cs" />
     <Compile Include="XML\ResultsTable\ResultsTableRoot.cs" />
     <Compile Include="XML\ResultsTable\Row.cs" />
     <Compile Include="XML\SeriesConfigReader.cs" />
