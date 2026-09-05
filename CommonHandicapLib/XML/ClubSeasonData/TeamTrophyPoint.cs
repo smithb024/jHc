@@ -5,7 +5,7 @@
     /// <summary>
     /// A XML row in the club season data file. This presents the points scored by the club.
     /// </summary>
-    public class ClubPoint
+    public class TeamTrophyPoint
     {
         /// <summary>
         /// The finishing points scored.

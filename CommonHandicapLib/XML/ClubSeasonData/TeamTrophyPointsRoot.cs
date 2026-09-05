@@ -5,18 +5,18 @@
     /// <summary>
     /// XML serialisable class which contains all the mob trophy scores of a specific athlete.
     /// </summary>
-    public class ClubPointsRoot
+    public class TeamTrophyPointsRoot
     {
         /// <summary>
         /// All club points.
         /// </summary>
-        private ClubPoints points;
+        private TeamTrophyPoints points;
 
         /// <summary>
         /// Gets or sets all club points.
         /// </summary>
         [XmlElement("pt")]
-        public ClubPoints Points
+        public TeamTrophyPoints Points
         {
             get => this.points;
             set => this.points = value;

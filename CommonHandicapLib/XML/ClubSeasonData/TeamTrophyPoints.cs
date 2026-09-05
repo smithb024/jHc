@@ -5,7 +5,7 @@
     /// <summary>
     /// A list of all points scored by the club.
     /// </summary>
-    public class ClubPoints : List<ClubPoint>
+    public class TeamTrophyPoints : List<TeamTrophyPoint>
     {
     }
 }

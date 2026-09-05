@@ -17,7 +17,7 @@
         /// <summary>
         /// All points scored by the club (team).
         /// </summary>
-        private ClubPointsRoot clubPoints;
+        private TeamTrophyPointsRoot clubPoints;
 
         /// <summary>
         /// Gets or sets the name of the club in the row.
@@ -44,7 +44,7 @@
         /// Gets or sets all the points scored by the club.
         /// </summary>
         [XmlElement("pts")]
-        public ClubPointsRoot ClubPoints
+        public TeamTrophyPointsRoot ClubPoints
         {
             get => this.clubPoints;
             set => this.clubPoints = value;
