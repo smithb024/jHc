@@ -1,6 +1,5 @@
 ﻿namespace CommonHandicapLib.XML.ClubSeasonData
 {
-    using CommonHandicapLib.XML.AthleteDataSeason;
     using System.Collections.Generic;
     using System.Xml.Serialization;
 
