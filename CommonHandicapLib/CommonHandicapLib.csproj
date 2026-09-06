@@ -100,6 +100,11 @@
     <Compile Include="XML\ClubData\ClubDetailsRoot.cs" />
     <Compile Include="XML\ClubSeasonData\CbSeaRoot.cs" />
     <Compile Include="XML\ClubSeasonData\Club.cs" />
+    <Compile Include="XML\ClubSeasonData\MobTrophyPointsRoot.cs" />
+    <Compile Include="XML\ClubSeasonData\MobTrophyEventsRoot.cs" />
+    <Compile Include="XML\ClubSeasonData\MobTrophyEvent.cs" />
+    <Compile Include="XML\ClubSeasonData\MobTrophyPoint.cs" />
+    <Compile Include="XML\ClubSeasonData\MobTrophyPoints.cs" />
     <Compile Include="XML\ClubSeasonData\TeamTrophyPointsRoot.cs" />
     <Compile Include="XML\ClubSeasonData\TeamTrophyPoint.cs" />
     <Compile Include="XML\ClubSeasonData\TeamTrophyPoints.cs" />

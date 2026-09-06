@@ -15,9 +15,14 @@
         private string name;
 
         /// <summary>
-        /// All points scored by the club (team).
+        /// All team trophy points scored by the club.
         /// </summary>
-        private TeamTrophyPointsRoot clubPoints;
+        private TeamTrophyPointsRoot teamPoints;
+
+        /// <summary>
+        /// All mob trophy points scored by the club.
+        /// </summary>
+        private MobTrophyPointsRoot mobPoints;
 
         /// <summary>
         /// Gets or sets the name of the club in the row.
@@ -41,14 +46,23 @@
         }
 
         /// <summary>
-        /// Gets or sets all the points scored by the club.
+        /// Gets or sets all the team trophy points scored by the club.
         /// </summary>
         [XmlElement("pts")]
-        public TeamTrophyPointsRoot ClubPoints
+        public TeamTrophyPointsRoot TeamPoints
         {
-            get => this.clubPoints;
-            set => this.clubPoints = value;
+            get => this.teamPoints;
+            set => this.teamPoints = value;
         }
 
+        /// <summary>
+        /// Gets or sets all the mob trophy points scored by the club.
+        /// </summary>
+        [XmlElement("hPts")]
+        public MobTrophyPointsRoot MobPoints
+        {
+            get => this.mobPoints;
+            set => this.mobPoints = value;
+        }
     }
 }

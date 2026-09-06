@@ -3,23 +3,25 @@
     using System.Xml.Serialization;
 
     /// <summary>
-    /// XML serialisable class which contains all the team trophy scores of a specific athlete.
+    /// A XML row in the club season data file. This presents an event entered by the club in the 
+    /// mob trophy.
     /// </summary>
-    public class TeamTrophyPointsRoot
+    public class MobTrophyEvent
     {
         /// <summary>
         /// All club points.
         /// </summary>
-        private TeamTrophyPoints points;
+        private MobTrophyPoints points;
 
         /// <summary>
         /// Gets or sets all club points.
         /// </summary>
         [XmlElement("pt")]
-        public TeamTrophyPoints Points
+        public MobTrophyPoints Points
         {
             get => this.points;
             set => this.points = value;
         }
+
     }
 }
