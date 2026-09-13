@@ -6,7 +6,7 @@
     /// A XML row in the club season data file. This presents an event entered by the club in the 
     /// mob trophy.
     /// </summary>
-    public class MobTrophyEvent
+    public class TeamTrophyEvent
     {
         /// <summary>
         /// The size of the team.
@@ -31,7 +31,7 @@
         /// <summary>
         /// All club points.
         /// </summary>
-        private MobTrophyPoints points;
+        private TeamTrophyPoints points;
 
         /// <summary>
         /// Gets or sets size of the team in the current event.
@@ -88,7 +88,7 @@
         /// Gets or sets all club points.
         /// </summary>
         [XmlElement("pt")]
-        public MobTrophyPoints Points
+        public TeamTrophyPoints Points
         {
             get => this.points;
             set => this.points = value;

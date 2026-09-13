@@ -1,18 +1,25 @@
 ﻿namespace HandicapModel.Admin.IO.XML
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Xml.Linq;
     using CommonHandicapLib;
     using CommonHandicapLib.Interfaces;
+    using CommonHandicapLib.Messages;
+    using CommonHandicapLib.XML.ClubData;
+    using CommonHandicapLib.XML.ClubSeasonData;
     using CommonLib.Types;
+    using HandicapModel.ClubsModel;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.Common;
     using HandicapModel.Interfaces.SeasonModel;
     using HandicapModel.SeasonModel;
+    using NynaeveLib.XML;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Xml.Linq;
+    using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Club season data reader.
@@ -156,6 +163,114 @@
         {
             List<IClubSeasonDetails> seasonDetails = new List<IClubSeasonDetails>();
 
+            if (!File.Exists(fileName))
+            {
+                string error =
+                    string.Format(
+                        "Club data file missing, one created - {0}",
+                        fileName);
+
+                CommonMessenger.Default.Send(
+                    new HandicapErrorMessage(
+                        error));
+                this.logger.WriteLog(error);
+
+                this.SaveClubSeasonData(
+                    fileName,
+                    new List<IClubSeasonDetails>());
+            }
+
+            CbSeaRoot root = new CbSeaRoot();
+            Club club1 = new Club();
+            club1.Name = "Club 1";
+
+            MobTrophyPointsRoot teamTrophyPointsRoot = new MobTrophyPointsRoot();
+            MobTrophyPoints teamTrophyPoints1 = new MobTrophyPoints();
+            MobTrophyPoint point1 =
+                new MobTrophyPoint()
+                {
+                    FinishingPoints = 16,
+                    PositionPoints = 10,
+                    YbPoints = 2,
+                    Date = "23-4-2026"
+                };
+            teamTrophyPoints1.Add(point1);
+            MobTrophyPoint point2 =
+                new MobTrophyPoint()
+                {
+                    FinishingPoints = 12,
+                    PositionPoints = 15,
+                    YbPoints = 6,
+                    Date = "14-5-2026"
+                };
+            teamTrophyPoints1.Add(point2);
+            teamTrophyPointsRoot.Points = teamTrophyPoints1;
+            club1.TeamPoints = teamTrophyPointsRoot;
+
+            TeamTrophyPointsRoot mobTrophyPointsRoot = new TeamTrophyPointsRoot();
+            TeamTrophyEventsRoot mobTrophyEventsRoot = new TeamTrophyEventsRoot();
+
+            CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent event1 =
+                new CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent()
+                {
+                    TeamSize = 5,
+                    VirtualRunnerScore = 13,
+                    Date = "23-4-2026",
+                    Score = 6
+                };
+            TeamTrophyPoints mobTrophyPoints = new TeamTrophyPoints();
+            TeamTrophyPoint mobTrophyPoint1 =
+                new TeamTrophyPoint()
+                {
+                    Key = 123,
+                    Points = 10
+                };
+            mobTrophyPoints.Add(mobTrophyPoint1);
+            TeamTrophyPoint mobTrophyPoint2 =
+                new TeamTrophyPoint()
+                {
+                    Key = 357,
+                    Points = 8
+                };
+            mobTrophyPoints.Add(mobTrophyPoint2);
+            event1.Points = mobTrophyPoints;
+            mobTrophyEventsRoot.Add(event1);
+
+            CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent event2 =
+                new CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent()
+                {
+                    TeamSize = 3,
+                    VirtualRunnerScore = 11,
+                    Date = "14-5-2026",
+                    Score = 2
+                };
+            TeamTrophyPoints mobTrophyPoints2 = new TeamTrophyPoints();
+            TeamTrophyPoint mobTrophyPoint21 =
+                new TeamTrophyPoint()
+                {
+                    Key = 123,
+                    Points = 10
+                };
+            mobTrophyPoints2.Add(mobTrophyPoint2);
+            TeamTrophyPoint mobTrophyPoint22 =
+                new TeamTrophyPoint()
+                {
+                    Key = 357,
+                    Points = 8
+                };
+            mobTrophyPoints2.Add(mobTrophyPoint22);
+            event2.Points = mobTrophyPoints2;
+            mobTrophyEventsRoot.Add(event2);
+
+            mobTrophyPointsRoot.Events = mobTrophyEventsRoot;
+            club1.MobPoints = mobTrophyPointsRoot;
+
+            root.Add(club1);
+
+            XmlFileIo.WriteXml<CbSeaRoot>(
+                    root,
+                    "C:\\_MyDocs\\temp\\ClubSeasonRoot.xml");
+
             try
             {
                 XDocument reader = XDocument.Load(fileName);
@@ -246,7 +361,7 @@
                             }
 
                             ITeamTrophyEvent readEvent =
-                                new TeamTrophyEvent(
+                                new SeasonModel.TeamTrophyEvent(
                                     date,
                                     pointsList,
                                     teamTrophyEvent.size,
@@ -262,6 +377,43 @@
 
                     seasonDetails.Add(clubDetails);
                 }
+
+                CbSeaRoot deserialisationClubDetails =
+                    XmlFileIo.ReadXml<CbSeaRoot>(
+                        "C:\\_MyDocs\\temp\\ClubSeasonRoot.xml");
+
+                List<IClubSeasonDetails> tempSeasonDetails = new List<IClubSeasonDetails>();
+
+                foreach (Club club in deserialisationClubDetails)
+                {
+                    IClubSeasonDetails translatedClub =
+                        new ClubSeasonDetails(
+                            club.Name);
+
+                    foreach (MobTrophyPoint stuff in club.TeamPoints.Points)
+                    {
+                        DateType date =
+                                new DateType(
+                                    stuff.Date);
+
+                        CommonPoints readPoints =
+                                new CommonPoints(
+                                    stuff.FinishingPoints,
+                                    stuff.PositionPoints,
+                                    stuff.YbPoints,
+                                    date);
+
+                        translatedClub.MobTrophy.AddNewEvent(readPoints);
+                    }
+
+                    foreach (CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent stuff in club.MobPoints.Events)
+                    {
+
+                    }
+
+                    tempSeasonDetails.Add(translatedClub);
+                }
+
             }
             catch (Exception ex)
             {

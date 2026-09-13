@@ -3,23 +3,23 @@
     using System.Xml.Serialization;
 
     /// <summary>
-    /// XML serialisable class which contains all the mob trophy scores of a specific athlete.
+    /// XML serialisable class which contains all the team trophy scores of a specific athlete.
     /// </summary>
     public class MobTrophyPointsRoot
     {
         /// <summary>
-        /// All event competed in by the club.
+        /// All club points.
         /// </summary>
-        private MobTrophyEventsRoot events;
+        private MobTrophyPoints points;
 
         /// <summary>
-        /// Gets or sets all the events.
+        /// Gets or sets all club points.
         /// </summary>
-        [XmlElement("event")]
-        public MobTrophyEventsRoot Events
+        [XmlElement("pt")]
+        public MobTrophyPoints Points
         {
-            get => this.events;
-            set => this.events = value;
+            get => this.points;
+            set => this.points = value;
         }
     }
 }

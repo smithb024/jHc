@@ -8,33 +8,74 @@
     public class MobTrophyPoint
     {
         /// <summary>
-        /// The points scored.
+        /// The finishing points scored.
         /// </summary>
-        private int points;
+        private int finishingPoints;
 
         /// <summary>
-        /// The unique id of the athlete scoring the points.
+        /// The position points scored.
         /// </summary>
-        private int key;
+        private int positionPoints;
 
         /// <summary>
-        /// Gets or sets the points scored.
+        /// The year best points scored.
         /// </summary>
-        [XmlAttribute("pt")]
-        public int Points
+        private int ybPoints;
+
+        /// <summary>
+        /// The date of the event.
+        /// </summary>
+        private string date;
+
+        /// <summary>
+        /// Gets or sets the finishing points scored.
+        /// </summary>
+        [XmlAttribute("fPt")]
+        public int FinishingPoints
         {
-            get => this.points;
-            set => this.points = value;
+            get => this.finishingPoints;
+            set => this.finishingPoints = value;
         }
 
         /// <summary>
-        /// Gets or sets the key of the points scoring athlete.
+        /// Gets or sets the position points scored.
         /// </summary>
-        [XmlAttribute("key")]
-        public int Key
+        [XmlAttribute("pPt")]
+        public int PositionPoints
         {
-            get => this.key;
-            set => this.key= value;
+            get => this.positionPoints;
+            set => this.positionPoints = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the year best points scored.
+        /// </summary>
+        [XmlAttribute("bPt")]
+        public int YbPoints
+        {
+            get => this.ybPoints;
+            set => this.ybPoints = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the date of the event.
+        /// </summary>
+        [XmlAttribute("evPt")]
+        public string Date
+        {
+            get => this.date;
+
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    this.date = string.Empty;
+                }
+                else
+                {
+                    this.date = value;
+                }
+            }
         }
     }
 }
