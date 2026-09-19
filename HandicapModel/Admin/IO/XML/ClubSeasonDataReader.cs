@@ -408,7 +408,20 @@
 
                     foreach (CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent stuff in club.MobPoints.Events)
                     {
+                        DateType date =
+                                new DateType(
+                                    stuff.Date);
 
+                        List<ICommonTeamTrophyPoints> points = new List<ICommonTeamTrophyPoints>();
+
+                        ITeamTrophyEvent readTeamTrophyEvent =
+                            new SeasonModel.TeamTrophyEvent(
+                                date,
+                                points,
+                                stuff.TeamSize,
+                                stuff.Score);
+
+                        translatedClub.TeamTrophy.AddEvent(readTeamTrophyEvent);
                     }
 
                     tempSeasonDetails.Add(translatedClub);
