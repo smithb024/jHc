@@ -184,8 +184,8 @@
             Club club1 = new Club();
             club1.Name = "Club 1";
 
-            MobTrophyPointsRoot teamTrophyPointsRoot = new MobTrophyPointsRoot();
-            MobTrophyPoints teamTrophyPoints1 = new MobTrophyPoints();
+            MobTrophyPointsRoot mobTrophyPointsRoot = new MobTrophyPointsRoot();
+            MobTrophyPoints mobTrophyPoints1 = new MobTrophyPoints();
             MobTrophyPoint point1 =
                 new MobTrophyPoint()
                 {
@@ -194,7 +194,7 @@
                     YbPoints = 2,
                     Date = "23-4-2026"
                 };
-            teamTrophyPoints1.Add(point1);
+            mobTrophyPoints1.Add(point1);
             MobTrophyPoint point2 =
                 new MobTrophyPoint()
                 {
@@ -203,12 +203,12 @@
                     YbPoints = 6,
                     Date = "14-5-2026"
                 };
-            teamTrophyPoints1.Add(point2);
-            teamTrophyPointsRoot.Points = teamTrophyPoints1;
-            club1.TeamPoints = teamTrophyPointsRoot;
+            mobTrophyPoints1.Add(point2);
+            mobTrophyPointsRoot.Points = mobTrophyPoints1;
+            club1.MobPoints = mobTrophyPointsRoot;
 
-            TeamTrophyPointsRoot mobTrophyPointsRoot = new TeamTrophyPointsRoot();
-            TeamTrophyEventsRoot mobTrophyEventsRoot = new TeamTrophyEventsRoot();
+            TeamTrophyPointsRoot teamTrophyPointsRoot = new TeamTrophyPointsRoot();
+            TeamTrophyEventsRoot teamTrophyEventsRoot = new TeamTrophyEventsRoot();
 
             CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent event1 =
                 new CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent()
@@ -218,23 +218,23 @@
                     Date = "23-4-2026",
                     Score = 6
                 };
-            TeamTrophyPoints mobTrophyPoints = new TeamTrophyPoints();
-            TeamTrophyPoint mobTrophyPoint1 =
+            TeamTrophyPoints teamTrophyPoints1 = new TeamTrophyPoints();
+            TeamTrophyPoint teamTrophyPoint1 =
                 new TeamTrophyPoint()
                 {
                     Key = 123,
                     Points = 10
                 };
-            mobTrophyPoints.Add(mobTrophyPoint1);
-            TeamTrophyPoint mobTrophyPoint2 =
+            teamTrophyPoints1.Add(teamTrophyPoint1);
+            TeamTrophyPoint teamTrophyPoint2 =
                 new TeamTrophyPoint()
                 {
                     Key = 357,
                     Points = 8
                 };
-            mobTrophyPoints.Add(mobTrophyPoint2);
-            event1.Points = mobTrophyPoints;
-            mobTrophyEventsRoot.Add(event1);
+            teamTrophyPoints1.Add(teamTrophyPoint2);
+            event1.Points = teamTrophyPoints1;
+            teamTrophyEventsRoot.Add(event1);
 
             CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent event2 =
                 new CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent()
@@ -244,26 +244,26 @@
                     Date = "14-5-2026",
                     Score = 2
                 };
-            TeamTrophyPoints mobTrophyPoints2 = new TeamTrophyPoints();
-            TeamTrophyPoint mobTrophyPoint21 =
+            TeamTrophyPoints teamTrophyPoints2 = new TeamTrophyPoints();
+            TeamTrophyPoint teamTrophyPoint21 =
                 new TeamTrophyPoint()
                 {
                     Key = 123,
                     Points = 10
                 };
-            mobTrophyPoints2.Add(mobTrophyPoint2);
-            TeamTrophyPoint mobTrophyPoint22 =
+            teamTrophyPoints2.Add(teamTrophyPoint2);
+            TeamTrophyPoint teamTrophyPoint22 =
                 new TeamTrophyPoint()
                 {
                     Key = 357,
                     Points = 8
                 };
-            mobTrophyPoints2.Add(mobTrophyPoint22);
-            event2.Points = mobTrophyPoints2;
-            mobTrophyEventsRoot.Add(event2);
+            teamTrophyPoints2.Add(teamTrophyPoint22);
+            event2.Points = teamTrophyPoints2;
+            teamTrophyEventsRoot.Add(event2);
 
-            mobTrophyPointsRoot.Events = mobTrophyEventsRoot;
-            club1.MobPoints = mobTrophyPointsRoot;
+            teamTrophyPointsRoot.Events = teamTrophyEventsRoot;
+            club1.TeamPoints = teamTrophyPointsRoot;
 
             root.Add(club1);
 
@@ -390,7 +390,7 @@
                         new ClubSeasonDetails(
                             club.Name);
 
-                    foreach (MobTrophyPoint stuff in club.TeamPoints.Points)
+                    foreach (MobTrophyPoint stuff in club.MobPoints.Points)
                     {
                         DateType date =
                                 new DateType(
@@ -406,13 +406,23 @@
                         translatedClub.MobTrophy.AddNewEvent(readPoints);
                     }
 
-                    foreach (CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent stuff in club.MobPoints.Events)
+                    foreach (CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent stuff in club.TeamPoints.Events)
                     {
                         DateType date =
                                 new DateType(
                                     stuff.Date);
 
                         List<ICommonTeamTrophyPoints> points = new List<ICommonTeamTrophyPoints>();
+
+                        foreach(TeamTrophyPoint moreStuff in stuff.Points)
+                        {
+                            ICommonTeamTrophyPoints readPoint = 
+                                new CommonTeamTrophyPoints(
+                                    moreStuff.Points,
+                                    moreStuff.);
+
+                            points.Add(readPoint);
+                        }
 
                         ITeamTrophyEvent readTeamTrophyEvent =
                             new SeasonModel.TeamTrophyEvent(
