@@ -163,6 +163,7 @@
         {
             List<IClubSeasonDetails> seasonDetails = new List<IClubSeasonDetails>();
 
+            // If the file doesn't exist, create a blank one before proceeding.
             if (!File.Exists(fileName))
             {
                 string error =
@@ -235,6 +236,10 @@
             teamTrophyPoints1.Add(teamTrophyPoint2);
             event1.Points = teamTrophyPoints1;
             teamTrophyEventsRoot.Add(event1);
+            //club1.TeamPoints = teamTrophyPointsRoot;
+
+            Club club2 = new Club();
+            club2.Name = "Club 2";
 
             CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent event2 =
                 new CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent()
@@ -265,6 +270,7 @@
             teamTrophyPointsRoot.Events = teamTrophyEventsRoot;
             club1.TeamPoints = teamTrophyPointsRoot;
 
+            root.Add(club1);
             root.Add(club1);
 
             XmlFileIo.WriteXml<CbSeaRoot>(
@@ -409,8 +415,8 @@
                     foreach (CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent stuff in club.TeamPoints.Events)
                     {
                         DateType date =
-                                new DateType(
-                                    stuff.Date);
+                            new DateType(
+                                stuff.Date);
 
                         List<ICommonTeamTrophyPoints> points = new List<ICommonTeamTrophyPoints>();
 
@@ -418,8 +424,11 @@
                         {
                             ICommonTeamTrophyPoints readPoint = 
                                 new CommonTeamTrophyPoints(
-                                    moreStuff.Points,
-                                    moreStuff.);
+                                      moreStuff.Points,
+                                      string.Empty,
+                                      moreStuff.Key,
+                                      true,
+                                      date);
 
                             points.Add(readPoint);
                         }
@@ -436,6 +445,8 @@
 
                     tempSeasonDetails.Add(translatedClub);
                 }
+                int i = 0;
+                ++i;
 
             }
             catch (Exception ex)
