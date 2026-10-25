@@ -139,6 +139,72 @@
 
                 writer.Add(rootElement);
                 writer.Save(fileName);
+
+                CbSeaRoot root = new CbSeaRoot();
+
+                foreach (IClubSeasonDetails club in seasons)
+                {
+                    Club translatedClub =
+                        new Club
+                        {
+                            Name = club.Name
+                        };
+
+                    MobTrophyPointsRoot mobTrophyPointsRoot = new MobTrophyPointsRoot();
+                    MobTrophyPoints translatedMobPoints = new MobTrophyPoints();
+
+                    foreach (ICommonPoints mobPoints in club.MobTrophy.Points)
+                    {
+                        MobTrophyPoint translatedPoint = new MobTrophyPoint();
+                        translatedPoint.YbPoints = mobPoints.BestPoints;
+                        translatedPoint.PositionPoints = mobPoints.PositionPoints;
+                        translatedPoint.FinishingPoints = mobPoints.FinishingPoints;
+                        translatedPoint.Date = mobPoints.Date.ToString();
+                        translatedMobPoints.Add(translatedPoint);
+                    }
+
+                    mobTrophyPointsRoot.Points = translatedMobPoints;
+                    translatedClub.MobPoints = mobTrophyPointsRoot;
+
+                    TeamTrophyPointsRoot teamTrophyPointsRoot = new TeamTrophyPointsRoot();
+                    TeamTrophyEventsRoot translatedEventRoot = new TeamTrophyEventsRoot();
+
+                    foreach (ITeamTrophyEvent teamEvent in club.TeamTrophy.Events)
+                    {
+                        CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent translatedPoint =
+                            new CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent
+                            {
+                                TeamSize = teamEvent.TeamSize,
+                                VirtualRunnerScore = teamEvent.VirtualAthletePoints,
+                                Date = teamEvent.Date.ToString(),
+                                Score = teamEvent.Score
+                            };
+
+                        TeamTrophyPoints translatedTeamTrophyPoints = new TeamTrophyPoints();
+
+                        foreach(ICommonTeamTrophyPoints teamTrophyPoint in teamEvent.Points)
+                        {
+                            TeamTrophyPoint translatedTeamTropyPoint =
+                                new TeamTrophyPoint()
+                                {
+                                    Key = teamTrophyPoint.AthleteKey,
+                                    Points = teamTrophyPoint.Point
+                                };
+                            translatedTeamTrophyPoints.Add(translatedTeamTropyPoint);
+                        }
+
+                        translatedPoint.Points = translatedTeamTrophyPoints;
+                    }
+
+                    teamTrophyPointsRoot.Events = translatedEventRoot;
+                    translatedClub.TeamPoints = teamTrophyPointsRoot;
+
+                    root.Add(translatedClub);
+                }
+
+                XmlFileIo.WriteXml<CbSeaRoot>(
+                root,
+                fileName);
             }
 
             catch (Exception ex)
@@ -181,214 +247,215 @@
                     new List<IClubSeasonDetails>());
             }
 
-            CbSeaRoot root = new CbSeaRoot();
-            Club club1 = new Club();
-            club1.Name = "Club 1";
+            //CbSeaRoot root = new CbSeaRoot();
+            //Club club1 = new Club();
+            //club1.Name = "Club 1";
 
-            MobTrophyPointsRoot mobTrophyPointsRoot = new MobTrophyPointsRoot();
-            MobTrophyPoints mobTrophyPoints1 = new MobTrophyPoints();
-            MobTrophyPoint point1 =
-                new MobTrophyPoint()
-                {
-                    FinishingPoints = 16,
-                    PositionPoints = 10,
-                    YbPoints = 2,
-                    Date = "23-4-2026"
-                };
-            mobTrophyPoints1.Add(point1);
-            MobTrophyPoint point2 =
-                new MobTrophyPoint()
-                {
-                    FinishingPoints = 12,
-                    PositionPoints = 15,
-                    YbPoints = 6,
-                    Date = "14-5-2026"
-                };
-            mobTrophyPoints1.Add(point2);
-            mobTrophyPointsRoot.Points = mobTrophyPoints1;
-            club1.MobPoints = mobTrophyPointsRoot;
+            //MobTrophyPointsRoot mobTrophyPointsRoot = new MobTrophyPointsRoot();
+            //MobTrophyPoints mobTrophyPoints1 = new MobTrophyPoints();
+            //MobTrophyPoint point1 =
+            //    new MobTrophyPoint()
+            //    {
+            //        FinishingPoints = 16,
+            //        PositionPoints = 10,
+            //        YbPoints = 2,
+            //        Date = "23-4-2026"
+            //    };
+            //mobTrophyPoints1.Add(point1);
+            //MobTrophyPoint point2 =
+            //    new MobTrophyPoint()
+            //    {
+            //        FinishingPoints = 12,
+            //        PositionPoints = 15,
+            //        YbPoints = 6,
+            //        Date = "14-5-2026"
+            //    };
+            //mobTrophyPoints1.Add(point2);
+            //mobTrophyPointsRoot.Points = mobTrophyPoints1;
+            //club1.MobPoints = mobTrophyPointsRoot;
 
-            TeamTrophyPointsRoot teamTrophyPointsRoot = new TeamTrophyPointsRoot();
-            TeamTrophyEventsRoot teamTrophyEventsRoot = new TeamTrophyEventsRoot();
+            //TeamTrophyPointsRoot teamTrophyPointsRoot = new TeamTrophyPointsRoot();
+            //TeamTrophyEventsRoot teamTrophyEventsRoot = new TeamTrophyEventsRoot();
 
-            CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent event1 =
-                new CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent()
-                {
-                    TeamSize = 5,
-                    VirtualRunnerScore = 13,
-                    Date = "23-4-2026",
-                    Score = 6
-                };
-            TeamTrophyPoints teamTrophyPoints1 = new TeamTrophyPoints();
-            TeamTrophyPoint teamTrophyPoint1 =
-                new TeamTrophyPoint()
-                {
-                    Key = 123,
-                    Points = 10
-                };
-            teamTrophyPoints1.Add(teamTrophyPoint1);
-            TeamTrophyPoint teamTrophyPoint2 =
-                new TeamTrophyPoint()
-                {
-                    Key = 357,
-                    Points = 8
-                };
-            teamTrophyPoints1.Add(teamTrophyPoint2);
-            event1.Points = teamTrophyPoints1;
-            teamTrophyEventsRoot.Add(event1);
+            //CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent event1 =
+            //    new CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent()
+            //    {
+            //        TeamSize = 5,
+            //        VirtualRunnerScore = 13,
+            //        Date = "23-4-2026",
+            //        Score = 6
+            //    };
+            //TeamTrophyPoints teamTrophyPoints1 = new TeamTrophyPoints();
+            //TeamTrophyPoint teamTrophyPoint1 =
+            //    new TeamTrophyPoint()
+            //    {
+            //        Key = 123,
+            //        Points = 10
+            //    };
+            //teamTrophyPoints1.Add(teamTrophyPoint1);
+            //TeamTrophyPoint teamTrophyPoint2 =
+            //    new TeamTrophyPoint()
+            //    {
+            //        Key = 357,
+            //        Points = 8
+            //    };
+            //teamTrophyPoints1.Add(teamTrophyPoint2);
+            //event1.Points = teamTrophyPoints1;
+            //teamTrophyEventsRoot.Add(event1);
+            ////club1.TeamPoints = teamTrophyPointsRoot;
+
+            //Club club2 = new Club();
+            //club2.Name = "Club 2";
+
+            //CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent event2 =
+            //    new CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent()
+            //    {
+            //        TeamSize = 3,
+            //        VirtualRunnerScore = 11,
+            //        Date = "14-5-2026",
+            //        Score = 2
+            //    };
+            //TeamTrophyPoints teamTrophyPoints2 = new TeamTrophyPoints();
+            //TeamTrophyPoint teamTrophyPoint21 =
+            //    new TeamTrophyPoint()
+            //    {
+            //        Key = 123,
+            //        Points = 10
+            //    };
+            //teamTrophyPoints2.Add(teamTrophyPoint2);
+            //TeamTrophyPoint teamTrophyPoint22 =
+            //    new TeamTrophyPoint()
+            //    {
+            //        Key = 357,
+            //        Points = 8
+            //    };
+            //teamTrophyPoints2.Add(teamTrophyPoint22);
+            //event2.Points = teamTrophyPoints2;
+            //teamTrophyEventsRoot.Add(event2);
+
+            //teamTrophyPointsRoot.Events = teamTrophyEventsRoot;
             //club1.TeamPoints = teamTrophyPointsRoot;
 
-            Club club2 = new Club();
-            club2.Name = "Club 2";
+            //root.Add(club1);
+            //root.Add(club1);
 
-            CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent event2 =
-                new CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent()
-                {
-                    TeamSize = 3,
-                    VirtualRunnerScore = 11,
-                    Date = "14-5-2026",
-                    Score = 2
-                };
-            TeamTrophyPoints teamTrophyPoints2 = new TeamTrophyPoints();
-            TeamTrophyPoint teamTrophyPoint21 =
-                new TeamTrophyPoint()
-                {
-                    Key = 123,
-                    Points = 10
-                };
-            teamTrophyPoints2.Add(teamTrophyPoint2);
-            TeamTrophyPoint teamTrophyPoint22 =
-                new TeamTrophyPoint()
-                {
-                    Key = 357,
-                    Points = 8
-                };
-            teamTrophyPoints2.Add(teamTrophyPoint22);
-            event2.Points = teamTrophyPoints2;
-            teamTrophyEventsRoot.Add(event2);
-
-            teamTrophyPointsRoot.Events = teamTrophyEventsRoot;
-            club1.TeamPoints = teamTrophyPointsRoot;
-
-            root.Add(club1);
-            root.Add(club1);
-
-            XmlFileIo.WriteXml<CbSeaRoot>(
-                    root,
-                    "C:\\_MyDocs\\temp\\ClubSeasonRoot.xml");
+            //XmlFileIo.WriteXml<CbSeaRoot>(
+            //        root,
+            //        "C:\\_MyDocs\\temp\\ClubSeasonRoot.xml");
 
             try
             {
-                XDocument reader = XDocument.Load(fileName);
-                XElement rootElement = reader.Root;
+                //XDocument reader = XDocument.Load(fileName);
+                //XElement rootElement = reader.Root;
 
-                var clubList = from Club in rootElement.Elements(c_clubElement)
-                               select new
-                               {
-                                   name = (string)Club.Attribute(nameAttribute),
-                                   mobTrophyPoints = from MobTrophyPoints in Club.Elements(MobTrophyPointsElement)
-                                            select new
-                                            {
-                                                point = from Point in MobTrophyPoints.Elements(c_eventPointsElement)
-                                                        select new
-                                                        {
-                                                            finishing = (int)Point.Attribute(finishingPointsAttribute),
-                                                            position = (int)Point.Attribute(positionPointsAttribute),
-                                                            best = (int)Point.Attribute(bestPointsAttribute),
-                                                            date = (string)Point.Attribute(eventDateAttribute)
-                                                        }
-                                            },
-                                   teamTrophyPoints = from TeamTrophyPoints in Club.Elements(TeamTrophyPointsElement)
-                                                   select new
-                                                   {
-                                                       events = from TeamTrophyEvent in TeamTrophyPoints.Elements(EventElement)
-                                                                select new
-                                                                {
-                                                                    size = (int)TeamTrophyEvent.Attribute(TeamTrophyTeamSizeAttribute),
-                                                                    virtualPoint = (int)TeamTrophyEvent.Attribute(TeamTrophyVirtualAthletePointAttribute),
-                                                                    date = (string)TeamTrophyEvent.Attribute(TeamTrophyEventDateAttribute),
-                                                                    score = (int)TeamTrophyEvent.Attribute(TeamTrophyScoreAttribute),
-                                                                    points = from Point in TeamTrophyEvent.Elements(c_eventPointsElement)
-                                                                            select new
-                                                                            {
-                                                                                value = (int)Point.Attribute(TeamTrophyPointAttribute),
-                                                                                key = (int)Point.Attribute(AthleteKeyAttribute)
-                                                                            }
-                                                                }
-                                                   }
-                               };
+                //var clubList = from Club in rootElement.Elements(c_clubElement)
+                //               select new
+                //               {
+                //                   name = (string)Club.Attribute(nameAttribute),
+                //                   mobTrophyPoints = from MobTrophyPoints in Club.Elements(MobTrophyPointsElement)
+                //                            select new
+                //                            {
+                //                                point = from Point in MobTrophyPoints.Elements(c_eventPointsElement)
+                //                                        select new
+                //                                        {
+                //                                            finishing = (int)Point.Attribute(finishingPointsAttribute),
+                //                                            position = (int)Point.Attribute(positionPointsAttribute),
+                //                                            best = (int)Point.Attribute(bestPointsAttribute),
+                //                                            date = (string)Point.Attribute(eventDateAttribute)
+                //                                        }
+                //                            },
+                //                   teamTrophyPoints = from TeamTrophyPoints in Club.Elements(TeamTrophyPointsElement)
+                //                                   select new
+                //                                   {
+                //                                       events = from TeamTrophyEvent in TeamTrophyPoints.Elements(EventElement)
+                //                                                select new
+                //                                                {
+                //                                                    size = (int)TeamTrophyEvent.Attribute(TeamTrophyTeamSizeAttribute),
+                //                                                    virtualPoint = (int)TeamTrophyEvent.Attribute(TeamTrophyVirtualAthletePointAttribute),
+                //                                                    date = (string)TeamTrophyEvent.Attribute(TeamTrophyEventDateAttribute),
+                //                                                    score = (int)TeamTrophyEvent.Attribute(TeamTrophyScoreAttribute),
+                //                                                    points = from Point in TeamTrophyEvent.Elements(c_eventPointsElement)
+                //                                                            select new
+                //                                                            {
+                //                                                                value = (int)Point.Attribute(TeamTrophyPointAttribute),
+                //                                                                key = (int)Point.Attribute(AthleteKeyAttribute)
+                //                                                            }
+                //                                                }
+                //                                   }
+                //               };
 
-                foreach (var club in clubList)
-                {
-                    ClubSeasonDetails clubDetails = new ClubSeasonDetails(club.name);
+                //foreach (var club in clubList)
+                //{
+                //    ClubSeasonDetails clubDetails = new ClubSeasonDetails(club.name);
 
-                    foreach (var points in club.mobTrophyPoints)
-                    {
-                        foreach (var point in points.point)
-                        {
-                            DateType date =
-                                new DateType(
-                                    point.date);
-                            CommonPoints readPoints =
-                                new CommonPoints(
-                                    point.finishing,
-                                    point.position,
-                                    point.best,
-                                    date);
-
-
-                            clubDetails.MobTrophy.AddNewEvent(readPoints);
-                            // TODO, should probably check that there are the correct number read from the xml file.
-                            // i.e. there is one for each event in the currently loaded season.
-                        }
-                    }
-
-                    foreach (var teamTrophyPoints in club.teamTrophyPoints)
-                    {
-
-                        foreach (var teamTrophyEvent in teamTrophyPoints.events)
-                        {
-                            List<ICommonTeamTrophyPoints> pointsList = new List<ICommonTeamTrophyPoints>();
-                            DateType date =
-                                new DateType(
-                                    teamTrophyEvent.date);
-
-                            foreach (var point in teamTrophyEvent.points)
-                            {
-                                CommonTeamTrophyPoints readPoints =
-                                    new CommonTeamTrophyPoints(
-                                        point.value,
-                                        string.Empty,
-                                        point.key,
-                                        true,
-                                        date);
-
-                                pointsList.Add(readPoints);
-                            }
-
-                            ITeamTrophyEvent readEvent =
-                                new SeasonModel.TeamTrophyEvent(
-                                    date,
-                                    pointsList,
-                                    teamTrophyEvent.size,
-                                    teamTrophyEvent.score);
-                            readEvent.Complete(
-                                teamTrophyEvent.size,
-                                teamTrophyEvent.virtualPoint);
-
-                            clubDetails.TeamTrophy.AddEvent(readEvent);
-                        }
-                    }
+                //    foreach (var points in club.mobTrophyPoints)
+                //    {
+                //        foreach (var point in points.point)
+                //        {
+                //            DateType date =
+                //                new DateType(
+                //                    point.date);
+                //            CommonPoints readPoints =
+                //                new CommonPoints(
+                //                    point.finishing,
+                //                    point.position,
+                //                    point.best,
+                //                    date);
 
 
-                    seasonDetails.Add(clubDetails);
-                }
+                //            clubDetails.MobTrophy.AddNewEvent(readPoints);
+                //            // TODO, should probably check that there are the correct number read from the xml file.
+                //            // i.e. there is one for each event in the currently loaded season.
+                //        }
+                //    }
 
+                //    foreach (var teamTrophyPoints in club.teamTrophyPoints)
+                //    {
+
+                //        foreach (var teamTrophyEvent in teamTrophyPoints.events)
+                //        {
+                //            List<ICommonTeamTrophyPoints> pointsList = new List<ICommonTeamTrophyPoints>();
+                //            DateType date =
+                //                new DateType(
+                //                    teamTrophyEvent.date);
+
+                //            foreach (var point in teamTrophyEvent.points)
+                //            {
+                //                CommonTeamTrophyPoints readPoints =
+                //                    new CommonTeamTrophyPoints(
+                //                        point.value,
+                //                        string.Empty,
+                //                        point.key,
+                //                        true,
+                //                        date);
+
+                //                pointsList.Add(readPoints);
+                //            }
+
+                //            ITeamTrophyEvent readEvent =
+                //                new SeasonModel.TeamTrophyEvent(
+                //                    date,
+                //                    pointsList,
+                //                    teamTrophyEvent.size,
+                //                    teamTrophyEvent.score);
+                //            readEvent.Complete(
+                //                teamTrophyEvent.size,
+                //                teamTrophyEvent.virtualPoint);
+
+                //            clubDetails.TeamTrophy.AddEvent(readEvent);
+                //        }
+                //    }
+
+
+                //    seasonDetails.Add(clubDetails);
+                //}
+
+                //CbSeaRoot deserialisationClubDetails =
+                //    XmlFileIo.ReadXml<CbSeaRoot>(
+                //        "C:\\_MyDocs\\temp\\ClubSeasonRoot.xml");
                 CbSeaRoot deserialisationClubDetails =
                     XmlFileIo.ReadXml<CbSeaRoot>(
-                        "C:\\_MyDocs\\temp\\ClubSeasonRoot.xml");
-
-                List<IClubSeasonDetails> tempSeasonDetails = new List<IClubSeasonDetails>();
+                        fileName);
 
                 foreach (Club club in deserialisationClubDetails)
                 {
@@ -443,7 +510,7 @@
                         translatedClub.TeamTrophy.AddEvent(readTeamTrophyEvent);
                     }
 
-                    tempSeasonDetails.Add(translatedClub);
+                    seasonDetails.Add(translatedClub);
                 }
                 int i = 0;
                 ++i;
