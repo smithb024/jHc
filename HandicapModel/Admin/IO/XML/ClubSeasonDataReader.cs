@@ -464,31 +464,31 @@
                         new ClubSeasonDetails(
                             club.Name);
 
-                    foreach (MobTrophyPoint stuff in club.MobPoints.Points)
+                    foreach (MobTrophyPoint mobTrophyPoint in club.MobPoints.Points)
                     {
                         DateType date =
                                 new DateType(
-                                    stuff.Date);
+                                    mobTrophyPoint.Date);
 
                         CommonPoints readPoints =
                                 new CommonPoints(
-                                    stuff.FinishingPoints,
-                                    stuff.PositionPoints,
-                                    stuff.YbPoints,
+                                    mobTrophyPoint.FinishingPoints,
+                                    mobTrophyPoint.PositionPoints,
+                                    mobTrophyPoint.YbPoints,
                                     date);
 
                         translatedClub.MobTrophy.AddNewEvent(readPoints);
                     }
 
-                    foreach (CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent stuff in club.TeamPoints.Events)
+                    foreach (CommonHandicapLib.XML.ClubSeasonData.TeamTrophyEvent teamTrophyEvent in club.TeamPoints.Events)
                     {
                         DateType date =
                             new DateType(
-                                stuff.Date);
+                                teamTrophyEvent.Date);
 
                         List<ICommonTeamTrophyPoints> points = new List<ICommonTeamTrophyPoints>();
 
-                        foreach(TeamTrophyPoint moreStuff in stuff.Points)
+                        foreach(TeamTrophyPoint moreStuff in teamTrophyEvent.Points)
                         {
                             ICommonTeamTrophyPoints readPoint = 
                                 new CommonTeamTrophyPoints(
@@ -505,22 +505,15 @@
                             new SeasonModel.TeamTrophyEvent(
                                 date,
                                 points,
-                                stuff.TeamSize,
-                                stuff.VirtualRunnerScore,
-                                stuff.Score);
+                                teamTrophyEvent.TeamSize,
+                                teamTrophyEvent.VirtualRunnerScore,
+                                teamTrophyEvent.Score);
 
                         translatedClub.TeamTrophy.AddEvent(readTeamTrophyEvent);
                     }
 
                     seasonDetails.Add(translatedClub);
                 }
-                int i = 0;
-                ++i;
-
-                this.SaveClubSeasonData(
-                    "C:\\_MyDocs\\temp\\ClubSeasonRoot.xml",
-                    seasonDetails);
-
             }
             catch (Exception ex)
             {
