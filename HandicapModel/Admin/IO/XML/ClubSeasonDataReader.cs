@@ -77,68 +77,68 @@
 
             try
             {
-                XDocument writer = new XDocument(
-                 new XDeclaration("1.0", "uft-8", "yes"),
-                 new XComment("Athlete's season XML"));
-                XElement rootElement = new XElement(c_rootElement);
+                //XDocument writer = new XDocument(
+                // new XDeclaration("1.0", "uft-8", "yes"),
+                // new XComment("Athlete's season XML"));
+                //XElement rootElement = new XElement(c_rootElement);
 
-                foreach (ClubSeasonDetails season in seasons)
-                {
-                    XElement athleteElement = 
-                        new XElement(
-                            c_clubElement,
-                            new XAttribute(nameAttribute, season.Name));
+                //foreach (ClubSeasonDetails season in seasons)
+                //{
+                //    XElement athleteElement = 
+                //        new XElement(
+                //            c_clubElement,
+                //            new XAttribute(nameAttribute, season.Name));
 
-                    XElement mobTophyPointsElement = new XElement(MobTrophyPointsElement);
-                    athleteElement.Add(mobTophyPointsElement);
+                //    XElement mobTophyPointsElement = new XElement(MobTrophyPointsElement);
+                //    athleteElement.Add(mobTophyPointsElement);
 
-                    XElement teamTrophyPointsElement = new XElement(TeamTrophyPointsElement);
-                    athleteElement.Add(teamTrophyPointsElement);
+                //    XElement teamTrophyPointsElement = new XElement(TeamTrophyPointsElement);
+                //    athleteElement.Add(teamTrophyPointsElement);
 
-                    foreach (CommonPoints points in season.MobTrophy.Points)
-                    {
-                        XElement pointElement =
-                            new XElement(
-                                c_eventPointsElement,
-                                new XAttribute(finishingPointsAttribute, points.FinishingPoints.ToString()),
-                                new XAttribute(positionPointsAttribute, points.PositionPoints.ToString()),
-                                new XAttribute(bestPointsAttribute, points.BestPoints.ToString()),
-                                new XAttribute(eventDateAttribute, points.Date.ToString()));
-                        mobTophyPointsElement.Add(pointElement);
-                    }
+                //    foreach (CommonPoints points in season.MobTrophy.Points)
+                //    {
+                //        XElement pointElement =
+                //            new XElement(
+                //                c_eventPointsElement,
+                //                new XAttribute(finishingPointsAttribute, points.FinishingPoints.ToString()),
+                //                new XAttribute(positionPointsAttribute, points.PositionPoints.ToString()),
+                //                new XAttribute(bestPointsAttribute, points.BestPoints.ToString()),
+                //                new XAttribute(eventDateAttribute, points.Date.ToString()));
+                //        mobTophyPointsElement.Add(pointElement);
+                //    }
 
-                    foreach(ITeamTrophyEvent teamTrophyEvent in season.TeamTrophy.Events)
-                    {
-                        XElement eventElement =
-                            new XElement(
-                                EventElement,
-                                new XAttribute(TeamTrophyTeamSizeAttribute, teamTrophyEvent.Points.Count),
-                                new XAttribute(TeamTrophyVirtualAthletePointAttribute, teamTrophyEvent.VirtualAthletePoints),
-                                new XAttribute(TeamTrophyEventDateAttribute, teamTrophyEvent.Date.ToString()),
-                                new XAttribute(TeamTrophyScoreAttribute, teamTrophyEvent.Score));
+                //    foreach(ITeamTrophyEvent teamTrophyEvent in season.TeamTrophy.Events)
+                //    {
+                //        XElement eventElement =
+                //            new XElement(
+                //                EventElement,
+                //                new XAttribute(TeamTrophyTeamSizeAttribute, teamTrophyEvent.Points.Count),
+                //                new XAttribute(TeamTrophyVirtualAthletePointAttribute, teamTrophyEvent.VirtualAthletePoints),
+                //                new XAttribute(TeamTrophyEventDateAttribute, teamTrophyEvent.Date.ToString()),
+                //                new XAttribute(TeamTrophyScoreAttribute, teamTrophyEvent.Score));
 
-                        foreach(ICommonTeamTrophyPoints point in teamTrophyEvent.Points)
-                        {
-                            if (point.IsReal)
-                            {
-                                XElement points =
-                                    new XElement(
-                                        c_eventPointsElement,
-                                        new XAttribute(TeamTrophyPointAttribute, point.Point),
-                                        new XAttribute(AthleteKeyAttribute, point.AthleteKey));
+                //        foreach(ICommonTeamTrophyPoints point in teamTrophyEvent.Points)
+                //        {
+                //            if (point.IsReal)
+                //            {
+                //                XElement points =
+                //                    new XElement(
+                //                        c_eventPointsElement,
+                //                        new XAttribute(TeamTrophyPointAttribute, point.Point),
+                //                        new XAttribute(AthleteKeyAttribute, point.AthleteKey));
 
-                                eventElement.Add(points);
-                            }
-                        }
+                //                eventElement.Add(points);
+                //            }
+                //        }
 
-                        teamTrophyPointsElement.Add(eventElement);
-                    }
+                //        teamTrophyPointsElement.Add(eventElement);
+                //    }
 
-                    rootElement.Add(athleteElement);
-                }
+                //    rootElement.Add(athleteElement);
+                //}
 
-                writer.Add(rootElement);
-                writer.Save(fileName);
+                //writer.Add(rootElement);
+                //writer.Save(fileName);
 
                 CbSeaRoot root = new CbSeaRoot();
 
@@ -194,6 +194,7 @@
                         }
 
                         translatedPoint.Points = translatedTeamTrophyPoints;
+                        translatedEventRoot.Add(translatedPoint);
                     }
 
                     teamTrophyPointsRoot.Events = translatedEventRoot;
@@ -505,6 +506,7 @@
                                 date,
                                 points,
                                 stuff.TeamSize,
+                                stuff.VirtualRunnerScore,
                                 stuff.Score);
 
                         translatedClub.TeamTrophy.AddEvent(readTeamTrophyEvent);
@@ -514,6 +516,10 @@
                 }
                 int i = 0;
                 ++i;
+
+                this.SaveClubSeasonData(
+                    "C:\\_MyDocs\\temp\\ClubSeasonRoot.xml",
+                    seasonDetails);
 
             }
             catch (Exception ex)

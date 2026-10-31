@@ -18,17 +18,22 @@
         /// <param name="date">date of the event</param>
         /// <param name="points">event points</param>
         /// <param name="teamSize">the size of a Team Trophy team</param>
+        /// <param name="virtualAthletePoints">
+        /// the value which states the number of points scored by any virtual athletes which 
+        /// need to be created to make up the team to a full team. 
+        /// </param>
         /// <param name="score">the score of the team in the current event</param>
         public TeamTrophyEvent(
             DateType date,
             List<ICommonTeamTrophyPoints> points,
             int teamSize,
+            int virtualAthletePoints,
             int score)
         {
             this.Date = date;
             this.TeamSize = teamSize;
             this.Points = points;
-            this.VirtualAthletePoints = 0;
+            this.VirtualAthletePoints = virtualAthletePoints;
             this.Score = score;
         }
 
