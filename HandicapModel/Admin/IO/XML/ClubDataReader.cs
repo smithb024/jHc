@@ -11,6 +11,9 @@
     using System.IO;
     using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
+    /// <summary>
+    /// The class which reads/writes a Club Data XML file.
+    /// </summary>
     internal class ClubDataReader : IClubDataReader
     {
         /// <summary>

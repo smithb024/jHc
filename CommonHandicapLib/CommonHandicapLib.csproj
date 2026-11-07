@@ -108,6 +108,7 @@
     <Compile Include="XML\ClubSeasonData\MobTrophyPointsRoot.cs" />
     <Compile Include="XML\ClubSeasonData\MobTrophyPoint.cs" />
     <Compile Include="XML\ClubSeasonData\MobTrophyPoints.cs" />
+    <Compile Include="XML\EventsData\EventDetailsRoot.cs" />
     <Compile Include="XML\ResultsTable\ResultsTableRoot.cs" />
     <Compile Include="XML\ResultsTable\Row.cs" />
     <Compile Include="XML\SeriesConfigReader.cs" />
