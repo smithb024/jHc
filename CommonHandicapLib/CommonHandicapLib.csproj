@@ -114,6 +114,7 @@
     <Compile Include="XML\SeriesConfigReader.cs" />
     <Compile Include="XML\NormalisationConfigReader.cs" />
     <Compile Include="XML\ResultsConfigReader.cs" />
+    <Compile Include="XML\SummaryData\SummaryDataRoot.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommonLib\CommonLib.csproj">

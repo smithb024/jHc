@@ -72,7 +72,7 @@
                  new XDeclaration("1.0", "uft-8", "yes"),
                  new XComment("Results Table XML"));
 
-                foreach (ResultsTableEntry entry in resultsTable)
+                foreach (IResultsTableEntry entry in resultsTable)
                 {
                     Row entryElement =
                         new Row(
