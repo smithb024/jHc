@@ -1,16 +1,19 @@
 ﻿namespace HandicapModel.Admin.IO.XML
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Xml.Linq;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
+    using CommonHandicapLib.XML.EventsData;
+    using CommonHandicapLib.XML.SummaryData;
     using CommonLib.Converters;
     using CommonLib.Types;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.Common;
+    using NynaeveLib.XML;
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Xml.Linq;
     using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
@@ -63,6 +66,7 @@
             ISummary summaryDetails)
         {
             bool success = true;
+            SummaryDataRoot saveData = new SummaryDataRoot();
 
             try
             {
@@ -116,6 +120,18 @@
 
                 writer.Add(rootElement);
                 writer.Save(fileName);
+
+                saveData.TotalRunners = summaryDetails.Runners;
+                saveData.MaleRunners = summaryDetails.MaleRunners;
+                saveData.FemaleRunners = summaryDetails.FemaleRunners;
+                saveData.TotalPBs = summaryDetails.PBs;
+                saveData.TotalYBs = summaryDetails.SBs;
+                saveData.TotalFirstTimers = summaryDetails.FirstTimers;
+
+                XmlFileIo.WriteXml<SummaryDataRoot>(
+                    saveData,
+                    "C:\\_MyDocs\\temp\\TestSummary.xml");
+
             }
             catch (Exception ex)
             {
@@ -216,6 +232,7 @@
                 summaryData = new Summary();
             }
 
+            this.SaveSummaryData(fileName, summaryData);
             return summaryData;
         }
     }

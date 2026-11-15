@@ -41,7 +41,7 @@
         /// <summary>
         /// Gets or sets the total number of athletes in the event..
         /// </summary>
-        [XmlAttribute("TotalRunner")]
+        [XmlElement("TotalRunner")]
         public int TotalRunners
         {
             get => this.totalAthletes;
@@ -51,7 +51,7 @@
         /// <summary>
         /// Gets or sets the total number of male athletes in the event.
         /// </summary>
-        [XmlAttribute("MaleRunners")]
+        [XmlElement("MaleRunners")]
         public int MaleRunners
         {
             get => this.totalMaleAthletes;
@@ -61,7 +61,7 @@
         /// <summary>
         /// Gets or sets the total number of female athletes in the event.
         /// </summary>
-        [XmlAttribute("FemaleRunners")]
+        [XmlElement("FemaleRunners")]
         public int FemaleRunners
         {
             get => this.totalFemaleAthletes;
@@ -71,7 +71,7 @@
         /// <summary>
         /// Gets or sets the total number of YBs run in the event.
         /// </summary>
-        [XmlAttribute("YBs")]
+        [XmlElement("YBs")]
         public int TotalYBs
         {
             get => this.totalYBs;
@@ -81,7 +81,7 @@
         /// <summary>
         /// Gets or sets the total number of PBs run in the event.
         /// </summary>
-        [XmlAttribute("PBs")]
+        [XmlElement("PBs")]
         public int TotalPBs
         {
             get => this.totalPBs;
@@ -91,7 +91,7 @@
         /// <summary>
         /// Gets or sets the total number of first timers to run in the event.
         /// </summary>
-        [XmlAttribute("FirstTimers")]
+        [XmlElement("FirstTimers")]
         public int TotalFirstTimers
         {
             get => this.totalFirstTimers;
