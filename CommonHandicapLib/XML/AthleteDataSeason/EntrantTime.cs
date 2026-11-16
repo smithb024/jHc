@@ -3,7 +3,7 @@
     using System.Xml.Serialization;
 
     /// <summary>
-    /// A XML row in the seson athlete data file. This presents the data and time for a specific 
+    /// A XML row in the season athlete data file. This presents the data and time for a specific 
     /// athlete for a specific event.
     /// </summary>
     public class EntrantTime
