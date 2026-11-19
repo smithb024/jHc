@@ -1,12 +1,25 @@
 ﻿namespace CommonHandicapLib.XML.SummaryData
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using System.Xml.Serialization;
 
-    internal class FastestBoysRoot
+    /// <summary>
+    /// The fastest boy's times.
+    /// </summary>
+    public class FastestBoysRoot
     {
+        /// <summary>
+        /// All the fastest times.
+        /// </summary>
+        private FastestTimes times;
+
+        /// <summary>
+        /// All fastest times.
+        /// </summary>
+        [XmlElement("Time")]
+        public FastestTimes Appearances
+        {
+            get => this.times;
+            set => this.times = value;
+        }
     }
 }

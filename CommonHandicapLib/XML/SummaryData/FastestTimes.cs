@@ -1,12 +1,11 @@
 ﻿namespace CommonHandicapLib.XML.SummaryData
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    internal class FastestTimes
+    /// <summary>
+    /// A list of all fastest times.
+    /// </summary>
+    public class FastestTimes : List<FastestTimes>
     {
     }
 }
