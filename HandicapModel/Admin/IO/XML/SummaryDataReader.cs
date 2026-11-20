@@ -128,6 +128,50 @@
                 saveData.TotalYBs = summaryDetails.SBs;
                 saveData.TotalFirstTimers = summaryDetails.FirstTimers;
 
+                FastestRunnersRoot fastestRunners = new FastestRunnersRoot();
+                FastestGirlsRoot fastestGirls = 
+                    new FastestGirlsRoot
+                    {
+                        Appearances = new FastestTimes()
+                    };
+                FastestBoysRoot fastestBoys = 
+                    new FastestBoysRoot()
+                    {
+                        Appearances = new FastestTimes()
+                    };
+
+                foreach (IAthleteTime athleteTime in summaryDetails.FastestGirls)
+                {
+                    FastestTime fastestTime =
+                        new FastestTime()
+                        {
+                            Key = athleteTime.Key,
+                            Name = athleteTime.Name,
+                            Date = athleteTime.Date.ToString(),
+                            Minutes = athleteTime.Time.Minutes,
+                            Seconds = athleteTime.Time.Seconds
+                        };
+                    fastestGirls.Appearances.Add(fastestTime);
+                }
+
+                foreach (IAthleteTime athleteTime in summaryDetails.FastestBoys)
+                {
+                    FastestTime fastestTime =
+                        new FastestTime()
+                        {
+                            Key = athleteTime.Key,
+                            Name = athleteTime.Name,
+                            Date = athleteTime.Date.ToString(),
+                            Minutes = athleteTime.Time.Minutes,
+                            Seconds = athleteTime.Time.Seconds
+                        };
+                    fastestBoys.Appearances.Add(fastestTime);
+                }
+
+                fastestRunners.Girls = fastestGirls;
+                fastestRunners.Boys = fastestBoys;
+                saveData.FastestRunners = fastestRunners;
+
                 XmlFileIo.WriteXml<SummaryDataRoot>(
                     saveData,
                     "C:\\_MyDocs\\temp\\TestSummary.xml");

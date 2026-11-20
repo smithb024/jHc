@@ -39,6 +39,11 @@
         private int totalFirstTimers;
 
         /// <summary>
+        /// The fastest runners.
+        /// </summary>
+        private FastestRunnersRoot fastestRunners;
+
+        /// <summary>
         /// Gets or sets the total number of athletes in the event..
         /// </summary>
         [XmlElement("TotalRunner")]
@@ -96,6 +101,16 @@
         {
             get => this.totalFirstTimers;
             set => this.totalFirstTimers = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the fastest runners in the summary.
+        /// </summary>
+        [XmlElement("FastestRunners")]
+        public FastestRunnersRoot FastestRunners
+        {
+            get => this.fastestRunners;
+            set => this.fastestRunners = value;
         }
     }
 }

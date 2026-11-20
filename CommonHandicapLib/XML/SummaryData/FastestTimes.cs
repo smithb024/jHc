@@ -5,7 +5,7 @@
     /// <summary>
     /// A list of all fastest times.
     /// </summary>
-    public class FastestTimes : List<FastestTimes>
+    public class FastestTimes : List<FastestTime>
     {
     }
 }

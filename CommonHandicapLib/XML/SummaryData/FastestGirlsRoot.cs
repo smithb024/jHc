@@ -13,7 +13,7 @@
         private FastestTimes times;
 
         /// <summary>
-        /// All fastest times.
+        /// Gets or sets all fastest times.
         /// </summary>
         [XmlElement("Time")]
         public FastestTimes Appearances
