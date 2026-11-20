@@ -70,64 +70,6 @@
 
             try
             {
-                XDocument writer = new XDocument(
-                 new XDeclaration("1.0", "uft-8", "yes"),
-                 new XComment("Athlete's data XML"));
-                XElement rootElement = new XElement(c_rootLabel);
-                XElement TotalRunnersElement = new XElement(c_RunnersLabel, summaryDetails.Runners);
-                XElement MaleRunnersElement = new XElement(c_MaleRunnersLabel, summaryDetails.MaleRunners);
-                XElement FemaleRunnersElement = new XElement(c_FemaleRunnersLabel, summaryDetails.FemaleRunners);
-                XElement YBsElement = new XElement(c_YBLabel, summaryDetails.SBs);
-                XElement PBsElement = new XElement(c_PBLabel, summaryDetails.PBs);
-                XElement FirstTimersElement = new XElement(c_FirstTimersLabel, summaryDetails.FirstTimers);
-                XElement FastestElement = new XElement(c_FastestLabel);
-
-                XElement FastestBoysElement = new XElement(fastestBoysLabel);
-                XElement FastestGirlsElement = new XElement(fastestGirlsLabel);
-
-                foreach (AthleteTime athlete in summaryDetails.FastestBoys)
-                {
-                    XElement FastestTimeElement = new XElement(timeLabel,
-                                                               new XAttribute(keyLabel, athlete.Key),
-                                                               new XAttribute(c_NameLabel, athlete.Name),
-                                                               new XAttribute(c_MinutesLabel, athlete.Time.Minutes),
-                                                               new XAttribute(c_SecondsLabel, athlete.Time.Seconds),
-                                                               new XAttribute(dateLabel, athlete.Date.ToString()));
-                    FastestBoysElement.Add(FastestTimeElement);
-                }
-
-                foreach (AthleteTime athlete in summaryDetails.FastestGirls)
-                {
-                    XElement FastestTimeElement = new XElement(timeLabel,
-                                                               new XAttribute(keyLabel, athlete.Key),
-                                                               new XAttribute(c_NameLabel, athlete.Name),
-                                                               new XAttribute(c_MinutesLabel, athlete.Time.Minutes),
-                                                               new XAttribute(c_SecondsLabel, athlete.Time.Seconds),
-                                                               new XAttribute(dateLabel, athlete.Date.ToString()));
-                    FastestGirlsElement.Add(FastestTimeElement);
-                }
-
-                FastestElement.Add(FastestBoysElement);
-                FastestElement.Add(FastestGirlsElement);
-
-                rootElement.Add(TotalRunnersElement);
-                rootElement.Add(MaleRunnersElement);
-                rootElement.Add(FemaleRunnersElement);
-                rootElement.Add(YBsElement);
-                rootElement.Add(PBsElement);
-                rootElement.Add(FirstTimersElement);
-                rootElement.Add(FastestElement);
-
-                writer.Add(rootElement);
-                writer.Save(fileName);
-
-                saveData.TotalRunners = summaryDetails.Runners;
-                saveData.MaleRunners = summaryDetails.MaleRunners;
-                saveData.FemaleRunners = summaryDetails.FemaleRunners;
-                saveData.TotalPBs = summaryDetails.PBs;
-                saveData.TotalYBs = summaryDetails.SBs;
-                saveData.TotalFirstTimers = summaryDetails.FirstTimers;
-
                 FastestRunnersRoot fastestRunners = new FastestRunnersRoot();
                 FastestGirlsRoot fastestGirls = 
                     new FastestGirlsRoot
@@ -174,7 +116,7 @@
 
                 XmlFileIo.WriteXml<SummaryDataRoot>(
                     saveData,
-                    "C:\\_MyDocs\\temp\\TestSummary.xml");
+                    fileName);
 
             }
             catch (Exception ex)
