@@ -1,20 +1,21 @@
 ﻿namespace HandicapModel.Admin.IO.XML
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Xml.Linq;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
+    using CommonHandicapLib.XML.ClubData;
     using HandicapModel.ClubsModel;
     using HandicapModel.Interfaces.Admin.IO.XML;
+    using NynaeveLib.XML;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
     using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
+    /// <summary>
+    /// The class which reads/writes a Club Data XML file.
+    /// </summary>
     internal class ClubDataReader : IClubDataReader
     {
-        private const string c_rootLabel = "ClubDetails";
-        private const string c_clubLabel = "club";
-
         /// <summary>
         /// The instance of the logger.
         /// </summary>
@@ -43,26 +44,26 @@
             Clubs clubList)
         {
             bool success = true;
+            ClubDetailsRoot saveCollection = new ClubDetailsRoot();
+            List<string> clubs = new List<string>();
 
             try
             {
-                XDocument writer = new XDocument(
-                 new XDeclaration("1.0", "uft-8", "yes"),
-                 new XComment("Athlete's data XML"));
-
-                XElement rootElement = new XElement(c_rootLabel);
                 foreach (string club in clubList.ClubDetails)
                 {
-                    XElement clubElement = new XElement(c_clubLabel, club);
-                    rootElement.Add(clubElement);
+                    clubs.Add(club);
                 }
 
-                writer.Add(rootElement);
-                writer.Save(fileName);
+                saveCollection.Clubs = clubs;
+
+                XmlFileIo.WriteXml<ClubDetailsRoot>(
+                    saveCollection,
+                    fileName);
             }
             catch (Exception ex)
             {
                 this.logger.WriteLog("Error saving club data " + ex.ToString());
+                success = false;
             }
 
             return success;
@@ -82,28 +83,30 @@
 
             if (!File.Exists(fileName))
             {
-                string error = string.Format("Club data file missing, one created - {0}", fileName);
+                string error = 
+                    string.Format(
+                        "Club data file missing, one created - {0}",
+                        fileName);
+
                 CommonMessenger.Default.Send(
                     new HandicapErrorMessage(
                         error));
                 this.logger.WriteLog(error);
-                this.SaveClubData(fileName, new Clubs());
+
+                this.SaveClubData(
+                    fileName, 
+                    new Clubs());
             }
 
             try
             {
-                XDocument reader = XDocument.Load(fileName);
-                XElement rootElement = reader.Root;
+                ClubDetailsRoot deserialisationClubDetails =
+                    XmlFileIo.ReadXml<ClubDetailsRoot>(
+                        fileName);
 
-                var myClubList = from Club in rootElement.Elements(c_clubLabel)
-                                 select new
-                                 {
-                                     club = (string)Club.Value
-                                 };
-
-                foreach (var club in myClubList)
+                foreach (string club in deserialisationClubDetails.Clubs)
                 {
-                    clubList.AddNewClub(club.club);
+                    clubList.AddNewClub(club);
                 }
             }
             catch (Exception ex)

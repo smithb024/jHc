@@ -76,6 +76,17 @@
     <Compile Include="Types\ResultsState.cs" />
     <Compile Include="Types\StatusType.cs" />
     <Compile Include="Interfaces\XML\IResultsConfigReader.cs" />
+    <Compile Include="XML\AthleteDataSeason\Entrant.cs" />
+    <Compile Include="XML\AthleteDataSeason\AtlSeaRoot.cs" />
+    <Compile Include="XML\AthleteDataSeason\EntrantTimesRoot.cs" />
+    <Compile Include="XML\AthleteDataSeason\MobTrophyPoint.cs" />
+    <Compile Include="XML\AthleteDataSeason\EntrantTime.cs" />
+    <Compile Include="XML\AthleteDataSeason\MobTrophyPoints.cs" />
+    <Compile Include="XML\AthleteDataSeason\EntrantTimes.cs" />
+    <Compile Include="XML\AthleteDataSeason\TeamTrophyPoint.cs" />
+    <Compile Include="XML\AthleteDataSeason\TeamTrophyPoints.cs" />
+    <Compile Include="XML\AthleteDataSeason\MobTrophyPointsRoot.cs" />
+    <Compile Include="XML\AthleteDataSeason\TeamTrophyPointsRoot.cs" />
     <Compile Include="XML\AthleteData\AthleteCollection.cs" />
     <Compile Include="XML\AthleteData\AthleteDataAppearances.cs" />
     <Compile Include="XML\AthleteData\AthleteDataNumber.cs" />
@@ -86,11 +97,29 @@
     <Compile Include="XML\AthleteData\AthleteList.cs" />
     <Compile Include="XML\AthleteData\Athlete.cs" />
     <Compile Include="XML\AthleteData\AthleteDataTimes.cs" />
+    <Compile Include="XML\ClubData\ClubDetailsRoot.cs" />
+    <Compile Include="XML\ClubSeasonData\CbSeaRoot.cs" />
+    <Compile Include="XML\ClubSeasonData\Club.cs" />
+    <Compile Include="XML\ClubSeasonData\TeamTrophyPointsRoot.cs" />
+    <Compile Include="XML\ClubSeasonData\TeamTrophyEventsRoot.cs" />
+    <Compile Include="XML\ClubSeasonData\TeamTrophyEvent.cs" />
+    <Compile Include="XML\ClubSeasonData\TeamTrophyPoint.cs" />
+    <Compile Include="XML\ClubSeasonData\TeamTrophyPoints.cs" />
+    <Compile Include="XML\ClubSeasonData\MobTrophyPointsRoot.cs" />
+    <Compile Include="XML\ClubSeasonData\MobTrophyPoint.cs" />
+    <Compile Include="XML\ClubSeasonData\MobTrophyPoints.cs" />
+    <Compile Include="XML\EventsData\EventDetailsRoot.cs" />
     <Compile Include="XML\ResultsTable\ResultsTableRoot.cs" />
     <Compile Include="XML\ResultsTable\Row.cs" />
     <Compile Include="XML\SeriesConfigReader.cs" />
     <Compile Include="XML\NormalisationConfigReader.cs" />
     <Compile Include="XML\ResultsConfigReader.cs" />
+    <Compile Include="XML\SummaryData\FastestBoysRoot.cs" />
+    <Compile Include="XML\SummaryData\FastestGirlsRoot.cs" />
+    <Compile Include="XML\SummaryData\FastestRunnersRoot.cs" />
+    <Compile Include="XML\SummaryData\FastestTime.cs" />
+    <Compile Include="XML\SummaryData\FastestTimes.cs" />
+    <Compile Include="XML\SummaryData\SummaryDataRoot.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommonLib\CommonLib.csproj">

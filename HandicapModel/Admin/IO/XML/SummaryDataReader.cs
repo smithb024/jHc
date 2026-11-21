@@ -1,42 +1,22 @@
 ﻿namespace HandicapModel.Admin.IO.XML
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Xml.Linq;
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
-    using CommonLib.Converters;
+    using CommonHandicapLib.XML.SummaryData;
     using CommonLib.Types;
     using HandicapModel.Common;
     using HandicapModel.Interfaces.Admin.IO.XML;
     using HandicapModel.Interfaces.Common;
+    using NynaeveLib.XML;
+    using System;
+    using System.IO;
     using CommonMessenger = NynaeveLib.Messenger.Messenger;
 
     /// <summary>
     /// Summary data reader
     /// </summary>
-    internal class SummaryDataReader : ISummaryDataReader
+    public class SummaryDataReader : ISummaryDataReader
     {
-        private const string c_rootLabel = "SummaryDetails";
-
-        private const string c_RunnersLabel = "TotalRunner";
-        private const string c_MaleRunnersLabel = "MaleRunners";
-        private const string c_FemaleRunnersLabel = "FemaleRunners";
-        private const string c_YBLabel = "YBs";
-        private const string c_PBLabel = "PBs";
-        private const string c_FirstTimersLabel = "FirstTimers";
-        private const string c_FastestLabel = "FastestRunners";
-
-        private const string fastestBoysLabel = "FastestBoys";
-        private const string fastestGirlsLabel = "FastestGirls";
-        private const string timeLabel = "Time";
-        private const string keyLabel = "Key";
-        private const string c_NameLabel = "Name";
-        private const string c_MinutesLabel = "Minutes";
-        private const string c_SecondsLabel = "Seconds";
-        private const string dateLabel = "Date";
-
         /// <summary>
         /// The instance of the logger.
         /// </summary>
@@ -45,7 +25,7 @@
         /// <summary>
         /// Initialises a new instance of the <see cref="SummaryDataReader"/> class.
         /// </summary>
-        /// <param name="logger"></param>
+        /// <param name="logger">The program logger</param>
         public SummaryDataReader(IJHcLogger logger)
         {
             this.logger = logger;
@@ -63,59 +43,58 @@
             ISummary summaryDetails)
         {
             bool success = true;
+            SummaryDataRoot saveData = new SummaryDataRoot();
 
             try
             {
-                XDocument writer = new XDocument(
-                 new XDeclaration("1.0", "uft-8", "yes"),
-                 new XComment("Athlete's data XML"));
-                XElement rootElement = new XElement(c_rootLabel);
-                XElement TotalRunnersElement = new XElement(c_RunnersLabel, summaryDetails.Runners);
-                XElement MaleRunnersElement = new XElement(c_MaleRunnersLabel, summaryDetails.MaleRunners);
-                XElement FemaleRunnersElement = new XElement(c_FemaleRunnersLabel, summaryDetails.FemaleRunners);
-                XElement YBsElement = new XElement(c_YBLabel, summaryDetails.SBs);
-                XElement PBsElement = new XElement(c_PBLabel, summaryDetails.PBs);
-                XElement FirstTimersElement = new XElement(c_FirstTimersLabel, summaryDetails.FirstTimers);
-                XElement FastestElement = new XElement(c_FastestLabel);
+                FastestRunnersRoot fastestRunners = new FastestRunnersRoot();
+                FastestGirlsRoot fastestGirls = 
+                    new FastestGirlsRoot
+                    {
+                        Appearances = new FastestTimes()
+                    };
+                FastestBoysRoot fastestBoys = 
+                    new FastestBoysRoot()
+                    {
+                        Appearances = new FastestTimes()
+                    };
 
-                XElement FastestBoysElement = new XElement(fastestBoysLabel);
-                XElement FastestGirlsElement = new XElement(fastestGirlsLabel);
-
-                foreach (AthleteTime athlete in summaryDetails.FastestBoys)
+                foreach (IAthleteTime athleteTime in summaryDetails.FastestGirls)
                 {
-                    XElement FastestTimeElement = new XElement(timeLabel,
-                                                               new XAttribute(keyLabel, athlete.Key),
-                                                               new XAttribute(c_NameLabel, athlete.Name),
-                                                               new XAttribute(c_MinutesLabel, athlete.Time.Minutes),
-                                                               new XAttribute(c_SecondsLabel, athlete.Time.Seconds),
-                                                               new XAttribute(dateLabel, athlete.Date.ToString()));
-                    FastestBoysElement.Add(FastestTimeElement);
+                    FastestTime fastestTime =
+                        new FastestTime()
+                        {
+                            Key = athleteTime.Key,
+                            Name = athleteTime.Name,
+                            Date = athleteTime.Date.ToString(),
+                            Minutes = athleteTime.Time.Minutes,
+                            Seconds = athleteTime.Time.Seconds
+                        };
+                    fastestGirls.Appearances.Add(fastestTime);
                 }
 
-                foreach (AthleteTime athlete in summaryDetails.FastestGirls)
+                foreach (IAthleteTime athleteTime in summaryDetails.FastestBoys)
                 {
-                    XElement FastestTimeElement = new XElement(timeLabel,
-                                                               new XAttribute(keyLabel, athlete.Key),
-                                                               new XAttribute(c_NameLabel, athlete.Name),
-                                                               new XAttribute(c_MinutesLabel, athlete.Time.Minutes),
-                                                               new XAttribute(c_SecondsLabel, athlete.Time.Seconds),
-                                                               new XAttribute(dateLabel, athlete.Date.ToString()));
-                    FastestGirlsElement.Add(FastestTimeElement);
+                    FastestTime fastestTime =
+                        new FastestTime()
+                        {
+                            Key = athleteTime.Key,
+                            Name = athleteTime.Name,
+                            Date = athleteTime.Date.ToString(),
+                            Minutes = athleteTime.Time.Minutes,
+                            Seconds = athleteTime.Time.Seconds
+                        };
+                    fastestBoys.Appearances.Add(fastestTime);
                 }
 
-                FastestElement.Add(FastestBoysElement);
-                FastestElement.Add(FastestGirlsElement);
+                fastestRunners.Girls = fastestGirls;
+                fastestRunners.Boys = fastestBoys;
+                saveData.FastestRunners = fastestRunners;
 
-                rootElement.Add(TotalRunnersElement);
-                rootElement.Add(MaleRunnersElement);
-                rootElement.Add(FemaleRunnersElement);
-                rootElement.Add(YBsElement);
-                rootElement.Add(PBsElement);
-                rootElement.Add(FirstTimersElement);
-                rootElement.Add(FastestElement);
+                XmlFileIo.WriteXml<SummaryDataRoot>(
+                    saveData,
+                    fileName);
 
-                writer.Add(rootElement);
-                writer.Save(fileName);
             }
             catch (Exception ex)
             {
@@ -136,7 +115,8 @@
         /// ---------- ---------- ---------- ---------- ---------- ----------
         public ISummary ReadCompleteSummaryData(string fileName)
         {
-            ISummary summaryData = null;
+            ISummary summaryData;
+            SummaryDataRoot deserialisedSummary;
 
             if (!File.Exists(fileName))
             {
@@ -145,68 +125,59 @@
                     new HandicapErrorMessage(
                         error));
                 this.logger.WriteLog(error);
-                SaveSummaryData(fileName, new Summary());
+                this.SaveSummaryData(
+                    fileName, 
+                    new Summary());
             }
 
             try
             {
-                XDocument reader = XDocument.Load(fileName);
-                XElement rootElement = reader.Root;
+                deserialisedSummary =
+                    XmlFileIo.ReadXml<SummaryDataRoot>(
+                        fileName);
 
-                XElement TotalRunnersElement = rootElement.Element(c_RunnersLabel);
-                XElement MaleRunnersElement = rootElement.Element(c_MaleRunnersLabel);
-                XElement FemaleRunnersElement = rootElement.Element(c_FemaleRunnersLabel);
-                XElement YBsElement = rootElement.Element(c_YBLabel);
-                XElement PBsElement = rootElement.Element(c_PBLabel);
-                XElement FirstTimersElement = rootElement.Element(c_FirstTimersLabel);
-                XElement FastestElement = rootElement.Element(c_FastestLabel);
-
-                XElement FastestBoysElement = FastestElement.Element(fastestBoysLabel);
-                XElement FastestGirlsElement = FastestElement.Element(fastestGirlsLabel);
-
-
-                summaryData = 
+                summaryData =
                     new Summary(
-                        (int)StringToIntConverter.ConvertStringToInt(MaleRunnersElement.Value),
-                        (int)StringToIntConverter.ConvertStringToInt(FemaleRunnersElement.Value),
-                        (int)StringToIntConverter.ConvertStringToInt(YBsElement.Value),
-                        (int)StringToIntConverter.ConvertStringToInt(PBsElement.Value),
-                        (int)StringToIntConverter.ConvertStringToInt(FirstTimersElement.Value));
+                        deserialisedSummary.MaleRunners,
+                        deserialisedSummary.FemaleRunners,
+                        deserialisedSummary.TotalYBs,
+                        deserialisedSummary.TotalPBs,
+                        deserialisedSummary.TotalFirstTimers);
 
-                var boysList = from Athlete in FastestBoysElement.Elements(timeLabel)
-                               select new
-                               {
-                                   key = (string)Athlete.Attribute(keyLabel),
-                                   name = (string)Athlete.Attribute(c_NameLabel),
-                                   minutes = (int)Athlete.Attribute(c_MinutesLabel),
-                                   seconds = (int)Athlete.Attribute(c_SecondsLabel),
-                                   date = (string)Athlete.Attribute(dateLabel)
-                               };
-
-                foreach (var athlete in boysList)
+                foreach (FastestTime fastestGirl in deserialisedSummary.FastestRunners.Girls.Appearances)
                 {
-                    summaryData.SetFastestBoy((int)StringToIntConverter.ConvertStringToInt(athlete.key),
-                                              athlete.name,
-                                              new TimeType(athlete.minutes, athlete.seconds),
-                                              new DateType(athlete.date));
+                    TimeType registeredTime =
+                        new TimeType(
+                            fastestGirl.Minutes,
+                            fastestGirl.Seconds);
+                    DateType registeredDate =
+                        new DateType(
+                            fastestGirl.Date);
+                    IAthleteTime time =
+                        new AthleteTime(
+                            fastestGirl.Key,
+                            fastestGirl.Name,
+                            registeredTime,
+                            registeredDate);
+                    summaryData.FastestGirls.Add(time);
                 }
 
-                var girlsList = from Athlete in FastestGirlsElement.Elements(timeLabel)
-                                select new
-                                {
-                                    key = (string)Athlete.Attribute(keyLabel),
-                                    name = (string)Athlete.Attribute(c_NameLabel),
-                                    minutes = (int)Athlete.Attribute(c_MinutesLabel),
-                                    seconds = (int)Athlete.Attribute(c_SecondsLabel),
-                                    date = (string)Athlete.Attribute(dateLabel)
-                                };
-
-                foreach (var athlete in girlsList)
+                foreach (FastestTime fastestBoy in deserialisedSummary.FastestRunners.Boys.Appearances)
                 {
-                    summaryData.SetFastestGirl((int)StringToIntConverter.ConvertStringToInt(athlete.key),
-                                               athlete.name,
-                                               new TimeType(athlete.minutes, athlete.seconds),
-                                               new DateType(athlete.date));
+                    TimeType registeredTime =
+                        new TimeType(
+                            fastestBoy.Minutes,
+                            fastestBoy.Seconds);
+                    DateType registeredDate =
+                        new DateType(
+                            fastestBoy.Date);
+                    IAthleteTime time =
+                        new AthleteTime(
+                            fastestBoy.Key,
+                            fastestBoy.Name,
+                            registeredTime,
+                            registeredDate);
+                    summaryData.FastestBoys.Add(time);
                 }
             }
             catch (Exception ex)
