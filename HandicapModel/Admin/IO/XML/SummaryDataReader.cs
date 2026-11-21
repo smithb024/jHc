@@ -3,6 +3,7 @@
     using CommonHandicapLib.Interfaces;
     using CommonHandicapLib.Messages;
     using CommonHandicapLib.XML.EventsData;
+    using CommonHandicapLib.XML.ResultsTable;
     using CommonHandicapLib.XML.SummaryData;
     using CommonLib.Converters;
     using CommonLib.Types;
@@ -139,6 +140,8 @@
         public ISummary ReadCompleteSummaryData(string fileName)
         {
             ISummary summaryData = null;
+            ISummary tempSummaryData;
+            SummaryDataRoot deserialisedSummary;
 
             if (!File.Exists(fileName))
             {
@@ -147,11 +150,61 @@
                     new HandicapErrorMessage(
                         error));
                 this.logger.WriteLog(error);
-                SaveSummaryData(fileName, new Summary());
+                this.SaveSummaryData(
+                    fileName, 
+                    new Summary());
             }
 
             try
             {
+                deserialisedSummary =
+                    XmlFileIo.ReadXml<SummaryDataRoot>(
+                        fileName);
+
+                tempSummaryData =
+                    new Summary(
+                        deserialisedSummary.MaleRunners,
+                        deserialisedSummary.FemaleRunners,
+                        deserialisedSummary.TotalYBs,
+                        deserialisedSummary.TotalPBs,
+                        deserialisedSummary.TotalFirstTimers);
+
+                foreach (FastestTime fastestGirl in deserialisedSummary.FastestRunners.Girls.Appearances)
+                {
+                    TimeType registeredTime =
+                        new TimeType(
+                            fastestGirl.Minutes,
+                            fastestGirl.Seconds);
+                    DateType registeredDate =
+                        new DateType(
+                            fastestGirl.Date);
+                    IAthleteTime time =
+                        new AthleteTime(
+                            fastestGirl.Key,
+                            fastestGirl.Name,
+                            registeredTime,
+                            registeredDate);
+                    tempSummaryData.FastestGirls.Add(time);
+                }
+
+                foreach (FastestTime fastestBoy in deserialisedSummary.FastestRunners.Boys.Appearances)
+                {
+                    TimeType registeredTime =
+                        new TimeType(
+                            fastestBoy.Minutes,
+                            fastestBoy.Seconds);
+                    DateType registeredDate =
+                        new DateType(
+                            fastestBoy.Date);
+                    IAthleteTime time =
+                        new AthleteTime(
+                            fastestBoy.Key,
+                            fastestBoy.Name,
+                            registeredTime,
+                            registeredDate);
+                    tempSummaryData.FastestBoys.Add(time);
+                }
+
                 XDocument reader = XDocument.Load(fileName);
                 XElement rootElement = reader.Root;
 
